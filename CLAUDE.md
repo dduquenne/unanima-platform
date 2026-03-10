@@ -305,6 +305,34 @@ Les composants du socle utilisent exclusivement ces variables CSS, jamais de cou
 
 ---
 
+## Variables d'environnement
+
+Chaque application nécessite un fichier `.env.local` à sa racine. Des fichiers
+`.env.local.example` sont fournis comme modèles :
+
+```bash
+# Racine (référence commune)
+cp .env.local.example .env.local
+
+# Par application
+cp apps/links/.env.local.example apps/links/.env.local
+cp apps/creai/.env.local.example apps/creai/.env.local
+cp apps/omega/.env.local.example apps/omega/.env.local
+```
+
+| Variable | Type | Scope | Packages utilisateurs |
+|---|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Publique | Client + Serveur | `@unanima/db`, `@unanima/auth` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Publique | Client + Serveur | `@unanima/db`, `@unanima/auth` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Secrète | Serveur uniquement | `@unanima/db` |
+| `RESEND_API_KEY` | Secrète | Serveur uniquement | `@unanima/email` |
+
+> **Important** : Chaque app a son propre projet Supabase avec ses propres clés.
+> Ne jamais partager les clés entre projets. Les variables secrètes ne doivent
+> jamais être préfixées `NEXT_PUBLIC_`.
+
+---
+
 ## Commandes
 
 ```bash
