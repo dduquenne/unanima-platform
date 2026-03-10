@@ -1,0 +1,5 @@
+export { getResendClient } from './client'
+export { sendEmail, sendBatch } from './send'
+export { ResetPasswordEmail } from './templates/reset-password'
+export { WelcomeEmail } from './templates/welcome'
+export { NotificationEmail } from './templates/notification'

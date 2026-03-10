@@ -1,0 +1,7 @@
+export type { RGPDConfig } from './config'
+export { LegalNotice } from './components/legal-notice'
+export { PrivacyPolicy } from './components/privacy-policy'
+export { CookieBanner } from './components/cookie-banner'
+export { exportUserData } from './api/export-data'
+export { deleteAccount } from './api/delete-account'
+export { getAuditAccess } from './api/audit-access'
