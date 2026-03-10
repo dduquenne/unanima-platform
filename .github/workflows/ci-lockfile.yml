@@ -1,0 +1,28 @@
+name: CI — Lockfile check
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: ci-lockfile-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-lockfile:
+    name: Verify lockfile sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Check lockfile is up to date
+        run: bash scripts/check-lockfile.sh
