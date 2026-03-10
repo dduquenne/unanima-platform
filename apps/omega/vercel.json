@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
   "installCommand": "pnpm install",
-  "buildCommand": "pnpm build --filter=@unanima/omega",
+  "buildCommand": "cd ../.. && pnpm turbo run build --filter=@unanima/omega",
   "ignoreCommand": "bash ../../scripts/vercel-ignore.sh omega"
 }
