@@ -9,6 +9,19 @@ describe('cn', () => {
   it('handles conditional classes', () => {
     expect(cn('foo', false && 'bar', 'baz')).toBe('foo baz')
   })
+
+  it('handles arrays of classes', () => {
+    expect(cn(['foo', 'bar'])).toBe('foo bar')
+  })
+
+  it('handles undefined and null values', () => {
+    expect(cn('foo', undefined, null, 'bar')).toBe('foo bar')
+  })
+
+  it('merges tailwind classes correctly', () => {
+    expect(cn('px-2', 'px-4')).toBe('px-4')
+    expect(cn('bg-red-500', 'bg-blue-500')).toBe('bg-blue-500')
+  })
 })
 
 describe('formatDate', () => {

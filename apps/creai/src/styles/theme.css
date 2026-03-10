@@ -1,12 +1,84 @@
+/*
+ * CREAI Ile-de-France — Charte graphique
+ * Identite : Institutionnel, medico-social, expertise, accessibilite
+ * Palette : Violet / Indigo / Accents teal
+ */
 :root {
-  --color-primary: #1E6FC0;
-  --color-primary-dark: #0D3B6E;
-  --color-success: #28A745;
-  --color-warning: #FF6B35;
-  --color-danger: #DC3545;
-  --color-info: #17A2B8;
-  --color-background: #F5F7FA;
-  --color-text: #4A4A4A;
-  --color-border: #DCE1EB;
-  --font-family: 'Inter', sans-serif;
+  /* --- Couleurs principales --- */
+  --color-primary: #6D28D9;
+  --color-primary-light: #8B5CF6;
+  --color-primary-dark: #4C1D95;
+  --color-secondary: #0D9488;
+  --color-secondary-light: #5EEAD4;
+  --color-secondary-dark: #115E59;
+  --color-accent: #EC4899;
+  --color-accent-light: #F9A8D4;
+
+  /* --- Couleurs semantiques --- */
+  --color-success: #059669;
+  --color-success-light: #D1FAE5;
+  --color-warning: #D97706;
+  --color-warning-light: #FEF3C7;
+  --color-danger: #DC2626;
+  --color-danger-light: #FEE2E2;
+  --color-info: #7C3AED;
+  --color-info-light: #EDE9FE;
+
+  /* --- Surfaces et fonds --- */
+  --color-background: #F5F3FF;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #FAF5FF;
+  --color-surface-active: #EDE9FE;
+  --color-muted: #F1F0FB;
+
+  /* --- Texte --- */
+  --color-text: #1C1917;
+  --color-text-secondary: #57534E;
+  --color-text-muted: #A8A29E;
+  --color-text-inverse: #FFFFFF;
+
+  /* --- Bordures --- */
+  --color-border: #D6D3D1;
+  --color-border-light: #E7E5E4;
+  --color-border-focus: #6D28D9;
+
+  /* --- Typographie --- */
+  --font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+  --font-family-heading: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* --- Rayons --- */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* --- Ombres --- */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+  --shadow-glow: 0 0 20px rgb(109 40 217 / 0.15);
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Gradients --- */
+  --gradient-primary: linear-gradient(135deg, #6D28D9 0%, #0D9488 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F5F3FF 100%);
+  --gradient-accent: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
 }

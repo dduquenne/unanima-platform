@@ -1,12 +1,84 @@
+/*
+ * Link's Accompagnement — Charte graphique
+ * Identité : Accompagnement bienveillant, professionnel, confiance
+ * Palette : Bleu azur / Turquoise / Accents chaleureux
+ */
 :root {
+  /* --- Couleurs principales --- */
   --color-primary: #1E6FC0;
+  --color-primary-light: #4A90D9;
   --color-primary-dark: #0D3B6E;
-  --color-success: #28A745;
-  --color-warning: #FF6B35;
-  --color-danger: #DC3545;
-  --color-info: #17A2B8;
-  --color-background: #F5F7FA;
-  --color-text: #4A4A4A;
-  --color-border: #DCE1EB;
-  --font-family: 'Inter', sans-serif;
+  --color-secondary: #0EA5E9;
+  --color-secondary-light: #7DD3FC;
+  --color-secondary-dark: #0369A1;
+  --color-accent: #F59E0B;
+  --color-accent-light: #FCD34D;
+
+  /* --- Couleurs sémantiques --- */
+  --color-success: #10B981;
+  --color-success-light: #D1FAE5;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FEF3C7;
+  --color-danger: #EF4444;
+  --color-danger-light: #FEE2E2;
+  --color-info: #3B82F6;
+  --color-info-light: #DBEAFE;
+
+  /* --- Surfaces et fonds --- */
+  --color-background: #F0F7FF;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F8FAFC;
+  --color-surface-active: #EFF6FF;
+  --color-muted: #F1F5F9;
+
+  /* --- Texte --- */
+  --color-text: #1E293B;
+  --color-text-secondary: #64748B;
+  --color-text-muted: #94A3B8;
+  --color-text-inverse: #FFFFFF;
+
+  /* --- Bordures --- */
+  --color-border: #CBD5E1;
+  --color-border-light: #E2E8F0;
+  --color-border-focus: #1E6FC0;
+
+  /* --- Typographie --- */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-heading: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* --- Rayons --- */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* --- Ombres --- */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+  --shadow-glow: 0 0 20px rgb(30 111 192 / 0.15);
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Gradients --- */
+  --gradient-primary: linear-gradient(135deg, #1E6FC0 0%, #0EA5E9 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F0F7FF 100%);
+  --gradient-accent: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
 }
