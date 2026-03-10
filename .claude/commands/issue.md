@@ -233,21 +233,26 @@ Créer un nouveau fichier SQL dans `packages/db/migrations/` avec un numéro
 séquentiel incrémenté. Ne **jamais modifier** une migration existante déjà
 déployée.
 
-### Documentation (obligatoire si applicable)
-Si l'investigation ou l'implémentation produit un document (ADR, rapport
-d'analyse, spec, guide), il **DOIT** être créé dans la base documentaire :
+### Documentation (uniquement si à forte valeur ajoutée)
+Par défaut, **ne pas générer de document** dans la base documentaire.
+Un document ne doit être créé que si le traitement de l'issue produit un
+contenu à forte valeur ajoutée pour la documentation ou la maintenance du
+projet. La majorité des issues (corrections de bugs, ajustements mineurs,
+petites fonctionnalités) **ne nécessitent pas** de document.
+
+Cas justifiant la création d'un document :
+- Décision architecturale **structurante** qui impacte durablement le projet → `ADR`
+- Investigation complexe dont les conclusions sont réutilisables (post-mortem, analyse de performance) → `RPT`
+- Nouvelle procédure ou workflow que d'autres développeurs devront suivre → `GDE`
+- Spécification d'une fonctionnalité majeure nécessitant une référence pérenne → `SPC`
+
+Si un document est jugé pertinent :
 
 1. Déterminer le **scope** (plateforme ou app cible)
 2. Déterminer le **type** de document (`ADR`, `GDE`, `SPC`, `RPT`)
 3. Trouver le prochain numéro séquentiel dans `docs/<scope>/<TYPE>/`
 4. Créer le document avec l'en-tête YAML complet
 5. Mettre à jour `docs/<scope>/INDEX.md`
-
-Cas typiques nécessitant un document :
-- Décision architecturale significative → `ADR`
-- Investigation complexe ou post-mortem → `RPT`
-- Nouvelle procédure ou workflow → `GDE`
-- Spécification d'une fonctionnalité → `SPC`
 
 ### CLAUDE.md
 Mettre à jour si : nouvelle commande/script, nouveau package, nouvelle env var,
@@ -322,9 +327,10 @@ puis corriger via workflow PR standard.
 |---|---|---|
 
 ### Documentation produite
+*(Uniquement si un document a été créé/modifié dans la base documentaire)*
+
 | Réf. | Titre | Scope | Type |
 |---|---|---|---|
-*(tableau des documents créés/modifiés dans la base documentaire)*
 
 ### Validation
 | Étape | Statut | Détail |
