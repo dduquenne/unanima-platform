@@ -1,0 +1,57 @@
+name: CI — Omega
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'apps/omega/**'
+      - 'packages/**'
+      - 'tooling/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig.base.json'
+      - 'turbo.json'
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - 'apps/omega/**'
+      - 'packages/**'
+      - 'tooling/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig.base.json'
+      - 'turbo.json'
+
+concurrency:
+  group: ci-omega-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & Test Omega
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint --filter=@unanima/omega
+
+      - name: Build
+        run: pnpm build --filter=@unanima/omega
+
+      - name: Test
+        run: pnpm test --filter=@unanima/omega

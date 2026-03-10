@@ -356,6 +356,68 @@ Le script :
 
 ---
 
+## Isolation des déploiements
+
+Chaque application est déployée **indépendamment** sur Vercel. Un échec de build ou de déploiement d'une app ne doit jamais impacter les autres.
+
+### Architecture d'isolation
+
+```
+                    ┌─────────────────────────────────────────┐
+                    │           GitHub (monorepo)              │
+                    │                                         │
+                    │  push sur apps/links/** ───► CI Links   │
+                    │  push sur apps/creai/** ───► CI CREAI   │
+                    │  push sur apps/omega/** ───► CI Omega   │
+                    │  push sur packages/**   ───► CI toutes  │
+                    └─────────────────────────────────────────┘
+                                    │
+                    ┌───────────────┼───────────────┐
+                    ▼               ▼               ▼
+             Vercel Project    Vercel Project   Vercel Project
+               (links)          (creai)          (omega)
+             ignoreCommand    ignoreCommand    ignoreCommand
+               isolé            isolé            isolé
+```
+
+### Mécanismes en place
+
+1. **Vercel `ignoreCommand`** — Chaque `vercel.json` contient un `ignoreCommand` qui appelle `scripts/vercel-ignore.sh <app>`. Ce script vérifie si les fichiers pertinents à l'app ont changé ; sinon, le déploiement est ignoré.
+
+2. **Turborepo `--filter`** — Chaque commande de build utilise `--filter=@unanima/<app>` pour ne construire que l'app ciblée et ses dépendances.
+
+3. **GitHub Actions séparés** — Un workflow CI par app (`.github/workflows/ci-links.yml`, etc.) avec filtrage `paths:` pour ne s'exécuter que sur les changements pertinents. Le workflow `ci-packages.yml` teste les 3 apps en parallèle (`fail-fast: false`) quand le socle change.
+
+4. **Health endpoints** — Chaque app expose `GET /api/health` pour une supervision indépendante.
+
+### Projets Vercel
+
+Chaque app doit être configurée comme un **projet Vercel distinct** pointant vers le même dépôt GitHub, avec :
+- **Root Directory** : `apps/links` (ou `apps/creai`, `apps/omega`)
+- **Framework Preset** : Next.js
+- **Variables d'environnement** : propres à chaque projet (Supabase URL, clés API, etc.)
+
+### Commandes isolées
+
+```bash
+# Build d'une seule app (ne touche pas les autres)
+pnpm build:links
+pnpm build:creai
+pnpm build:omega
+
+# Tests d'une seule app
+pnpm test:links
+pnpm test:creai
+pnpm test:omega
+
+# Dev d'une seule app
+pnpm dev:links
+pnpm dev:creai
+pnpm dev:omega
+```
+
+---
+
 ## Règles strictes
 
 1. **Ne jamais importer de code d'une app vers une autre** — les apps sont isolées
@@ -364,6 +426,8 @@ Le script :
 4. **Les migrations SQL du socle ne doivent jamais être modifiées après déploiement** — créer une nouvelle migration
 5. **Chaque PR qui touche un package du socle doit passer les tests des 3 apps**
 6. **Le CLAUDE.md doit être mis à jour à chaque changement structurel**
+7. **Chaque app doit être un projet Vercel distinct** — jamais de déploiement groupé
+8. **Ne jamais supprimer l'`ignoreCommand` d'un `vercel.json`** — il garantit l'isolation des déploiements
 
 ---
 

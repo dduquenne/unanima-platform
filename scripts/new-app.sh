@@ -76,12 +76,13 @@ const nextConfig = {
 module.exports = nextConfig
 EOF
 
-# vercel.json
+# vercel.json — includes ignoreCommand for deployment isolation
 cat > "${APP_DIR}/vercel.json" << EOF
 {
   "framework": "nextjs",
   "installCommand": "pnpm install",
-  "buildCommand": "pnpm build --filter=@unanima/${APP_NAME}"
+  "buildCommand": "pnpm build --filter=@unanima/${APP_NAME}",
+  "ignoreCommand": "bash ../../scripts/vercel-ignore.sh ${APP_NAME}"
 }
 EOF
 
@@ -133,6 +134,20 @@ cat > "${APP_DIR}/src/styles/theme.css" << 'EOF'
   --color-text: #4A4A4A;
   --color-border: #DCE1EB;
   --font-family: 'Inter', sans-serif;
+}
+EOF
+
+# Health endpoint for independent monitoring
+mkdir -p "${APP_DIR}/src/app/api/health"
+cat > "${APP_DIR}/src/app/api/health/route.ts" << EOF
+import { NextResponse } from 'next/server'
+
+export function GET() {
+  return NextResponse.json({
+    status: 'ok',
+    app: '${APP_NAME}',
+    timestamp: new Date().toISOString(),
+  })
 }
 EOF
 
