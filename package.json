@@ -7,6 +7,18 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
+    "dev:links": "turbo run dev --filter=@unanima/links",
+    "dev:creai": "turbo run dev --filter=@unanima/creai",
+    "dev:omega": "turbo run dev --filter=@unanima/omega",
+    "build:links": "turbo run build --filter=@unanima/links",
+    "build:creai": "turbo run build --filter=@unanima/creai",
+    "build:omega": "turbo run build --filter=@unanima/omega",
+    "test:links": "turbo run test --filter=@unanima/links",
+    "test:creai": "turbo run test --filter=@unanima/creai",
+    "test:omega": "turbo run test --filter=@unanima/omega",
+    "lint:links": "turbo run lint --filter=@unanima/links",
+    "lint:creai": "turbo run lint --filter=@unanima/creai",
+    "lint:omega": "turbo run lint --filter=@unanima/omega",
     "generate:types": "./scripts/generate-types.sh"
   },
   "devDependencies": {

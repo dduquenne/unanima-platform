@@ -3,17 +3,35 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", ".next/**"],
+      "inputs": ["src/**", "package.json", "tsconfig.json", "next.config.js"]
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
     "test": {
-      "dependsOn": ["build"]
+      "dependsOn": ["build"],
+      "inputs": ["src/**", "tests/**", "vitest.config.*"]
     },
     "lint": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", ".eslintrc.*"]
+    },
+    "build:links": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**"],
+      "inputs": ["src/**", "package.json", "tsconfig.json", "next.config.js"]
+    },
+    "build:creai": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**"],
+      "inputs": ["src/**", "package.json", "tsconfig.json", "next.config.js"]
+    },
+    "build:omega": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**"],
+      "inputs": ["src/**", "package.json", "tsconfig.json", "next.config.js"]
     }
   }
 }

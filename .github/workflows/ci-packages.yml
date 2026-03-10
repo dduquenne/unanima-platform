@@ -1,0 +1,55 @@
+name: CI — Packages (socle commun)
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'packages/**'
+      - 'tooling/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.base.json'
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - 'packages/**'
+      - 'tooling/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.base.json'
+
+concurrency:
+  group: ci-packages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test-all:
+    name: Build & Test all packages and apps
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [links, creai, omega]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint ${{ matrix.app }}
+        run: pnpm lint --filter=@unanima/${{ matrix.app }}
+
+      - name: Build ${{ matrix.app }}
+        run: pnpm build --filter=@unanima/${{ matrix.app }}
+
+      - name: Test ${{ matrix.app }}
+        run: pnpm test --filter=@unanima/${{ matrix.app }}
