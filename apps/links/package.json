@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@unanima/auth": "workspace:*",
@@ -26,6 +26,8 @@
     "@unanima/eslint-config": "workspace:*",
     "@unanima/tailwind-config": "workspace:*",
     "@unanima/tsconfig": "workspace:*",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14",
     "typescript": "^5.7.3",
     "vitest": "^1.6.1"
   }
