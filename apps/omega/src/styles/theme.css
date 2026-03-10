@@ -1,12 +1,84 @@
+/*
+ * Omega Automotive — Charte graphique
+ * Identite : Industriel, operationnel, performance, SAV automobile
+ * Palette : Orange vif / Gris anthracite / Accents sombres
+ */
 :root {
-  --color-primary: #1E6FC0;
-  --color-primary-dark: #0D3B6E;
-  --color-success: #28A745;
-  --color-warning: #FF6B35;
-  --color-danger: #DC3545;
-  --color-info: #17A2B8;
-  --color-background: #F5F7FA;
-  --color-text: #4A4A4A;
-  --color-border: #DCE1EB;
-  --font-family: 'Inter', sans-serif;
+  /* --- Couleurs principales --- */
+  --color-primary: #EA580C;
+  --color-primary-light: #FB923C;
+  --color-primary-dark: #9A3412;
+  --color-secondary: #334155;
+  --color-secondary-light: #64748B;
+  --color-secondary-dark: #1E293B;
+  --color-accent: #EAB308;
+  --color-accent-light: #FDE047;
+
+  /* --- Couleurs semantiques --- */
+  --color-success: #16A34A;
+  --color-success-light: #DCFCE7;
+  --color-warning: #CA8A04;
+  --color-warning-light: #FEF9C3;
+  --color-danger: #DC2626;
+  --color-danger-light: #FEE2E2;
+  --color-info: #2563EB;
+  --color-info-light: #DBEAFE;
+
+  /* --- Surfaces et fonds --- */
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F1F5F9;
+  --color-surface-active: #FFF7ED;
+  --color-muted: #F1F5F9;
+
+  /* --- Texte --- */
+  --color-text: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94A3B8;
+  --color-text-inverse: #FFFFFF;
+
+  /* --- Bordures --- */
+  --color-border: #CBD5E1;
+  --color-border-light: #E2E8F0;
+  --color-border-focus: #EA580C;
+
+  /* --- Typographie --- */
+  --font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-family-heading: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* --- Rayons --- */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* --- Ombres --- */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.06);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.06);
+  --shadow-glow: 0 0 20px rgb(234 88 12 / 0.15);
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Gradients --- */
+  --gradient-primary: linear-gradient(135deg, #EA580C 0%, #EAB308 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  --gradient-accent: linear-gradient(135deg, #334155 0%, #64748B 100%);
 }

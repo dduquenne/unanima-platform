@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import '../styles/theme.css'
+import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Unanima',
-  description: 'Application Unanima',
+  title: "Link's Accompagnement",
+  description: 'Plateforme de suivi des bilans de compétences',
 }
 
 export default function RootLayout({
@@ -13,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
+        {children}
+      </body>
     </html>
   )
 }

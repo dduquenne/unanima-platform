@@ -19,6 +19,7 @@ export interface DataTableProps<T> {
   pageSize?: number
   onRowClick?: (row: T) => void
   actions?: (row: T) => ReactNode
+  emptyMessage?: string
   className?: string
 }
 
@@ -31,6 +32,7 @@ export function DataTable<T extends Record<string, unknown>>({
   pageSize = 10,
   onRowClick,
   actions,
+  emptyMessage = 'Aucun resultat',
   className,
 }: DataTableProps<T>) {
   const [search, setSearch] = useState('')
@@ -75,39 +77,73 @@ export function DataTable<T extends Record<string, unknown>>({
   }
 
   return (
-    <div className={cn('overflow-hidden rounded-lg border border-[var(--color-border)]', className)}>
+    <div className={cn(
+      'overflow-hidden',
+      'rounded-[var(--radius-lg,0.75rem)]',
+      'border border-[var(--color-border-light,var(--color-border))]',
+      'bg-[var(--color-surface,#fff)]',
+      'shadow-sm',
+      className,
+    )}>
       {searchable && (
-        <div className="border-b border-[var(--color-border)] p-3">
-          <input
-            type="text"
-            placeholder="Rechercher…"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value)
-              setPage(1)
-            }}
-            className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
-          />
+        <div className="border-b border-[var(--color-border-light,var(--color-border))] p-3">
+          <div className="relative">
+            <svg
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-text-muted,var(--color-text))]/40"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Rechercher..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value)
+                setPage(1)
+              }}
+              className={cn(
+                'w-full rounded-[var(--radius-md,0.5rem)]',
+                'border border-[var(--color-border)] bg-[var(--color-background,#f8fafc)]',
+                'py-2 pl-10 pr-3 text-sm text-[var(--color-text)]',
+                'placeholder:text-[var(--color-text-muted,var(--color-text))]/50',
+                'transition-all duration-150',
+                'focus:outline-none focus:ring-2 focus:ring-[var(--color-border-focus,var(--color-primary))]/30',
+                'focus:border-[var(--color-border-focus,var(--color-primary))]',
+              )}
+            />
+          </div>
         </div>
       )}
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[var(--color-border)] bg-[var(--color-background)]">
+            <tr className="border-b border-[var(--color-border-light,var(--color-border))] bg-[var(--color-muted,var(--color-background))]">
               {columns.map((col) => (
                 <th
                   key={col.key}
                   onClick={() => (col.sortable !== false ? handleSort(col.key) : undefined)}
                   className={cn(
-                    'px-4 py-3 text-left font-medium text-[var(--color-text)]/70',
+                    'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider',
+                    'text-[var(--color-text-secondary,var(--color-text))]/70',
                     sortable && col.sortable !== false && 'cursor-pointer select-none hover:text-[var(--color-text)]',
+                    'transition-colors duration-150',
                   )}
                 >
-                  <span className="inline-flex items-center gap-1">
+                  <span className="inline-flex items-center gap-1.5">
                     {col.header}
                     {sortKey === col.key && (
-                      <svg className={cn('h-3 w-3', !sortAsc && 'rotate-180')} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg
+                        className={cn('h-3.5 w-3.5 transition-transform duration-150', !sortAsc && 'rotate-180')}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
                       </svg>
                     )}
@@ -115,29 +151,29 @@ export function DataTable<T extends Record<string, unknown>>({
                 </th>
               ))}
               {actions && (
-                <th className="px-4 py-3 text-right font-medium text-[var(--color-text)]/70">
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary,var(--color-text))]/70">
                   Actions
                 </th>
               )}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-[var(--color-border-light,var(--color-border))]">
             {displayed.map((row, idx) => (
               <tr
                 key={idx}
                 onClick={() => onRowClick?.(row)}
                 className={cn(
-                  'border-b border-[var(--color-border)] last:border-0',
-                  onRowClick && 'cursor-pointer hover:bg-[var(--color-background)]',
+                  'transition-colors duration-100',
+                  onRowClick && 'cursor-pointer hover:bg-[var(--color-surface-hover,var(--color-background))]',
                 )}
               >
                 {columns.map((col) => (
-                  <td key={col.key} className="px-4 py-3 text-[var(--color-text)]">
+                  <td key={col.key} className="px-4 py-3.5 text-[var(--color-text)]">
                     {col.render ? col.render(row) : String(row[col.key] ?? '')}
                   </td>
                 ))}
                 {actions && (
-                  <td className="px-4 py-3 text-right">{actions(row)}</td>
+                  <td className="px-4 py-3.5 text-right">{actions(row)}</td>
                 )}
               </tr>
             ))}
@@ -145,9 +181,16 @@ export function DataTable<T extends Record<string, unknown>>({
               <tr>
                 <td
                   colSpan={columns.length + (actions ? 1 : 0)}
-                  className="px-4 py-8 text-center text-[var(--color-text)]/50"
+                  className="px-4 py-12 text-center"
                 >
-                  Aucun résultat
+                  <div className="flex flex-col items-center gap-2">
+                    <svg className="h-8 w-8 text-[var(--color-text-muted,var(--color-text))]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                    <p className="text-sm text-[var(--color-text-muted,var(--color-text))]/50">
+                      {emptyMessage}
+                    </p>
+                  </div>
                 </td>
               </tr>
             )}
@@ -156,22 +199,36 @@ export function DataTable<T extends Record<string, unknown>>({
       </div>
 
       {paginated && totalPages > 1 && (
-        <div className="flex items-center justify-between border-t border-[var(--color-border)] px-4 py-3">
-          <span className="text-sm text-[var(--color-text)]/60">
-            Page {page} sur {totalPages}
+        <div className="flex items-center justify-between border-t border-[var(--color-border-light,var(--color-border))] px-4 py-3">
+          <span className="text-sm text-[var(--color-text-secondary,var(--color-text))]/60">
+            Page {page} sur {totalPages} ({sorted.length} resultats)
           </span>
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="rounded-md border border-[var(--color-border)] px-3 py-1 text-sm disabled:opacity-50"
+              className={cn(
+                'rounded-[var(--radius-md,0.5rem)]',
+                'border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium',
+                'text-[var(--color-text)] bg-[var(--color-surface,#fff)]',
+                'hover:bg-[var(--color-surface-hover,var(--color-background))]',
+                'disabled:opacity-50 disabled:pointer-events-none',
+                'transition-colors duration-150',
+              )}
             >
-              Précédent
+              Precedent
             </button>
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="rounded-md border border-[var(--color-border)] px-3 py-1 text-sm disabled:opacity-50"
+              className={cn(
+                'rounded-[var(--radius-md,0.5rem)]',
+                'border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium',
+                'text-[var(--color-text)] bg-[var(--color-surface,#fff)]',
+                'hover:bg-[var(--color-surface-hover,var(--color-background))]',
+                'disabled:opacity-50 disabled:pointer-events-none',
+                'transition-colors duration-150',
+              )}
             >
               Suivant
             </button>

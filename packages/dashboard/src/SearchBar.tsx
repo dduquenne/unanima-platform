@@ -11,12 +11,13 @@ export interface SearchBarProps {
 }
 
 export function SearchBar({
-  placeholder = 'Rechercher…',
+  placeholder = 'Rechercher...',
   onSearch,
   debounceMs = 300,
   className,
 }: SearchBarProps) {
   const [value, setValue] = useState('')
+  const [focused, setFocused] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout>>()
 
   useEffect(() => {
@@ -29,9 +30,15 @@ export function SearchBar({
   }, [value, debounceMs, onSearch])
 
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn('relative group', className)}>
       <svg
-        className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-text)]/40"
+        className={cn(
+          'absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2',
+          'transition-colors duration-150',
+          focused
+            ? 'text-[var(--color-border-focus,var(--color-primary))]'
+            : 'text-[var(--color-text-muted,var(--color-text))]/40',
+        )}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -47,10 +54,38 @@ export function SearchBar({
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder={placeholder}
-        className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-2 pl-10 pr-3 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+        className={cn(
+          'w-full rounded-[var(--radius-md,0.5rem)]',
+          'border border-[var(--color-border)] bg-[var(--color-surface,#fff)]',
+          'py-2.5 pl-10 pr-3 text-sm text-[var(--color-text)]',
+          'placeholder:text-[var(--color-text-muted,var(--color-text))]/50',
+          'transition-all duration-150',
+          'focus:outline-none focus:ring-2 focus:ring-[var(--color-border-focus,var(--color-primary))]/30',
+          'focus:border-[var(--color-border-focus,var(--color-primary))]',
+          'hover:border-[var(--color-border-focus,var(--color-primary))]/50',
+        )}
         aria-label={placeholder}
       />
+      {value && (
+        <button
+          onClick={() => setValue('')}
+          className={cn(
+            'absolute right-3 top-1/2 -translate-y-1/2',
+            'rounded-[var(--radius-full,9999px)] p-0.5',
+            'text-[var(--color-text-muted,var(--color-text))]/40',
+            'hover:bg-[var(--color-muted,#f1f5f9)] hover:text-[var(--color-text)]',
+            'transition-colors duration-150',
+          )}
+          aria-label="Effacer la recherche"
+        >
+          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      )}
     </div>
   )
 }
