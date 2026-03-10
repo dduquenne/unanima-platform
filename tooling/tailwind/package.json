@@ -1,0 +1,9 @@
+{
+  "name": "@unanima/tailwind-config",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
