@@ -23,6 +23,14 @@ export interface DataTableProps<T> {
   className?: string
 }
 
+function isNumericColumn<T extends Record<string, unknown>>(data: T[], key: string): boolean {
+  return data.length > 0 && data.every((row) => {
+    const val = row[key]
+    if (val == null) return true
+    return typeof val === 'number' || (typeof val === 'string' && val !== '' && !isNaN(Number(val)))
+  })
+}
+
 export function DataTable<T extends Record<string, unknown>>({
   columns,
   data,
@@ -50,6 +58,11 @@ export function DataTable<T extends Record<string, unknown>>({
     )
   }, [data, search])
 
+  const numericSortKey = useMemo(() => {
+    if (!sortKey) return false
+    return isNumericColumn(filtered, sortKey)
+  }, [filtered, sortKey])
+
   const sorted = useMemo(() => {
     if (!sortKey) return filtered
     return [...filtered].sort((a, b) => {
@@ -58,7 +71,12 @@ export function DataTable<T extends Record<string, unknown>>({
       if (aVal === bVal) return 0
       if (aVal == null) return 1
       if (bVal == null) return -1
-      const cmp = String(aVal).localeCompare(String(bVal), undefined, { numeric: true })
+      let cmp: number
+      if (numericSortKey) {
+        cmp = Number(aVal) - Number(bVal)
+      } else {
+        cmp = String(aVal).localeCompare(String(bVal), undefined, { numeric: true })
+      }
       return sortAsc ? cmp : -cmp
     })
   }, [filtered, sortKey, sortAsc])
@@ -74,6 +92,11 @@ export function DataTable<T extends Record<string, unknown>>({
       setSortKey(key)
       setSortAsc(true)
     }
+  }
+
+  const getAriaSortValue = (colKey: string): 'ascending' | 'descending' | 'none' => {
+    if (sortKey !== colKey) return 'none'
+    return sortAsc ? 'ascending' : 'descending'
   }
 
   return (
@@ -94,12 +117,14 @@ export function DataTable<T extends Record<string, unknown>>({
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={2}
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
               type="text"
               placeholder="Rechercher..."
+              aria-label="Rechercher dans le tableau"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value)
@@ -123,33 +148,54 @@ export function DataTable<T extends Record<string, unknown>>({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-[var(--color-border-light,var(--color-border))] bg-[var(--color-muted,var(--color-background))]">
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  onClick={() => (col.sortable !== false ? handleSort(col.key) : undefined)}
-                  className={cn(
-                    'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider',
-                    'text-[var(--color-text-secondary,var(--color-text))]/70',
-                    sortable && col.sortable !== false && 'cursor-pointer select-none hover:text-[var(--color-text)]',
-                    'transition-colors duration-150',
-                  )}
-                >
-                  <span className="inline-flex items-center gap-1.5">
-                    {col.header}
-                    {sortKey === col.key && (
-                      <svg
-                        className={cn('h-3.5 w-3.5 transition-transform duration-150', !sortAsc && 'rotate-180')}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-                      </svg>
+              {columns.map((col) => {
+                const isSortable = sortable && col.sortable !== false
+                return (
+                  <th
+                    key={col.key}
+                    aria-sort={isSortable ? getAriaSortValue(col.key) : undefined}
+                    className={cn(
+                      'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider',
+                      'text-[var(--color-text-secondary,var(--color-text))]/70',
+                      'transition-colors duration-150',
                     )}
-                  </span>
-                </th>
-              ))}
+                  >
+                    {isSortable ? (
+                      <button
+                        type="button"
+                        onClick={() => handleSort(col.key)}
+                        className={cn(
+                          'inline-flex items-center gap-1.5',
+                          'cursor-pointer select-none',
+                          'hover:text-[var(--color-text)]',
+                          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-1 focus-visible:rounded-sm',
+                          'bg-transparent border-none p-0 text-inherit font-inherit text-xs font-semibold uppercase tracking-wider',
+                        )}
+                      >
+                        {col.header}
+                        <svg
+                          className={cn(
+                            'h-3.5 w-3.5 transition-transform duration-150',
+                            sortKey === col.key ? 'opacity-100' : 'opacity-30',
+                            sortKey === col.key && !sortAsc && 'rotate-180',
+                          )}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          aria-hidden="true"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                        </svg>
+                      </button>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5">
+                        {col.header}
+                      </span>
+                    )}
+                  </th>
+                )
+              })}
               {actions && (
                 <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary,var(--color-text))]/70">
                   Actions
@@ -184,7 +230,7 @@ export function DataTable<T extends Record<string, unknown>>({
                   className="px-4 py-12 text-center"
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <svg className="h-8 w-8 text-[var(--color-text-muted,var(--color-text))]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <svg className="h-8 w-8 text-[var(--color-text-muted,var(--color-text))]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
                     <p className="text-sm text-[var(--color-text-muted,var(--color-text))]/50">
@@ -204,34 +250,27 @@ export function DataTable<T extends Record<string, unknown>>({
             Page {page} sur {totalPages} ({sorted.length} resultats)
           </span>
           <div className="flex gap-1.5">
-            <button
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1}
-              className={cn(
-                'rounded-[var(--radius-md,0.5rem)]',
-                'border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium',
-                'text-[var(--color-text)] bg-[var(--color-surface,#fff)]',
-                'hover:bg-[var(--color-surface-hover,var(--color-background))]',
-                'disabled:opacity-50 disabled:pointer-events-none',
-                'transition-colors duration-150',
-              )}
-            >
-              Precedent
-            </button>
-            <button
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-              className={cn(
-                'rounded-[var(--radius-md,0.5rem)]',
-                'border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium',
-                'text-[var(--color-text)] bg-[var(--color-surface,#fff)]',
-                'hover:bg-[var(--color-surface-hover,var(--color-background))]',
-                'disabled:opacity-50 disabled:pointer-events-none',
-                'transition-colors duration-150',
-              )}
-            >
-              Suivant
-            </button>
+            {(['Precedent', 'Suivant'] as const).map((label) => {
+              const isPrev = label === 'Precedent'
+              return (
+                <button
+                  key={label}
+                  onClick={() => setPage((p) => isPrev ? Math.max(1, p - 1) : Math.min(totalPages, p + 1))}
+                  disabled={isPrev ? page === 1 : page === totalPages}
+                  className={cn(
+                    'rounded-[var(--radius-md,0.5rem)]',
+                    'border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium',
+                    'text-[var(--color-text)] bg-[var(--color-surface,#fff)]',
+                    'hover:bg-[var(--color-surface-hover,var(--color-background))]',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-1',
+                    'disabled:opacity-50 disabled:pointer-events-none',
+                    'transition-colors duration-150',
+                  )}
+                >
+                  {label}
+                </button>
+              )
+            })}
           </div>
         </div>
       )}
