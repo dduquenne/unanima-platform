@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import { cn } from './cn'
 
 export interface NavItem {
@@ -24,8 +24,35 @@ export interface LayoutProps {
 export function Layout({ sidebar, header, children, logoUrl, className }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && sidebarOpen) {
+        setSidebarOpen(false)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [sidebarOpen])
+
   return (
     <div className={cn('flex h-screen bg-[var(--color-background)]', className)}>
+      {/* Skip link */}
+      <a
+        href="#main-content"
+        className={cn(
+          'sr-only focus:not-sr-only',
+          'focus:fixed focus:top-4 focus:left-4 focus:z-50',
+          'focus:rounded-[var(--radius-md,0.5rem)]',
+          'focus:bg-[var(--color-surface,#fff)] focus:px-4 focus:py-2',
+          'focus:text-sm focus:font-medium focus:text-[var(--color-primary)]',
+          'focus:border focus:border-[var(--color-border)]',
+          'focus:shadow-lg',
+          'focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]',
+        )}
+      >
+        Aller au contenu principal
+      </a>
+
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -112,7 +139,7 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
           </div>
           {header.actions && <div className="flex items-center gap-3">{header.actions}</div>}
         </header>
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+        <main id="main-content" className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
     </div>
   )

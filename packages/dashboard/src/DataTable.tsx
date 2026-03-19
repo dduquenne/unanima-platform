@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, type ReactNode } from 'react'
+import { useState, useMemo, type ReactNode, type KeyboardEvent } from 'react'
 import { cn } from './cn'
 
 export interface ColumnDef<T> {
@@ -21,6 +21,14 @@ export interface DataTableProps<T> {
   actions?: (row: T) => ReactNode
   emptyMessage?: string
   className?: string
+}
+
+function isNumericColumn<T extends Record<string, unknown>>(data: T[], key: string): boolean {
+  return data.length > 0 && data.every((row) => {
+    const val = row[key]
+    if (val == null) return true
+    return typeof val === 'number' || (typeof val === 'string' && val !== '' && !isNaN(Number(val)))
+  })
 }
 
 export function DataTable<T extends Record<string, unknown>>({
@@ -52,13 +60,19 @@ export function DataTable<T extends Record<string, unknown>>({
 
   const sorted = useMemo(() => {
     if (!sortKey) return filtered
+    const numeric = isNumericColumn(filtered, sortKey)
     return [...filtered].sort((a, b) => {
       const aVal = a[sortKey]
       const bVal = b[sortKey]
       if (aVal === bVal) return 0
       if (aVal == null) return 1
       if (bVal == null) return -1
-      const cmp = String(aVal).localeCompare(String(bVal), undefined, { numeric: true })
+      let cmp: number
+      if (numeric) {
+        cmp = Number(aVal) - Number(bVal)
+      } else {
+        cmp = String(aVal).localeCompare(String(bVal), undefined, { numeric: true })
+      }
       return sortAsc ? cmp : -cmp
     })
   }, [filtered, sortKey, sortAsc])
@@ -74,6 +88,11 @@ export function DataTable<T extends Record<string, unknown>>({
       setSortKey(key)
       setSortAsc(true)
     }
+  }
+
+  const getAriaSortValue = (colKey: string): 'ascending' | 'descending' | 'none' => {
+    if (sortKey !== colKey) return 'none'
+    return sortAsc ? 'ascending' : 'descending'
   }
 
   return (
@@ -100,6 +119,7 @@ export function DataTable<T extends Record<string, unknown>>({
             <input
               type="text"
               placeholder="Rechercher..."
+              aria-label="Rechercher"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value)
@@ -123,33 +143,59 @@ export function DataTable<T extends Record<string, unknown>>({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-[var(--color-border-light,var(--color-border))] bg-[var(--color-muted,var(--color-background))]">
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  onClick={() => (col.sortable !== false ? handleSort(col.key) : undefined)}
-                  className={cn(
-                    'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider',
-                    'text-[var(--color-text-secondary,var(--color-text))]/70',
-                    sortable && col.sortable !== false && 'cursor-pointer select-none hover:text-[var(--color-text)]',
-                    'transition-colors duration-150',
-                  )}
-                >
-                  <span className="inline-flex items-center gap-1.5">
-                    {col.header}
-                    {sortKey === col.key && (
-                      <svg
-                        className={cn('h-3.5 w-3.5 transition-transform duration-150', !sortAsc && 'rotate-180')}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-                      </svg>
+              {columns.map((col) => {
+                const isSortable = sortable && col.sortable !== false
+                return (
+                  <th
+                    key={col.key}
+                    role="columnheader"
+                    aria-sort={isSortable ? getAriaSortValue(col.key) : undefined}
+                    className={cn(
+                      'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider',
+                      'text-[var(--color-text-secondary,var(--color-text))]/70',
+                      'transition-colors duration-150',
                     )}
-                  </span>
-                </th>
-              ))}
+                  >
+                    {isSortable ? (
+                      <button
+                        type="button"
+                        onClick={() => handleSort(col.key)}
+                        onKeyDown={(e: KeyboardEvent<HTMLButtonElement>) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            handleSort(col.key)
+                          }
+                        }}
+                        className={cn(
+                          'inline-flex items-center gap-1.5',
+                          'cursor-pointer select-none',
+                          'hover:text-[var(--color-text)]',
+                          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:rounded-sm',
+                          'bg-transparent border-none p-0 text-inherit font-inherit text-xs font-semibold uppercase tracking-wider',
+                        )}
+                      >
+                        {col.header}
+                        {sortKey === col.key && (
+                          <svg
+                            className={cn('h-3.5 w-3.5 transition-transform duration-150', !sortAsc && 'rotate-180')}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                          </svg>
+                        )}
+                      </button>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5">
+                        {col.header}
+                      </span>
+                    )}
+                  </th>
+                )
+              })}
               {actions && (
                 <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-[var(--color-text-secondary,var(--color-text))]/70">
                   Actions
