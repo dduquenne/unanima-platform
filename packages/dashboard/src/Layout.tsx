@@ -25,8 +25,9 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
+    if (!sidebarOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && sidebarOpen) {
+      if (e.key === 'Escape') {
         setSidebarOpen(false)
       }
     }
@@ -36,7 +37,7 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
 
   return (
     <div className={cn('flex h-screen bg-[var(--color-background)]', className)}>
-      {/* Skip link */}
+      {/* Skip link — visible uniquement au focus clavier (WCAG 2.4.1) */}
       <a
         href="#main-content"
         className={cn(
@@ -57,6 +58,7 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden transition-opacity"
+          aria-hidden="true"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -80,12 +82,13 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
             <span className="text-lg font-bold text-[var(--color-primary)]">Unanima</span>
           )}
         </div>
-        <nav className="flex-1 overflow-y-auto p-3">
+        <nav aria-label="Navigation principale" className="flex-1 overflow-y-auto p-3">
           <ul className="flex flex-col gap-0.5">
             {sidebar.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
+                  aria-current={item.active ? 'page' : undefined}
                   className={cn(
                     'flex items-center gap-3',
                     'rounded-[var(--radius-md,0.5rem)] px-3 py-2.5',
@@ -103,7 +106,7 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
                         ),
                   )}
                 >
-                  {item.icon && <span className="h-5 w-5 shrink-0">{item.icon}</span>}
+                  {item.icon && <span className="h-5 w-5 shrink-0" aria-hidden="true">{item.icon}</span>}
                   {item.label}
                 </a>
               </li>
@@ -127,11 +130,13 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
                 'rounded-[var(--radius-md,0.5rem)] p-1.5 lg:hidden',
                 'text-[var(--color-text-secondary,var(--color-text))]',
                 'hover:bg-[var(--color-muted,#f1f5f9)]',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]',
                 'transition-colors duration-150',
               )}
-              aria-label="Menu"
+              aria-label="Menu de navigation"
+              aria-expanded={sidebarOpen}
             >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>

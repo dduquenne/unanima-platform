@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, type ReactNode, type KeyboardEvent } from 'react'
+import { useState, useMemo, type ReactNode } from 'react'
 import { cn } from './cn'
 
 export interface ColumnDef<T> {
@@ -58,9 +58,13 @@ export function DataTable<T extends Record<string, unknown>>({
     )
   }, [data, search])
 
+  const numericSortKey = useMemo(() => {
+    if (!sortKey) return false
+    return isNumericColumn(filtered, sortKey)
+  }, [filtered, sortKey])
+
   const sorted = useMemo(() => {
     if (!sortKey) return filtered
-    const numeric = isNumericColumn(filtered, sortKey)
     return [...filtered].sort((a, b) => {
       const aVal = a[sortKey]
       const bVal = b[sortKey]
@@ -68,7 +72,7 @@ export function DataTable<T extends Record<string, unknown>>({
       if (aVal == null) return 1
       if (bVal == null) return -1
       let cmp: number
-      if (numeric) {
+      if (numericSortKey) {
         cmp = Number(aVal) - Number(bVal)
       } else {
         cmp = String(aVal).localeCompare(String(bVal), undefined, { numeric: true })
@@ -113,13 +117,14 @@ export function DataTable<T extends Record<string, unknown>>({
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={2}
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
               type="text"
               placeholder="Rechercher..."
-              aria-label="Rechercher"
+              aria-label="Rechercher dans le tableau"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value)
@@ -148,7 +153,6 @@ export function DataTable<T extends Record<string, unknown>>({
                 return (
                   <th
                     key={col.key}
-                    role="columnheader"
                     aria-sort={isSortable ? getAriaSortValue(col.key) : undefined}
                     className={cn(
                       'px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider',
@@ -160,33 +164,29 @@ export function DataTable<T extends Record<string, unknown>>({
                       <button
                         type="button"
                         onClick={() => handleSort(col.key)}
-                        onKeyDown={(e: KeyboardEvent<HTMLButtonElement>) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault()
-                            handleSort(col.key)
-                          }
-                        }}
                         className={cn(
                           'inline-flex items-center gap-1.5',
                           'cursor-pointer select-none',
                           'hover:text-[var(--color-text)]',
-                          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:rounded-sm',
+                          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-1 focus-visible:rounded-sm',
                           'bg-transparent border-none p-0 text-inherit font-inherit text-xs font-semibold uppercase tracking-wider',
                         )}
                       >
                         {col.header}
-                        {sortKey === col.key && (
-                          <svg
-                            className={cn('h-3.5 w-3.5 transition-transform duration-150', !sortAsc && 'rotate-180')}
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                            aria-hidden="true"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-                          </svg>
-                        )}
+                        <svg
+                          className={cn(
+                            'h-3.5 w-3.5 transition-transform duration-150',
+                            sortKey === col.key ? 'opacity-100' : 'opacity-30',
+                            sortKey === col.key && !sortAsc && 'rotate-180',
+                          )}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          aria-hidden="true"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                        </svg>
                       </button>
                     ) : (
                       <span className="inline-flex items-center gap-1.5">
@@ -230,7 +230,7 @@ export function DataTable<T extends Record<string, unknown>>({
                   className="px-4 py-12 text-center"
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <svg className="h-8 w-8 text-[var(--color-text-muted,var(--color-text))]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <svg className="h-8 w-8 text-[var(--color-text-muted,var(--color-text))]/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
                     <p className="text-sm text-[var(--color-text-muted,var(--color-text))]/50">
@@ -250,34 +250,27 @@ export function DataTable<T extends Record<string, unknown>>({
             Page {page} sur {totalPages} ({sorted.length} resultats)
           </span>
           <div className="flex gap-1.5">
-            <button
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1}
-              className={cn(
-                'rounded-[var(--radius-md,0.5rem)]',
-                'border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium',
-                'text-[var(--color-text)] bg-[var(--color-surface,#fff)]',
-                'hover:bg-[var(--color-surface-hover,var(--color-background))]',
-                'disabled:opacity-50 disabled:pointer-events-none',
-                'transition-colors duration-150',
-              )}
-            >
-              Precedent
-            </button>
-            <button
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-              className={cn(
-                'rounded-[var(--radius-md,0.5rem)]',
-                'border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium',
-                'text-[var(--color-text)] bg-[var(--color-surface,#fff)]',
-                'hover:bg-[var(--color-surface-hover,var(--color-background))]',
-                'disabled:opacity-50 disabled:pointer-events-none',
-                'transition-colors duration-150',
-              )}
-            >
-              Suivant
-            </button>
+            {(['Precedent', 'Suivant'] as const).map((label) => {
+              const isPrev = label === 'Precedent'
+              return (
+                <button
+                  key={label}
+                  onClick={() => setPage((p) => isPrev ? Math.max(1, p - 1) : Math.min(totalPages, p + 1))}
+                  disabled={isPrev ? page === 1 : page === totalPages}
+                  className={cn(
+                    'rounded-[var(--radius-md,0.5rem)]',
+                    'border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium',
+                    'text-[var(--color-text)] bg-[var(--color-surface,#fff)]',
+                    'hover:bg-[var(--color-surface-hover,var(--color-background))]',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-1',
+                    'disabled:opacity-50 disabled:pointer-events-none',
+                    'transition-colors duration-150',
+                  )}
+                >
+                  {label}
+                </button>
+              )
+            })}
           </div>
         </div>
       )}

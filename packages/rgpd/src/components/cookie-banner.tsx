@@ -36,11 +36,11 @@ export function CookieBanner({ onAccept, onReject, className }: CookieBannerProp
   // Focus first button on mount
   useEffect(() => {
     if (!isVisible) return
-    const timer = setTimeout(() => {
+    const rafId = requestAnimationFrame(() => {
       const firstButton = bannerRef.current?.querySelector<HTMLElement>('button')
       firstButton?.focus()
-    }, 100)
-    return () => clearTimeout(timer)
+    })
+    return () => cancelAnimationFrame(rafId)
   }, [isVisible])
 
   // Focus trap + Escape
@@ -86,7 +86,7 @@ export function CookieBanner({ onAccept, onReject, className }: CookieBannerProp
   return (
     <div
       ref={bannerRef}
-      className={`fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--color-border)] bg-white p-4 shadow-lg ${className ?? ''}`}
+      className={`fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--color-border)] bg-[var(--color-surface,#fff)] p-4 shadow-lg ${className ?? ''}`}
       role="dialog"
       aria-modal="true"
       aria-label="Consentement cookies"
@@ -99,13 +99,27 @@ export function CookieBanner({ onAccept, onReject, className }: CookieBannerProp
         <div className="flex gap-3">
           <button
             onClick={handleReject}
-            className="rounded-md border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-text)] hover:bg-[var(--color-background)] transition-colors"
+            className={[
+              'rounded-[var(--radius-md,0.5rem)]',
+              'border border-[var(--color-border)] px-4 py-2 text-sm font-medium',
+              'text-[var(--color-text)]',
+              'hover:bg-[var(--color-surface-hover,var(--color-background))]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2',
+              'transition-colors duration-150',
+            ].join(' ')}
           >
             Refuser
           </button>
           <button
             onClick={handleAccept}
-            className="rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm text-white hover:bg-[var(--color-primary-dark)] transition-colors"
+            className={[
+              'rounded-[var(--radius-md,0.5rem)]',
+              'bg-[var(--color-primary)] px-4 py-2 text-sm font-medium',
+              'text-[var(--color-text-inverse,#fff)]',
+              'hover:bg-[var(--color-primary-dark)]',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2',
+              'transition-colors duration-150',
+            ].join(' ')}
           >
             Accepter
           </button>

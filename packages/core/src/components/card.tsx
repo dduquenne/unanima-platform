@@ -16,8 +16,9 @@ const paddingStyles: Record<string, string> = {
   lg: 'p-8',
 }
 
-export function Card({ children, padding = 'md', interactive = false, glow = false, disabled = false, className, onClick, ...props }: CardProps) {
+export function Card({ children, padding = 'md', interactive = false, glow = false, disabled = false, className, onClick, onKeyDown, ...props }: CardProps) {
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(e)
     if (!interactive || disabled || !onClick) return
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
@@ -27,6 +28,7 @@ export function Card({ children, padding = 'md', interactive = false, glow = fal
 
   return (
     <div
+      {...props}
       className={cn(
         'rounded-[var(--radius-lg,0.75rem)]',
         'border border-[var(--color-border-light,var(--color-border))]',
@@ -37,10 +39,12 @@ export function Card({ children, padding = 'md', interactive = false, glow = fal
           'hover:shadow-md hover:border-[var(--color-border)]',
           'hover:-translate-y-0.5',
           'active:translate-y-0 active:shadow-sm',
+        ],
+        interactive && [
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2',
         ],
         interactive && disabled && 'opacity-50 cursor-not-allowed',
-        glow && 'hover:shadow-[var(--shadow-glow)]',
+        glow && !disabled && 'hover:shadow-[var(--shadow-glow)]',
         paddingStyles[padding],
         className,
       )}
@@ -49,9 +53,8 @@ export function Card({ children, padding = 'md', interactive = false, glow = fal
         tabIndex: disabled ? -1 : 0,
         'aria-disabled': disabled || undefined,
         onKeyDown: handleKeyDown,
-      } : {})}
-      onClick={interactive && disabled ? undefined : onClick}
-      {...props}
+        onClick: disabled ? undefined : onClick,
+      } : { onClick, onKeyDown })}
     >
       {children}
     </div>
