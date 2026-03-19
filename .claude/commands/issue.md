@@ -3,7 +3,7 @@ name: issue
 description: Corriger un problème, lister les issues fonctionnelles GitHub ou résoudre une issue spécifique
 disable-model-invocation: true
 user-invocable: true
-allowed-tools: Read, Grep, Glob, Bash, Edit, Write, Task, TodoWrite, AskUserQuestion
+allowed-tools: Read, Grep, Glob, Bash, Edit, Write, Task, TodoWrite, AskUserQuestion, Skill
 argument-hint: "[continue] #numéro [#numéro...] | liste [links|creai|omega] | (vide)"
 ---
 
@@ -45,6 +45,45 @@ Quand une issue cible une application :
 - L'investigation se concentre sur `apps/<nom>/` et ses dépendances
 - La branche git utilise le scope de l'app : `fix/<app>-<description>`
 - La documentation générée va dans la base documentaire de l'app
+
+---
+
+## SKILLS — COMPÉTENCES SPÉCIALISÉES
+
+Les skills sont des compétences spécialisées qui apportent une **expertise
+approfondie** sur des domaines précis. Invoque-les via l'outil `Skill` dès
+que le contexte de l'issue le justifie — ne pas les utiliser serait se priver
+d'une aide précieuse.
+
+### Matrice de correspondance issue → skills
+
+| Signal dans l'issue | Skill à invoquer | Quand l'invoquer |
+|---|---|---|
+| Bug, erreur, crash, régression, comportement inattendu | **anomalix** | Étape 1 (investigation) et étape 2 (analyse de cause racine) |
+| Décision d'architecture, refactoring structurant, choix de pattern, modélisation | **archicodix** | Étape 2 (analyse des approches) et étape 3 (implémentation) |
+| Interface utilisateur, formulaire, tableau, UX, ergonomie, composant UI | **ergonomix** | Étape 3 (implémentation des composants UI) |
+| Lenteur, performance, build lent, mémoire, optimisation | **optimix** | Étape 2 (diagnostic perf) et étape 3 (implémentation) |
+| Nouvelle fonctionnalité nécessitant spécification, user stories, cadrage | **projetix** | Étape 1 (cadrage du besoin) avant l'implémentation |
+| Document structurant à produire (ADR, guide, spec, rapport) | **documentalix** | Étape 3 (rédaction du document) |
+| Code implémenté à revoir pour qualité et réutilisation | **simplify** | Étape 3 (après implémentation, avant commit) |
+
+### Règles d'invocation
+
+1. **Analyser le contenu de l'issue** (titre, body, labels) pour identifier
+   les skills pertinents — plusieurs skills peuvent être invoqués sur une
+   même issue (ex : `anomalix` pour le diagnostic + `archicodix` pour la
+   solution architecturale).
+2. **Invoquer le skill au bon moment** — voir la colonne « Quand l'invoquer »
+   dans la matrice ci-dessus. L'invocation doit se faire à l'étape où le
+   skill apporte le plus de valeur.
+3. **Ne pas invoquer un skill par défaut** — uniquement quand le contenu de
+   l'issue correspond réellement aux signaux listés. L'objectif est un
+   bénéfice concret, pas une invocation systématique.
+4. **Combiner les skills** quand l'issue le justifie. Exemples courants :
+   - Bug UI → `anomalix` (diagnostic) + `ergonomix` (correction UI)
+   - Feature complexe → `projetix` (spécification) + `archicodix` (architecture) + `ergonomix` (UI)
+   - Problème de perf → `anomalix` (investigation) + `optimix` (optimisation)
+   - Refactoring → `archicodix` (design) + `simplify` (revue qualité)
 
 ---
 
@@ -189,13 +228,19 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
 1. Déterminer le **scope** : si le titre de l'issue commence par `[links]`,
    `[creai]` ou `[omega]`, l'investigation se concentre sur `apps/<app>/`
    et les packages du socle dont elle dépend. Sinon, scope plateforme.
-2. Lire les fichiers mentionnés + leurs dépendances directes
-3. Si `packages/` : identifier les consommateurs via `turbo.json`
-4. Si bug déploiement : lire `vercel.json`, `next.config.js`, `.env.example`,
+2. **Identifier les skills pertinents** : analyser le titre, le body et les
+   labels de l'issue en les confrontant à la matrice skills (section ci-dessus).
+   Noter les skills à invoquer et à quelle étape.
+   - Bug / anomalie / régression → invoquer **anomalix** dès maintenant pour
+     bénéficier de sa méthodologie de diagnostic
+   - Nouvelle fonctionnalité nécessitant cadrage → invoquer **projetix**
+3. Lire les fichiers mentionnés + leurs dépendances directes
+4. Si `packages/` : identifier les consommateurs via `turbo.json`
+5. Si bug déploiement : lire `vercel.json`, `next.config.js`, `.env.example`,
    consulter MCP Vercel (logs, variables d'env)
-5. Si bug données : MCP Supabase (schéma, requêtes SQL lecture, RLS)
-6. Si bug CI : API GitHub `/commits/<sha>/check-runs`, `/actions/runs`
-7. `CONTINUE: false` → **STOP** (résumé + attente confirmation)
+6. Si bug données : MCP Supabase (schéma, requêtes SQL lecture, RLS)
+7. Si bug CI : API GitHub `/commits/<sha>/check-runs`, `/actions/runs`
+8. `CONTINUE: false` → **STOP** (résumé + attente confirmation)
    `CONTINUE: true` → résumé bref puis étape 2
 
 ## ÉTAPE 2 — ANALYSE
@@ -207,8 +252,12 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
 4. Si bug déploiement : diagnostic Serverless (filesystem, timeout, cold start,
    env vars, cache CDN/ISR, CORS/CSP)
 5. Si bug données : vérifier cohérence schéma/DB, RLS, index, migrations
-6. 2-3 approches avec trade-offs
-7. `CONTINUE: false` → **STOP** (présenter options)
+6. **Invoquer les skills d'analyse pertinents** :
+   - Solution impliquant un choix d'architecture, un pattern, ou du refactoring
+     structurant → invoquer **archicodix** pour évaluer les approches
+   - Problème de performance identifié → invoquer **optimix** pour le diagnostic
+7. 2-3 approches avec trade-offs
+8. `CONTINUE: false` → **STOP** (présenter options)
    `CONTINUE: true` → choisir la première approche, étape 3
 
 ## ÉTAPE 3 — IMPLÉMENTATION
@@ -261,6 +310,22 @@ convention modifiée, pipeline CI modifié, config Vercel modifiée.
 ### Contraintes
 Réfère-toi à **CLAUDE.md** pour les contraintes TypeScript, sécurité,
 architecture et périmètre de diff.
+
+### Invocation des skills d'implémentation
+
+Avant de coder, invoquer les skills pertinents identifiés à l'étape 1 :
+- Composants UI / formulaires / tableaux / ergonomie → invoquer **ergonomix**
+  pour appliquer les meilleures pratiques IHM
+- Optimisation de performance → invoquer **optimix** pour les patterns
+  d'optimisation adaptés
+- Document structurant à produire (ADR, guide, spec, rapport) → invoquer
+  **documentalix** pour garantir la conformité documentaire
+
+### Revue qualité pré-commit
+
+Après l'implémentation et avant de committer, invoquer **simplify** pour
+vérifier la qualité, la réutilisabilité et l'efficacité du code modifié.
+Corriger les problèmes identifiés avant de passer à l'étape 4.
 
 ### Tests (obligatoires)
 Cas nominal + erreur + edge cases. Si package partagé modifié : test
@@ -348,8 +413,16 @@ puis corriger via workflow PR standard.
 - **Merge** : squash, SHA, date
 - **Vercel** : URL production, runtime OK
 
+### Skills utilisés
+*(Lister les skills invoqués pendant le traitement et leur apport)*
+
+| Skill | Étape | Apport |
+|---|---|---|
+| *(ex : anomalix)* | *(ex : Étape 1)* | *(ex : méthodologie de diagnostic structurée)* |
+
 ### Checklist finale
 - [ ] Scope de l'issue correctement identifié (app ou plateforme)
+- [ ] Skills pertinents identifiés et invoqués aux bonnes étapes
 - [ ] Aucune donnée sensible exposée côté client
 - [ ] Consommateurs packages partagés non régressés
 - [ ] Base documentaire mise à jour (si documents produits)
