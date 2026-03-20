@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react'
-import { cn } from './cn'
+import { cn } from '@unanima/core'
 
 export interface KPICardProps {
   title: string

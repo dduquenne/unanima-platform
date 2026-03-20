@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, type ReactNode } from 'react'
-import { cn } from './cn'
+import { cn } from '@unanima/core'
 
 export interface NavItem {
   label: string

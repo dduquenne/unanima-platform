@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo, type ReactNode } from 'react'
-import { cn } from './cn'
+import { cn } from '@unanima/core'
 
 export interface ColumnDef<T> {
   key: string

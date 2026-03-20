@@ -1,4 +1,4 @@
-import { cn } from './cn'
+import { cn } from '@unanima/core'
 
 export interface ProgressBarProps {
   value: number

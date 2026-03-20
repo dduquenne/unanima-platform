@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { cn } from './cn'
+import { cn } from '@unanima/core'
 
 export interface SearchBarProps {
   placeholder?: string

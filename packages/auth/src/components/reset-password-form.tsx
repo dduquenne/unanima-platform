@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
+import { Button, Input, Card } from '@unanima/core'
 import { useAuth } from '../hooks'
 
 interface ResetPasswordFormProps {
@@ -32,63 +33,45 @@ export function ResetPasswordForm({ onBack, className }: ResetPasswordFormProps)
 
   if (success) {
     return (
-      <div className={className}>
+      <Card className={className}>
         <p className="text-[var(--color-text)]">
           Un e-mail de réinitialisation a été envoyé à <strong>{email}</strong>.
         </p>
         {onBack && (
-          <button
-            type="button"
-            onClick={onBack}
-            className="mt-4 text-sm text-[var(--color-primary)] hover:underline"
-          >
+          <Button variant="ghost" size="sm" type="button" onClick={onBack} className="mt-4">
             Retour à la connexion
-          </button>
+          </Button>
         )}
-      </div>
+      </Card>
     )
   }
 
   return (
     <form onSubmit={handleSubmit} className={className}>
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="reset-email" className="text-sm font-medium text-[var(--color-text)]">
-            E-mail
-          </label>
-          <input
-            id="reset-email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="email"
-            className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
-          />
-        </div>
-
         {error && (
           <p className="text-sm text-[var(--color-danger)]" role="alert">
             {error}
           </p>
         )}
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-md bg-[var(--color-primary)] px-4 py-2 text-white hover:bg-[var(--color-primary-dark)] disabled:opacity-50 transition-colors"
-        >
-          {isSubmitting ? 'Envoi…' : 'Réinitialiser le mot de passe'}
-        </button>
+        <Input
+          variant="email"
+          label="Adresse e-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+        />
+
+        <Button variant="primary" size="lg" loading={isSubmitting} className="w-full">
+          Réinitialiser le mot de passe
+        </Button>
 
         {onBack && (
-          <button
-            type="button"
-            onClick={onBack}
-            className="text-sm text-[var(--color-primary)] hover:underline"
-          >
+          <Button variant="ghost" size="sm" type="button" onClick={onBack}>
             Retour à la connexion
-          </button>
+          </Button>
         )}
       </div>
     </form>
