@@ -18,7 +18,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-    'no-console': 'warn',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
   },
   ignorePatterns: ['dist/', 'node_modules/', '.turbo/', '.next/'],
 }
