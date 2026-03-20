@@ -1,8 +1,8 @@
 import type { AuthConfig } from '@unanima/auth'
 
 export const authConfig: AuthConfig = {
-  roles: ['admin', 'user'],
-  defaultRole: 'user',
+  roles: ['admin', 'responsable_sav', 'technicien', 'operateur'],
+  defaultRole: 'operateur',
   redirects: {
     afterLogin: '/dashboard',
     afterLogout: '/login',
@@ -10,6 +10,14 @@ export const authConfig: AuthConfig = {
   },
   permissions: {
     admin: ['*'],
-    user: ['read:own', 'write:own'],
+    responsable_sav: [
+      'read:all',
+      'write:interventions',
+      'read:dashboard',
+      'read:kpis',
+      'write:affectations',
+    ],
+    technicien: ['read:interventions', 'write:interventions', 'read:pieces'],
+    operateur: ['read:own', 'write:own', 'read:pieces'],
   },
 }
