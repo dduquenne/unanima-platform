@@ -18,6 +18,8 @@ compatibility:
     - projetix     # Pour accéder aux spécifications fonctionnelles et critères d'acceptation source
     - anomalix     # Pour le diagnostic et la gestion des anomalies détectées en recette
     - databasix    # Pour les tests de la couche données (intégrité, RLS, performance requêtes)
+    - testix       # Pour l'écriture effective des tests (unitaires, intégration, E2E) issus du plan de recette
+    - apix         # Pour les tests de contrat API et les tests d'intégration des endpoints
 ---
 
 # 🧪 Recettix — Maître de Recette & Validation des Livrables TypeScript

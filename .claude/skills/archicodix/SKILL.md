@@ -15,6 +15,9 @@ compatibility:
     - databasix    # Quand la décision architecturale impacte la modélisation BDD ou les patterns d'accès données
     - ergonomix    # Quand l'architecture concerne la couche présentation (composants, state management, flux UI)
     - optimix      # Quand les choix d'architecture ont un impact direct sur la performance
+    - apix         # Pour la conception des API REST (route handlers, contrats d'interface, validation Zod)
+    - securix      # Quand l'architecture doit intégrer des contraintes de sécurité (auth, RBAC, CORS, CSP)
+    - integratix   # Quand l'architecture implique des intégrations tierces (adapter, gateway, event bus)
 ---
 
 # ArchiCodix — Expert Architecture & Dev TypeScript

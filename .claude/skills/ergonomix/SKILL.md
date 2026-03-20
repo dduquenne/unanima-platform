@@ -6,6 +6,8 @@ compatibility:
   recommends:
     - maquettix-final # Pour produire des maquettes SVG avant ou pendant la conception UI
     - archicodix      # Quand l'architecture des composants impacte l'ergonomie (state management, flux de données)
+    - testix          # Pour les tests de composants React et les tests E2E des parcours utilisateur
+    - apix            # Pour la cohérence du contrat frontend/backend (types partagés, erreurs)
 ---
 
 # Ergonomix — IHM pour Applications Métier TypeScript

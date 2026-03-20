@@ -12,6 +12,7 @@ description: >
 compatibility:
   recommends:
     - documentalix # Pour la cohérence entre la documentation projet et les artefacts GitHub (README, CHANGELOG, ADR)
+    - deploix      # Pour la coordination CI/CD → déploiement Vercel (workflows, env vars, rollback)
 ---
 
 # Repositorix — Gestion de projet GitHub
