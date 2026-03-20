@@ -9,7 +9,7 @@ import { Button, Card, Modal, Spinner } from '@unanima/core'
 import { ProgressBar, StatusBadge } from '@unanima/dashboard'
 import type { StatusConfig } from '@unanima/dashboard'
 
-import type { Bilan } from '@/lib/types'
+import type { Bilan, Questionnaire } from '@/lib/types'
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -354,6 +354,14 @@ export default function BilanDetailPage() {
               animated
             />
           </section>
+
+          {/* Questionnaires */}
+          <section>
+            <h3 className="mb-4 text-lg font-semibold text-[var(--color-text)]">
+              Questionnaires
+            </h3>
+            <QuestionnairesSection bilanId={bilan.id} canEdit={canEdit} />
+          </section>
         </div>
       </Card>
 
@@ -414,6 +422,76 @@ export default function BilanDetailPage() {
           </div>
         </Modal>
       )}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// QuestionnairesSection — loaded inside bilan detail
+// ---------------------------------------------------------------------------
+
+function QuestionnairesSection({
+  bilanId,
+  canEdit: _canEdit,
+}: {
+  bilanId: string
+  canEdit: boolean
+}) {
+  const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchQuestionnaires() {
+      try {
+        const res = await fetch('/api/questionnaires?is_active=true&limit=50')
+        if (res.ok) {
+          const json = await res.json()
+          setQuestionnaires(json.data ?? [])
+        }
+      } catch {
+        // Silently fail — questionnaires are optional
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchQuestionnaires()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
+        <Spinner size="sm" /> Chargement des questionnaires...
+      </div>
+    )
+  }
+
+  if (questionnaires.length === 0) {
+    return (
+      <p className="text-sm text-[var(--color-text-muted)]">
+        Aucun questionnaire actif disponible.
+      </p>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      {questionnaires.map((q) => (
+        <Link
+          key={q.id}
+          href={`/bilans/${bilanId}/questionnaire/${q.id}`}
+          className="flex items-center justify-between rounded-[var(--radius-md)] border border-[var(--color-border)] px-4 py-3 text-sm transition-colors hover:bg-[var(--color-background)]"
+        >
+          <div>
+            <p className="font-medium text-[var(--color-text)]">{q.titre}</p>
+            {q.description && (
+              <p className="mt-0.5 text-xs text-[var(--color-text-muted)]">
+                {q.description}
+              </p>
+            )}
+          </div>
+          <span className="text-[var(--color-primary)]">Répondre →</span>
+        </Link>
+      ))}
     </div>
   )
 }
