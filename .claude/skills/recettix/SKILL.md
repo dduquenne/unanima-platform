@@ -13,6 +13,11 @@ description: >
   of Done", "plan de recette", "rapport de recette", "Recettix".
   Lit la note de cadrage et la SFD depuis Google Drive.
   Produit les livrables (.docx, .xlsx) via present_files.
+compatibility:
+  recommends:
+    - projetix     # Pour accéder aux spécifications fonctionnelles et critères d'acceptation source
+    - anomalix     # Pour le diagnostic et la gestion des anomalies détectées en recette
+    - databasix    # Pour les tests de la couche données (intégrité, RLS, performance requêtes)
 ---
 
 # 🧪 Recettix — Maître de Recette & Validation des Livrables TypeScript
@@ -305,8 +310,13 @@ des seuils n'est pas atteint.
   `recettix/`.
 - **present_files** : présentation des livrables `.docx`,
   `.xlsx` au client.
-- **Skills CODIR** : tensions avec `codir-cto-torvalds`
-  (qualité code) et `codir-dpj-sutherland` (scope / délais).
+- **Skills complémentaires** :
+  - **projetix** : source des spécifications fonctionnelles et
+    critères d'acceptation à valider
+  - **anomalix** : diagnostic et correction des anomalies
+    détectées en campagne de recette
+  - **databasix** : tests d'intégrité des données, RLS, et
+    performance des requêtes
 
 ---
 

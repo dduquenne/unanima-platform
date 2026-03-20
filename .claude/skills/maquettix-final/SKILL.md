@@ -10,7 +10,10 @@ description: >
   en respectant les standards d'ergonomie et d'accessibilité (WCAG 2.1 AA). Consulte /ergonomix si
   disponible pour valider les choix UX. Ne jamais répondre à une demande de maquette sans utiliser cette skill.
 compatibility:
-  recommends: ergonomix, documentalix
+  recommends:
+    - ergonomix       # Pour valider les choix UX des layouts complexes
+    - documentalix    # Pour l'intégration des maquettes dans les specs fonctionnelles
+    - projetix        # Pour illustrer les User Stories avec des maquettes d'écrans
 ---
 
 # Maquettix — Concepteur de Maquettes SVG pour Applications Métier TypeScript
@@ -237,8 +240,8 @@ Toujours inclure en début de SVG :
 
 - **ergonomix** : consulter avant de finaliser les layouts complexes pour validation UX
 - **documentalix** : coordonner pour l'intégration dans les specs fonctionnelles
-- **codir-cto-torvalds** : aligner les composants SVG avec l'architecture technique TypeScript
-- **frontend-design** : complémentaire — Maquettix fait les maquettes statiques SVG, frontend-design fait le code HTML/React
+- **archicodix** : aligner les composants SVG avec l'architecture technique TypeScript
+- **projetix** : illustrer les User Stories avec des maquettes d'écrans
 
 ---
 

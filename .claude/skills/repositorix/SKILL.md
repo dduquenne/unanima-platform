@@ -9,6 +9,9 @@ description: >
   "pipeline", "action", "workflow", "changelog", ou demande comment organiser/structurer un projet
   GitHub. Ce skill est très proactif : dès qu'un projet de code ou de documentation implique GitHub
   de près ou de loin, il doit être consulté.
+compatibility:
+  recommends:
+    - documentalix # Pour la cohérence entre la documentation projet et les artefacts GitHub (README, CHANGELOG, ADR)
 ---
 
 # Repositorix — Gestion de projet GitHub

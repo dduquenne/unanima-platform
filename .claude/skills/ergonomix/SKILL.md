@@ -2,6 +2,10 @@
 name: ergonomix
 description: >
   Conçoit, crée, modifie et améliore des interfaces utilisateur (UI/UX) pour des applications métier TypeScript : ERP, CRM, back-office, tableaux de bord opérationnels, outils internes, formulaires complexes, workflows, grilles de données. Applique les meilleures pratiques IHM (Interaction Homme-Machine) actuelles : lois de Fitts et Hick, charge cognitive, affordances, feedback immédiat, progressive disclosure, WCAG AA, états vides/erreur/chargement. Déclencher ce skill dès qu'une demande touche à : "interface métier", "formulaire", "tableau", "grille", "dashboard", "workflow", "back-office", "outil interne", "ergonomie", "UX métier", "composant admin", "vue liste", "fiche détail", "navigation", "sidebar", "breadcrumb", "filtre", "recherche", "pagination", "modal", "notification", "état vide", "skeleton", "accessibilité", "validation", ou tout fichier dans pages/, app/, components/, features/ d'un projet TypeScript. Priorité absolue : efficacité opérationnelle, clarté, et réduction de la charge cognitive de l'utilisateur métier.
+compatibility:
+  recommends:
+    - maquettix-final # Pour produire des maquettes SVG avant ou pendant la conception UI
+    - archicodix      # Quand l'architecture des composants impacte l'ergonomie (state management, flux de données)
 ---
 
 # Ergonomix — IHM pour Applications Métier TypeScript

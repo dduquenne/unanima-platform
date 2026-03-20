@@ -10,6 +10,11 @@ description: >
   frontend, full-stack TypeScript, validation de schema, ORM, gestion d'erreurs, CI/CD,
   containerisation, observabilité et toute revue ou critique de code TypeScript.
   Ne jamais laisser passer une question d'architecture ou de code TS sans consulter ce skill.
+compatibility:
+  recommends:
+    - databasix    # Quand la décision architecturale impacte la modélisation BDD ou les patterns d'accès données
+    - ergonomix    # Quand l'architecture concerne la couche présentation (composants, state management, flux UI)
+    - optimix      # Quand les choix d'architecture ont un impact direct sur la performance
 ---
 
 # ArchiCodix — Expert Architecture & Dev TypeScript

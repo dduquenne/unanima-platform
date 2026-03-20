@@ -12,6 +12,10 @@ description: >
   "worker threads", "streaming Node.js", "type-checking lent", "bundle trop lourd".
   Ne pas déclencher pour des questions purement théoriques sur TypeScript non liées à la performance,
   ou des questions de style/conventions sans impact mesurable.
+compatibility:
+  recommends:
+    - archicodix   # Quand l'optimisation nécessite un changement d'architecture (lazy loading, caching, patterns)
+    - databasix    # Quand le goulot d'étranglement est côté BDD (requêtes N+1, index manquants, pooling)
 ---
 
 # OPTIMIX — Expert en optimisation TypeScript pour applications métier

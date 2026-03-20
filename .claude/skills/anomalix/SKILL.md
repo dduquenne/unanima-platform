@@ -11,6 +11,12 @@ description: >
   React, Next.js, Node.js, Prisma, Supabase ou tout autre stack TypeScript métier. Anomalix
   prend aussi en charge le nettoyage du code (dead code, console.log oubliés, code mort,
   instructions risquées) et la mise en place de tests unitaires anti-régression.
+compatibility:
+  recommends:
+    - archicodix   # Quand le bug révèle un problème d'architecture ou nécessite un refactoring structurant
+    - optimix      # Quand le bug est lié à un problème de performance (fuite mémoire, lenteur, event loop bloquée)
+    - databasix    # Quand le bug implique la couche données (requête incorrecte, RLS, migration, schéma)
+    - recettix     # Pour définir les tests anti-régression contractuels après correction
 ---
 
 # 🔬 Anomalix — Spécialiste Débogage TypeScript Métier

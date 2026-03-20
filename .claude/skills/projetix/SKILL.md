@@ -2,6 +2,12 @@
 name: projetix
 description: >
   Spécialiste en rédaction de documents de projet informatique métier : notes de cadrage (analyse des besoins pour proposition commerciale) et spécifications fonctionnelles (User Stories, cas d'utilisation). Utilise ce skill dès qu'une demande touche à la rédaction ou structuration d'une note de cadrage, d'un cahier des charges, de spécifications fonctionnelles, de User Stories, d'épics, de scénarios d'utilisation, de critères d'acceptation (BDD/Gherkin), ou de tout document structurant un projet applicatif métier. Déclenche également si l'utilisateur mentionne "analyse des besoins", "proposition commerciale", "note de cadrage", "spec fonctionnelle", "US", "user story", "use case", "MoSCoW", "MVP", "périmètre fonctionnel", "spécification", "spécifier", "spécifications" ou "cahier des charges". Ce skill s'applique aussi lors de l'analyse d'un brief client, d'un atelier de recueil des besoins, ou de la rédaction d'une roadmap produit.
+compatibility:
+  recommends:
+    - ergonomix       # Pour enrichir les specs avec les contraintes UX et les patterns d'interface métier
+    - maquettix-final # Pour illustrer les User Stories avec des maquettes SVG d'écrans
+    - recettix        # Pour générer les critères d'acceptation et le plan de recette dès la phase de spécification
+    - documentalix    # Pour intégrer les livrables dans le référentiel documentaire du projet
 ---
 
 # Skill : Projetix

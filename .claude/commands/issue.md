@@ -64,6 +64,10 @@ d'une aide précieuse.
 | Interface utilisateur, formulaire, tableau, UX, ergonomie, composant UI | **ergonomix** | Étape 3 (implémentation des composants UI) |
 | Lenteur, performance, build lent, mémoire, optimisation | **optimix** | Étape 2 (diagnostic perf) et étape 3 (implémentation) |
 | Nouvelle fonctionnalité nécessitant spécification, user stories, cadrage | **projetix** | Étape 1 (cadrage du besoin) avant l'implémentation |
+| Schéma BDD, migration, RLS, requête SQL, données, audit trail | **databasix** | Étape 2 (conception schéma) et étape 3 (migration + requêtes) |
+| Recette, plan de test, validation, critères d'acceptation, couverture | **recettix** | Étape 3 (définition des tests) et étape 4 (validation) |
+| Audit qualité, dette technique, revue de code, bilan technique | **auditix** | Étape 1 (diagnostic qualité) et étape 2 (préconisations) |
+| CI/CD, GitHub Actions, branching, release, workflow git | **repositorix** | Étape 3 (workflow git) et étape 4 (PR et CI) |
 | Document structurant à produire (ADR, guide, spec, rapport) | **documentalix** | Étape 3 (rédaction du document) |
 | Code implémenté à revoir pour qualité et réutilisation | **simplify** | Étape 3 (après implémentation, avant commit) |
 
@@ -79,11 +83,18 @@ d'une aide précieuse.
 3. **Ne pas invoquer un skill par défaut** — uniquement quand le contenu de
    l'issue correspond réellement aux signaux listés. L'objectif est un
    bénéfice concret, pas une invocation systématique.
-4. **Combiner les skills** quand l'issue le justifie. Exemples courants :
-   - Bug UI → `anomalix` (diagnostic) + `ergonomix` (correction UI)
-   - Feature complexe → `projetix` (spécification) + `archicodix` (architecture) + `ergonomix` (UI)
-   - Problème de perf → `anomalix` (investigation) + `optimix` (optimisation)
+4. **Exploiter les chaînes de collaboration entre skills.** Chaque skill
+   déclare ses recommandations de collaboration via `compatibility.recommends`
+   dans son YAML frontmatter. Quand un skill est invoqué, vérifier ses
+   recommandations et invoquer les skills complémentaires si le contexte
+   de l'issue le justifie. Exemples courants :
+   - Bug UI → `anomalix` (diagnostic) → recommande `archicodix` si problème structurel + `ergonomix` (correction UI)
+   - Feature complexe → `projetix` (spécification) → recommande `ergonomix` + `maquettix-final` + `recettix` (critères d'acceptation) + `archicodix` (architecture)
+   - Problème de perf → `anomalix` (investigation) → recommande `optimix` (optimisation) → recommande `databasix` si goulot BDD
+   - Nouvelle table / migration → `databasix` (schéma + RLS) → recommande `archicodix` (modèle de domaine)
    - Refactoring → `archicodix` (design) + `simplify` (revue qualité)
+   - Feature avec BDD → `archicodix` (architecture) + `databasix` (schéma) + `ergonomix` (UI) + `recettix` (tests)
+   - Audit de code → `auditix` (rapport) → recommande les skills spécialisés selon les domaines identifiés
 
 ---
 
@@ -230,10 +241,15 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
    et les packages du socle dont elle dépend. Sinon, scope plateforme.
 2. **Identifier les skills pertinents** : analyser le titre, le body et les
    labels de l'issue en les confrontant à la matrice skills (section ci-dessus).
-   Noter les skills à invoquer et à quelle étape.
+   Noter les skills à invoquer et à quelle étape. Vérifier aussi les
+   `compatibility.recommends` de chaque skill identifié pour détecter des
+   collaborations bénéfiques.
    - Bug / anomalie / régression → invoquer **anomalix** dès maintenant pour
      bénéficier de sa méthodologie de diagnostic
    - Nouvelle fonctionnalité nécessitant cadrage → invoquer **projetix**
+   - Bug ou feature impliquant la BDD (tables, requêtes, RLS, migrations) →
+     invoquer **databasix** pour le diagnostic de la couche données
+   - Audit qualité ou dette technique demandé → invoquer **auditix**
 3. Lire les fichiers mentionnés + leurs dépendances directes
 4. Si `packages/` : identifier les consommateurs via `turbo.json`
 5. Si bug déploiement : lire `vercel.json`, `next.config.js`, `.env.example`,
@@ -256,6 +272,10 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
    - Solution impliquant un choix d'architecture, un pattern, ou du refactoring
      structurant → invoquer **archicodix** pour évaluer les approches
    - Problème de performance identifié → invoquer **optimix** pour le diagnostic
+   - Solution impliquant un changement de schéma BDD, de RLS, ou d'accès données
+     → invoquer **databasix** pour la conception et la validation
+   - Issue nécessitant un audit transversal (qualité, dette, sécurité)
+     → invoquer **auditix** pour un diagnostic structuré
 7. 2-3 approches avec trade-offs
 8. `CONTINUE: false` → **STOP** (présenter options)
    `CONTINUE: true` → choisir la première approche, étape 3
@@ -318,8 +338,14 @@ Avant de coder, invoquer les skills pertinents identifiés à l'étape 1 :
   pour appliquer les meilleures pratiques IHM
 - Optimisation de performance → invoquer **optimix** pour les patterns
   d'optimisation adaptés
+- Migration SQL, schéma BDD, RLS, types générés → invoquer **databasix**
+  pour les conventions et la sécurité de la couche données
+- Nouvelle feature significative nécessitant des critères de recette →
+  invoquer **recettix** pour définir les tests d'acceptation
 - Document structurant à produire (ADR, guide, spec, rapport) → invoquer
   **documentalix** pour garantir la conformité documentaire
+- Workflow GitHub Actions, CI/CD, release → invoquer **repositorix**
+  pour les meilleures pratiques
 
 ### Revue qualité pré-commit
 
