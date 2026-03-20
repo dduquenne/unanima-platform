@@ -9,8 +9,13 @@ pour séquencer l'implémentation des issues.
 ```
 .sprint/
 ├── README.md              ← Ce fichier
-├── sprint-1.md            ← Sprint 1 — Fondations & Sécurité
-├── sprint-2.md            ← (à venir)
+├── roadmap-sprints-2-6.md ← Vue d'ensemble Sprints 2-6
+├── sprint-1.md            ← Sprint 1 — Fondations & Sécurité ✅
+├── sprint-2.md            ← Sprint 2 — Upgrade Next.js 15 + Auth UI + Layout
+├── sprint-3.md            ← Sprint 3 — Schémas BDD métier + API CRUD
+├── sprint-4.md            ← Sprint 4 — Pages métier (dashboards, listes, fiches)
+├── sprint-5.md            ← Sprint 5 — Features avancées & intégrations
+├── sprint-6.md            ← Sprint 6 — Tests E2E, sécurité, RGPD, production
 └── ...
 ```
 
