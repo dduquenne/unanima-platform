@@ -101,8 +101,8 @@ export function serverErrorResponse(message: string): NextResponse<ApiErrorRespo
 export function parseBody<T>(schema: ZodSchema<T>, data: unknown): { data: T | null; error: string | null } {
   const result = schema.safeParse(data)
   if (!result.success) {
-    const firstError = result.error.errors[0]
-    return { data: null, error: `${firstError.path.join('.')}: ${firstError.message}` }
+    const message = result.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ')
+    return { data: null, error: message }
   }
   return { data: result.data, error: null }
 }
