@@ -1,0 +1,81 @@
+name: "Nouvelle fonctionnalité"
+description: "Proposer une nouvelle fonctionnalité ou une amélioration"
+title: "[{app}] "
+labels: ["feature"]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: Application cible
+      description: Quelle application est concernée ?
+      options:
+        - links (Link's Accompagnement)
+        - creai (CREAI Île-de-France)
+        - omega (Omega Automotive)
+        - socle (Socle commun / transverse)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description du besoin
+      description: Décrivez le besoin métier et l'objectif de cette fonctionnalité
+      placeholder: "En tant que [rôle], je souhaite [action] afin de [bénéfice]..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Critères d'acceptation
+      description: Liste des critères qui valident la fonctionnalité (format Gherkin si possible)
+      placeholder: |
+        - [ ] Étant donné [contexte], quand [action], alors [résultat]
+        - [ ] ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-context
+    attributes:
+      label: Contexte technique (optionnel)
+      description: Contraintes techniques, dépendances, packages concernés
+      placeholder: "Nécessite une modification de @unanima/auth, nouvelle table en BDD..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexité estimée
+      options:
+        - XS (< 1h)
+        - S (< 4h)
+        - M (< 1 jour)
+        - L (< 3 jours)
+        - XL (> 3 jours)
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: skills-hint
+    attributes:
+      label: Skills potentiellement concernés
+      description: Cochez les domaines que cette feature touche (aide au routage /issue)
+      options:
+        - label: "pilotix — Orchestration multi-skills (feature complexe, Epic)"
+        - label: "projetix — Spécification fonctionnelle, User Stories"
+        - label: "archicodix — Architecture, patterns, refactoring"
+        - label: "ergonomix — Interface utilisateur, UX, formulaires"
+        - label: "maquettix-final — Maquettes SVG"
+        - label: "databasix — Schéma BDD, RLS, requêtes"
+        - label: "migratix — Migrations de schéma"
+        - label: "apix — Endpoints API, route handlers"
+        - label: "datanalytix — ETL, analytics, KPIs, consolidation"
+        - label: "integratix — Intégration tierce (Salesforce, SAP...)"
+        - label: "securix — Sécurité applicative"
+        - label: "rgpdix — Conformité RGPD"
+        - label: "soclix — Impact sur le socle commun"
+        - label: "testix — Tests unitaires, intégration, E2E"
+        - label: "deploix — Déploiement, infrastructure"

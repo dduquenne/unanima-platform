@@ -22,6 +22,9 @@ compatibility:
     - testix       # Pour évaluer la qualité des tests existants et les patterns de testing
     - deploix      # Pour l'audit de la configuration de déploiement et de l'observabilité
     - rgpdix       # Pour l'audit de conformité RGPD (données personnelles, consentement, droits)
+    - diagnostix   # Quand l'audit révèle des problèmes transversaux nécessitant un diagnostic corrélé
+    - soclix       # Pour l'audit de la cohérence et stabilité du socle commun
+    - pilotix      # Pour orchestrer le plan de remédiation quand l'audit produit 10+ préconisations
 ---
 
 # Auditix — Audit Complet d'Application TypeScript

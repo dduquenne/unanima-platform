@@ -20,6 +20,8 @@ compatibility:
     - securix      # Quand le bug révèle une faille de sécurité (injection, auth bypass, exposition de données)
     - testix       # Pour écrire les tests unitaires/intégration anti-régression après correction
     - deploix      # Quand le bug est lié au déploiement (env vars, cold start, timeout Vercel)
+    - diagnostix   # Quand le symptôme est flou et nécessite un triage multi-domaine préalable
+    - soclix       # Quand le bug touche un package partagé et risque d'impacter les 3 apps
 ---
 
 # 🔬 Anomalix — Spécialiste Débogage TypeScript Métier

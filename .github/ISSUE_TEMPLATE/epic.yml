@@ -1,0 +1,68 @@
+name: "Epic"
+description: "Feature complexe nécessitant plusieurs sous-tâches coordonnées"
+title: "[{app}] Epic: "
+labels: ["epic", "pilotix"]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: Application cible
+      options:
+        - links (Link's Accompagnement)
+        - creai (CREAI Île-de-France)
+        - omega (Omega Automotive)
+        - socle (Socle commun / transverse)
+        - multi-app (Plusieurs applications)
+    validations:
+      required: true
+
+  - type: textarea
+    id: vision
+    attributes:
+      label: Vision de l'Epic
+      description: Décrivez l'objectif global et la valeur métier de cette Epic
+      placeholder: "Permettre aux consultants Link's de générer automatiquement les rapports de bilan de compétences au format PDF..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-stories
+    attributes:
+      label: User Stories identifiées
+      description: Liste des User Stories composant cette Epic
+      placeholder: |
+        - US1 : En tant que consultant, je souhaite ...
+        - US2 : En tant que bénéficiaire, je souhaite ...
+        - US3 : En tant qu'admin, je souhaite ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Contraintes et dépendances
+      description: Contraintes techniques, dépendances externes, risques
+      placeholder: "Dépend de l'intégration Salesforce (#45). Nécessite une nouvelle table en BDD."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorité (MoSCoW)
+      options:
+        - Must Have (indispensable pour le MVP)
+        - Should Have (important mais pas bloquant)
+        - Could Have (souhaitable si le temps le permet)
+        - Won't Have (hors scope pour cette version)
+    validations:
+      required: true
+
+  - type: textarea
+    id: decomposition-notes
+    attributes:
+      label: Notes pour la décomposition (Pilotix)
+      description: Indications pour aider Pilotix à décomposer cette Epic en sous-tâches
+      placeholder: "Commencer par le schéma BDD, puis les endpoints API, puis l'UI. L'intégration Salesforce peut être parallélisée."
+    validations:
+      required: false

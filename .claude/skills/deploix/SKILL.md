@@ -18,6 +18,8 @@ compatibility:
     - optimix      # Pour le diagnostic de performance en production (cold start, runtime, bundle)
     - anomalix     # Pour le diagnostic des incidents de production (crash, erreurs runtime)
     - securix      # Pour le durcissement des déploiements (headers, env vars, secrets)
+    - diagnostix   # Pour le diagnostic transversal quand un incident de production a des causes multiples
+    - soclix       # Quand un déploiement du socle impacte les 3 apps simultanément
 ---
 
 # Deploix — Déploiement, Infrastructure & Observabilité
