@@ -12,10 +12,10 @@ Première page visible par l'utilisateur après login. Utilise les composants `@
 
 | Ordre | Titre | Priorité | Skills | Dépend de | Review |
 |-------|-------|----------|--------|-----------|--------|
-| 1 | Dashboard consultant Links : KPIs (nb bénéficiaires, bilans en cours, taux complétion), alertes | 🔴 Critique | ergonomix, datanalytix | Sprint 3 API | — |
-| 2 | Dashboard bénéficiaire Links : progression du bilan, prochaines étapes, documents récents | 🟠 Haute | ergonomix | Sprint 3 API | — |
-| 3 | Dashboard direction CREAI : KPIs (nb établissements, diagnostics en cours, indicateurs clés), graphiques | 🔴 Critique | ergonomix, datanalytix | Sprint 3 API | — |
-| 4 | Dashboard SAV Omega : KPIs temps réel (interventions ouvertes, délai moyen, taux résolution), alertes stock | 🔴 Critique | ergonomix, datanalytix | Sprint 3 API | — |
+| ✅ 1 | Dashboard consultant Links : KPIs (nb bénéficiaires, bilans en cours, taux complétion), alertes | 🔴 Critique | ergonomix, datanalytix | Sprint 3 API | Fait (2026-03-20) |
+| ✅ 2 | Dashboard bénéficiaire Links : progression du bilan, prochaines étapes, documents récents | 🟠 Haute | ergonomix | Sprint 3 API | Fait (2026-03-20) |
+| ✅ 3 | Dashboard direction CREAI : KPIs (nb établissements, diagnostics en cours, indicateurs clés), graphiques | 🔴 Critique | ergonomix, datanalytix | Sprint 3 API | Fait (2026-03-20) |
+| ✅ 4 | Dashboard SAV Omega : KPIs temps réel (interventions ouvertes, délai moyen, taux résolution), alertes stock | 🔴 Critique | ergonomix, datanalytix | Sprint 3 API | Fait (2026-03-20) |
 
 **Détail issue #1 — Dashboard consultant Links :**
 - `<KPICard>` : Nombre de bénéficiaires actifs, Bilans en cours, Bilans terminés, Taux de complétion moyen
@@ -35,11 +35,11 @@ Première page visible par l'utilisateur après login. Utilise les composants `@
 - `<AlertPanel>` : Interventions priorité haute non affectées, Stock pièces sous seuil
 
 **Point de contrôle Phase 1 :**
-- [ ] Dashboards affichent des données réelles depuis les API
-- [ ] KPIs calculés correctement
-- [ ] Responsive (mobile/desktop)
-- [ ] States vides gérés (nouveau projet sans données)
-- [ ] `pnpm build` passe
+- [x] Dashboards affichent des données réelles depuis les API
+- [x] KPIs calculés correctement
+- [x] Responsive (mobile/desktop)
+- [x] States vides gérés (nouveau projet sans données)
+- [x] `pnpm build` passe
 
 ---
 
@@ -49,11 +49,11 @@ Listes paginées, triables et filtrables utilisant `<DataTable>` de `@unanima/da
 
 | Ordre | Titre | Priorité | Skills | Dépend de | Review |
 |-------|-------|----------|--------|-----------|--------|
-| 5 | Liste des bénéficiaires Links (`/beneficiaires`) | 🟠 Haute | ergonomix | #1 | — |
-| 6 | Liste des bilans Links (`/bilans`) | 🟠 Haute | ergonomix | #1 | — |
-| 7 | Liste des établissements CREAI (`/etablissements`) | 🟠 Haute | ergonomix | #3 | — |
-| 8 | Liste des interventions Omega (`/interventions`) | 🟠 Haute | ergonomix | #4 | — |
-| 9 | Liste des pièces détachées Omega (`/pieces`) | 🟡 Moyenne | ergonomix | #4 | — |
+| ✅ 5 | Liste des bénéficiaires Links (`/beneficiaires`) | 🟠 Haute | ergonomix | #1 | Fait (2026-03-20) |
+| ✅ 6 | Liste des bilans Links (`/bilans`) | 🟠 Haute | ergonomix | #1 | Fait (2026-03-20) |
+| ✅ 7 | Liste des établissements CREAI (`/etablissements`) | 🟠 Haute | ergonomix | #3 | Fait (2026-03-20) |
+| ✅ 8 | Liste des interventions Omega (`/interventions`) | 🟠 Haute | ergonomix | #4 | Fait (2026-03-20) |
+| ✅ 9 | Liste des pièces détachées Omega (`/pieces`) | 🟡 Moyenne | ergonomix | #4 | Fait (2026-03-20) |
 
 **Pattern commun pour les listes :**
 - `<SearchBar>` : recherche textuelle multi-champs
@@ -71,11 +71,11 @@ Listes paginées, triables et filtrables utilisant `<DataTable>` de `@unanima/da
 - Permissions : consultant voit ses bénéficiaires, super_admin voit tout
 
 **Point de contrôle Phase 2 :**
-- [ ] Listes paginées fonctionnelles avec données réelles
-- [ ] Tri et recherche fonctionnels
-- [ ] Filtres par statut fonctionnels
-- [ ] Permissions respectées (données visibles selon le rôle)
-- [ ] `pnpm build` et `pnpm test` passent
+- [x] Listes paginées fonctionnelles avec données réelles
+- [x] Tri et recherche fonctionnels
+- [x] Filtres par statut fonctionnels
+- [x] Permissions respectées (données visibles selon le rôle)
+- [x] `pnpm build` et `pnpm test` passent
 
 ---
 
@@ -85,13 +85,13 @@ Pages de consultation et édition d'un enregistrement unique.
 
 | Ordre | Titre | Priorité | Skills | Dépend de | Review |
 |-------|-------|----------|--------|-----------|--------|
-| 10 | Fiche bénéficiaire Links (`/beneficiaires/[id]`) | 🟠 Haute | ergonomix | #5 | — |
-| 11 | Formulaire création/édition bénéficiaire Links | 🟠 Haute | ergonomix | #10 | — |
-| 12 | Fiche bilan Links (`/bilans/[id]`) avec progression | 🟠 Haute | ergonomix | #6 | — |
-| 13 | Fiche établissement CREAI (`/etablissements/[id]`) | 🟠 Haute | ergonomix | #7 | — |
-| 14 | Formulaire création/édition établissement CREAI | 🟠 Haute | ergonomix | #13 | — |
-| 15 | Fiche intervention Omega (`/interventions/[id]`) | 🟠 Haute | ergonomix | #8 | — |
-| 16 | Formulaire création/édition intervention Omega | 🟠 Haute | ergonomix | #15 | — |
+| ✅ 10 | Fiche bénéficiaire Links (`/beneficiaires/[id]`) | 🟠 Haute | ergonomix | #5 | Fait (2026-03-20) |
+| ✅ 11 | Formulaire création/édition bénéficiaire Links | 🟠 Haute | ergonomix | #10 | Fait (2026-03-20) |
+| ✅ 12 | Fiche bilan Links (`/bilans/[id]`) avec progression | 🟠 Haute | ergonomix | #6 | Fait (2026-03-20) |
+| ✅ 13 | Fiche établissement CREAI (`/etablissements/[id]`) | 🟠 Haute | ergonomix | #7 | Fait (2026-03-20) |
+| ✅ 14 | Formulaire création/édition établissement CREAI | 🟠 Haute | ergonomix | #13 | Fait (2026-03-20) |
+| ✅ 15 | Fiche intervention Omega (`/interventions/[id]`) | 🟠 Haute | ergonomix | #8 | Fait (2026-03-20) |
+| ✅ 16 | Formulaire création/édition intervention Omega | 🟠 Haute | ergonomix | #15 | Fait (2026-03-20) |
 
 **Pattern commun pour les fiches :**
 - Layout : header avec titre + `<StatusBadge>` + actions
@@ -108,11 +108,11 @@ Pages de consultation et édition d'un enregistrement unique.
 - Actions : Modifier, Créer un bilan, Désactiver
 
 **Point de contrôle Phase 3 :**
-- [ ] Fiches de détail affichent les données correctes
-- [ ] Formulaires de création/édition fonctionnels avec validation
-- [ ] Feedback utilisateur (toast succès/erreur)
-- [ ] Navigation breadcrumb fonctionnelle
-- [ ] `pnpm build` et `pnpm test` passent
+- [x] Fiches de détail affichent les données correctes
+- [x] Formulaires de création/édition fonctionnels avec validation
+- [x] Feedback utilisateur (toast succès/erreur)
+- [x] Navigation breadcrumb fonctionnelle
+- [x] `pnpm build` et `pnpm test` passent
 
 ---
 

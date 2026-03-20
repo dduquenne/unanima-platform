@@ -28,7 +28,7 @@ export interface ChartConfig {
 
 export interface ChartWrapperProps {
   type: 'bar' | 'line' | 'pie'
-  data: Record<string, unknown>[]
+  data: object[]
   config?: ChartConfig
   height?: number
   className?: string
@@ -147,6 +147,7 @@ export function ChartWrapper({
   height = 300,
   className,
 }: ChartWrapperProps) {
+  const chartData = data as Record<string, unknown>[]
   const {
     xAxisKey = 'name',
     yAxisKey = 'value',
@@ -160,7 +161,7 @@ export function ChartWrapper({
     configColors ?? FALLBACK_COLORS,
   )
 
-  const isEmpty = !data || data.length === 0
+  const isEmpty = !chartData || chartData.length === 0
 
   return (
     <div className={cn(
@@ -176,7 +177,7 @@ export function ChartWrapper({
         <ChartErrorBoundary height={height}>
           <ResponsiveContainer width="100%" height={height}>
             {type === 'bar' ? (
-              <BarChart data={data}>
+              <BarChart data={chartData}>
                 {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-light, var(--color-border))" />}
                 <XAxis dataKey={xAxisKey} stroke="var(--color-text-muted, var(--color-text))" fontSize={12} />
                 <YAxis stroke="var(--color-text-muted, var(--color-text))" fontSize={12} />
@@ -192,7 +193,7 @@ export function ChartWrapper({
                 <Bar dataKey={yAxisKey} fill={resolvedColors[0]} radius={[6, 6, 0, 0]} />
               </BarChart>
             ) : type === 'line' ? (
-              <LineChart data={data}>
+              <LineChart data={chartData}>
                 {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-light, var(--color-border))" />}
                 <XAxis dataKey={xAxisKey} stroke="var(--color-text-muted, var(--color-text))" fontSize={12} />
                 <YAxis stroke="var(--color-text-muted, var(--color-text))" fontSize={12} />
@@ -217,7 +218,7 @@ export function ChartWrapper({
             ) : (
               <PieChart>
                 <Pie
-                  data={data}
+                  data={chartData}
                   dataKey={yAxisKey}
                   nameKey={xAxisKey}
                   cx="50%"
@@ -227,7 +228,7 @@ export function ChartWrapper({
                   paddingAngle={3}
                   strokeWidth={0}
                 >
-                  {data.map((_, idx) => (
+                  {chartData.map((_, idx) => (
                     <Cell key={idx} fill={resolvedColors[idx % resolvedColors.length]} />
                   ))}
                 </Pie>
