@@ -12,25 +12,30 @@ interface AuthProviderProps {
   children: ReactNode
 }
 
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!url || !anonKey) {
+    return null
+  }
+
+  return createClient(url, anonKey)
+}
+
 export function AuthProvider({ config, children }: AuthProviderProps) {
   const [user, setUser] = useState<UserSession | null>(null)
   const [session, setSession] = useState<unknown>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const supabase = useMemo(() => {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-    if (!url || !anonKey) {
-      throw new Error(
-        'Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be set',
-      )
-    }
-
-    return createClient(url, anonKey)
-  }, [])
+  const supabase = useMemo(() => getSupabaseClient(), [])
 
   useEffect(() => {
+    if (!supabase) {
+      setIsLoading(false)
+      return
+    }
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, authSession) => {
@@ -65,6 +70,7 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
 
   const signIn = useCallback(
     async (email: string, password: string) => {
+      if (!supabase) return { error: new Error('Supabase client not initialized') }
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       return { error: error ? new Error(error.message) : null }
     },
@@ -72,6 +78,7 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
   )
 
   const signOut = useCallback(async () => {
+    if (!supabase) return
     await supabase.auth.signOut()
     setUser(null)
     setSession(null)
@@ -79,6 +86,7 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
 
   const resetPassword = useCallback(
     async (email: string) => {
+      if (!supabase) return { error: new Error('Supabase client not initialized') }
       const { error } = await supabase.auth.resetPasswordForEmail(email)
       return { error: error ? new Error(error.message) : null }
     },
