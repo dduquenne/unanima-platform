@@ -3,6 +3,9 @@
 **Projet :** Roadmap Unanima Platform
 **Période :** 2026-05-18 → 2026-05-31
 **Objectif :** Implémenter les fonctionnalités métier avancées propres à chaque app et les intégrations avec les systèmes externes.
+**Statut :** ✅ Terminé (2026-03-20)
+**Issues traitées :** 12/12 (100%)
+**Tests :** 254 passés (152 core + 36 links + 29 creai + 29 omega + 8 dashboard)
 
 ---
 
