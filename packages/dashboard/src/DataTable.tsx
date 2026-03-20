@@ -23,15 +23,19 @@ export interface DataTableProps<T> {
   className?: string
 }
 
-function isNumericColumn<T extends Record<string, unknown>>(data: T[], key: string): boolean {
+function getField(row: object, key: string): unknown {
+  return (row as Record<string, unknown>)[key]
+}
+
+function isNumericColumn(data: object[], key: string): boolean {
   return data.length > 0 && data.every((row) => {
-    const val = row[key]
+    const val = getField(row, key)
     if (val == null) return true
     return typeof val === 'number' || (typeof val === 'string' && val !== '' && !isNaN(Number(val)))
   })
 }
 
-export function DataTable<T extends Record<string, unknown>>({
+export function DataTable<T extends object>({
   columns,
   data,
   searchable = false,
@@ -66,8 +70,8 @@ export function DataTable<T extends Record<string, unknown>>({
   const sorted = useMemo(() => {
     if (!sortKey) return filtered
     return [...filtered].sort((a, b) => {
-      const aVal = a[sortKey]
-      const bVal = b[sortKey]
+      const aVal = getField(a, sortKey)
+      const bVal = getField(b, sortKey)
       if (aVal === bVal) return 0
       if (aVal == null) return 1
       if (bVal == null) return -1
@@ -215,7 +219,7 @@ export function DataTable<T extends Record<string, unknown>>({
               >
                 {columns.map((col) => (
                   <td key={col.key} className="px-4 py-3.5 text-[var(--color-text)]">
-                    {col.render ? col.render(row) : String(row[col.key] ?? '')}
+                    {col.render ? col.render(row) : String(getField(row, col.key) ?? '')}
                   </td>
                 ))}
                 {actions && (
