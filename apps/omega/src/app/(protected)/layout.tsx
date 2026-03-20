@@ -9,6 +9,7 @@ const responsableNav: NavItem[] = [
   { label: 'Dashboard SAV', href: '/dashboard' },
   { label: 'Interventions', href: '/interventions' },
   { label: 'Pi\u00e8ces d\u00e9tach\u00e9es', href: '/pieces' },
+  { label: 'Alertes stock', href: '/alertes' },
   { label: 'KPIs', href: '/kpis' },
 ]
 

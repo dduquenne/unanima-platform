@@ -36,3 +36,10 @@ export {
   createDocument,
   deleteDocument,
 } from './documents'
+
+export {
+  getQuestions,
+  createQuestion,
+  updateQuestion,
+  deleteQuestion,
+} from './questions'

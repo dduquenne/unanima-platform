@@ -8,8 +8,9 @@ import { Button } from '@unanima/core'
 const directionNav: NavItem[] = [
   { label: 'Tableau de bord', href: '/dashboard' },
   { label: '\u00c9tablissements', href: '/etablissements' },
-  { label: 'Rapports', href: '/rapports' },
+  { label: 'Diagnostics', href: '/diagnostics' },
   { label: 'Indicateurs', href: '/indicateurs' },
+  { label: 'Rapports', href: '/rapports' },
 ]
 
 const professionnelNav: NavItem[] = [
