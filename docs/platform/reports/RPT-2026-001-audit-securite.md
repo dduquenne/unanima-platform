@@ -22,7 +22,15 @@
 | A09 Security Logging | ✅ Conforme | Audit logs avec RLS (insert authentifié, lecture admin) |
 | A10 SSRF | ✅ Conforme | Pas de requêtes côté serveur vers URLs utilisateur |
 
-**Verdict global : 0 faille critique, 0 faille haute.**
+**Verdict global : 0 faille critique. 2 points d'attention identifiés (CSRF, rate limiting).**
+
+### Points d'attention
+
+| Gap | Sévérité | Détail | Mitigation |
+|-----|----------|--------|------------|
+| CSRF protection absente | Moyenne | Les routes POST/PATCH/DELETE n'ont pas de token CSRF. Cependant, les API utilisent `request.json()` qui nécessite `Content-Type: application/json`, ce qui empêche les attaques CSRF classiques via formulaire HTML. Les navigateurs modernes bloquent les requêtes cross-origin JSON via CORS. | Risque faible grâce à la validation JSON + CORS par défaut de Next.js. Envisager une vérification `Origin` header en renforcement. |
+| Rate limiting absent | Moyenne | Pas de rate limiting sur les endpoints API. Supabase Auth intègre son propre rate limiting pour login/signup. | Ajouter rate limiting via middleware Next.js ou Vercel Edge pour les endpoints sensibles (login, RGPD export/delete). |
+| RLS sur tables métier | Moyenne | Seules `profiles` et `audit_logs` ont des politiques RLS dans les migrations du socle. Les tables métier (beneficiaires, diagnostics, interventions) doivent avoir leurs RLS configurées dans chaque projet Supabase. | Vérifier et documenter les RLS sur chaque projet Supabase de production. |
 
 ---
 
