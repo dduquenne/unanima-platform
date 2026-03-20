@@ -13,9 +13,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "recharts": "^2.15.0",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.6.0"
+    "@unanima/core": "workspace:*",
+    "recharts": "^2.15.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",
