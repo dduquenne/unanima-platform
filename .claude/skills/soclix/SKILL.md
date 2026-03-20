@@ -22,6 +22,7 @@ compatibility:
     - documentalix # Pour documenter les changements d'API publique du socle (ADR, CHANGELOG)
     - migratix     # Pour les migrations de schéma partagé (tables communes)
     - repositorix  # Pour la stratégie de PR et CI quand le socle change
+    - sprintix     # Pour mettre à jour la progression sprint quand le socle est modifié
 ---
 
 # Soclix — Gardien du Socle Commun
@@ -230,6 +231,22 @@ Vérifier après merge :
 - Les 3 builds Vercel se lancent
 - Les 3 builds réussissent
 - Les 3 apps sont fonctionnelles post-deploy
+
+---
+
+## Contexte sprint
+
+Quand une modification du socle s'inscrit dans un sprint (fichier
+`.sprint/sprint-N.md` existant), Soclix doit :
+
+1. **Vérifier le plan** : l'issue traitée est-elle dans le sprint courant ?
+2. **Signaler les impacts cross-app** à Sprintix pour qu'il puisse ajuster
+   les points de contrôle entre phases
+3. **Confirmer le build des 3 apps** avant de marquer l'issue comme terminée
+   dans le plan sprint
+
+C'est particulièrement important pour les sprints d'audit (comme le Sprint 1
+Fondations) où de nombreuses issues touchent le socle et pourraient interagir.
 
 ---
 

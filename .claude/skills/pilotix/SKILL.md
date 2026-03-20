@@ -18,6 +18,7 @@ compatibility:
     - recettix      # Pour définir les critères de validation globaux du plan
     - soclix        # Pour évaluer l'impact sur le socle commun lors de la planification
     - documentalix  # Pour documenter les plans et décisions d'orchestration (ADR)
+    - sprintix      # Pour exécuter les plans de sprint séquentiellement (bras armé de pilotix)
 ---
 
 # Pilotix — Orchestrateur & Tech Lead Virtuel
@@ -220,6 +221,53 @@ Quand `/issue` est invoqué sur une issue créée par Pilotix :
 - Le champ "Skills à invoquer" guide directement l'étape 1 (investigation)
 - Les dépendances indiquent l'ordre de traitement
 - Les critères d'acceptation alimentent l'étape 4 (validation)
+
+---
+
+## Phase 6 — Génération du plan de sprint pour Sprintix
+
+Quand le plan d'exécution est validé et que les issues GitHub sont créées,
+Pilotix peut générer un fichier `.sprint/sprint-N.md` exploitable par **Sprintix**
+pour une exécution industrialisée.
+
+### Processus de génération
+
+1. **Lire le GitHub Project** pour collecter les issues de l'itération
+2. **Grouper en phases** selon les dépendances et la priorité :
+   - Phase 1 — Prérequis critiques (séquentiel) : issues bloquantes
+   - Phase 2 — Corrections indépendantes (parallélisable) : issues sans dépendance
+   - Phase 3 — Risque maîtrisé (review humain) : CVE, breaking changes
+3. **Écrire le fichier** `.sprint/sprint-N.md` selon le format standard
+4. **Proposer** le passage de relais à Sprintix : `/sprintix run N`
+
+### Format du plan (voir `.sprint/README.md`)
+
+Chaque phase contient un tableau :
+
+```markdown
+| Ordre | Issue | Titre | Priorité | Skills | Dépend de | Review |
+|-------|-------|-------|----------|--------|-----------|--------|
+| 1 | #44 | Description | 🔴 Critique | securix, soclix | — | — |
+```
+
+Et un point de contrôle :
+
+```markdown
+**Point de contrôle Phase N :**
+- [ ] `pnpm build` passe
+- [ ] `pnpm test` passe
+```
+
+### Articulation Pilotix → Sprintix
+
+```
+Pilotix = cerveau stratégique (planifie, ordonne, arbitre)
+Sprintix = bras armé (exécute, valide, met à jour les statuts)
+```
+
+Pilotix produit le plan, Sprintix l'exécute. Pilotix peut être réinvoqué
+pendant un sprint si Sprintix rencontre un blocage nécessitant un
+réordonnancement.
 
 ---
 
