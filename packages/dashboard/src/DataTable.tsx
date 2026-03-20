@@ -247,7 +247,7 @@ export function DataTable<T extends Record<string, unknown>>({
       {paginated && totalPages > 1 && (
         <div className="flex items-center justify-between border-t border-[var(--color-border-light,var(--color-border))] px-4 py-3">
           <span className="text-sm text-[var(--color-text-secondary,var(--color-text))]/60">
-            Page {page} sur {totalPages} ({sorted.length} resultats)
+            Page {page} sur {totalPages} ({sorted.length} résultats)
           </span>
           <div className="flex gap-1.5">
             {(['Precedent', 'Suivant'] as const).map((label) => {

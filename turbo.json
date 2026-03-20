@@ -3,8 +3,38 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"],
+      "outputs": [".next/**"],
       "inputs": ["src/**", "package.json", "tsconfig.json", "next.config.js"]
+    },
+    "@unanima/core#build": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "inputs": ["src/**", "package.json", "tsconfig.json"]
+    },
+    "@unanima/auth#build": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "inputs": ["src/**", "package.json", "tsconfig.json"]
+    },
+    "@unanima/db#build": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "inputs": ["src/**", "package.json", "tsconfig.json"]
+    },
+    "@unanima/dashboard#build": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "inputs": ["src/**", "package.json", "tsconfig.json"]
+    },
+    "@unanima/email#build": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "inputs": ["src/**", "package.json", "tsconfig.json"]
+    },
+    "@unanima/rgpd#build": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "inputs": ["src/**", "package.json", "tsconfig.json"]
     },
     "dev": {
       "cache": false,
@@ -12,10 +42,12 @@
     },
     "test": {
       "dependsOn": ["build"],
+      "outputs": [],
       "inputs": ["src/**", "tests/**", "vitest.config.*"]
     },
     "lint": {
       "dependsOn": ["^build"],
+      "outputs": [],
       "inputs": ["src/**", ".eslintrc.*"]
     },
     "build:links": {

@@ -15,7 +15,7 @@ interface BatchEmail {
   from?: string
 }
 
-const DEFAULT_FROM = 'Unanima <noreply@unanima.fr>'
+const DEFAULT_FROM = process.env.EMAIL_FROM ?? 'Unanima <noreply@unanima.fr>'
 
 export async function sendEmail({
   to,

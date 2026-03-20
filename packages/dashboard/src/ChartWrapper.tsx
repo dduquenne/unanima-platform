@@ -110,7 +110,9 @@ class ChartErrorBoundary extends Component<ChartErrorBoundaryProps, ChartErrorBo
   }
 
   componentDidCatch(error: Error) {
-    console.error('[ChartWrapper] Erreur de rendu du graphique :', error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('[ChartWrapper] Erreur de rendu du graphique :', error)
+    }
   }
 
   render() {
