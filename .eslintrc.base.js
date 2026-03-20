@@ -10,7 +10,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    'no-console': 'warn',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
   },
   ignorePatterns: ['dist/', 'node_modules/', '.turbo/'],
 }
