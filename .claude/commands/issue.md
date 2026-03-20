@@ -80,6 +80,7 @@ d'une aide précieuse.
 | Écriture de tests, mock, fixture, factory, vitest, playwright | **testix** | Étape 3 (écriture des tests) et étape 4 (validation) |
 | Intégration tierce, webhook, Salesforce, SAP, Resend, circuit breaker | **integratix** | Étape 2 (architecture intégration) et étape 3 (implémentation) |
 | Modification de package partagé, impact cross-app, socle commun | **soclix** | Étape 1 (analyse d'impact) et étape 3 (validation cross-app) |
+| Issue faisant partie d'un sprint planifié (.sprint/sprint-N.md) | **sprintix** | Contexte sprint fourni automatiquement si exécuté depuis sprintix |
 | Code implémenté à revoir pour qualité et réutilisation | **simplify** | Étape 3 (après implémentation, avant commit) |
 
 ### Règles d'invocation
@@ -331,6 +332,25 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
 
 ## ÉTAPE 3 — IMPLÉMENTATION
 
+### Mise à jour du statut GitHub Project
+
+Au début de l'implémentation, mettre à jour le statut de l'issue dans le
+GitHub Project pour refléter la progression :
+
+```bash
+# Identifier le projet et l'item (Unanima Platform = projet 4)
+OWNER=dduquenne
+PROJECT_NUM=4
+ISSUE_NUM=<numéro de l'issue>
+
+# Le statut passe de 📋 Backlog à 🏗️ En cours
+# Utiliser gh project item-edit (voir sprintix/references/github-project-api.md)
+```
+
+Si l'issue fait partie d'un sprint (fichier `.sprint/sprint-N.md` existant),
+vérifier le plan pour connaître la phase et l'ordre d'exécution, et signaler
+le contexte sprint dans les messages de commit.
+
 ### Git workflow
 ```bash
 git checkout main && git pull origin main
@@ -456,15 +476,28 @@ Attendre checks verts, puis merge squash via `gh pr merge --squash`.
 
 ## ÉTAPE 5 — POST-MERGE & PRODUCTION
 
-### 5.1 — CI sur main
+### 5.1 — Mise à jour du statut GitHub Project
+Après le merge, mettre à jour le statut de l'issue dans le GitHub Project :
+- Statut → ✅ Terminé
+
+Si l'issue fait partie d'un sprint (`.sprint/sprint-N.md`), mettre à jour
+le plan en cochant l'issue :
+```markdown
+# Avant
+| 3 | #51 | Index manquants | 🟠 Haute | databasix | — | — |
+# Après
+| ✅ 3 | #51 | Index manquants | 🟠 Haute | databasix | — | Fait (YYYY-MM-DD) |
+```
+
+### 5.2 — CI sur main
 Vérifier les checks du commit de merge via GitHub API.
 Si échec : diagnostiquer, corriger sur branche `fix/<scope>-hotfix`, nouvelle PR.
 
-### 5.2 — Déploiement Vercel
+### 5.3 — Déploiement Vercel
 Via MCP Vercel : vérifier build production réussi + runtime fonctionnel +
 logs Serverless sans erreur.
 
-### 5.3 — Rollback (si production cassée)
+### 5.4 — Rollback (si production cassée)
 Rollback immédiat via MCP Vercel (redéploiement du build précédent),
 puis corriger via workflow PR standard.
 
@@ -518,3 +551,5 @@ puis corriger via workflow PR standard.
 - [ ] CLAUDE.md mis à jour (si applicable)
 - [ ] Env vars documentées dans `.env.example` + Vercel (si applicable)
 - [ ] Migration SQL commitée (si applicable)
+- [ ] Statut GitHub Project mis à jour (📋 → 🏗️ → ✅)
+- [ ] Plan sprint `.sprint/sprint-N.md` mis à jour (si applicable)

@@ -15,6 +15,7 @@ compatibility:
     - deploix      # Pour la coordination CI/CD → déploiement Vercel (workflows, env vars, rollback)
     - pilotix      # Pour la création d'issues structurées et le séquencement des PRs
     - soclix       # Quand une PR touche le socle commun et nécessite une CI cross-app
+    - sprintix     # Pour synchroniser les statuts du GitHub Project avec la progression sprint
 ---
 
 # Repositorix — Gestion de projet GitHub
@@ -530,16 +531,49 @@ Créer un milestone par version planifiée avec :
 ## 10. Workflow type pour une tâche
 
 ```
-1. Créer/sélectionner une issue → l'assigner → changer statut "In Progress"
-2. git checkout develop && git pull
-3. git checkout -b feature/42-ma-feature
-4. [développer, committer régulièrement en Conventional Commits]
-5. git push -u origin feature/42-ma-feature
-6. Ouvrir une PR vers develop → lier l'issue → demander review
-7. CI passe ✓ → reviewer approuve ✓ → Squash & Merge
-8. Issue fermée automatiquement (via "Closes #42" dans la PR)
-9. Branche supprimée automatiquement
-10. Pour une release : suivre §7 (release branch → tag → GitHub Release)
+1.  Créer/sélectionner une issue → l'assigner → changer statut "In Progress"
+2.  Mettre à jour le statut dans le GitHub Project → 🏗️ En cours
+3.  git checkout develop && git pull
+4.  git checkout -b feature/42-ma-feature
+5.  [développer, committer régulièrement en Conventional Commits]
+6.  git push -u origin feature/42-ma-feature
+7.  Ouvrir une PR vers develop → lier l'issue → demander review
+8.  Mettre à jour le statut dans le GitHub Project → 👀 En review
+9.  CI passe ✓ → reviewer approuve ✓ → Squash & Merge
+10. Issue fermée automatiquement (via "Closes #42" dans la PR)
+11. Mettre à jour le statut dans le GitHub Project → ✅ Terminé
+12. Branche supprimée automatiquement
+13. Pour une release : suivre §7 (release branch → tag → GitHub Release)
+```
+
+### Mise à jour des statuts GitHub Project
+
+Chaque transition d'état d'une issue doit être reflétée dans le GitHub Project.
+C'est essentiel pour le suivi de progression par **sprintix** et pour la
+visibilité du board.
+
+| Moment | Statut Project | Qui déclenche |
+|--------|---------------|---------------|
+| Début d'implémentation | 📋 → 🏗️ En cours | `/issue` ou `/sprintix run` |
+| PR créée | 🏗️ → 👀 En review | `/issue` étape 4 |
+| PR mergée | 👀 → ✅ Terminé | `/issue` étape 5 ou automatique |
+| Issue reportée | 📋 → ⏭️ Reporté | `/sprintix` si blocage |
+
+Commandes `gh` pour la mise à jour (voir `sprintix/references/github-project-api.md`
+pour les détails) :
+
+```bash
+# Récupérer le projet et l'item
+PROJECT_NUM=4  # Unanima Platform
+OWNER=dduquenne
+
+# Lister les items pour trouver l'ID
+gh project item-list $PROJECT_NUM --owner $OWNER --format json | \
+  jq '.items[] | select(.content.number == 42) | .id'
+
+# Modifier le statut via gh project item-edit
+gh project item-edit --project-id <PROJECT_ID> --id <ITEM_ID> \
+  --field-id <STATUS_FIELD_ID> --single-select-option-id <OPTION_ID>
 ```
 
 ---
