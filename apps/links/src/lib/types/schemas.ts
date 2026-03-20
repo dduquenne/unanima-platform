@@ -9,12 +9,12 @@ export const createBeneficiaireSchema = z.object({
   profile_id: z.string().uuid(),
   consultant_id: z.string().uuid(),
   statut: beneficiaireStatutEnum.optional().default('actif'),
-  metadata: z.record(z.unknown()).optional().default({}),
+  metadata: z.record(z.string(), z.unknown()).optional().default({}),
 })
 
 export const updateBeneficiaireSchema = z.object({
   statut: beneficiaireStatutEnum.optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 // ============================================================

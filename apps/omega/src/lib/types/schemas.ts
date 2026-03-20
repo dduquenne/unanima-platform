@@ -10,7 +10,7 @@ export const createClientVehiculeSchema = z.object({
   vehicule_modele: z.string().min(1).max(100),
   immatriculation: z.string().nullable().optional(),
   vin: z.string().length(17).nullable().optional(),
-  metadata: z.record(z.unknown()).optional().default({}),
+  metadata: z.record(z.string(), z.unknown()).optional().default({}),
 })
 
 export const updateClientVehiculeSchema = z.object({
@@ -20,7 +20,7 @@ export const updateClientVehiculeSchema = z.object({
   vehicule_modele: z.string().min(1).max(100).optional(),
   immatriculation: z.string().nullable().optional(),
   vin: z.string().length(17).nullable().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 // ============================================================
@@ -90,13 +90,13 @@ export const createKpiSavSchema = z.object({
   type: kpiSavTypeEnum,
   valeur: z.number(),
   objectif: z.number().nullable().optional(),
-  metadata: z.record(z.unknown()).optional().default({}),
+  metadata: z.record(z.string(), z.unknown()).optional().default({}),
 })
 
 export const updateKpiSavSchema = z.object({
   valeur: z.number().optional(),
   objectif: z.number().nullable().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 // ============================================================

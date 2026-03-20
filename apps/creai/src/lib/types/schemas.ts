@@ -13,7 +13,7 @@ export const createEtablissementSchema = z.object({
   siret: z.string().regex(/^\d{14}$/, 'Le SIRET doit contenir 14 chiffres').nullable().optional(),
   capacite: z.number().int().positive().nullable().optional(),
   statut: etablissementStatutEnum.optional().default('actif'),
-  metadata: z.record(z.unknown()).optional().default({}),
+  metadata: z.record(z.string(), z.unknown()).optional().default({}),
 })
 
 export const updateEtablissementSchema = z.object({
@@ -23,7 +23,7 @@ export const updateEtablissementSchema = z.object({
   siret: z.string().regex(/^\d{14}$/, 'Le SIRET doit contenir 14 chiffres').nullable().optional(),
   capacite: z.number().int().positive().nullable().optional(),
   statut: etablissementStatutEnum.optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 // ============================================================
@@ -71,14 +71,14 @@ export const rapportStatutEnum = z.enum(['brouillon', 'en_revision', 'publie'])
 export const createRapportSchema = z.object({
   diagnostic_id: z.string().uuid(),
   titre: z.string().min(1).max(255),
-  contenu: z.record(z.unknown()).optional().default({}),
+  contenu: z.record(z.string(), z.unknown()).optional().default({}),
   statut: rapportStatutEnum.optional().default('brouillon'),
   date_publication: z.string().date().nullable().optional(),
 })
 
 export const updateRapportSchema = z.object({
   titre: z.string().min(1).max(255).optional(),
-  contenu: z.record(z.unknown()).optional(),
+  contenu: z.record(z.string(), z.unknown()).optional(),
   statut: rapportStatutEnum.optional(),
   date_publication: z.string().date().nullable().optional(),
 })
