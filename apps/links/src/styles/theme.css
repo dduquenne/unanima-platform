@@ -82,3 +82,71 @@
   --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F0F7FF 100%);
   --gradient-accent: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
 }
+
+/* --- Dark mode (système) --- */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-background: #0F1729;
+    --color-surface: #1A2540;
+    --color-surface-hover: #1E2D4A;
+    --color-surface-active: #1C2B47;
+    --color-muted: #162032;
+
+    --color-text: #E2E8F0;
+    --color-text-secondary: #94A3B8;
+    --color-text-muted: #64748B;
+    --color-text-inverse: #0F1729;
+
+    --color-border: #2A3A55;
+    --color-border-light: #1E2D4A;
+    --color-border-focus: #4A90D9;
+
+    --color-success-light: #064E3B;
+    --color-warning-light: #78350F;
+    --color-danger-light: #7F1D1D;
+    --color-info-light: #1E3A5F;
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    --shadow-glow: 0 0 20px rgb(30 111 192 / 0.25);
+
+    --gradient-primary: linear-gradient(135deg, #1E6FC0 0%, #0EA5E9 100%);
+    --gradient-surface: linear-gradient(180deg, #1A2540 0%, #0F1729 100%);
+    --gradient-accent: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+  }
+}
+
+/* --- Dark mode (toggle manuel) --- */
+.dark {
+  --color-background: #0F1729;
+  --color-surface: #1A2540;
+  --color-surface-hover: #1E2D4A;
+  --color-surface-active: #1C2B47;
+  --color-muted: #162032;
+
+  --color-text: #E2E8F0;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  --color-text-inverse: #0F1729;
+
+  --color-border: #2A3A55;
+  --color-border-light: #1E2D4A;
+  --color-border-focus: #4A90D9;
+
+  --color-success-light: #064E3B;
+  --color-warning-light: #78350F;
+  --color-danger-light: #7F1D1D;
+  --color-info-light: #1E3A5F;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+  --shadow-glow: 0 0 20px rgb(30 111 192 / 0.25);
+
+  --gradient-primary: linear-gradient(135deg, #1E6FC0 0%, #0EA5E9 100%);
+  --gradient-surface: linear-gradient(180deg, #1A2540 0%, #0F1729 100%);
+  --gradient-accent: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+}
