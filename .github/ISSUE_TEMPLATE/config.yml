@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Documentation
+  - name: Documentation du projet
     url: https://github.com/dduquenne/unanima-platform/blob/main/CLAUDE.md
     about: Consultez le CLAUDE.md pour l'architecture et les conventions du projet
+  - name: Tableau de pilotage (GitHub Project)
+    url: https://github.com/users/dduquenne/projects/4
+    about: Suivez l'avancement du projet sur le tableau de pilotage multi-apps

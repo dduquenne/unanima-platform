@@ -1,0 +1,64 @@
+name: "Tâche technique"
+description: "Maintenance, refactorisation, configuration, dette technique"
+title: "[{app}] Chore: "
+labels: ["chore"]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: Application / Package concerné
+      description: Quel périmètre est concerné ?
+      options:
+        - links (Link's Accompagnement)
+        - creai (CREAI Île-de-France)
+        - omega (Omega Automotive)
+        - socle (Socle commun / transverse)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Catégorie
+      description: Quel type de tâche technique ?
+      options:
+        - Refactorisation de code
+        - Mise à jour de dépendances
+        - Configuration / DevOps
+        - Dette technique
+        - Performance
+        - Tests manquants
+        - Documentation technique
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description de la tâche
+      description: Décrivez ce qui doit être fait et pourquoi
+      placeholder: "Le module X utilise un pattern obsolète qui rend la maintenance difficile. Refactoriser vers..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact attendu
+      description: Quel bénéfice concret cette tâche apporte-t-elle ?
+      placeholder: "Réduction de la dette technique, meilleure maintenabilité, temps de build réduit..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexité estimée
+      options:
+        - XS (< 1h)
+        - S (< 4h)
+        - M (< 1 jour)
+        - L (< 3 jours)
+        - XL (> 3 jours)
+    validations:
+      required: false
