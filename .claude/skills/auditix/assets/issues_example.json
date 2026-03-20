@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "title": "Vulnérabilité d'injection SQL dans la recherche utilisateur",
+    "priority": "critical",
+    "domain": "Sécurité",
+    "location": "src/api/users/search.ts:42",
+    "description": "La fonction `searchUsers` construit une requête SQL par concaténation de chaînes avec des paramètres utilisateur non sanitisés.",
+    "evidence": "const query = `SELECT * FROM users WHERE name LIKE '%${searchTerm}%'`",
+    "impact": "Permet l'exfiltration complète de la base de données ou sa destruction via une injection SQL.",
+    "recommendation": "Utiliser les requêtes paramétrées Prisma ou les prepared statements. Remplacer par : `prisma.user.findMany({ where: { name: { contains: searchTerm } } })`",
+    "effort": "S",
+    "labels": ["security", "critical"],
+    "acceptance_criteria": [
+      "Requêtes paramétrées utilisées sur toutes les recherches",
+      "Test de pénétration basique passé (sqlmap)",
+      "Revue de code des autres routes similaires"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Absence de validation des données d'entrée sur l'API REST",
+    "priority": "major",
+    "domain": "Sécurité / Qualité",
+    "location": "src/api/orders/create.ts",
+    "description": "Les données reçues depuis le client sont directement persistées sans validation. Aucun schéma zod ou class-validator n'est appliqué.",
+    "evidence": "export async function createOrder(req: Request) {\n  await db.order.create({ data: req.body }) // ❌ sans validation\n}",
+    "impact": "Corruption de données, injection d'attributs non autorisés (mass assignment), crash de l'application sur des données malformées.",
+    "recommendation": "Ajouter une validation zod à l'entrée de chaque handler. Définir un schéma strict pour chaque DTO.",
+    "effort": "M",
+    "labels": ["security", "code-quality", "major"],
+    "acceptance_criteria": [
+      "Schéma zod défini pour chaque endpoint POST/PUT/PATCH",
+      "Middleware de validation centralisé",
+      "Tests unitaires sur les cas invalides"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Complexité cyclomatique excessive dans ProcessingService",
+    "priority": "major",
+    "domain": "Qualité du code",
+    "location": "src/services/processing.service.ts:156",
+    "description": "La méthode `processOrder` a une complexité cyclomatique de 34 (seuil : 10). Elle contient 12 niveaux d'imbrication et gère à la fois la validation, le calcul, la persistance et l'envoi de notifications.",
+    "evidence": "// Complexité mesurée : 34\nasync processOrder(order: Order, user: User, config: Config) {\n  if (order.type === 'premium') {\n    if (user.tier === 'gold') {\n      if (config.discounts.enabled) { ... } // +5 niveaux\n    }\n  }\n  // ... 200 lignes supplémentaires\n}",
+    "impact": "Maintenabilité quasi-nulle, risque élevé de régression lors de chaque modification, impossible à tester unitairement.",
+    "recommendation": "Décomposer en au moins 4 méthodes privées : `validateOrder`, `calculatePricing`, `persistOrder`, `notifyStakeholders`. Appliquer le pattern Command ou Strategy pour les variantes.",
+    "effort": "L",
+    "labels": ["code-quality", "tech-debt", "major"],
+    "acceptance_criteria": [
+      "Complexité cyclomatique < 10 par méthode",
+      "Couverture de tests > 80% sur ce service",
+      "Pas de régression sur les tests existants"
+    ]
+  }
+]
