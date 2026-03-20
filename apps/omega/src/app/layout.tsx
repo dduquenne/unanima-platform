@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { CookieBanner } from '@unanima/rgpd'
 import { Providers } from './providers'
 import './globals.css'
 
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <CookieBanner />
+        </Providers>
       </body>
     </html>
   )
