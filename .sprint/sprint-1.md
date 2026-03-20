@@ -52,7 +52,7 @@ Issues sans dépendance entre elles, exécutables dans n'importe quel ordre.
 
 | Ordre | Issue | Titre | Priorité | Skills | Dépend de | Review |
 |-------|-------|-------|----------|--------|-----------|--------|
-| 7 | #45 | 3 CVE HIGH dans les dépendances (next, glob, flatted) | 🔴 Critique | securix | Phase 1+2 | ⚠️ REVIEW |
+| ⚠️ 7 | #45 | 3 CVE HIGH dans les dépendances (next, glob, flatted) | 🔴 Critique | securix | Phase 1+2 | Partiel (2026-03-20) — glob+flatted fixés, Next.js 15 reporté Sprint 2 |
 
 **Justification :**
 - Les mises à jour de dépendances (surtout Next.js) peuvent causer des régressions.
@@ -60,10 +60,11 @@ Issues sans dépendance entre elles, exécutables dans n'importe quel ordre.
 - **Validation humaine obligatoire** avant merge.
 
 **Point de contrôle Phase 3 :**
-- [ ] `npm audit` ne montre plus de CVE HIGH
-- [ ] `pnpm build` passe pour les 3 apps
-- [ ] `pnpm test` passe
-- [ ] Review humaine effectuée
+- [x] `pnpm audit` — HIGH CVEs réduites de 3 à 1 (glob+flatted fixés via overrides)
+- [ ] CVE restante : next@14 → 15.0.8+ (Epic Sprint 2)
+- [x] `pnpm build` passe pour les 3 apps
+- [x] `pnpm test` passe
+- [x] Review humaine effectuée (Option A validée)
 
 ---
 
@@ -83,9 +84,35 @@ Issues sans dépendance entre elles, exécutables dans n'importe quel ordre.
 
 ## Contraintes d'exécution
 
-- **Branche :** une branche par issue (`fix/auditix-crit-002`, etc.) ou branche sprint groupée
-- **Base :** `dev`
+- **Branche :** `claude/plan-pilotix-sprint-1-VQgCk`
+- **Base :** `master`
 - **Build obligatoire** entre chaque phase
 - **Tests obligatoires** avant chaque commit
 - **Format commit :** `fix(scope): description (closes #XX)`
-- **Statut Project :** mettre à jour `📋 Backlog` → `🏗️ En cours` → `✅ Terminé`
+
+---
+
+## Rapport d'exécution
+
+**Date d'exécution :** 2026-03-20
+**Issues traitées :** 7/7 (6 complètes + 1 partielle)
+**Commits :** 8
+
+| # | Issue | Commit | Résultat |
+|---|-------|--------|----------|
+| 1 | #44 | `32e64a8` | Auth env vars : `?? ''` → throw explicite |
+| 2 | #52 | `528e030` | Turbo cache : per-package `outputs: []` → FULL TURBO 94ms |
+| 3 | #51 | `66aa37e` | Migration `004_audit_logs_indexes.sql` |
+| 4 | #53 | `e73aa0b` | `EMAIL_FROM` env var configurable |
+| 5 | #56 | `4f013d1` | `console.error` gardé par `NODE_ENV` |
+| 6 | #57 | `e04f001` | `resultats` → `résultats` |
+| 7 | #45 | `e4a4199` | glob+flatted HIGH CVEs fixés (Next.js 15 → Sprint 2) |
+
+### Métriques
+- Build : 9/9 tasks, 0 warnings
+- Tests : 174 tests, 100% passent
+- CVE HIGH : 3 → 1 (restante : next@14, planifiée Sprint 2)
+
+### Recommandations Sprint 2
+- **Epic Next.js 15** : upgrade majeur 14→15, adapter async params/headers/cookies
+- Ajouter une règle ESLint `no-console` pour prévenir les régressions #56
