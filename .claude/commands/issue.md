@@ -69,6 +69,13 @@ d'une aide précieuse.
 | Audit qualité, dette technique, revue de code, bilan technique | **auditix** | Étape 1 (diagnostic qualité) et étape 2 (préconisations) |
 | CI/CD, GitHub Actions, branching, release, workflow git | **repositorix** | Étape 3 (workflow git) et étape 4 (PR et CI) |
 | Document structurant à produire (ADR, guide, spec, rapport) | **documentalix** | Étape 3 (rédaction du document) |
+| Faille sécurité, OWASP, injection, secrets, auth, CORS, CSP | **securix** | Étape 2 (audit sécurité) et étape 3 (durcissement) |
+| Déploiement, Vercel, env vars, rollback, cold start, monitoring | **deploix** | Étape 2 (diagnostic infra) et étape 5 (post-deploy) |
+| Migration BDD, ALTER TABLE, expand/contract, backfill, rollback | **migratix** | Étape 2 (stratégie de migration) et étape 3 (écriture SQL) |
+| Endpoint API, route handler, validation Zod, pagination, contrat | **apix** | Étape 2 (conception API) et étape 3 (implémentation) |
+| Données personnelles, RGPD, consentement, droit d'accès, PIA | **rgpdix** | Étape 1 (évaluation conformité) et étape 3 (implémentation) |
+| Écriture de tests, mock, fixture, factory, vitest, playwright | **testix** | Étape 3 (écriture des tests) et étape 4 (validation) |
+| Intégration tierce, webhook, Salesforce, SAP, Resend, circuit breaker | **integratix** | Étape 2 (architecture intégration) et étape 3 (implémentation) |
 | Code implémenté à revoir pour qualité et réutilisation | **simplify** | Étape 3 (après implémentation, avant commit) |
 
 ### Règles d'invocation
@@ -88,13 +95,17 @@ d'une aide précieuse.
    dans son YAML frontmatter. Quand un skill est invoqué, vérifier ses
    recommandations et invoquer les skills complémentaires si le contexte
    de l'issue le justifie. Exemples courants :
-   - Bug UI → `anomalix` (diagnostic) → recommande `archicodix` si problème structurel + `ergonomix` (correction UI)
-   - Feature complexe → `projetix` (spécification) → recommande `ergonomix` + `maquettix-final` + `recettix` (critères d'acceptation) + `archicodix` (architecture)
-   - Problème de perf → `anomalix` (investigation) → recommande `optimix` (optimisation) → recommande `databasix` si goulot BDD
-   - Nouvelle table / migration → `databasix` (schéma + RLS) → recommande `archicodix` (modèle de domaine)
+   - Bug UI → `anomalix` (diagnostic) → recommande `archicodix` si problème structurel + `ergonomix` (correction UI) + `testix` (tests anti-régression)
+   - Feature complexe → `projetix` (spécification) → recommande `ergonomix` + `maquettix-final` + `recettix` (critères d'acceptation) + `archicodix` (architecture) + `rgpdix` si données personnelles
+   - Problème de perf → `anomalix` (investigation) → recommande `optimix` (optimisation) → recommande `databasix` si goulot BDD + `deploix` si cache/CDN
+   - Nouvelle table / migration → `databasix` (schéma + RLS) → recommande `migratix` (stratégie de migration) + `archicodix` (modèle de domaine)
    - Refactoring → `archicodix` (design) + `simplify` (revue qualité)
-   - Feature avec BDD → `archicodix` (architecture) + `databasix` (schéma) + `ergonomix` (UI) + `recettix` (tests)
-   - Audit de code → `auditix` (rapport) → recommande les skills spécialisés selon les domaines identifiés
+   - Feature avec BDD → `archicodix` (architecture) + `databasix` (schéma) + `apix` (endpoints) + `ergonomix` (UI) + `testix` (tests)
+   - Audit de code → `auditix` (rapport) → recommande `securix` (sécurité) + `rgpdix` (RGPD) + les skills spécialisés selon les domaines identifiés
+   - Faille de sécurité → `securix` (audit + durcissement) → recommande `databasix` si RLS + `deploix` si headers/env + `rgpdix` si données personnelles
+   - Nouvel endpoint API → `apix` (conception + validation) → recommande `archicodix` (patterns) + `securix` (protection) + `testix` (tests de contrat)
+   - Intégration tierce → `integratix` (adapter + résilience) → recommande `apix` (webhook endpoint) + `securix` (signature, secrets) + `databasix` (persistence)
+   - Incident production → `deploix` (diagnostic + rollback) → recommande `anomalix` (cause racine) + `optimix` si performance
 
 ---
 
@@ -250,6 +261,14 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
    - Bug ou feature impliquant la BDD (tables, requêtes, RLS, migrations) →
      invoquer **databasix** pour le diagnostic de la couche données
    - Audit qualité ou dette technique demandé → invoquer **auditix**
+   - Suspicion de faille de sécurité, secret exposé, auth bypass →
+     invoquer **securix** pour l'audit sécurité
+   - Problème de déploiement, production cassée, env vars, timeout →
+     invoquer **deploix** pour le diagnostic infra
+   - Données personnelles concernées (RGPD, consentement, export) →
+     invoquer **rgpdix** pour l'évaluation de conformité
+   - Intégration tierce impliquée (Salesforce, SAP, webhook, Resend) →
+     invoquer **integratix** pour l'expertise d'intégration
 3. Lire les fichiers mentionnés + leurs dépendances directes
 4. Si `packages/` : identifier les consommateurs via `turbo.json`
 5. Si bug déploiement : lire `vercel.json`, `next.config.js`, `.env.example`,
@@ -276,6 +295,14 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
      → invoquer **databasix** pour la conception et la validation
    - Issue nécessitant un audit transversal (qualité, dette, sécurité)
      → invoquer **auditix** pour un diagnostic structuré
+   - Migration de schéma nécessaire → invoquer **migratix** pour la stratégie
+     (expand/contract, backfill, rollback)
+   - Conception ou modification d'endpoints API → invoquer **apix** pour les
+     patterns de route handlers, validation Zod, format de réponse
+   - Risque de sécurité identifié → invoquer **securix** pour l'analyse
+     des vulnérabilités et le plan de durcissement
+   - Intégration avec un service externe → invoquer **integratix** pour
+     l'architecture d'intégration (adapter, retry, circuit breaker)
 7. 2-3 approches avec trade-offs
 8. `CONTINUE: false` → **STOP** (présenter options)
    `CONTINUE: true` → choisir la première approche, étape 3
@@ -340,12 +367,26 @@ Avant de coder, invoquer les skills pertinents identifiés à l'étape 1 :
   d'optimisation adaptés
 - Migration SQL, schéma BDD, RLS, types générés → invoquer **databasix**
   pour les conventions et la sécurité de la couche données
+- Migration de schéma en production → invoquer **migratix** pour la stratégie
+  expand/contract et le script de migration
 - Nouvelle feature significative nécessitant des critères de recette →
   invoquer **recettix** pour définir les tests d'acceptation
+- Écriture effective des tests (unitaires, intégration, E2E) → invoquer
+  **testix** pour les patterns de testing Vitest/Playwright
+- Endpoints API (route handlers, validation, pagination) → invoquer **apix**
+  pour la conformité des contrats d'interface
+- Sécurisation (headers, auth, validation, secrets) → invoquer **securix**
+  pour le durcissement applicatif
+- Conformité RGPD (données personnelles, consentement, droits) → invoquer
+  **rgpdix** pour l'implémentation technique de la conformité
+- Intégration avec service externe (Salesforce, SAP, Resend, webhook) →
+  invoquer **integratix** pour les patterns d'intégration résilients
 - Document structurant à produire (ADR, guide, spec, rapport) → invoquer
   **documentalix** pour garantir la conformité documentaire
 - Workflow GitHub Actions, CI/CD, release → invoquer **repositorix**
   pour les meilleures pratiques
+- Configuration de déploiement Vercel, env vars, monitoring → invoquer
+  **deploix** pour les bonnes pratiques d'infrastructure
 
 ### Revue qualité pré-commit
 

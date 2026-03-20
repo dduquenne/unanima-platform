@@ -17,6 +17,9 @@ compatibility:
     - optimix      # Quand le bug est lié à un problème de performance (fuite mémoire, lenteur, event loop bloquée)
     - databasix    # Quand le bug implique la couche données (requête incorrecte, RLS, migration, schéma)
     - recettix     # Pour définir les tests anti-régression contractuels après correction
+    - securix      # Quand le bug révèle une faille de sécurité (injection, auth bypass, exposition de données)
+    - testix       # Pour écrire les tests unitaires/intégration anti-régression après correction
+    - deploix      # Quand le bug est lié au déploiement (env vars, cold start, timeout Vercel)
 ---
 
 # 🔬 Anomalix — Spécialiste Débogage TypeScript Métier

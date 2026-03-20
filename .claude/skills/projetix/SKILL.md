@@ -8,6 +8,7 @@ compatibility:
     - maquettix-final # Pour illustrer les User Stories avec des maquettes SVG d'écrans
     - recettix        # Pour générer les critères d'acceptation et le plan de recette dès la phase de spécification
     - documentalix    # Pour intégrer les livrables dans le référentiel documentaire du projet
+    - rgpdix          # Pour intégrer les exigences RGPD dans les spécifications fonctionnelles
 ---
 
 # Skill : Projetix

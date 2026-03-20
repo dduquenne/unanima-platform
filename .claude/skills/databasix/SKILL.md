@@ -15,6 +15,9 @@ compatibility:
   recommends:
     - archicodix   # Quand le schéma BDD traduit un modèle de domaine ou impacte l'architecture applicative
     - optimix      # Quand l'optimisation concerne les requêtes, index, pooling ou performance BDD
+    - migratix     # Pour les migrations de schéma (expand/contract, zero downtime, backfill, rollback)
+    - securix      # Pour la sécurisation de la couche données (RLS, chiffrement, audit trail)
+    - rgpdix       # Quand les données personnelles sont concernées (conservation, anonymisation, droit à l'oubli)
 ---
 
 # Databasix — Expert Base de Données Supabase × TypeScript

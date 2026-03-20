@@ -16,6 +16,7 @@ compatibility:
   recommends:
     - archicodix   # Quand l'optimisation nécessite un changement d'architecture (lazy loading, caching, patterns)
     - databasix    # Quand le goulot d'étranglement est côté BDD (requêtes N+1, index manquants, pooling)
+    - deploix      # Quand l'optimisation concerne le cache CDN, ISR, les cold starts ou la config Vercel
 ---
 
 # OPTIMIX — Expert en optimisation TypeScript pour applications métier

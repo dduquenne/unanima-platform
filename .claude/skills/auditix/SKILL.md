@@ -18,6 +18,10 @@ compatibility:
     - optimix      # Pour l'audit de performance (runtime, build, bundle)
     - recettix     # Pour évaluer la couverture de tests et la stratégie de recette
     - repositorix  # Pour l'audit CI/CD, branching, et pratiques GitHub
+    - securix      # Pour l'audit sécurité (OWASP, headers, secrets, dépendances vulnérables)
+    - testix       # Pour évaluer la qualité des tests existants et les patterns de testing
+    - deploix      # Pour l'audit de la configuration de déploiement et de l'observabilité
+    - rgpdix       # Pour l'audit de conformité RGPD (données personnelles, consentement, droits)
 ---
 
 # Auditix — Audit Complet d'Application TypeScript
