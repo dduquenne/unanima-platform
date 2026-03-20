@@ -11,6 +11,10 @@ description: >
   "audit trail", "soft delete", "multi-tenant", "relation FK", "index btree/gin/gist", "EXPLAIN ANALYZE".
   Ce skill est ESSENTIEL pour toute question sur la couche données — même indirecte (ex: "comment
   stocker les préférences utilisateurs", "comment gérer les permissions", "comment auditer les actions").
+compatibility:
+  recommends:
+    - archicodix   # Quand le schéma BDD traduit un modèle de domaine ou impacte l'architecture applicative
+    - optimix      # Quand l'optimisation concerne les requêtes, index, pooling ou performance BDD
 ---
 
 # Databasix — Expert Base de Données Supabase × TypeScript

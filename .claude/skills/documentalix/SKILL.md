@@ -12,6 +12,10 @@ description: >
   "audit docs", "template document". Déclencher impérativement si l'utilisateur crée ou
   modifie un fichier .md, .docx, .pdf, ou tout document destiné à la base de connaissance
   du projet.
+compatibility:
+  recommends:
+    - projetix        # Pour les documents de spécifications fonctionnelles et notes de cadrage
+    - maquettix-final # Quand un document doit intégrer des maquettes SVG d'écrans
 ---
 
 # Documentalix — Gestionnaire de Référentiel Documentaire

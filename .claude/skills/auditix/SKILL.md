@@ -7,9 +7,17 @@ description: >
   technique d'une application ou d'un périmètre fonctionnel. Active aussi pour : "analyse mon
   app", "revue de mon projet", "qu'est-ce qui ne va pas dans mon code", "optimise mon appli",
   "mes tests ne couvrent pas assez", "y a-t-il des failles dans mon projet", "évalue
-  l'architecture de mon app", "rapport d'audit", "bilan de qualité", "revue ergonomique". 
+  l'architecture de mon app", "rapport d'audit", "bilan de qualité", "revue ergonomique".
   Produit un rapport structuré avec préconisations classées par domaine et priorité, et propose
   la création d'issues GitHub pour les actions de remédiation.
+compatibility:
+  recommends:
+    - archicodix   # Pour l'audit du domaine architecture (patterns, couplage, SOLID)
+    - databasix    # Pour l'audit de la couche données (schéma, RLS, performance requêtes)
+    - ergonomix    # Pour l'audit ergonomie et UX des interfaces métier
+    - optimix      # Pour l'audit de performance (runtime, build, bundle)
+    - recettix     # Pour évaluer la couverture de tests et la stratégie de recette
+    - repositorix  # Pour l'audit CI/CD, branching, et pratiques GitHub
 ---
 
 # Auditix — Audit Complet d'Application TypeScript
