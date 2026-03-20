@@ -10,6 +10,7 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.5.2",
     "@unanima/auth": "workspace:*",
     "@unanima/core": "workspace:*",
     "@unanima/dashboard": "workspace:*",
