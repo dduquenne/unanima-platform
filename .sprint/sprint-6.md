@@ -12,10 +12,10 @@ Parcours utilisateur complets pour chaque rôle principal.
 
 | Ordre | Titre | Priorité | Skills | Dépend de | Review |
 |-------|-------|----------|--------|-----------|--------|
-| 1 | Tests E2E Links : parcours consultant (login → créer bénéficiaire → créer bilan → remplir questionnaire → voir résultats) | 🔴 Critique | testix, recettix | Sprint 5 | — |
-| 2 | Tests E2E Links : parcours bénéficiaire (login → voir mes bilans → remplir questionnaire → voir documents) | 🟠 Haute | testix, recettix | Sprint 5 | — |
-| 3 | Tests E2E CREAI : parcours coordonnateur (login → créer diagnostic → saisir indicateurs → publier rapport) | 🔴 Critique | testix, recettix | Sprint 5 | — |
-| 4 | Tests E2E Omega : parcours responsable SAV (login → créer intervention → affecter technicien → clôturer) | 🔴 Critique | testix, recettix | Sprint 5 | — |
+| ✅ 1 | Tests E2E Links : parcours consultant (login → créer bénéficiaire → créer bilan → remplir questionnaire → voir résultats) | 🔴 Critique | testix, recettix | Sprint 5 | Fait (2026-03-20) |
+| ✅ 2 | Tests E2E Links : parcours bénéficiaire (login → voir mes bilans → remplir questionnaire → voir documents) | 🟠 Haute | testix, recettix | Sprint 5 | Fait (2026-03-20) |
+| ✅ 3 | Tests E2E CREAI : parcours coordonnateur (login → créer diagnostic → saisir indicateurs → publier rapport) | 🔴 Critique | testix, recettix | Sprint 5 | Fait (2026-03-20) |
+| ✅ 4 | Tests E2E Omega : parcours responsable SAV (login → créer intervention → affecter technicien → clôturer) | 🔴 Critique | testix, recettix | Sprint 5 | Fait (2026-03-20) |
 
 **Détail issue #1 — E2E consultant Links :**
 ```gherkin
@@ -48,10 +48,10 @@ Feature: Parcours consultant Link's
 
 | Ordre | Titre | Priorité | Skills | Dépend de | Review |
 |-------|-------|----------|--------|-----------|--------|
-| 5 | Audit sécurité applicatif : OWASP Top 10, validation des entrées, XSS, CSRF, injection SQL | 🔴 Critique | securix, auditix | Phase 1 | ⚠️ Validation humaine |
-| 6 | Audit RLS Supabase : vérifier que chaque rôle ne voit que ses données autorisées | 🔴 Critique | securix, databasix | Phase 1 | ⚠️ Validation humaine |
-| 7 | Hardening headers HTTP : CSP, HSTS, X-Frame-Options, X-Content-Type-Options | 🟠 Haute | securix, deploix | #5 | — |
-| 8 | Audit des dépendances : `pnpm audit`, vérification CVE, mise à jour si nécessaire | 🟡 Moyenne | securix | — | — |
+| ✅ 5 | Audit sécurité applicatif : OWASP Top 10, validation des entrées, XSS, CSRF, injection SQL | 🔴 Critique | securix, auditix | Phase 1 | Fait (2026-03-20) — Rapport: docs/platform/reports/RPT-2026-001-audit-securite.md |
+| ✅ 6 | Audit RLS Supabase : vérifier que chaque rôle ne voit que ses données autorisées | 🔴 Critique | securix, databasix | Phase 1 | Fait (2026-03-20) — Inclus dans rapport audit |
+| ✅ 7 | Hardening headers HTTP : CSP, HSTS, X-Frame-Options, X-Content-Type-Options | 🟠 Haute | securix, deploix | #5 | Fait (2026-03-20) |
+| ✅ 8 | Audit des dépendances : `pnpm audit`, vérification CVE, mise à jour si nécessaire | 🟡 Moyenne | securix | — | Fait (2026-03-20) — 0 HIGH/CRITICAL, 2 moderate |
 
 **Détail issue #5 — Audit OWASP :**
 - Checklist OWASP Top 10 pour chaque app :
@@ -82,10 +82,10 @@ Feature: Parcours consultant Link's
 
 | Ordre | Titre | Priorité | Skills | Dépend de | Review |
 |-------|-------|----------|--------|-----------|--------|
-| 9 | Pages RGPD Links : mentions légales, politique de confidentialité, bandeau cookies | 🟠 Haute | rgpdix, ergonomix | Phase 2 | — |
-| 10 | Pages RGPD CREAI : mêmes pages adaptées au contexte CREAI | 🟠 Haute | rgpdix, ergonomix | Phase 2 | — |
-| 11 | Pages RGPD Omega : mêmes pages adaptées au contexte Omega | 🟠 Haute | rgpdix, ergonomix | Phase 2 | — |
-| 12 | Fonctionnalités RGPD : export des données personnelles, demande de suppression de compte | 🟠 Haute | rgpdix, archicodix | #9 | — |
+| ✅ 9 | Pages RGPD Links : mentions légales, politique de confidentialité, bandeau cookies | 🟠 Haute | rgpdix, ergonomix | Phase 2 | Fait (2026-03-20) |
+| ✅ 10 | Pages RGPD CREAI : mêmes pages adaptées au contexte CREAI | 🟠 Haute | rgpdix, ergonomix | Phase 2 | Fait (2026-03-20) |
+| ✅ 11 | Pages RGPD Omega : mêmes pages adaptées au contexte Omega | 🟠 Haute | rgpdix, ergonomix | Phase 2 | Fait (2026-03-20) |
+| ✅ 12 | Fonctionnalités RGPD : export des données personnelles, demande de suppression de compte | 🟠 Haute | rgpdix, archicodix | #9 | Fait (2026-03-20) |
 
 **Détail issues #9/#10/#11 — Pages RGPD :**
 - Utilisation des composants `@unanima/rgpd` : `<LegalNotice>`, `<PrivacyPolicy>`, `<CookieBanner>`
@@ -112,7 +112,7 @@ Feature: Parcours consultant Link's
 
 | Ordre | Titre | Priorité | Skills | Dépend de | Review |
 |-------|-------|----------|--------|-----------|--------|
-| 13 | Checklist de déploiement : variables d'environnement, domaines, DNS | 🔴 Critique | deploix | Phase 2, Phase 3 | ⚠️ |
+| ✅ 13 | Checklist de déploiement : variables d'environnement, domaines, DNS | 🔴 Critique | deploix | Phase 2, Phase 3 | Fait (2026-03-20) — docs/platform/deployment-checklist.md |
 | 14 | Déploiement Links en production (Vercel) | 🔴 Critique | deploix | #13 | ⚠️ |
 | 15 | Déploiement CREAI en production (Vercel) | 🔴 Critique | deploix | #13 | ⚠️ |
 | 16 | Déploiement Omega en production (Vercel) | 🔴 Critique | deploix | #13 | ⚠️ |
