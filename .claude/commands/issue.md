@@ -59,12 +59,15 @@ d'une aide précieuse.
 
 | Signal dans l'issue | Skill à invoquer | Quand l'invoquer |
 |---|---|---|
+| Epic, feature complexe multi-skills, coordination, planification | **pilotix** | Étape 0 (décomposition en sous-tâches avant toute implémentation) |
+| Symptôme flou, multi-domaine, "ça rame et ça plante", health check | **diagnostix** | Étape 1 (triage et diagnostic transversal) |
 | Bug, erreur, crash, régression, comportement inattendu | **anomalix** | Étape 1 (investigation) et étape 2 (analyse de cause racine) |
 | Décision d'architecture, refactoring structurant, choix de pattern, modélisation | **archicodix** | Étape 2 (analyse des approches) et étape 3 (implémentation) |
 | Interface utilisateur, formulaire, tableau, UX, ergonomie, composant UI | **ergonomix** | Étape 3 (implémentation des composants UI) |
 | Lenteur, performance, build lent, mémoire, optimisation | **optimix** | Étape 2 (diagnostic perf) et étape 3 (implémentation) |
 | Nouvelle fonctionnalité nécessitant spécification, user stories, cadrage | **projetix** | Étape 1 (cadrage du besoin) avant l'implémentation |
 | Schéma BDD, migration, RLS, requête SQL, données, audit trail | **databasix** | Étape 2 (conception schéma) et étape 3 (migration + requêtes) |
+| ETL, consolidation multi-source, KPIs, analytics, vues matérialisées | **datanalytix** | Étape 2 (architecture pipeline) et étape 3 (implémentation) |
 | Recette, plan de test, validation, critères d'acceptation, couverture | **recettix** | Étape 3 (définition des tests) et étape 4 (validation) |
 | Audit qualité, dette technique, revue de code, bilan technique | **auditix** | Étape 1 (diagnostic qualité) et étape 2 (préconisations) |
 | CI/CD, GitHub Actions, branching, release, workflow git | **repositorix** | Étape 3 (workflow git) et étape 4 (PR et CI) |
@@ -76,6 +79,7 @@ d'une aide précieuse.
 | Données personnelles, RGPD, consentement, droit d'accès, PIA | **rgpdix** | Étape 1 (évaluation conformité) et étape 3 (implémentation) |
 | Écriture de tests, mock, fixture, factory, vitest, playwright | **testix** | Étape 3 (écriture des tests) et étape 4 (validation) |
 | Intégration tierce, webhook, Salesforce, SAP, Resend, circuit breaker | **integratix** | Étape 2 (architecture intégration) et étape 3 (implémentation) |
+| Modification de package partagé, impact cross-app, socle commun | **soclix** | Étape 1 (analyse d'impact) et étape 3 (validation cross-app) |
 | Code implémenté à revoir pour qualité et réutilisation | **simplify** | Étape 3 (après implémentation, avant commit) |
 
 ### Règles d'invocation
@@ -95,17 +99,21 @@ d'une aide précieuse.
    dans son YAML frontmatter. Quand un skill est invoqué, vérifier ses
    recommandations et invoquer les skills complémentaires si le contexte
    de l'issue le justifie. Exemples courants :
+   - **Epic / feature complexe** → `pilotix` (décomposition + séquencement) → crée des sous-issues assignées aux skills pertinents → orchestre l'exécution
+   - **Symptôme flou / multi-domaine** → `diagnostix` (triage + carte thermique) → route vers `anomalix` / `optimix` / `auditix` selon le diagnostic → `pilotix` si remédiation complexe
    - Bug UI → `anomalix` (diagnostic) → recommande `archicodix` si problème structurel + `ergonomix` (correction UI) + `testix` (tests anti-régression)
-   - Feature complexe → `projetix` (spécification) → recommande `ergonomix` + `maquettix-final` + `recettix` (critères d'acceptation) + `archicodix` (architecture) + `rgpdix` si données personnelles
-   - Problème de perf → `anomalix` (investigation) → recommande `optimix` (optimisation) → recommande `databasix` si goulot BDD + `deploix` si cache/CDN
-   - Nouvelle table / migration → `databasix` (schéma + RLS) → recommande `migratix` (stratégie de migration) + `archicodix` (modèle de domaine)
+   - Feature complexe → `pilotix` (plan d'exécution) → `projetix` (spécification) → recommande `ergonomix` + `maquettix-final` + `recettix` (critères d'acceptation) + `archicodix` (architecture) + `rgpdix` si données personnelles
+   - Problème de perf → `diagnostix` (triage) ou `anomalix` (investigation) → recommande `optimix` (optimisation) → recommande `databasix` si goulot BDD + `deploix` si cache/CDN
+   - Nouvelle table / migration → `databasix` (schéma + RLS) → recommande `migratix` (stratégie de migration) + `archicodix` (modèle de domaine) + `soclix` si table du socle
+   - **Dashboard / KPIs / consolidation données** → `datanalytix` (pipeline + requêtes analytiques) → recommande `databasix` (schéma stockage) + `integratix` (connecteurs sources) + `apix` (endpoints dashboard)
    - Refactoring → `archicodix` (design) + `simplify` (revue qualité)
    - Feature avec BDD → `archicodix` (architecture) + `databasix` (schéma) + `apix` (endpoints) + `ergonomix` (UI) + `testix` (tests)
+   - **Modification du socle** → `soclix` (analyse d'impact cross-app) → `archicodix` (API publique) + `testix` (tests des 3 apps) + `deploix` (vérification des 3 déploiements)
    - Audit de code → `auditix` (rapport) → recommande `securix` (sécurité) + `rgpdix` (RGPD) + les skills spécialisés selon les domaines identifiés
    - Faille de sécurité → `securix` (audit + durcissement) → recommande `databasix` si RLS + `deploix` si headers/env + `rgpdix` si données personnelles
    - Nouvel endpoint API → `apix` (conception + validation) → recommande `archicodix` (patterns) + `securix` (protection) + `testix` (tests de contrat)
-   - Intégration tierce → `integratix` (adapter + résilience) → recommande `apix` (webhook endpoint) + `securix` (signature, secrets) + `databasix` (persistence)
-   - Incident production → `deploix` (diagnostic + rollback) → recommande `anomalix` (cause racine) + `optimix` si performance
+   - Intégration tierce → `integratix` (adapter + résilience) → recommande `apix` (webhook endpoint) + `securix` (signature, secrets) + `databasix` (persistence) + `datanalytix` si consolidation données
+   - Incident production → `deploix` (diagnostic + rollback) → recommande `diagnostix` (diagnostic transversal) ou `anomalix` (cause racine) + `optimix` si performance
 
 ---
 
@@ -255,11 +263,19 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
    Noter les skills à invoquer et à quelle étape. Vérifier aussi les
    `compatibility.recommends` de chaque skill identifié pour détecter des
    collaborations bénéfiques.
+   - Epic ou feature complexe (4+ skills, multi-packages) → invoquer **pilotix**
+     pour décomposer en sous-tâches séquencées avant toute implémentation
+   - Symptôme flou ou multi-domaine ("ça ne marche pas bien") → invoquer
+     **diagnostix** pour un triage transversal avant de router vers les spécialistes
    - Bug / anomalie / régression → invoquer **anomalix** dès maintenant pour
      bénéficier de sa méthodologie de diagnostic
    - Nouvelle fonctionnalité nécessitant cadrage → invoquer **projetix**
    - Bug ou feature impliquant la BDD (tables, requêtes, RLS, migrations) →
      invoquer **databasix** pour le diagnostic de la couche données
+   - ETL, consolidation multi-source, KPIs, dashboard analytique →
+     invoquer **datanalytix** pour l'architecture du pipeline de données
+   - Modification d'un package partagé (@unanima/*) → invoquer **soclix**
+     pour l'analyse d'impact cross-app avant toute modification
    - Audit qualité ou dette technique demandé → invoquer **auditix**
    - Suspicion de faille de sécurité, secret exposé, auth bypass →
      invoquer **securix** pour l'audit sécurité
@@ -303,6 +319,12 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
      des vulnérabilités et le plan de durcissement
    - Intégration avec un service externe → invoquer **integratix** pour
      l'architecture d'intégration (adapter, retry, circuit breaker)
+   - Pipeline de données, consolidation, KPIs analytiques → invoquer
+     **datanalytix** pour l'architecture ETL et les requêtes analytiques
+   - Modification d'un package du socle (@unanima/*) → invoquer **soclix**
+     pour la matrice d'impact cross-app et la stratégie de migration
+   - Issue complexe nécessitant coordination de 4+ skills → invoquer
+     **pilotix** pour le plan d'exécution séquencé
 7. 2-3 approches avec trade-offs
 8. `CONTINUE: false` → **STOP** (présenter options)
    `CONTINUE: true` → choisir la première approche, étape 3

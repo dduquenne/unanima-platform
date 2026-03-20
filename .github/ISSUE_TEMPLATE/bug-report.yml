@@ -1,0 +1,86 @@
+name: "Rapport de bug"
+description: "Signaler un bug, une anomalie ou un comportement inattendu"
+title: "[{app}] Bug: "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: Application concernée
+      description: Dans quelle application le bug se manifeste-t-il ?
+      options:
+        - links (Link's Accompagnement)
+        - creai (CREAI Île-de-France)
+        - omega (Omega Automotive)
+        - socle (Socle commun / transverse)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description du bug
+      description: Décrivez précisément le comportement observé
+      placeholder: "Quand je fais X, il se passe Y au lieu de Z..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Étapes de reproduction
+      description: Comment reproduire le bug étape par étape
+      placeholder: |
+        1. Aller sur la page ...
+        2. Cliquer sur ...
+        3. Observer que ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportement attendu
+      description: Que devrait-il se passer normalement ?
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-message
+    attributes:
+      label: Message d'erreur / Stack trace
+      description: Copier-coller le message d'erreur complet si disponible
+      render: shell
+    validations:
+      required: false
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Sévérité
+      options:
+        - Critique (crash, perte de données, faille sécurité)
+        - Majeur (fonctionnalité bloquée, dégradation importante)
+        - Mineur (cosmétique, contournement possible)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environnement
+      options:
+        - Production
+        - Staging / Preview
+        - Développement local
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexte additionnel
+      description: Depuis quand ? Après quel changement ? Fréquence ?
+      placeholder: "Apparu après le dernier déploiement du 15/03. Reproductible 100% du temps."
+    validations:
+      required: false

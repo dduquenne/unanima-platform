@@ -19,6 +19,8 @@ compatibility:
     - databasix    # Pour la synchronisation et la persistance des données importées
     - apix         # Pour les contrats d'interface webhook et les endpoints d'intégration
     - securix      # Pour la sécurisation des échanges (auth API, secrets, validation des payloads)
+    - datanalytix  # Pour le traitement et la transformation des données après extraction (ETL/ELT)
+    - soclix       # Quand le connecteur doit être mutualisé dans le socle (ex : Resend partagé)
 ---
 
 # Integratix — Intégrations Tierces & Connecteurs

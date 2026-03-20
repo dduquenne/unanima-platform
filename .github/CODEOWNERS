@@ -1,0 +1,85 @@
+# CODEOWNERS — Unanima Platform
+# Ce fichier mappe les paths du monorepo aux préoccupations des skills.
+# Il sert de référence pour le routage des revues de code et l'identification
+# des skills à invoquer lors du traitement des issues.
+#
+# Format : <path-pattern> @<concern>
+# Les "concerns" correspondent aux skills de l'équipe virtuelle.
+
+# ============================================================
+# SOCLE COMMUN — Toute modification déclenche soclix + testix
+# ============================================================
+/packages/                          @soclix @testix
+/packages/core/                     @soclix @ergonomix @archicodix
+/packages/auth/                     @soclix @securix @archicodix
+/packages/db/                       @soclix @databasix @securix
+/packages/db/migrations/            @soclix @databasix @migratix @securix
+/packages/dashboard/                @soclix @ergonomix @datanalytix
+/packages/email/                    @soclix @integratix
+/packages/rgpd/                     @soclix @rgpdix @securix
+
+# ============================================================
+# APPLICATIONS — Routage par app et par domaine
+# ============================================================
+
+# Link's Accompagnement
+/apps/links/                        @archicodix
+/apps/links/src/app/api/            @apix @securix
+/apps/links/src/app/                @ergonomix
+/apps/links/src/lib/                @archicodix
+/apps/links/src/config/auth*        @securix @archicodix
+
+# CREAI Île-de-France
+/apps/creai/                        @archicodix
+/apps/creai/src/app/api/            @apix @securix
+/apps/creai/src/app/                @ergonomix
+/apps/creai/src/lib/                @archicodix
+/apps/creai/src/config/auth*        @securix @archicodix
+
+# Omega Automotive
+/apps/omega/                        @archicodix
+/apps/omega/src/app/api/            @apix @securix @datanalytix
+/apps/omega/src/app/                @ergonomix @datanalytix
+/apps/omega/src/lib/                @archicodix @integratix
+/apps/omega/src/config/auth*        @securix @archicodix
+
+# ============================================================
+# INFRASTRUCTURE & CI/CD
+# ============================================================
+/.github/workflows/                 @repositorix @deploix
+/.github/ISSUE_TEMPLATE/            @repositorix @pilotix
+/scripts/                           @deploix @repositorix
+/turbo.json                         @archicodix @deploix
+/pnpm-workspace.yaml                @archicodix @soclix
+
+# ============================================================
+# CONFIGURATION & TOOLING
+# ============================================================
+/tooling/                           @archicodix
+/tooling/tailwind/                  @ergonomix
+/tooling/eslint/                    @archicodix
+/tooling/tsconfig/                  @archicodix
+*.config.js                         @archicodix
+*.config.ts                         @archicodix
+/vercel.json                        @deploix
+
+# ============================================================
+# DOCUMENTATION
+# ============================================================
+/docs/                              @documentalix
+/docs/platform/ADR/                 @documentalix @archicodix
+/docs/platform/reports/             @documentalix @diagnostix
+/CLAUDE.md                          @documentalix @archicodix @soclix
+
+# ============================================================
+# SKILLS & COMMANDES
+# ============================================================
+/.claude/skills/                    @skill-creator
+/.claude/commands/                  @pilotix @repositorix
+
+# ============================================================
+# SÉCURITÉ — Fichiers sensibles
+# ============================================================
+*.env*                              @securix
+**/middleware.ts                     @securix @archicodix
+**/auth*                            @securix

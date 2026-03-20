@@ -9,6 +9,8 @@ compatibility:
     - recettix        # Pour générer les critères d'acceptation et le plan de recette dès la phase de spécification
     - documentalix    # Pour intégrer les livrables dans le référentiel documentaire du projet
     - rgpdix          # Pour intégrer les exigences RGPD dans les spécifications fonctionnelles
+    - pilotix         # Pour décomposer les specs en sous-tâches séquencées et orchestrer l'implémentation
+    - datanalytix     # Pour spécifier les besoins en données analytiques, KPIs et dashboards
 ---
 
 # Skill : Projetix

@@ -18,6 +18,8 @@ compatibility:
     - migratix     # Pour les migrations de schéma (expand/contract, zero downtime, backfill, rollback)
     - securix      # Pour la sécurisation de la couche données (RLS, chiffrement, audit trail)
     - rgpdix       # Quand les données personnelles sont concernées (conservation, anonymisation, droit à l'oubli)
+    - datanalytix  # Pour les vues analytiques, agrégations, KPIs et pipelines de données
+    - soclix       # Quand la modification touche les tables communes (profiles, audit_logs)
 ---
 
 # Databasix — Expert Base de Données Supabase × TypeScript

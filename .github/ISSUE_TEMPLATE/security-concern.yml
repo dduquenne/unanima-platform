@@ -1,0 +1,77 @@
+name: "Préoccupation de sécurité"
+description: "Signaler une faille de sécurité ou une préoccupation de sécurité"
+title: "[sécurité] "
+labels: ["security", "priority:high"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > **Important :** Pour les failles critiques exploitables en production,
+        > privilégiez un signalement privé via les paramètres de sécurité du dépôt GitHub
+        > plutôt que cette issue publique.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Catégorie de sécurité
+      options:
+        - Authentification / Autorisation (auth bypass, RLS, RBAC)
+        - Injection (SQL, XSS, CSRF, command injection)
+        - Exposition de données (secrets, PII, logs)
+        - Dépendances vulnérables (CVE, npm audit)
+        - Configuration (headers, CORS, CSP, env vars)
+        - RGPD / Données personnelles
+        - Autre
+    validations:
+      required: true
+
+  - type: dropdown
+    id: app
+    attributes:
+      label: Application concernée
+      options:
+        - links (Link's Accompagnement)
+        - creai (CREAI Île-de-France)
+        - omega (Omega Automotive)
+        - socle (Socle commun / transverse)
+        - Toutes les applications
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description de la préoccupation
+      description: Décrivez la faille ou le risque identifié
+      placeholder: "La route /api/xxx ne vérifie pas les permissions..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact potentiel
+      description: Que pourrait faire un attaquant exploitant cette faille ?
+      placeholder: "Un utilisateur non authentifié pourrait accéder aux données de..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: remediation
+    attributes:
+      label: Piste de remédiation (optionnel)
+      description: Avez-vous une idée de comment corriger ?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: exploitability
+    attributes:
+      label: Exploitabilité
+      options:
+        - Facile (exploitable sans compétence technique)
+        - Moyenne (nécessite des connaissances techniques)
+        - Difficile (conditions très spécifiques requises)
+        - Théorique (non vérifié, risque potentiel)
+    validations:
+      required: true

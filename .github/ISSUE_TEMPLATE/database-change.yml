@@ -1,0 +1,91 @@
+name: "Modification de base de données"
+description: "Demander un changement de schéma, une migration ou une modification de données"
+title: "[{app}] BDD: "
+labels: ["database", "migration"]
+body:
+  - type: dropdown
+    id: app
+    attributes:
+      label: Application concernée
+      options:
+        - links (Link's Accompagnement)
+        - creai (CREAI Île-de-France)
+        - omega (Omega Automotive)
+        - socle (Tables communes — profiles, audit_logs)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: Type de changement
+      options:
+        - Nouvelle table
+        - Nouvelle colonne sur table existante
+        - Modification de colonne (type, contrainte)
+        - Suppression de colonne / table
+        - Nouvelle politique RLS
+        - Modification de politique RLS
+        - Index de performance
+        - Vue ou vue matérialisée
+        - Fonction / trigger PostgreSQL
+        - Backfill / migration de données
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description du changement
+      description: Décrivez le changement souhaité et sa justification métier
+      placeholder: "Ajouter une table `sav_tickets` pour stocker les tickets Salesforce importés..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: schema
+    attributes:
+      label: Schéma proposé (optionnel)
+      description: SQL ou pseudo-schéma si vous avez une idée de la structure
+      render: sql
+      placeholder: |
+        CREATE TABLE sav_tickets (
+          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          external_id TEXT NOT NULL,
+          source TEXT NOT NULL,
+          ...
+        );
+    validations:
+      required: false
+
+  - type: textarea
+    id: rls
+    attributes:
+      label: Politique RLS souhaitée (optionnel)
+      description: Qui doit pouvoir lire / écrire / modifier ces données ?
+      placeholder: "Les consultants peuvent voir tous les tickets de leur périmètre. Les bénéficiaires ne voient que leurs propres tickets."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: Impact identifié
+      options:
+        - label: "Cette modification est un breaking change (colonnes renommées/supprimées)"
+        - label: "Des données existantes doivent être migrées (backfill)"
+        - label: "Cette modification touche une table du socle commun"
+        - label: "Des types TypeScript générés doivent être mis à jour"
+
+  - type: checkboxes
+    id: skills-hint
+    attributes:
+      label: Skills concernés
+      description: Aide au routage /issue
+      options:
+        - label: "databasix — Conception de schéma, RLS, index"
+        - label: "migratix — Stratégie de migration, expand/contract"
+        - label: "datanalytix — Vues analytiques, agrégations, KPIs"
+        - label: "soclix — Impact cross-app si table du socle"
+        - label: "securix — Sécurité des données, RLS"
+        - label: "rgpdix — Données personnelles, RGPD"
