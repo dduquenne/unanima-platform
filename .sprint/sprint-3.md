@@ -134,3 +134,38 @@ kpis_sav (id, periode DATE, type, valeur NUMERIC, objectif NUMERIC, metadata JSO
 - **Format commit :** `feat(scope): description (closes #XX)`
 - **Scopes :** `db`, `links`, `creai`, `omega`, `api`
 - **Chaque migration SQL est irréversible** une fois déployée — vérifier avant commit
+
+---
+
+## Vérification d'exhaustivité
+- [x] Toutes les issues du sprint sont listées ci-dessus (11/11)
+- [x] Aucune issue n'a été omise ou reportée sans justification
+- [x] L'ordre respecte la règle sécurité > features > mineurs
+
+---
+
+## Rapport d'exécution
+
+**Date d'exécution :** Sprint 3 implémenté et mergé (commit `81f5670`)
+**Issues traitées :** 11/11 (100%)
+**Commit de merge :** `81f5670` — feat: Sprint 3 — Schémas BDD métier, CRUD helpers et API REST pour les 3 apps (#79)
+
+| # | Issue | Résultat |
+|---|-------|----------|
+| 1 | Schéma BDD Links (6 tables) | ✅ beneficiaires, bilans, questionnaires, questions, responses, documents |
+| 2 | Schéma BDD CREAI (5 tables) | ✅ etablissements, diagnostics, indicateurs, rapports, recommandations |
+| 3 | Schéma BDD Omega (5 tables) | ✅ clients_vehicules, interventions, affectations, pieces_detachees, kpis_sav |
+| 4 | Types TypeScript Supabase | ✅ database.ts + schemas.ts + index.ts par app |
+| 5 | Helpers CRUD Links | ✅ 7 modules (beneficiaires, bilans, questionnaires, questions, responses, documents, utils) |
+| 6 | Helpers CRUD CREAI | ✅ 6 modules (etablissements, diagnostics, indicateurs, rapports, recommandations, utils) |
+| 7 | Helpers CRUD Omega | ✅ 6 modules (interventions, affectations, pieces-detachees, clients-vehicules, kpis-sav, utils) |
+| 8 | API Links | ✅ /api/beneficiaires, /api/bilans, /api/documents + [id] routes |
+| 9 | API CREAI | ✅ /api/etablissements, /api/diagnostics, /api/rapports + [id] routes |
+| 10 | API Omega | ✅ /api/interventions, /api/affectations, /api/pieces + [id] routes |
+| 11 | Tests unitaires | ✅ schemas.test.ts + domain tests per app |
+
+### Métriques de qualité
+- Build : ✅ (9/9 tasks, FULL TURBO)
+- Tests : ✅ (228 tests, 100% passent)
+- Lint : ✅
+- CVE HIGH : 0
