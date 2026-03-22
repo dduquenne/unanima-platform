@@ -285,6 +285,23 @@ Assignees : [optionnel]
 *Généré automatiquement par Auditix*
 ```
 
+### Suivi post-audit — Intégration avec Sprintix
+
+Quand Auditix crée des issues et les assigne à des sprints :
+
+1. **Vérifier l'assignation** : chaque issue créée **DOIT** être ajoutée au
+   GitHub Project avec le bon sprint/itération
+2. **Taguer les issues** avec le label `audit` pour les distinguer des features
+3. **Ajouter dans le body** de chaque issue :
+   ```
+   > ⚠️ Issue d'audit Auditix — ne pas reporter sans justification.
+   > Assignée au Sprint N. Sera traitée par Sprintix.
+   ```
+4. **Après chaque sprint**, vérifier que les issues audit assignées ont bien été
+   traitées. Si non → alerter dans le rapport d'audit de suivi.
+
+---
+
 ### Création via script Python (si accès filesystem)
 
 Si des fichiers sont accessibles en local, proposer de générer un script de création en masse
