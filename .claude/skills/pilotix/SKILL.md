@@ -271,6 +271,29 @@ réordonnancement.
 
 ---
 
+## Règles de délégation à Sprintix
+
+Quand Pilotix délègue l'exécution d'un sprint à Sprintix :
+
+1. **Vérifier le périmètre** : s'assurer que **TOUTES** les issues du sprint
+   (features ET audit ET dette technique) sont dans le GitHub Project
+2. **Ne jamais scoper un sprint uniquement aux features** — si le Project contient
+   des issues d'audit dans le même sprint, elles **DOIVENT** être incluses
+3. **Valider le plan Sprintix** avant de lancer l'exécution :
+   - Le nombre d'issues dans le plan == le nombre d'issues dans le Project
+   - Les issues critiques sont en Phase 1
+   - Les features ne passent pas avant les issues sécurité
+
+### Anti-pattern à bloquer
+
+Si un opérateur demande "exécute le sprint 2 — juste les features" :
+→ Pilotix **REFUSE**
+→ Réponse : "Le sprint 2 contient X issues features ET Y issues audit.
+  Sprintix traitera les deux. Si vous voulez exclure des issues, retirez-les
+  d'abord du sprint dans le GitHub Project."
+
+---
+
 ## Anti-patterns à éviter
 
 | Anti-pattern | Correction |
