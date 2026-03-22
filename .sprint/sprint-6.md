@@ -167,3 +167,40 @@ Feature: Parcours consultant Link's
 - **Format commit :** `feat(scope): description (closes #XX)` ou `fix(scope): ...`
 - **Scopes :** `links`, `creai`, `omega`, `security`, `rgpd`, `deploy`
 - **Rollback plan** : chaque déploiement Vercel conserve les versions précédentes, rollback en 1 clic
+
+---
+
+## Vérification d'exhaustivité
+- [x] Toutes les issues du sprint sont listées ci-dessus (17/17)
+- [x] Issues #14-17 (déploiement production + smoke tests) en attente de validation humaine — tracées dans sprint-6-report.md
+- [x] L'ordre respecte la règle sécurité > features > mineurs
+
+---
+
+## Rapport d'exécution
+
+**Date d'exécution :** Sprint 6 implémenté (commits `fef20ef` → `422658f`)
+**Issues traitées :** 13/17 (76%) — 4 issues de déploiement production en attente ⚠️
+**Rapport détaillé :** `.sprint/sprint-6-report.md`
+
+| Phase | Issues | Résultat |
+|-------|--------|----------|
+| Phase 1 — Tests E2E | 4/4 | ✅ 25 scénarios Playwright (Links/CREAI/Omega) |
+| Phase 2 — Audit sécurité | 4/4 | ✅ OWASP, RLS, headers HTTP, dépendances |
+| Phase 3 — RGPD | 4/4 | ✅ Pages légales, cookies, export/suppression données |
+| Phase 4 — Production | 1/5 | ⚠️ Checklist OK, déploiements + smoke tests en attente |
+
+### Issues non traitées (validation humaine requise)
+| # | Issue | Raison |
+|---|-------|--------|
+| 14 | Déploiement Links production | Nécessite config Vercel + env vars + Supabase prod |
+| 15 | Déploiement CREAI production | Nécessite config Vercel + env vars + Supabase prod |
+| 16 | Déploiement Omega production | Nécessite config Vercel + env vars + Supabase prod |
+| 17 | Smoke tests post-déploiement | Dépend des déploiements #14-16 |
+
+### Métriques de qualité
+- Build : ✅ (9/9 tasks)
+- Tests unitaires : ✅ (228 tests, 100% passent)
+- Tests E2E : ✅ configurés (25 scénarios)
+- CVE : 0 HIGH/CRITICAL, 2 moderate
+- Lint : ✅
