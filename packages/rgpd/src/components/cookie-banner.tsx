@@ -9,6 +9,32 @@ interface CookieBannerProps {
 }
 
 const COOKIE_CONSENT_KEY = 'unanima_cookie_consent'
+const SESSION_ID_KEY = 'unanima_session_id'
+
+function getSessionId(): string {
+  if (typeof window === 'undefined') return ''
+  let sessionId = sessionStorage.getItem(SESSION_ID_KEY)
+  if (!sessionId) {
+    sessionId = crypto.randomUUID()
+    sessionStorage.setItem(SESSION_ID_KEY, sessionId)
+  }
+  return sessionId
+}
+
+async function persistConsentServer(categories: { necessary: boolean; analytics: boolean; marketing: boolean }) {
+  try {
+    await fetch('/api/rgpd/cookie-consent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: getSessionId(),
+        categories,
+      }),
+    })
+  } catch {
+    // Silent fail — localStorage remains the fallback
+  }
+}
 
 export function CookieBanner({ onAccept, onReject, className }: CookieBannerProps) {
   const [isVisible, setIsVisible] = useState(false)
@@ -22,14 +48,18 @@ export function CookieBanner({ onAccept, onReject, className }: CookieBannerProp
   }, [])
 
   const handleAccept = useCallback(() => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, 'accepted')
+    const categories = { necessary: true, analytics: true, marketing: true }
+    localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(categories))
     setIsVisible(false)
+    persistConsentServer(categories)
     onAccept?.()
   }, [onAccept])
 
   const handleReject = useCallback(() => {
-    localStorage.setItem(COOKIE_CONSENT_KEY, 'rejected')
+    const categories = { necessary: true, analytics: false, marketing: false }
+    localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(categories))
     setIsVisible(false)
+    persistConsentServer(categories)
     onReject?.()
   }, [onReject])
 
