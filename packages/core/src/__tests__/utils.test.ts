@@ -30,6 +30,23 @@ describe('formatDate', () => {
     expect(typeof result).toBe('string')
     expect(result.length).toBeGreaterThan(0)
   })
+
+  it('formats a date string', () => {
+    const result = formatDate('2024-06-01')
+    expect(result).toContain('2024')
+  })
+
+  it('returns "Date invalide" for invalid string', () => {
+    expect(formatDate('not-a-date')).toBe('Date invalide')
+  })
+
+  it('returns "Date invalide" for invalid Date object', () => {
+    expect(formatDate(new Date('invalid'))).toBe('Date invalide')
+  })
+
+  it('returns "Date invalide" for empty string', () => {
+    expect(formatDate('')).toBe('Date invalide')
+  })
 })
 
 describe('validateEmail', () => {
