@@ -21,6 +21,7 @@ export async function POST() {
     supabaseUrl,
     supabaseServiceRoleKey,
     additionalTables: ['interventions', 'affectations', 'pieces'],
+    allowedTables: ['interventions', 'affectations', 'pieces'],
   })
 
   if (error) {

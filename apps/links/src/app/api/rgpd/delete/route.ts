@@ -22,6 +22,7 @@ export async function POST() {
     supabaseUrl,
     supabaseServiceRoleKey,
     additionalTables: ['beneficiaires', 'bilans', 'responses', 'documents'],
+    allowedTables: ['beneficiaires', 'bilans', 'responses', 'documents'],
   })
 
   if (error) {

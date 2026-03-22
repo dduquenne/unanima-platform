@@ -1,10 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
+import { validateTableNames } from './validate-tables'
 
 interface DeleteAccountOptions {
   userId: string
   supabaseUrl: string
   supabaseServiceRoleKey: string
   additionalTables?: string[]
+  allowedTables: string[]
 }
 
 export async function deleteAccount({
@@ -12,7 +14,14 @@ export async function deleteAccount({
   supabaseUrl,
   supabaseServiceRoleKey,
   additionalTables = [],
+  allowedTables,
 }: DeleteAccountOptions): Promise<{ error: Error | null }> {
+  try {
+    validateTableNames(additionalTables, allowedTables)
+  } catch (err) {
+    return { error: err as Error }
+  }
+
   const supabase = createClient(supabaseUrl, supabaseServiceRoleKey)
 
   for (const table of additionalTables) {
