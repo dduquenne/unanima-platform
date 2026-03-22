@@ -24,31 +24,17 @@ export async function deleteAccount({
 
   const supabase = createClient(supabaseUrl, supabaseServiceRoleKey)
 
-  for (const table of additionalTables) {
-    const { error } = await supabase.from(table).delete().eq('user_id', userId)
-    if (error) {
-      return { error: new Error(`Failed to delete from ${table}: ${error.message}`) }
-    }
+  // Use atomic PostgreSQL function for data deletion
+  const { error: rpcError } = await supabase.rpc('delete_user_account', {
+    target_user_id: userId,
+    additional_tables: additionalTables,
+  })
+
+  if (rpcError) {
+    return { error: new Error(`Atomic deletion failed: ${rpcError.message}`) }
   }
 
-  const { error: auditError } = await supabase
-    .from('audit_logs')
-    .delete()
-    .eq('user_id', userId)
-
-  if (auditError) {
-    return { error: new Error(`Failed to delete audit logs: ${auditError.message}`) }
-  }
-
-  const { error: profileError } = await supabase
-    .from('profiles')
-    .delete()
-    .eq('id', userId)
-
-  if (profileError) {
-    return { error: new Error(`Failed to delete profile: ${profileError.message}`) }
-  }
-
+  // Delete auth user (must be done via Admin API, outside the SQL transaction)
   const { error: authError } = await supabase.auth.admin.deleteUser(userId)
 
   if (authError) {
