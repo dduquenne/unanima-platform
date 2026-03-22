@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { getResendClient } from './client'
+import { validateEmails, validateSubject, validateFrom } from './validate'
 
 interface SendEmailOptions {
   to: string | string[]
@@ -23,6 +24,15 @@ export async function sendEmail({
   template,
   from = DEFAULT_FROM,
 }: SendEmailOptions): Promise<{ error: Error | null }> {
+  try {
+    const recipients = Array.isArray(to) ? to : [to]
+    validateEmails(recipients)
+    validateSubject(subject)
+    validateFrom(from)
+  } catch (err) {
+    return { error: err as Error }
+  }
+
   const resend = getResendClient()
 
   const { error } = await resend.emails.send({
@@ -38,6 +48,17 @@ export async function sendEmail({
 export async function sendBatch(
   emails: BatchEmail[],
 ): Promise<{ error: Error | null }> {
+  try {
+    for (const email of emails) {
+      const recipients = Array.isArray(email.to) ? email.to : [email.to]
+      validateEmails(recipients)
+      validateSubject(email.subject)
+      validateFrom(email.from ?? DEFAULT_FROM)
+    }
+  } catch (err) {
+    return { error: err as Error }
+  }
+
   const resend = getResendClient()
 
   const { error } = await resend.batch.send(

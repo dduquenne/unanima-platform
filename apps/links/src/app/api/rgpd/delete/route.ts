@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { deleteAccount } from '@unanima/rgpd'
-import { logAudit } from '@unanima/db'
 import { getCurrentUser, unauthorizedResponse, serverErrorResponse } from '@/lib/api/utils'
 
 export async function POST() {
@@ -14,14 +13,12 @@ export async function POST() {
     return serverErrorResponse('Configuration Supabase manquante')
   }
 
-  // Log before deletion (will be deleted with the account)
-  await logAudit(user.id, 'rgpd_delete_request', 'profiles', user.id)
-
   const { error } = await deleteAccount({
     userId: user.id,
     supabaseUrl,
     supabaseServiceRoleKey,
     additionalTables: ['beneficiaires', 'bilans', 'responses', 'documents'],
+    allowedTables: ['beneficiaires', 'bilans', 'responses', 'documents'],
   })
 
   if (error) {

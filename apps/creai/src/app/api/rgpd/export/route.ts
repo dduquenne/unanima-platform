@@ -19,6 +19,7 @@ export async function GET() {
     supabaseUrl,
     supabaseServiceRoleKey,
     additionalTables: ['etablissements', 'diagnostics', 'indicateurs', 'recommandations'],
+    allowedTables: ['etablissements', 'diagnostics', 'indicateurs', 'recommandations'],
   })
 
   if (error) {

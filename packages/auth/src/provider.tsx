@@ -86,11 +86,28 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
 
   const resetPassword = useCallback(
     async (email: string) => {
-      if (!supabase) return { error: new Error('Supabase client not initialized') }
-      const { error } = await supabase.auth.resetPasswordForEmail(email)
-      return { error: error ? new Error(error.message) : null }
+      try {
+        const response = await fetch('/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        })
+
+        if (response.status === 429) {
+          return { error: new Error('Trop de demandes. Réessayez plus tard.') }
+        }
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}))
+          return { error: new Error(data.error ?? 'Erreur lors de la réinitialisation') }
+        }
+
+        return { error: null }
+      } catch {
+        return { error: new Error('Erreur réseau') }
+      }
     },
-    [supabase],
+    [],
   )
 
   const value = useMemo<AuthContextValue>(
