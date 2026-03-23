@@ -72,252 +72,28 @@ les incidents sont gérés méthodiquement**.
 
 ## Phase 2 — Error Tracking (Sentry)
 
-### 2.1 Installation et configuration
+Sentry est l'outil central d'error tracking. La configuration inclut : `initSentry()` avec filtrage
+du bruit et masquage RGPD, `ErrorBoundary` React, et la capture contextuelle (user, tags, breadcrumbs).
 
-```typescript
-// packages/core/src/monitoring/sentry.ts
-import * as Sentry from '@sentry/nextjs'
-
-export function initSentry(config: {
-  dsn: string
-  environment: string
-  app: 'links' | 'creai' | 'omega'
-}) {
-  Sentry.init({
-    dsn: config.dsn,
-    environment: config.environment,
-    release: process.env.VERCEL_GIT_COMMIT_SHA,
-
-    // Échantillonnage : 100% des erreurs, 10% des transactions
-    tracesSampleRate: config.environment === 'production' ? 0.1 : 1.0,
-
-    // Filtrer le bruit
-    ignoreErrors: [
-      'ResizeObserver loop',
-      'Network request failed',
-      'Load failed',
-    ],
-
-    // Contexte enrichi
-    initialScope: {
-      tags: {
-        app: config.app,
-      },
-    },
-
-    // Masquer les données sensibles
-    beforeSend(event) {
-      if (event.request?.cookies) {
-        delete event.request.cookies
-      }
-      return event
-    },
-  })
-}
-```
-
-### 2.2 Error boundaries React
-
-```typescript
-// packages/core/src/components/error-boundary.tsx
-'use client'
-import * as Sentry from '@sentry/nextjs'
-import { Component, type ReactNode } from 'react'
-
-interface Props {
-  children: ReactNode
-  fallback: ReactNode
-}
-
-export class ErrorBoundary extends Component<Props, { hasError: boolean }> {
-  state = { hasError: false }
-
-  static getDerivedStateFromError() {
-    return { hasError: true }
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    Sentry.captureException(error, {
-      extra: { componentStack: errorInfo.componentStack },
-    })
-  }
-
-  render() {
-    if (this.state.hasError) return this.props.fallback
-    return this.props.children
-  }
-}
-```
-
-### 2.3 Capture contextuelle
-
-```typescript
-// Enrichir les erreurs avec le contexte métier
-Sentry.setUser({
-  id: user.id,
-  email: user.email,   // Attention RGPD : vérifier le consentement
-  role: user.role,
-})
-
-Sentry.setTag('app', 'links')
-Sentry.setTag('feature', 'bilan-competences')
-
-// Breadcrumbs pour retracer le parcours
-Sentry.addBreadcrumb({
-  category: 'navigation',
-  message: `Navigué vers ${pathname}`,
-  level: 'info',
-})
-
-// Capturer une erreur avec contexte enrichi
-try {
-  await saveBeneficiaire(data)
-} catch (error) {
-  Sentry.captureException(error, {
-    tags: { action: 'save_beneficiaire' },
-    extra: { beneficiaireId: data.id },
-  })
-  throw error
-}
-```
+Voir **`references/sentry-setup.md`** pour le code complet (initialisation, error boundary, capture contextuelle).
 
 ---
 
 ## Phase 3 — Logging structuré
 
-### 3.1 Configuration Pino
+Logging via Pino avec redaction RGPD automatique, niveaux structurés (fatal/error/warn/info/debug/trace),
+et contexte enrichi (app, module, version). Toujours utiliser des logs structurés, jamais `console.log`.
 
-```typescript
-// packages/core/src/monitoring/logger.ts
-import pino from 'pino'
-
-export function createLogger(config: { app: string; module: string }) {
-  return pino({
-    level: process.env.LOG_LEVEL || 'info',
-    formatters: {
-      level: (label) => ({ level: label }),
-    },
-    base: {
-      app: config.app,
-      module: config.module,
-      environment: process.env.NODE_ENV,
-      version: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7),
-    },
-    // Masquer les champs sensibles
-    redact: [
-      'req.headers.authorization',
-      'req.headers.cookie',
-      'password',
-      'token',
-      'secret',
-      'email',           // RGPD : masquer par défaut
-    ],
-  })
-}
-
-// Usage dans un route handler
-const logger = createLogger({ app: 'links', module: 'api/beneficiaires' })
-
-export async function GET(request: Request) {
-  logger.info({ method: 'GET', path: '/api/beneficiaires' }, 'Request received')
-
-  try {
-    const data = await fetchBeneficiaires()
-    logger.info({ count: data.length }, 'Beneficiaires fetched')
-    return Response.json(data)
-  } catch (error) {
-    logger.error({ error }, 'Failed to fetch beneficiaires')
-    throw error
-  }
-}
-```
-
-### 3.2 Niveaux de log
-
-| Niveau | Usage | Exemple |
-|--------|-------|---------|
-| `fatal` | Crash applicatif, arrêt | Base de données inaccessible |
-| `error` | Erreur nécessitant attention | Échec d'envoi d'email |
-| `warn` | Situation anormale mais gérée | Rate limit proche du seuil |
-| `info` | Événement métier notable | Bénéficiaire créé, bilan complété |
-| `debug` | Diagnostic développement | Requête SQL exécutée, cache hit/miss |
-| `trace` | Ultra-détaillé (dev only) | Entrée/sortie de chaque fonction |
-
-### 3.3 Bonnes pratiques de logging
-
-```typescript
-// ✅ Log structuré avec contexte
-logger.info({ userId, action: 'login', ip: request.ip }, 'User logged in')
-
-// ❌ Log non structuré
-console.log(`User ${userId} logged in from ${request.ip}`)
-
-// ✅ Erreur avec stack trace
-logger.error({ err: error, userId }, 'Payment processing failed')
-
-// ❌ Erreur sans contexte
-console.error('Error:', error.message)
-
-// ✅ Mesure de durée
-const start = performance.now()
-const result = await heavyOperation()
-logger.info({ durationMs: performance.now() - start }, 'Heavy operation completed')
-```
+Voir **`references/logging-standards.md`** pour la configuration Pino, les niveaux de log, et les bonnes pratiques.
 
 ---
 
-## Phase 4 — Health checks
+## Phase 4 — Health checks et uptime
 
-### 4.1 Endpoint /api/health
+Chaque app expose `GET /api/health` avec vérification de Supabase et Resend, retournant un statut
+`healthy`/`degraded`/`unhealthy`. Monitoring externe recommandé (BetterUptime, Checkly).
 
-```typescript
-// Chaque app expose GET /api/health (rappel CLAUDE.md)
-export async function GET() {
-  const checks = {
-    status: 'healthy' as 'healthy' | 'degraded' | 'unhealthy',
-    timestamp: new Date().toISOString(),
-    version: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || 'dev',
-    checks: {} as Record<string, { status: string; latencyMs?: number }>,
-  }
-
-  // Check Supabase
-  const dbStart = performance.now()
-  try {
-    const { error } = await supabase.from('profiles').select('id').limit(1)
-    checks.checks.database = {
-      status: error ? 'unhealthy' : 'healthy',
-      latencyMs: Math.round(performance.now() - dbStart),
-    }
-  } catch {
-    checks.checks.database = { status: 'unhealthy' }
-    checks.status = 'unhealthy'
-  }
-
-  // Check Resend (email)
-  try {
-    // Simple ping, pas d'envoi
-    checks.checks.email = { status: 'healthy' }
-  } catch {
-    checks.checks.email = { status: 'degraded' }
-    if (checks.status === 'healthy') checks.status = 'degraded'
-  }
-
-  const statusCode = checks.status === 'unhealthy' ? 503 : 200
-  return Response.json(checks, { status: statusCode })
-}
-```
-
-### 4.2 Monitoring uptime
-
-```bash
-# Vérifier le health check
-curl -s https://links.unanima.fr/api/health | jq .
-
-# Monitoring externe recommandé :
-# - BetterUptime / UptimeRobot / Checkly
-# - Intervalle : 1 min pour production, 5 min pour staging
-# - Alerte si 2 échecs consécutifs
-```
+Voir **`references/incident-playbooks.md`** pour le code du health check et la configuration uptime.
 
 ---
 
@@ -375,41 +151,7 @@ Alert 4 — Health check down
 6. DOCUMENTER — Post-mortem
 ```
 
-### 6.2 Template post-mortem
-
-```markdown
-# Post-mortem — [Titre de l'incident]
-
-**Date :** YYYY-MM-DD
-**Durée :** HH:MM (de détection à résolution)
-**Sévérité :** P0/P1/P2
-**Impact :** [Nombre d'utilisateurs affectés, fonctionnalité touchée]
-
-## Chronologie
-| Heure | Événement |
-|-------|-----------|
-| HH:MM | Alerte reçue : [description] |
-| HH:MM | Diagnostic : [cause identifiée] |
-| HH:MM | Correction déployée |
-| HH:MM | Incident résolu confirmé |
-
-## Cause racine
-[Description technique détaillée]
-
-## Ce qui a bien fonctionné
-- [Détection rapide grâce à ...]
-- [Rollback efficace via ...]
-
-## Ce qui doit être amélioré
-- [Pas d'alerte sur ...]
-- [Monitoring insuffisant sur ...]
-
-## Actions correctives
-| Action | Responsable | Échéance | Issue |
-|--------|-------------|----------|-------|
-| Ajouter un test pour ce cas | [nom] | [date] | #XX |
-| Améliorer l'alerting sur | [nom] | [date] | #XX |
-```
+Le template de post-mortem complet est disponible dans **`references/incident-playbooks.md`**.
 
 ---
 
