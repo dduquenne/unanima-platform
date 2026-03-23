@@ -1,0 +1,380 @@
+<!-- MAQ-07 | Dashboard Admin | Link's Accompagnement | v1.0 | 2026-03-23 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, -apple-system, sans-serif">
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FOND GLOBAL                                                 -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SIDEBAR (220px)                                             -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <rect x="0" y="0" width="220" height="900" fill="#0D3B6E"/>
+
+  <!-- Logo + brand -->
+  <rect x="20" y="22" width="32" height="32" rx="8" fill="#1E6FC0"/>
+  <text x="36" y="43" font-size="18" font-weight="700" fill="white" text-anchor="middle">L</text>
+  <text x="62" y="38" font-size="15" font-weight="700" fill="white">Link's</text>
+  <text x="62" y="54" font-size="11" font-weight="400" fill="#A8C4E0">Accompagnement</text>
+
+  <!-- Séparateur -->
+  <line x1="20" y1="76" x2="200" y2="76" stroke="#1E4A7A" stroke-width="1"/>
+
+  <!-- Label section nav -->
+  <text x="20" y="104" font-size="10" font-weight="600" fill="#7FA8C8" letter-spacing="1">NAVIGATION</text>
+
+  <!-- Nav item : Dashboard (actif) -->
+  <rect x="10" y="112" width="200" height="40" rx="8" fill="#1E6FC0"/>
+  <!-- Icône maison -->
+  <g transform="translate(28, 126)">
+    <path d="M8 0 L16 7 L16 16 L11 16 L11 11 L5 11 L5 16 L0 16 L0 7 Z" fill="none" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M-1 8 L8 0 L17 8" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="56" y="136" font-size="13" font-weight="600" fill="white">Dashboard</text>
+
+  <!-- Nav item : Utilisateurs -->
+  <rect x="10" y="160" width="200" height="40" rx="8" fill="transparent"/>
+  <rect x="10" y="160" width="200" height="40" rx="8" fill="white" fill-opacity="0.0"/>
+  <!-- Icône utilisateurs -->
+  <g transform="translate(28, 172)">
+    <circle cx="6" cy="5" r="4" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <path d="M0 16 C0 12 3 10 6 10 C9 10 12 12 12 16" fill="none" stroke="#A8C4E0" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="13" cy="5" r="3" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <path d="M11 16 C11 13 13 11 16 11" fill="none" stroke="#A8C4E0" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <text x="56" y="184" font-size="13" font-weight="400" fill="#A8C4E0">Utilisateurs</text>
+
+  <!-- Nav item : Documents -->
+  <rect x="10" y="208" width="200" height="40" rx="8" fill="transparent"/>
+  <!-- Icône document -->
+  <g transform="translate(28, 220)">
+    <rect x="1" y="0" width="13" height="17" rx="2" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <path d="M4 5 L11 5 M4 8 L11 8 M4 11 L9 11" stroke="#A8C4E0" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M10 0 L10 5 L15 5" fill="none" stroke="#A8C4E0" stroke-width="1.2" stroke-linejoin="round"/>
+  </g>
+  <text x="56" y="232" font-size="13" font-weight="400" fill="#A8C4E0">Documents</text>
+
+  <!-- Séparateur bas sidebar -->
+  <line x1="20" y1="860" x2="200" y2="860" stroke="#1E4A7A" stroke-width="1"/>
+
+  <!-- Version -->
+  <text x="110" y="878" font-size="10" fill="#4A6A8A" text-anchor="middle">v1.0.0 — 2026</text>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- HEADER (hauteur 64px, commence à x=220)                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <rect x="220" y="0" width="1220" height="64" fill="white"/>
+  <line x1="220" y1="64" x2="1440" y2="64" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Fil d'Ariane / titre header -->
+  <text x="248" y="30" font-size="11" fill="#7A8A9A">Administration</text>
+  <text x="248" y="47" font-size="14" font-weight="600" fill="#0D3B6E">Dashboard</text>
+
+  <!-- Avatar + nom admin (droite header) -->
+  <circle cx="1370" cy="32" r="20" fill="#1E6FC0"/>
+  <text x="1370" y="37" font-size="13" font-weight="700" fill="white" text-anchor="middle">A</text>
+
+  <text x="1344" y="26" font-size="12" font-weight="600" fill="#4A4A4A" text-anchor="end">Administrateur</text>
+  <text x="1344" y="41" font-size="11" fill="#7A8A9A" text-anchor="end">super_admin</text>
+
+  <!-- Bouton déconnexion -->
+  <rect x="1248" y="19" width="82" height="28" rx="6" fill="#F5F7FA" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône power -->
+  <g transform="translate(1259, 28)">
+    <path d="M5 0 L5 6" stroke="#7A8A9A" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M2 2.5 A5 5 0 1 0 8 2.5" fill="none" stroke="#7A8A9A" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <text x="1273" y="37" font-size="11" fill="#7A8A9A">Déconnexion</text>
+
+  <!-- Notification bell -->
+  <g transform="translate(1210, 20)">
+    <path d="M10 0 C6 0 3 3 3 7 L3 11 L0 14 L20 14 L17 11 L17 7 C17 3 14 0 10 0Z" fill="none" stroke="#7A8A9A" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M8 14 C8 15.1 8.9 16 10 16 C11.1 16 12 15.1 12 14" fill="none" stroke="#7A8A9A" stroke-width="1.5"/>
+    <circle cx="16" cy="4" r="4" fill="#FF6B35"/>
+    <text x="16" y="7" font-size="5" font-weight="700" fill="white" text-anchor="middle">2</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- CONTENU PRINCIPAL (x=220, y=64)                            -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+
+  <!-- Titre section -->
+  <text x="248" y="108" font-size="20" font-weight="700" fill="#0D3B6E">Vue d'ensemble — Link's Accompagnement</text>
+  <text x="248" y="126" font-size="13" fill="#7A8A9A">Données au 23 mars 2026 · Actualisation automatique toutes les 5 min</text>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- LIGNE KPI CARDS (4 cartes)                                  -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+
+  <!-- Ombre portée (simulée) + Card 1 : Bénéficiaires actifs -->
+  <rect x="248" y="146" width="270" height="110" rx="10" fill="#E8ECF0" transform="translate(2,3)"/>
+  <rect x="248" y="146" width="270" height="110" rx="10" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône personnes (cercle de fond) -->
+  <circle cx="490" cy="166" r="22" fill="#EBF3FC"/>
+  <g transform="translate(476, 153)">
+    <circle cx="7" cy="6" r="4.5" fill="none" stroke="#1E6FC0" stroke-width="1.8"/>
+    <path d="M0.5 18 C0.5 14 3.5 12 7 12 C10.5 12 13.5 14 13.5 18" fill="none" stroke="#1E6FC0" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="15" cy="6" r="3.5" fill="none" stroke="#1E6FC0" stroke-width="1.5"/>
+    <path d="M13 18 C13 15.5 14.5 13.5 17 13.5" fill="none" stroke="#1E6FC0" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <text x="263" y="178" font-size="12" font-weight="500" fill="#7A8A9A">Bénéficiaires actifs</text>
+  <text x="263" y="216" font-size="38" font-weight="700" fill="#0D3B6E">12</text>
+  <!-- Tendance -->
+  <rect x="263" y="228" width="60" height="18" rx="4" fill="#EBF3FC"/>
+  <text x="267" y="241" font-size="10" font-weight="600" fill="#1E6FC0">↑ +2 ce mois</text>
+
+  <!-- Card 2 : Taux d'avancement moyen -->
+  <rect x="538" y="146" width="270" height="110" rx="10" fill="#E8ECF0" transform="translate(2,3)"/>
+  <rect x="538" y="146" width="270" height="110" rx="10" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône graphique -->
+  <circle cx="780" cy="166" r="22" fill="#FFF3EE"/>
+  <g transform="translate(766, 153)">
+    <polyline points="1,18 5,10 9,13 14,4 18,7" fill="none" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="1" cy="18" r="1.5" fill="#FF6B35"/>
+    <circle cx="5" cy="10" r="1.5" fill="#FF6B35"/>
+    <circle cx="9" cy="13" r="1.5" fill="#FF6B35"/>
+    <circle cx="14" cy="4" r="1.5" fill="#FF6B35"/>
+    <circle cx="18" cy="7" r="1.5" fill="#FF6B35"/>
+  </g>
+  <text x="553" y="178" font-size="12" font-weight="500" fill="#7A8A9A">Taux d'avancement moyen</text>
+  <text x="553" y="216" font-size="38" font-weight="700" fill="#0D3B6E">47%</text>
+  <!-- Barre de progression sous la valeur -->
+  <rect x="553" y="228" width="200" height="6" rx="3" fill="#DCE1EB"/>
+  <rect x="553" y="228" width="94" height="6" rx="3" fill="#FF6B35"/>
+
+  <!-- Card 3 : Bilans terminés -->
+  <rect x="828" y="146" width="270" height="110" rx="10" fill="#E8ECF0" transform="translate(2,3)"/>
+  <rect x="828" y="146" width="270" height="110" rx="10" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône check -->
+  <circle cx="1070" cy="166" r="22" fill="#E8F5EC"/>
+  <g transform="translate(1056, 153)">
+    <circle cx="8" cy="10" r="9" fill="none" stroke="#28A745" stroke-width="1.8"/>
+    <polyline points="4,10 7,13 13,6" fill="none" stroke="#28A745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="843" y="178" font-size="12" font-weight="500" fill="#7A8A9A">Bilans terminés</text>
+  <text x="843" y="216" font-size="38" font-weight="700" fill="#0D3B6E">3</text>
+  <rect x="843" y="228" width="78" height="18" rx="4" fill="#E8F5EC"/>
+  <text x="847" y="241" font-size="10" font-weight="600" fill="#28A745">sur 12 actifs · 25%</text>
+
+  <!-- Card 4 : Consultantes actives -->
+  <rect x="1118" y="146" width="270" height="110" rx="10" fill="#E8ECF0" transform="translate(2,3)"/>
+  <rect x="1118" y="146" width="270" height="110" rx="10" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône étoile -->
+  <circle cx="1360" cy="166" r="22" fill="#EBF3FC"/>
+  <g transform="translate(1346, 153)">
+    <polygon points="8,1 10.5,6.5 17,7.5 12.5,12 13.5,18.5 8,15.5 2.5,18.5 3.5,12 -1,7.5 5.5,6.5" fill="none" stroke="#1E6FC0" stroke-width="1.7" stroke-linejoin="round"/>
+  </g>
+  <text x="1133" y="178" font-size="12" font-weight="500" fill="#7A8A9A">Consultantes actives</text>
+  <text x="1133" y="216" font-size="38" font-weight="700" fill="#0D3B6E">2</text>
+  <rect x="1133" y="228" width="90" height="18" rx="4" fill="#EBF3FC"/>
+  <text x="1137" y="241" font-size="10" font-weight="600" fill="#1E6FC0">Charge normale</text>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- TABLEAU — Activité bénéficiaires                           -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+
+  <!-- Conteneur tableau -->
+  <rect x="248" y="282" width="1140" height="52" rx="10" fill="transparent"/>
+
+  <!-- Titre + actions tableau -->
+  <text x="248" y="306" font-size="16" font-weight="700" fill="#0D3B6E">Activité bénéficiaires</text>
+  <text x="248" y="322" font-size="12" fill="#7A8A9A">Suivi en temps réel · 12 bénéficiaires actifs</text>
+
+  <!-- Bouton Exporter -->
+  <rect x="1248" y="292" width="140" height="34" rx="7" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <g transform="translate(1260, 305)">
+    <path d="M8 0 L8 11 M4 7 L8 11 L12 7" fill="none" stroke="#1E6FC0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M0 14 L0 16 L16 16 L16 14" fill="none" stroke="#1E6FC0" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+  <text x="1281" y="313" font-size="12" font-weight="500" fill="#1E6FC0">Exporter CSV</text>
+
+  <!-- Barre de recherche -->
+  <rect x="1040" y="292" width="192" height="34" rx="7" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <g transform="translate(1052, 304)">
+    <circle cx="6" cy="6" r="5.5" fill="none" stroke="#A8B2BE" stroke-width="1.5"/>
+    <line x1="10" y1="10" x2="14" y2="14" stroke="#A8B2BE" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <text x="1072" y="313" font-size="12" fill="#A8B2BE">Rechercher…</text>
+
+  <!-- Tableau fond + ombre -->
+  <rect x="248" y="340" width="1140" height="520" rx="10" fill="#E8ECF0" transform="translate(2,3)"/>
+  <rect x="248" y="340" width="1140" height="520" rx="10" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- En-tête tableau -->
+  <rect x="248" y="340" width="1140" height="44" rx="10" fill="#F5F7FA"/>
+  <rect x="248" y="362" width="1140" height="22" fill="#F5F7FA"/>
+  <line x1="248" y1="384" x2="1388" y2="384" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Colonnes header textes -->
+  <text x="278" y="366" font-size="11" font-weight="600" fill="#4A4A4A" letter-spacing="0.3">BÉNÉFICIAIRE</text>
+  <text x="488" y="366" font-size="11" font-weight="600" fill="#4A4A4A" letter-spacing="0.3">CONSULTANTE</text>
+  <text x="678" y="366" font-size="11" font-weight="600" fill="#4A4A4A" letter-spacing="0.3">PROGRESSION</text>
+  <text x="888" y="366" font-size="11" font-weight="600" fill="#4A4A4A" letter-spacing="0.3">DERNIÈRE CONNEXION</text>
+  <text x="1068" y="366" font-size="11" font-weight="600" fill="#4A4A4A" letter-spacing="0.3">STATUT</text>
+  <!-- Icône tri sur Bénéficiaire -->
+  <text x="386" y="367" font-size="10" fill="#A8B2BE">⇅</text>
+
+  <!-- ── LIGNE 1 : Sophie Martin ── -->
+  <rect x="248" y="384" width="1140" height="58" fill="white"/>
+  <line x1="248" y1="442" x2="1388" y2="442" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Avatar -->
+  <circle cx="268" cy="413" r="16" fill="#EBF3FC"/>
+  <text x="268" y="418" font-size="12" font-weight="700" fill="#1E6FC0" text-anchor="middle">SM</text>
+
+  <text x="294" y="408" font-size="13" font-weight="600" fill="#0D3B6E">Sophie Martin</text>
+  <text x="294" y="424" font-size="11" fill="#7A8A9A">sophie.martin@email.fr</text>
+
+  <text x="488" y="410" font-size="13" fill="#4A4A4A">Claire Dupont</text>
+  <text x="488" y="426" font-size="11" fill="#7A8A9A">Consultante senior</text>
+
+  <!-- Progression 72% -->
+  <rect x="678" y="406" width="170" height="7" rx="3.5" fill="#DCE1EB"/>
+  <rect x="678" y="406" width="122" height="7" rx="3.5" fill="#28A745"/>
+  <text x="856" y="414" font-size="12" font-weight="600" fill="#28A745">72%</text>
+
+  <text x="888" y="413" font-size="13" fill="#4A4A4A">Aujourd'hui, 10:24</text>
+  <text x="888" y="428" font-size="11" fill="#7A8A9A">il y a 2 heures</text>
+
+  <!-- Badge Actif -->
+  <rect x="1068" y="402" width="56" height="22" rx="11" fill="#E8F5EC"/>
+  <text x="1096" y="417" font-size="11" font-weight="600" fill="#28A745" text-anchor="middle">Actif</text>
+
+  <!-- Bouton Voir dossier -->
+  <rect x="1165" y="401" width="120" height="28" rx="6" fill="#EBF3FC" stroke="#B8D4EF" stroke-width="1"/>
+  <text x="1225" y="419" font-size="11" font-weight="600" fill="#1E6FC0" text-anchor="middle">Voir le dossier →</text>
+
+  <!-- ── LIGNE 2 : Thomas Leroy ── -->
+  <rect x="248" y="442" width="1140" height="58" fill="white"/>
+  <line x1="248" y1="500" x2="1388" y2="500" stroke="#DCE1EB" stroke-width="1"/>
+
+  <circle cx="268" cy="471" r="16" fill="#FFF0E8"/>
+  <text x="268" y="476" font-size="12" font-weight="700" fill="#FF6B35" text-anchor="middle">TL</text>
+
+  <text x="294" y="466" font-size="13" font-weight="600" fill="#0D3B6E">Thomas Leroy</text>
+  <text x="294" y="482" font-size="11" fill="#7A8A9A">thomas.leroy@email.fr</text>
+
+  <text x="488" y="468" font-size="13" fill="#4A4A4A">Isabelle Morel</text>
+  <text x="488" y="484" font-size="11" fill="#7A8A9A">Consultante</text>
+
+  <!-- Progression 45% -->
+  <rect x="678" y="464" width="170" height="7" rx="3.5" fill="#DCE1EB"/>
+  <rect x="678" y="464" width="76" height="7" rx="3.5" fill="#FF6B35"/>
+  <text x="856" y="472" font-size="12" font-weight="600" fill="#FF6B35">45%</text>
+
+  <text x="888" y="471" font-size="13" fill="#4A4A4A">Hier, 15:47</text>
+  <text x="888" y="486" font-size="11" fill="#7A8A9A">il y a 1 jour</text>
+
+  <rect x="1068" y="460" width="56" height="22" rx="11" fill="#E8F5EC"/>
+  <text x="1096" y="475" font-size="11" font-weight="600" fill="#28A745" text-anchor="middle">Actif</text>
+
+  <rect x="1165" y="459" width="120" height="28" rx="6" fill="#EBF3FC" stroke="#B8D4EF" stroke-width="1"/>
+  <text x="1225" y="477" font-size="11" font-weight="600" fill="#1E6FC0" text-anchor="middle">Voir le dossier →</text>
+
+  <!-- ── LIGNE 3 : Marie Blanc (INACTIVE — alerte) ── -->
+  <rect x="248" y="500" width="1140" height="58" fill="#FFF8F6"/>
+  <rect x="248" y="500" width="4" height="58" fill="#FF6B35"/>
+  <line x1="248" y1="558" x2="1388" y2="558" stroke="#DCE1EB" stroke-width="1"/>
+
+  <circle cx="268" cy="529" r="16" fill="#FFE8E0"/>
+  <text x="268" y="534" font-size="12" font-weight="700" fill="#D94A1E" text-anchor="middle">MB</text>
+
+  <text x="294" y="524" font-size="13" font-weight="600" fill="#0D3B6E">Marie Blanc</text>
+  <text x="294" y="540" font-size="11" fill="#7A8A9A">marie.blanc@email.fr</text>
+
+  <text x="488" y="526" font-size="13" fill="#4A4A4A">Claire Dupont</text>
+  <text x="488" y="542" font-size="11" fill="#7A8A9A">Consultante senior</text>
+
+  <!-- Progression 28% -->
+  <rect x="678" y="522" width="170" height="7" rx="3.5" fill="#DCE1EB"/>
+  <rect x="678" y="522" width="47" height="7" rx="3.5" fill="#D94A1E"/>
+  <text x="856" y="530" font-size="12" font-weight="600" fill="#D94A1E">28%</text>
+
+  <text x="888" y="524" font-size="13" fill="#D94A1E">05 mars 2026</text>
+  <text x="888" y="540" font-size="11" fill="#D94A1E">il y a 18 jours ⚠</text>
+
+  <!-- Badge Inactif ROUGE -->
+  <rect x="1060" y="518" width="70" height="22" rx="11" fill="#FFE8E0"/>
+  <text x="1095" y="533" font-size="11" font-weight="700" fill="#D94A1E" text-anchor="middle">Inactif</text>
+
+  <rect x="1165" y="517" width="120" height="28" rx="6" fill="#EBF3FC" stroke="#B8D4EF" stroke-width="1"/>
+  <text x="1225" y="535" font-size="11" font-weight="600" fill="#1E6FC0" text-anchor="middle">Voir le dossier →</text>
+
+  <!-- Pastille alerte sur la ligne -->
+  <circle cx="1148" cy="529" r="7" fill="#D94A1E"/>
+  <text x="1148" y="533" font-size="9" font-weight="700" fill="white" text-anchor="middle">!</text>
+
+  <!-- ── LIGNE 4 : Julien Petit ── -->
+  <rect x="248" y="558" width="1140" height="58" fill="white"/>
+  <line x1="248" y1="616" x2="1388" y2="616" stroke="#DCE1EB" stroke-width="1"/>
+
+  <circle cx="268" cy="587" r="16" fill="#EBF3FC"/>
+  <text x="268" y="592" font-size="12" font-weight="700" fill="#1E6FC0" text-anchor="middle">JP</text>
+
+  <text x="294" y="582" font-size="13" font-weight="600" fill="#0D3B6E">Julien Petit</text>
+  <text x="294" y="598" font-size="11" fill="#7A8A9A">julien.petit@email.fr</text>
+
+  <text x="488" y="584" font-size="13" fill="#4A4A4A">Isabelle Morel</text>
+  <text x="488" y="600" font-size="11" fill="#7A8A9A">Consultante</text>
+
+  <!-- Progression 61% -->
+  <rect x="678" y="580" width="170" height="7" rx="3.5" fill="#DCE1EB"/>
+  <rect x="678" y="580" width="103" height="7" rx="3.5" fill="#1E6FC0"/>
+  <text x="856" y="588" font-size="12" font-weight="600" fill="#1E6FC0">61%</text>
+
+  <text x="888" y="582" font-size="13" fill="#4A4A4A">Aujourd'hui, 08:15</text>
+  <text x="888" y="598" font-size="11" fill="#7A8A9A">il y a 4 heures</text>
+
+  <rect x="1068" y="576" width="56" height="22" rx="11" fill="#E8F5EC"/>
+  <text x="1096" y="591" font-size="11" font-weight="600" fill="#28A745" text-anchor="middle">Actif</text>
+
+  <rect x="1165" y="575" width="120" height="28" rx="6" fill="#EBF3FC" stroke="#B8D4EF" stroke-width="1"/>
+  <text x="1225" y="593" font-size="11" font-weight="600" fill="#1E6FC0" text-anchor="middle">Voir le dossier →</text>
+
+  <!-- Séparateur avant footer tableau -->
+  <line x1="248" y1="616" x2="1388" y2="616" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Footer tableau : pagination -->
+  <rect x="248" y="616" width="1140" height="44" rx="10" fill="white"/>
+  <rect x="248" y="616" width="1140" height="22" fill="white"/>
+
+  <text x="278" y="641" font-size="12" fill="#7A8A9A">Affichage de 1 à 4 sur 12 bénéficiaires</text>
+
+  <!-- Pagination droite -->
+  <rect x="1220" y="624" width="32" height="26" rx="5" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1236" y="641" font-size="12" fill="#7A8A9A" text-anchor="middle">‹</text>
+
+  <rect x="1258" y="624" width="32" height="26" rx="5" fill="#1E6FC0"/>
+  <text x="1274" y="641" font-size="12" font-weight="700" fill="white" text-anchor="middle">1</text>
+
+  <rect x="1296" y="624" width="32" height="26" rx="5" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1312" y="641" font-size="12" fill="#4A4A4A" text-anchor="middle">2</text>
+
+  <rect x="1334" y="624" width="32" height="26" rx="5" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1350" y="641" font-size="12" fill="#4A4A4A" text-anchor="middle">3</text>
+
+  <rect x="1372" y="624" width="16" height="26" rx="5" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1380" y="641" font-size="12" fill="#7A8A9A" text-anchor="middle">›</text>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- PANNEAU ALERTE (bas à droite) — Marie Blanc inactif        -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- Intentionnellement positionné sous le tableau -->
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- BARRE D'ÉTAT BAS DE PAGE                                   -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <rect x="220" y="872" width="1220" height="28" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <circle cx="252" cy="886" r="5" fill="#28A745"/>
+  <text x="264" y="890" font-size="10" fill="#7A8A9A">Supabase connecté</text>
+
+  <line x1="320" y1="876" x2="320" y2="896" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="332" y="890" font-size="10" fill="#7A8A9A">Dernier refresh : 23 mars 2026, 10:24:07</text>
+
+  <line x1="500" y1="876" x2="500" y2="896" stroke="#DCE1EB" stroke-width="1"/>
+  <circle cx="512" cy="886" r="5" fill="#FF6B35"/>
+  <text x="524" y="890" font-size="10" fill="#FF6B35">1 alerte active (inactivité &gt; 14j)</text>
+
+  <text x="1370" y="890" font-size="10" fill="#A8B2BE" text-anchor="end">Link's Accompagnement © 2026 — Unanima Platform v1.0</text>
+
+</svg>
