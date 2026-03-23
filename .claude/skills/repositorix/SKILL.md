@@ -364,3 +364,6 @@ Pour aller plus loin, lire les fichiers de référence :
 - `references/gitflow.md` — Détail complet du Git Flow et cas particuliers
 - `references/actions-catalog.md` — Catalogue d'actions GitHub réutilisables
 - `references/commit-examples.md` — Exemples de messages de commit par domaine
+- `references/workflows.md` — Workflows GitHub Actions complets (CI, release)
+- `references/issue-templates.md` — Templates d'issues (bug, feature) et PR
+- `references/release-process.md` — Processus de release avec commandes

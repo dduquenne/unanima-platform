@@ -269,43 +269,18 @@ Voir `references/composants-patterns-code.md` pour les exemples d'implémentatio
 
 Applications métier = souvent multi-langues, multi-fuseaux, multi-formats.
 
-```typescript
-// ✅ Jamais de texte en dur dans le JSX
-// ❌ <p>Aucun résultat trouvé</p>
-// ✅ <p>{t('table.emptyState.noResults')}</p>
-
-// ✅ Formats localisés systématiques
-const formatter = new Intl.NumberFormat(locale, { style: 'currency', currency })
-const dateFormatter = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' })
-
-// ✅ Ordre logique des champs selon la locale (prénom/nom inversé en Asie)
-// ✅ Support RTL dès le départ si pertinent (dir="rtl", logical CSS properties)
-// CSS : margin-inline-start plutôt que margin-left
-```
+- Jamais de texte en dur dans le JSX — utiliser des clés de traduction (`t('key')`)
+- Formats localisés via `Intl.NumberFormat` et `Intl.DateTimeFormat`
+- Ordre logique des champs selon la locale (prénom/nom inversé en Asie)
+- Support RTL dès le départ si pertinent (`dir="rtl"`, logical CSS properties : `margin-inline-start`)
 
 ---
 
 ## 9. Gestion des Rôles & Permissions dans l'UI
 
-```typescript
-// ✅ Pattern : hook de permission
-function usePermission(action: Permission): boolean {
-  const { user } = useAuth()
-  return hasPermission(user.roles, action)
-}
-
-// ✅ Composant conditionnel avec fallback gracieux
-const canEdit = usePermission('invoice:edit')
-
-// Afficher le bouton désactivé + tooltip > le masquer totalement
-// L'utilisateur comprend qu'une action existe, même s'il n'y a pas accès
-<Button
-  disabled={!canEdit}
-  title={!canEdit ? "Droits insuffisants pour modifier" : undefined}
->
-  Modifier
-</Button>
-```
+- Utiliser un hook `usePermission(action)` basé sur `useAuth()` et le moteur RBAC
+- Afficher le bouton **désactivé + tooltip** plutôt que le masquer totalement (l'utilisateur comprend qu'une action existe, même sans accès)
+- Pattern : `<Button disabled={!canEdit} title={!canEdit ? "Droits insuffisants" : undefined}>Modifier</Button>`
 
 ---
 
@@ -343,6 +318,7 @@ const canEdit = usePermission('invoice:edit')
 
 ## 12. Références Complémentaires
 
+- `references/composants-patterns-code.md` — Exemples de code extraits : DataTable, formulaires, états, feedback, typage domaine, composants, performance
 - `references/design-system-metier.md` — Tokens, palette, typographie pour apps métier
 - `references/composants-metier.md` — DataTable, FormBuilder, StatusBadge, ActionMenu, EmptyState
 - `references/patterns-etat.md` — Gestion état async (React Query), formulaires (React Hook Form + Zod), optimistic UI

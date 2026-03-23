@@ -48,10 +48,8 @@ Pour les détails approfondis, consulte les fichiers de référence :
 - `references/schema-patterns.md` — Patterns de schéma complets (multi-tenant, soft-delete, JSONB…)
 - `references/rls-recipes.md` — Recettes RLS de production (SaaS, multi-tenant, RBAC…)
 - `references/performance-guide.md` — Guide complet d'optimisation des performances
-- `references/typescript-patterns.md` — Client typé, helpers de types dérivés, repository pattern
-- `references/pgtap-guide.md` — Structure de tests pgTAP et template RLS complet
-- `references/audit-trail.md` — Table d'audit, trigger automatique, seed et fixtures
-- `references/transactions.md` — Edge Functions avec transactions, stored procedures
+- `references/sql-examples.md` — Exemples SQL complets (schema, migrations, RLS, audit, pgTAP, seed)
+- `references/typescript-examples.md` — Client typé, helpers de types, repository pattern, Edge Functions
 
 ---
 
@@ -242,7 +240,7 @@ supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > src/types/data
 Client typé avec `createBrowserClient<Database>`, helpers de types dérivés (Row/Insert/Update)
 et repository pattern type-safe avec exemples complets.
 
-> 📖 Voir `references/typescript-patterns.md` pour le client typé, les helpers de types et le repository pattern
+> 📖 Voir `references/typescript-examples.md` pour le client typé, les helpers de types et le repository pattern
 
 ---
 
@@ -277,7 +275,7 @@ Deux approches pour les opérations atomiques :
 - **Edge Functions** : pattern postgresjs avec `sql.begin()`, RLS configuré via `set_config`
 - **Stored procedures** : `SECURITY INVOKER` pour respecter le RLS de l'appelant
 
-> 📖 Voir `references/transactions.md` pour les exemples complets (Edge Functions, stored procedures)
+> 📖 Voir `references/sql-examples.md#stored-procedure` et `references/typescript-examples.md#edge-function` pour les exemples complets (Edge Functions, stored procedures)
 
 ---
 
@@ -286,7 +284,7 @@ Deux approches pour les opérations atomiques :
 Tests structurés en fichiers séparés : setup, schema, RLS par table, functions, triggers.
 Exécuter avec `supabase test db` en local, intégré en CI via GitHub Actions.
 
-> 📖 Voir `references/pgtap-guide.md` pour la structure recommandée et le template de test RLS complet
+> 📖 Voir `references/sql-examples.md#pgtap-test-template` pour la structure recommandée et le template de test RLS complet
 
 ---
 
@@ -296,7 +294,7 @@ Exécuter avec `supabase test db` en local, intégré en CI via GitHub Actions.
 - Fixtures TypeScript avec `crypto.randomUUID()` pour isolation par test run
 - Ne jamais mettre de données utilisateurs dans `seed.sql`
 
-> 📖 Voir `references/audit-trail.md` pour les patterns de seed et fixtures E2E
+> 📖 Voir `references/sql-examples.md#seed-pattern` pour les patterns de seed et `references/typescript-examples.md#e2e-test-fixtures` pour les fixtures
 
 ---
 
@@ -305,7 +303,7 @@ Exécuter avec `supabase test db` en local, intégré en CI via GitHub Actions.
 Table dans le schéma `private` (non exposé par PostgREST). Trigger automatique
 calculant le diff JSONB des colonnes modifiées. Index sur `(table_name, record_id)` et `(changed_by, changed_at)`.
 
-> 📖 Voir `references/audit-trail.md` pour la table d'audit complète et le trigger automatique
+> 📖 Voir `references/sql-examples.md#audit-trail` pour la table d'audit complète et le trigger automatique
 
 ---
 
@@ -315,29 +313,14 @@ calculant le diff JSONB des colonnes modifiées. Index sur `(table_name, record_
 Voir `references/schema-patterns.md#multi-tenant` pour le schéma complet avec RLS hiérarchique.
 
 ### JSONB pour métadonnées flexibles
-```sql
--- Validation JSONB avec contrainte CHECK
-ALTER TABLE public.work_orders
-  ADD CONSTRAINT chk_metadata_schema
-  CHECK (
-    metadata ? 'version' AND
-    (metadata->>'priority') IN ('low','medium','high','critical')
-  );
-```
+
+Utiliser des contraintes `CHECK` pour valider la structure JSONB (ex: clés requises, valeurs enum).
+
+> 📖 Voir `references/schema-patterns.md` pour les patterns JSONB avancés
 
 ### Realtime — abonnements filtrés
-```typescript
-// Toujours filtrer les abonnements Realtime (éviter la surcharge)
-const channel = supabase
-  .channel('work-orders-org')
-  .on('postgres_changes', {
-    event: '*',
-    schema: 'public',
-    table: 'work_orders',
-    filter: `org_id=eq.${orgId}`  // OBLIGATOIRE en production
-  }, handleChange)
-  .subscribe()
-```
+
+Toujours filtrer avec `filter: \`org_id=eq.\${orgId}\`` pour éviter la surcharge en production.
 
 ### Vues sécurisées (PostgreSQL 15+)
 
