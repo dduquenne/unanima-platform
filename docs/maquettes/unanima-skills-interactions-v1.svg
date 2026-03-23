@@ -1,0 +1,386 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" width="1600" height="1100" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <!-- Ombres -->
+    <filter id="shadow-node">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <filter id="shadow-center">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-opacity="0.25"/>
+    </filter>
+    <!-- Marqueur de flèche par catégorie -->
+    <marker id="arrow-orch" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#F59E0B"/>
+    </marker>
+    <marker id="arrow-dev" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#3B82F6"/>
+    </marker>
+    <marker id="arrow-qual" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10B981"/>
+    </marker>
+    <marker id="arrow-infra" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#8B5CF6"/>
+    </marker>
+    <marker id="arrow-doc" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#EC4899"/>
+    </marker>
+    <marker id="arrow-data" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#F97316"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#94A3B8"/>
+    </marker>
+    <!-- Gradient fond -->
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#EEF2FF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ========== FOND ========== -->
+  <rect width="1600" height="1100" fill="url(#bg-gradient)"/>
+
+  <!-- ========== TITRE ========== -->
+  <g id="title">
+    <text x="800" y="48" text-anchor="middle" font-size="26" font-weight="700" fill="#0F172A">Interactions entre les Skills — Unanima Platform</text>
+    <text x="800" y="72" text-anchor="middle" font-size="13" fill="#64748B">28 skills organisés par domaine fonctionnel — Relations de délégation, consultation et collaboration</text>
+  </g>
+
+  <!-- ========== LÉGENDE ========== -->
+  <g id="legend" transform="translate(40, 96)">
+    <rect x="0" y="0" width="380" height="185" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1" filter="url(#shadow-node)"/>
+    <text x="16" y="26" font-size="13" font-weight="700" fill="#0F172A">Légende — Catégories</text>
+    <!-- Orchestration -->
+    <circle cx="28" cy="48" r="8" fill="#F59E0B"/>
+    <text x="44" y="52" font-size="12" fill="#334155">Orchestration &amp; Pilotage</text>
+    <!-- Développement -->
+    <circle cx="28" cy="70" r="8" fill="#3B82F6"/>
+    <text x="44" y="74" font-size="12" fill="#334155">Développement &amp; Architecture</text>
+    <!-- Qualité -->
+    <circle cx="28" cy="92" r="8" fill="#10B981"/>
+    <text x="44" y="96" font-size="12" fill="#334155">Qualité, Tests &amp; Sécurité</text>
+    <!-- Infrastructure -->
+    <circle cx="28" cy="114" r="8" fill="#8B5CF6"/>
+    <text x="44" y="118" font-size="12" fill="#334155">Infrastructure &amp; CI/CD</text>
+    <!-- Documentation -->
+    <circle cx="28" cy="136" r="8" fill="#EC4899"/>
+    <text x="44" y="140" font-size="12" fill="#334155">Documentation &amp; Pédagogie</text>
+    <!-- Données -->
+    <circle cx="28" cy="158" r="8" fill="#F97316"/>
+    <text x="44" y="162" font-size="12" fill="#334155">Données &amp; Intégration</text>
+
+    <text x="16" y="180" font-size="10" fill="#94A3B8">Flèche = délègue à / consulte</text>
+  </g>
+
+  <!-- ========== LÉGENDE FLÈCHES ========== -->
+  <g id="legend-arrows" transform="translate(40, 296)">
+    <rect x="0" y="0" width="380" height="80" rx="10" fill="white" stroke="#E2E8F0" stroke-width="1" filter="url(#shadow-node)"/>
+    <text x="16" y="24" font-size="13" font-weight="700" fill="#0F172A">Types de relations</text>
+    <line x1="16" y1="44" x2="70" y2="44" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow-orch)"/>
+    <text x="80" y="48" font-size="11" fill="#334155">Orchestre / Délègue</text>
+    <line x1="200" y1="44" x2="254" y2="44" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-gray)"/>
+    <text x="264" y="48" font-size="11" fill="#334155">Consulte / Collabore</text>
+    <line x1="16" y1="66" x2="70" y2="66" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow-dev)"/>
+    <text x="80" y="70" font-size="11" fill="#334155">Dépendance technique</text>
+  </g>
+
+  <!-- ===================================================================== -->
+  <!-- ========== NŒUDS DES SKILLS ========== -->
+  <!-- ===================================================================== -->
+
+  <!-- ===== PILOTIX — Centre ===== -->
+  <g id="node-pilotix" transform="translate(800, 440)" filter="url(#shadow-center)">
+    <circle cx="0" cy="0" r="52" fill="#F59E0B" stroke="#D97706" stroke-width="2.5"/>
+    <text x="0" y="-8" text-anchor="middle" font-size="14" font-weight="800" fill="white">PILOTIX</text>
+    <text x="0" y="10" text-anchor="middle" font-size="9" fill="#FFFBEB">Orchestrateur</text>
+    <text x="0" y="22" text-anchor="middle" font-size="9" fill="#FFFBEB">central</text>
+  </g>
+
+  <!-- ===== SPRINTIX — Près de Pilotix ===== -->
+  <g id="node-sprintix" transform="translate(660, 360)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="36" fill="#FBBF24" stroke="#F59E0B" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="11" font-weight="700" fill="#451A03">Sprintix</text>
+    <text x="0" y="10" text-anchor="middle" font-size="8" fill="#78350F">Exécution</text>
+  </g>
+
+  <!-- ===== PROJETIX — Près de Pilotix ===== -->
+  <g id="node-projetix" transform="translate(940, 360)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="36" fill="#FBBF24" stroke="#F59E0B" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="11" font-weight="700" fill="#451A03">Projetix</text>
+    <text x="0" y="10" text-anchor="middle" font-size="8" fill="#78350F">Cadrage</text>
+  </g>
+
+  <!-- ===== DÉVELOPPEMENT (arc supérieur gauche) ===== -->
+  <g id="node-archicodix" transform="translate(460, 220)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="38" fill="#3B82F6" stroke="#2563EB" stroke-width="2"/>
+    <text x="0" y="-6" text-anchor="middle" font-size="10" font-weight="700" fill="white">Archicodix</text>
+    <text x="0" y="8" text-anchor="middle" font-size="8" fill="#DBEAFE">Architecture</text>
+  </g>
+
+  <g id="node-ergonomix" transform="translate(310, 330)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#3B82F6" stroke="#2563EB" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Ergonomix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#DBEAFE">UI/UX</text>
+  </g>
+
+  <g id="node-apix" transform="translate(330, 480)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#3B82F6" stroke="#2563EB" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Apix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#DBEAFE">API REST</text>
+  </g>
+
+  <g id="node-soclix" transform="translate(480, 560)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="38" fill="#3B82F6" stroke="#2563EB" stroke-width="2"/>
+    <text x="0" y="-6" text-anchor="middle" font-size="10" font-weight="700" fill="white">Soclix</text>
+    <text x="0" y="8" text-anchor="middle" font-size="8" fill="#DBEAFE">Socle commun</text>
+  </g>
+
+  <g id="node-accessibilix" transform="translate(200, 420)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="32" fill="#3B82F6" stroke="#2563EB" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="9" font-weight="700" fill="white">Accessibilix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#DBEAFE">a11y</text>
+  </g>
+
+  <!-- ===== QUALITÉ & SÉCURITÉ (arc supérieur droit) ===== -->
+  <g id="node-testix" transform="translate(1100, 220)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="38" fill="#10B981" stroke="#059669" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="11" font-weight="700" fill="white">Testix</text>
+    <text x="0" y="10" text-anchor="middle" font-size="8" fill="#D1FAE5">Tests</text>
+  </g>
+
+  <g id="node-recettix" transform="translate(1260, 290)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#10B981" stroke="#059669" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Recettix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#D1FAE5">Recette</text>
+  </g>
+
+  <g id="node-securix" transform="translate(1280, 420)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="36" fill="#10B981" stroke="#059669" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="11" font-weight="700" fill="white">Securix</text>
+    <text x="0" y="10" text-anchor="middle" font-size="8" fill="#D1FAE5">Sécurité</text>
+  </g>
+
+  <g id="node-auditix" transform="translate(1220, 540)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#10B981" stroke="#059669" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Auditix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#D1FAE5">Audit</text>
+  </g>
+
+  <g id="node-anomalix" transform="translate(1120, 620)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#10B981" stroke="#059669" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Anomalix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#D1FAE5">Debug</text>
+  </g>
+
+  <g id="node-optimix" transform="translate(1000, 660)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#10B981" stroke="#059669" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Optimix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#D1FAE5">Perf</text>
+  </g>
+
+  <g id="node-diagnostix" transform="translate(1080, 440)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="38" fill="#10B981" stroke="#059669" stroke-width="2"/>
+    <text x="0" y="-6" text-anchor="middle" font-size="10" font-weight="700" fill="white">Diagnostix</text>
+    <text x="0" y="8" text-anchor="middle" font-size="8" fill="#D1FAE5">Diagnostic</text>
+  </g>
+
+  <g id="node-rgpdix" transform="translate(1360, 550)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="32" fill="#10B981" stroke="#059669" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Rgpdix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#D1FAE5">RGPD</text>
+  </g>
+
+  <!-- ===== INFRASTRUCTURE (arc inférieur droit) ===== -->
+  <g id="node-deploix" transform="translate(1180, 740)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="38" fill="#8B5CF6" stroke="#7C3AED" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="11" font-weight="700" fill="white">Deploix</text>
+    <text x="0" y="10" text-anchor="middle" font-size="8" fill="#EDE9FE">Déploiement</text>
+  </g>
+
+  <g id="node-observix" transform="translate(1020, 800)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#8B5CF6" stroke="#7C3AED" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Observix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#EDE9FE">Monitoring</text>
+  </g>
+
+  <g id="node-pipelinix" transform="translate(1320, 720)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#8B5CF6" stroke="#7C3AED" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Pipelinix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#EDE9FE">CI/CD</text>
+  </g>
+
+  <g id="node-repositorix" transform="translate(1400, 650)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#8B5CF6" stroke="#7C3AED" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Repositorix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#EDE9FE">Git/GitHub</text>
+  </g>
+
+  <!-- ===== DONNÉES (arc inférieur gauche) ===== -->
+  <g id="node-databasix" transform="translate(420, 740)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="38" fill="#F97316" stroke="#EA580C" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Databasix</text>
+    <text x="0" y="10" text-anchor="middle" font-size="8" fill="#FFF7ED">Base de données</text>
+  </g>
+
+  <g id="node-migratix" transform="translate(290, 660)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#F97316" stroke="#EA580C" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Migratix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#FFF7ED">Migrations</text>
+  </g>
+
+  <g id="node-datanalytix" transform="translate(570, 800)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#F97316" stroke="#EA580C" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Datanalytix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#FFF7ED">Analytique</text>
+  </g>
+
+  <g id="node-integratix" transform="translate(200, 570)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#F97316" stroke="#EA580C" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Integratix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#FFF7ED">Intégration</text>
+  </g>
+
+  <!-- ===== DOCUMENTATION & PÉDAGOGIE (bas centre) ===== -->
+  <g id="node-documentalix" transform="translate(700, 860)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="36" fill="#EC4899" stroke="#DB2777" stroke-width="2"/>
+    <text x="0" y="-6" text-anchor="middle" font-size="9" font-weight="700" fill="white">Documentalix</text>
+    <text x="0" y="8" text-anchor="middle" font-size="8" fill="#FCE7F3">Documentation</text>
+  </g>
+
+  <g id="node-panoramix" transform="translate(860, 860)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="36" fill="#EC4899" stroke="#DB2777" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Panoramix</text>
+    <text x="0" y="10" text-anchor="middle" font-size="8" fill="#FCE7F3">Pédagogie</text>
+  </g>
+
+  <g id="node-maquettix" transform="translate(780, 940)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="34" fill="#EC4899" stroke="#DB2777" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Maquettix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#FCE7F3">Maquettes SVG</text>
+  </g>
+
+  <g id="node-onboardix" transform="translate(620, 940)" filter="url(#shadow-node)">
+    <circle cx="0" cy="0" r="32" fill="#EC4899" stroke="#DB2777" stroke-width="2"/>
+    <text x="0" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="white">Onboardix</text>
+    <text x="0" y="9" text-anchor="middle" font-size="8" fill="#FCE7F3">Onboarding</text>
+  </g>
+
+  <!-- ===================================================================== -->
+  <!-- ========== CONNEXIONS / FLÈCHES ========== -->
+  <!-- ===================================================================== -->
+
+  <!-- === Pilotix orchestre tous (flèches dorées vers chaque skill) === -->
+  <!-- Pilotix → Sprintix -->
+  <line x1="752" y1="422" x2="694" y2="380" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#arrow-orch)" opacity="0.8"/>
+  <!-- Pilotix → Projetix -->
+  <line x1="848" y1="422" x2="906" y2="380" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#arrow-orch)" opacity="0.8"/>
+  <!-- Pilotix → Archicodix -->
+  <line x1="755" y1="415" x2="495" y2="240" stroke="#F59E0B" stroke-width="1.8" marker-end="url(#arrow-orch)" opacity="0.5"/>
+  <!-- Pilotix → Testix -->
+  <line x1="845" y1="415" x2="1065" y2="240" stroke="#F59E0B" stroke-width="1.8" marker-end="url(#arrow-orch)" opacity="0.5"/>
+  <!-- Pilotix → Deploix -->
+  <line x1="830" y1="485" x2="1148" y2="720" stroke="#F59E0B" stroke-width="1.8" marker-end="url(#arrow-orch)" opacity="0.5"/>
+  <!-- Pilotix → Databasix -->
+  <line x1="765" y1="485" x2="454" y2="720" stroke="#F59E0B" stroke-width="1.8" marker-end="url(#arrow-orch)" opacity="0.5"/>
+  <!-- Pilotix → Diagnostix -->
+  <line x1="852" y1="440" x2="1042" y2="440" stroke="#F59E0B" stroke-width="1.8" marker-end="url(#arrow-orch)" opacity="0.5"/>
+  <!-- Pilotix → Documentalix -->
+  <line x1="780" y1="490" x2="716" y2="826" stroke="#F59E0B" stroke-width="1.8" marker-end="url(#arrow-orch)" opacity="0.5"/>
+
+  <!-- === Diagnostix → Anomalix, Optimix, Auditix (délégation verte) === -->
+  <line x1="1105" y1="476" x2="1118" y2="588" stroke="#10B981" stroke-width="2" marker-end="url(#arrow-qual)"/>
+  <line x1="1060" y1="476" x2="1010" y2="630" stroke="#10B981" stroke-width="2" marker-end="url(#arrow-qual)"/>
+  <line x1="1118" y1="460" x2="1192" y2="520" stroke="#10B981" stroke-width="2" marker-end="url(#arrow-qual)"/>
+
+  <!-- === Testix ↔ Recettix (collaboration bidirectionnelle) === -->
+  <line x1="1135" y1="236" x2="1230" y2="272" stroke="#10B981" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-qual)"/>
+  <line x1="1226" y1="282" x2="1132" y2="244" stroke="#10B981" stroke-width="1.5" stroke-dasharray="6,3"/>
+
+  <!-- === Deploix ↔ Observix (collaboration production) === -->
+  <line x1="1150" y1="760" x2="1050" y2="790" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-infra)"/>
+  <line x1="1050" y1="780" x2="1145" y2="750" stroke="#8B5CF6" stroke-width="1.5" stroke-dasharray="6,3"/>
+
+  <!-- === Deploix → Pipelinix === -->
+  <line x1="1216" y1="730" x2="1288" y2="722" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrow-infra)"/>
+
+  <!-- === Deploix → Repositorix === -->
+  <line x1="1210" y1="720" x2="1370" y2="660" stroke="#8B5CF6" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-infra)"/>
+
+  <!-- === Pipelinix → Repositorix === -->
+  <line x1="1348" y1="706" x2="1390" y2="676" stroke="#8B5CF6" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-infra)"/>
+
+  <!-- === Databasix → Migratix (dépendance) === -->
+  <line x1="386" y1="724" x2="320" y2="680" stroke="#F97316" stroke-width="2" marker-end="url(#arrow-data)"/>
+
+  <!-- === Databasix → Datanalytix === -->
+  <line x1="452" y1="768" x2="540" y2="792" stroke="#F97316" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-data)"/>
+
+  <!-- === Integratix → Databasix === -->
+  <line x1="228" y1="596" x2="395" y2="715" stroke="#F97316" stroke-width="1.5" marker-end="url(#arrow-data)"/>
+
+  <!-- === Integratix → Apix === -->
+  <line x1="222" y1="544" x2="302" y2="496" stroke="#F97316" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-data)"/>
+
+  <!-- === Soclix consulté par Archicodix === -->
+  <line x1="472" y1="256" x2="480" y2="524" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-dev)"/>
+
+  <!-- === Ergonomix → Accessibilix === -->
+  <line x1="282" y1="350" x2="224" y2="396" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-dev)"/>
+
+  <!-- === Ergonomix → Maquettix === -->
+  <line x1="328" y1="360" x2="754" y2="922" stroke="#94A3B8" stroke-width="1" stroke-dasharray="6,3" marker-end="url(#arrow-gray)" opacity="0.5"/>
+
+  <!-- === Archicodix → Apix === -->
+  <line x1="438" y1="252" x2="344" y2="450" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow-dev)"/>
+
+  <!-- === Archicodix → Databasix === -->
+  <line x1="448" y1="256" x2="424" y2="704" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-dev)" opacity="0.6"/>
+
+  <!-- === Securix → Rgpdix === -->
+  <line x1="1304" y1="444" x2="1348" y2="524" stroke="#10B981" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-qual)"/>
+
+  <!-- === Apix → Securix === -->
+  <line x1="364" y1="476" x2="1244" y2="420" stroke="#94A3B8" stroke-width="1" stroke-dasharray="6,3" marker-end="url(#arrow-gray)" opacity="0.4"/>
+
+  <!-- === Documentalix → Maquettix === -->
+  <line x1="720" y1="892" x2="758" y2="918" stroke="#EC4899" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-doc)"/>
+
+  <!-- === Panoramix → tous (consultation) — représenté par un halo === -->
+  <circle cx="860" cy="860" r="50" fill="none" stroke="#EC4899" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+
+  <!-- === Onboardix → Panoramix === -->
+  <line x1="646" y1="924" x2="832" y2="870" stroke="#EC4899" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-doc)"/>
+
+  <!-- === Projetix → Documentalix === -->
+  <line x1="924" y1="392" x2="720" y2="830" stroke="#94A3B8" stroke-width="1" stroke-dasharray="6,3" marker-end="url(#arrow-gray)" opacity="0.5"/>
+
+  <!-- === Projetix → Ergonomix === -->
+  <line x1="908" y1="346" x2="340" y2="332" stroke="#94A3B8" stroke-width="1" stroke-dasharray="6,3" marker-end="url(#arrow-gray)" opacity="0.5"/>
+
+  <!-- === Sprintix → Repositorix === -->
+  <line x1="676" y1="390" x2="1370" y2="640" stroke="#94A3B8" stroke-width="1" stroke-dasharray="6,3" marker-end="url(#arrow-gray)" opacity="0.4"/>
+
+  <!-- ===================================================================== -->
+  <!-- ========== ANNOTATIONS DES CLUSTERS ========== -->
+  <!-- ===================================================================== -->
+
+  <!-- Cluster Orchestration -->
+  <text x="800" y="320" text-anchor="middle" font-size="11" font-weight="600" fill="#92400E" opacity="0.6">ORCHESTRATION</text>
+
+  <!-- Cluster Développement -->
+  <text x="280" y="190" text-anchor="middle" font-size="11" font-weight="600" fill="#1E40AF" opacity="0.6">DÉVELOPPEMENT</text>
+
+  <!-- Cluster Qualité -->
+  <text x="1280" y="190" text-anchor="middle" font-size="11" font-weight="600" fill="#047857" opacity="0.6">QUALITÉ &amp; SÉCURITÉ</text>
+
+  <!-- Cluster Infrastructure -->
+  <text x="1300" y="830" text-anchor="middle" font-size="11" font-weight="600" fill="#6D28D9" opacity="0.6">INFRASTRUCTURE</text>
+
+  <!-- Cluster Données -->
+  <text x="300" y="810" text-anchor="middle" font-size="11" font-weight="600" fill="#C2410C" opacity="0.6">DONNÉES</text>
+
+  <!-- Cluster Documentation -->
+  <text x="740" y="1000" text-anchor="middle" font-size="11" font-weight="600" fill="#BE185D" opacity="0.6">DOCUMENTATION &amp; PÉDAGOGIE</text>
+
+  <!-- ========== PIED DE PAGE ========== -->
+  <text x="800" y="1075" text-anchor="middle" font-size="11" fill="#94A3B8">Unanima Platform — Carte des interactions entre skills — v1.0 — Mars 2026</text>
+</svg>
