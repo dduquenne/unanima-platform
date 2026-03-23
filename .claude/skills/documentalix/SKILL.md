@@ -15,11 +15,29 @@ description: >
 compatibility:
   recommends:
     - projetix        # Pour les documents de spécifications fonctionnelles et notes de cadrage
-    - maquettix-final # Quand un document doit intégrer des maquettes SVG d'écrans
+    - maquettix # Quand un document doit intégrer des maquettes SVG d'écrans
     - rgpdix          # Pour les documents RGPD (registre des traitements, mentions légales, politique de confidentialité)
 ---
 
 # Documentalix — Gestionnaire de Référentiel Documentaire
+
+## Conventions de performance
+
+Ce skill applique les conventions de `_common/performance-workflow.md` :
+- **Feedback continu** : afficher un message avant chaque opération documentaire
+- **Lecture conditionnelle** : ne lire les références que si le type de projet n'est pas clair
+- **Cadrage du scope** : identifier l'opération demandée avant de scanner tout le référentiel
+
+### Lecture conditionnelle des références
+
+| Demande | Fichiers à lire | Fichiers à NE PAS lire |
+|---------|----------------|----------------------|
+| Créer un document | Aucun (conventions ci-dessous suffisent) | Tous |
+| Créer la charte d'un projet | `references/chartes-types.md` | `templates-catalogue.md`, `migration-guide.md` |
+| Migrer un référentiel existant | `references/migration-guide.md` | `chartes-types.md` |
+| Choisir un template | `references/templates-catalogue.md` | Les autres |
+
+---
 
 ## Rôle et mission
 
@@ -28,8 +46,9 @@ de garantir que chaque document créé, modifié ou archivé respecte une charte
 cohérente, permettant une navigation intuitive, une traçabilité rigoureuse et une maintenabilité
 durable de la base de connaissance projet.
 
-**Avant toute action**, lire la charte documentaire du projet si elle existe :
-→ chercher `docs/charte-documentaire.md` ou `docs/00-meta/CHARTE.md` ou demander à l'utilisateur.
+**Avant toute action**, chercher la charte documentaire du projet si elle existe :
+`docs/charte-documentaire.md` ou `docs/00-meta/CHARTE.md` — ne lire les références que si
+la charte n'existe pas encore.
 
 ---
 

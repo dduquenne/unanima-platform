@@ -36,6 +36,45 @@ possibilité de créer des issues GitHub directement.
 
 ---
 
+## Conventions de performance
+
+Ce skill applique les conventions de `_common/performance-workflow.md` :
+- **Feedback continu** : afficher un message avant chaque phase et chaque domaine audité
+- **Génération incrémentale** : fiche d'identité d'abord, puis audit domaine par domaine
+- **Lecture conditionnelle** : ne charger que les fichiers de référence des domaines demandés
+- **Parallélisation** : pour les audits multi-domaines (3+), lancer un sous-agent par domaine via l'outil Agent
+
+### Workflow de génération du rapport
+
+```
+[Phase 1/5] — Cadrage
+  Clarifier périmètre et domaines avec l'utilisateur.
+
+[Phase 2/5] — Collecte et inventaire
+  Scanner la structure du projet. Afficher la fiche d'identité.
+
+[Phase 3/5] — Analyse par domaine (PARALLÉLISABLE)
+  Pour les audits 3+ domaines : lancer un sous-agent par domaine.
+  Chaque sous-agent reçoit : le domaine, le fichier de référence à lire,
+  et le contexte projet (fiche d'identité).
+  → Afficher "Domaine N/M : [nom]... terminé" à chaque retour.
+
+[Phase 4/5] — Synthèse et scoring
+  Assembler les résultats, calculer les scores, identifier les corrélations.
+  → Afficher le tableau de bord des scores.
+
+[Phase 5/5] — Rapport final
+  Compiler le rapport et proposer la création d'issues GitHub.
+```
+
+### Lecture conditionnelle des références
+
+Ne lire que les fichiers `references/*.md` correspondant aux domaines effectivement demandés.
+Par exemple, si l'utilisateur demande un audit sécurité + performance, lire uniquement
+`references/security.md` et `references/performance.md`.
+
+---
+
 ## Étape 0 — Cadrage de l'audit
 
 Avant de lancer l'analyse, clarifier avec l'utilisateur :

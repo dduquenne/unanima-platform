@@ -84,7 +84,7 @@ Avant toute orchestration, comprendre la nature et l'ampleur de la demande :
 | # | Tâche | Skills | Dépend de | Livrable |
 |---|-------|--------|-----------|----------|
 | 1 | Spécification fonctionnelle | projetix | — | SPC-NNNN |
-| 2 | Maquettes UI | ergonomix, maquettix-final | #1 | SVG écrans |
+| 2 | Maquettes UI | ergonomix, maquettix | #1 | SVG écrans |
 | 3 | Architecture technique | archicodix | #1 | ADR-NNNN |
 
 #### Phase 2 — Fondations (parallélisable)

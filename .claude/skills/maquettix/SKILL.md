@@ -24,6 +24,32 @@ dans les documents de projet.
 
 ---
 
+## Conventions de performance
+
+Ce skill applique les conventions de `_common/performance-workflow.md` :
+- **Feedback continu** : afficher un message avant chaque étape de création
+- **Lecture conditionnelle** : ne lire `references/layout-patterns.md` que pour les layouts inhabituels ;
+  ne lire `references/svg-best-practices.md` que si c'est la première maquette de la session
+- **Parallélisation** : pour les demandes multi-écrans (3+), lancer un sous-agent par écran
+  via l'outil Agent, en fournissant à chacun le design system et le template de base
+
+### Workflow multi-écrans
+
+```
+[Phase 1/2] — Cadrage
+  Lister les écrans à produire, confirmer avec l'utilisateur.
+  → Afficher la liste pour validation.
+
+[Phase 2/2] — Génération (PARALLÉLISABLE si 3+ écrans)
+  Lancer un sous-agent par écran. Chaque sous-agent reçoit :
+  - Le type d'écran et le contexte métier
+  - La palette et le design system (section 1 ci-dessous)
+  - Le template SVG de base (defs + shell)
+  → Afficher "Écran N/M : [nom]... terminé" à chaque retour.
+```
+
+---
+
 ## 1. Philosophie de Design
 
 ### Principes fondateurs
