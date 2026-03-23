@@ -24,7 +24,7 @@ compatibility:
     - archicodix     # Pour les patterns de composants accessibles
     - soclix         # Pour les composants accessibles du socle commun (@unanima/core)
     - pipelinix      # Pour les quality gates d'accessibilité en CI
-    - maquettix-final # Pour la validation a11y des maquettes SVG
+    - maquettix # Pour la validation a11y des maquettes SVG
 ---
 
 # Accessibilix — Expert Accessibilité Numérique

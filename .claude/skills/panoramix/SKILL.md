@@ -217,7 +217,7 @@ Quand l'utilisateur demande explicitement une action concrète :
 | "Optimise..." | Recommander d'invoquer **optimix** |
 | "Sécurise..." | Recommander d'invoquer **securix** |
 | "Planifie cette feature..." | Recommander d'invoquer **pilotix** |
-| "Crée une maquette..." | Recommander d'invoquer **maquettix-final** |
+| "Crée une maquette..." | Recommander d'invoquer **maquettix** |
 
 ---
 

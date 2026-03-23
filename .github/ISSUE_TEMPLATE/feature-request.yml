@@ -68,7 +68,7 @@ body:
         - label: "projetix — Spécification fonctionnelle, User Stories"
         - label: "archicodix — Architecture, patterns, refactoring"
         - label: "ergonomix — Interface utilisateur, UX, formulaires"
-        - label: "maquettix-final — Maquettes SVG"
+        - label: "maquettix — Maquettes SVG"
         - label: "databasix — Schéma BDD, RLS, requêtes"
         - label: "migratix — Migrations de schéma"
         - label: "apix — Endpoints API, route handlers"

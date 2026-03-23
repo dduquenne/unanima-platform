@@ -15,7 +15,7 @@ description: >
 compatibility:
   recommends:
     - projetix        # Pour les documents de spécifications fonctionnelles et notes de cadrage
-    - maquettix-final # Quand un document doit intégrer des maquettes SVG d'écrans
+    - maquettix # Quand un document doit intégrer des maquettes SVG d'écrans
     - rgpdix          # Pour les documents RGPD (registre des traitements, mentions légales, politique de confidentialité)
 ---
 

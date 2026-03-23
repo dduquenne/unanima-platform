@@ -103,7 +103,7 @@ d'une aide précieuse.
    - **Epic / feature complexe** → `pilotix` (décomposition + séquencement) → crée des sous-issues assignées aux skills pertinents → orchestre l'exécution
    - **Symptôme flou / multi-domaine** → `diagnostix` (triage + carte thermique) → route vers `anomalix` / `optimix` / `auditix` selon le diagnostic → `pilotix` si remédiation complexe
    - Bug UI → `anomalix` (diagnostic) → recommande `archicodix` si problème structurel + `ergonomix` (correction UI) + `testix` (tests anti-régression)
-   - Feature complexe → `pilotix` (plan d'exécution) → `projetix` (spécification) → recommande `ergonomix` + `maquettix-final` + `recettix` (critères d'acceptation) + `archicodix` (architecture) + `rgpdix` si données personnelles
+   - Feature complexe → `pilotix` (plan d'exécution) → `projetix` (spécification) → recommande `ergonomix` + `maquettix` + `recettix` (critères d'acceptation) + `archicodix` (architecture) + `rgpdix` si données personnelles
    - Problème de perf → `diagnostix` (triage) ou `anomalix` (investigation) → recommande `optimix` (optimisation) → recommande `databasix` si goulot BDD + `deploix` si cache/CDN
    - Nouvelle table / migration → `databasix` (schéma + RLS) → recommande `migratix` (stratégie de migration) + `archicodix` (modèle de domaine) + `soclix` si table du socle
    - **Dashboard / KPIs / consolidation données** → `datanalytix` (pipeline + requêtes analytiques) → recommande `databasix` (schéma stockage) + `integratix` (connecteurs sources) + `apix` (endpoints dashboard)
