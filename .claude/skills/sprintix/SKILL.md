@@ -55,26 +55,20 @@ Si une issue s'avère impossible à traiter dans le sprint :
 
 ## Ordonnancement : sécurité et audit AVANT features
 
-Lors de la génération du plan (mode PLAN), l'ordre de priorité est :
-1. 🔴 **CRITIQUE** — Issues de sécurité critiques (injection, fuite de données)
+Ordre de priorité lors de la génération du plan :
+1. 🔴 **CRITIQUE** — Sécurité critiques (injection, fuite de données)
 2. 🟠 **MAJEUR sécurité** — Rate limiting, validation d'entrées, atomicité
 3. 🟠 **MAJEUR qualité** — Tests, dette technique bloquante
 4. 🟢 **Features** — Nouvelles fonctionnalités
 5. 🟡 **MINEUR** — Améliorations cosmétiques, documentation
 
-**JAMAIS** de feature implémentée tant qu'une issue CRITIQUE ou MAJEUR sécurité
-du même sprint reste non traitée.
+**JAMAIS** de feature tant qu'une issue CRITIQUE ou MAJEUR sécurité reste non traitée.
 
-Si le sprint contient un mix features + audit :
-- **Phase 1** : Issues CRITIQUE + MAJEUR sécurité (séquentiel)
-- **Phase 2** : Features + MAJEUR qualité (parallélisable)
-- **Phase 3** : MINEUR + documentation (parallélisable)
+Phases : Phase 1 (CRITIQUE + MAJEUR sécurité, séquentiel) → Phase 2 (Features + MAJEUR qualité, parallélisable) → Phase 3 (MINEUR + documentation, parallélisable).
 
 ---
 
 ## Modes d'utilisation
-
-Sprintix supporte 4 modes selon l'argument fourni :
 
 | Commande | Mode | Description |
 |----------|------|-------------|
@@ -87,66 +81,16 @@ Sprintix supporte 4 modes selon l'argument fourni :
 
 ## Mode PLAN — Générer un plan de sprint
 
-### Entrées
-- Numéro du sprint ou itération GitHub Project
-- Optionnel : filtre par app (`links`, `creai`, `omega`, `socle`)
-
 ### Processus
 
-1. **Lire le GitHub Project** via `gh project item-list`
-   - Filtrer les issues de l'itération demandée
-   - Extraire : numéro, titre, priorité, labels, app, effort
-
-2. **Analyser les dépendances** entre issues :
-   - Issues qui modifient le même fichier → séquentielles
-   - Issues de sécurité critique → en priorité
-   - Issues de dépendances/CVE → en dernière position (risque régressions)
-   - Issues indépendantes → parallélisables (même phase)
-
-3. **Structurer en phases** selon les règles :
-
-   ```
-   Phase 1 — Prérequis critiques (séquentiel)
-     └─ Issues dont dépendent les autres (env vars, config, infra)
-
-   Phase 2 — Corrections indépendantes (parallélisable)
-     └─ Issues sans dépendance mutuelle, ordonnées par priorité
-
-   Phase 3 — Risque maîtrisé (review humain)
-     └─ Issues avec risque de régression (CVE, breaking changes)
-   ```
-
-4. **Écrire le plan** dans `.sprint/sprint-N.md` selon le format standard
-
-5. **Valider l'exhaustivité du plan**
-
-   Le fichier `.sprint/sprint-N.md` **DOIT** être créé **AVANT** toute implémentation.
-   Format obligatoire :
-
-   ```markdown
-   # Sprint N — [Titre]
-   **Période :** YYYY-MM-DD → YYYY-MM-DD
-   **Issues :** X au total (Y critiques, Z majeures, W mineures)
-   **Source :** GitHub Project "Pilotage Multi-Apps", itération Sprint N
-
-   ## Checklist exhaustive
-
-   | Ordre | Issue | Titre | Priorité | Phase | Skill | Statut |
-   |-------|-------|-------|----------|-------|-------|--------|
-   | 1 | #43 | Injection RGPD | 🔴 Critique | 1 | securix | ⬜ |
-   | 2 | #47 | Validation email | 🟠 Haute | 1 | soclix | ⬜ |
-   | ... | | | | | | |
-
-   ## Vérification d'exhaustivité
-   - [ ] Toutes les issues du sprint dans le GitHub Project sont listées ci-dessus
-   - [ ] Aucune issue n'a été omise ou reportée sans justification
-   - [ ] L'ordre respecte la règle sécurité > features > mineurs
-   ```
-
-   Si l'utilisateur demande `/sprintix run N` sans fichier `.sprint/sprint-N.md` :
-   → Générer le plan d'abord, le montrer, attendre validation, puis exécuter.
-
+1. **Lire le GitHub Project** via `gh project item-list` — filtrer par itération, extraire numéro, titre, priorité, labels, app, effort
+2. **Analyser les dépendances** : fichiers communs → séquentielles, sécurité critique → prioritaire, indépendantes → parallélisables
+3. **Structurer en phases** : Phase 1 (prérequis critiques, séquentiel), Phase 2 (corrections indépendantes, parallélisable), Phase 3 (risque maîtrisé, review humain)
+4. **Écrire le plan** dans `.sprint/sprint-N.md` — voir `references/sprint-plan-template.md` pour le format obligatoire
+5. **Valider l'exhaustivité** — le fichier DOIT exister AVANT toute implémentation
 6. **Proposer à l'utilisateur** pour validation avant exécution
+
+Pour l'algorithme détaillé (collecte, graphe de dépendances, tri topologique), voir `references/ordering-algorithm.md`.
 
 ### Critères d'ordonnancement (par priorité décroissante)
 
@@ -171,141 +115,51 @@ Sprintix supporte 4 modes selon l'argument fourni :
 
 Pour chaque issue du plan, dans l'ordre défini :
 
-```
-┌─────────────────────────────────────────────────────┐
-│                 BOUCLE SPRINTIX                     │
-│                                                     │
-│  1. LIRE l'issue GitHub (#N)                        │
-│     └─ gh issue view N --json body,title,labels     │
-│                                                     │
-│  2. PRÉPARER le contexte                            │
-│     └─ Identifier les fichiers à modifier           │
-│     └─ Déterminer le(s) skill(s) à invoquer         │
-│     └─ Mettre le statut Project → 🏗️ En cours       │
-│                                                     │
-│  3. IMPLÉMENTER via /issue #N                       │
-│     └─ Délègue au skill approprié                   │
-│     └─ Suit le workflow 6 étapes de /issue          │
-│                                                     │
-│  4. VALIDER                                         │
-│     ├─ pnpm build (les 3 apps si socle)             │
-│     ├─ pnpm test                                    │
-│     └─ Si échec → STOP + diagnostic                 │
-│                                                     │
-│  5. COMMITER                                        │
-│     └─ fix(scope): description (closes #N)          │
-│                                                     │
-│  6. METTRE À JOUR                                   │
-│     ├─ Statut Project → ✅ Terminé                  │
-│     ├─ Cocher la ligne dans .sprint/sprint-N.md     │
-│     └─ Afficher le résumé de l'issue                │
-│                                                     │
-│  7. POINT DE CONTRÔLE (si fin de phase)             │
-│     ├─ Vérifier tous les critères de phase          │
-│     └─ Si ⚠️ REVIEW → PAUSE + demander validation  │
-│                                                     │
-│  ──── Issue suivante ────                           │
-└─────────────────────────────────────────────────────┘
-```
+1. **LIRE** l'issue GitHub (`gh issue view N --json body,title,labels`)
+2. **PRÉPARER** le contexte (fichiers, skills, statut Project → 🏗️ En cours)
+3. **IMPLÉMENTER** via `/issue #N` (délègue au skill approprié)
+4. **VALIDER** (`pnpm build` + `pnpm test` — les 3 apps si socle). Si échec → STOP
+5. **COMMITER** : `fix(scope): description (closes #N)`
+6. **METTRE À JOUR** : statut Project → ✅ Terminé, cocher dans `.sprint/sprint-N.md`
+7. **POINT DE CONTRÔLE** (si fin de phase) : vérifier critères, si ⚠️ REVIEW → PAUSE
 
 ### Règles de la boucle
 
-1. **Atomicité stricte des commits** :
-   - **INTERDIT** :
-     - Un seul commit pour plusieurs issues
-     - Un commit "feat: Sprint N — description globale"
-     - Une PR unique qui regroupe toutes les issues d'un sprint
-   - **OBLIGATOIRE** :
-     - 1 issue = 1 commit minimum (peut être plusieurs si l'issue est complexe)
-     - Format : `fix(scope): description courte (closes #N)` ou `feat(scope): ... (closes #N)`
-     - Le `closes #N` est **OBLIGATOIRE** — c'est ce qui ferme l'issue automatiquement
-     - Chaque commit doit laisser le build dans un état vert
-   - **VÉRIFICATION** : Après chaque commit, Sprintix vérifie que l'issue référencée
-     dans `closes #N` correspond bien à une issue du sprint en cours. Si non → alerte.
+1. **Atomicité stricte** : 1 issue = 1+ commit avec `closes #N`. INTERDIT : commit multi-issues ou PR unique pour tout le sprint.
 2. **Fail-fast** : si le build casse, on s'arrête immédiatement
-3. **Idempotence** : les issues déjà cochées dans le `.md` sont sautées
-4. **Review gates** : les issues marquées `⚠️ REVIEW` interrompent la boucle
-5. **Feedback** : afficher un résumé après chaque issue (fichiers modifiés, tests)
+3. **Idempotence** : les issues déjà cochées sont sautées
+4. **Review gates** : les issues `⚠️ REVIEW` interrompent la boucle
+5. **Feedback** : résumé après chaque issue (fichiers modifiés, tests)
 
 ### Gestion des erreurs
 
 | Situation | Action |
 |-----------|--------|
-| Build échoue après implémentation | Tenter un fix. Si impossible → revert + signaler |
-| Tests échouent | Analyser. Si régression → corriger. Si test fragile → signaler |
-| Issue plus complexe que prévu | Signaler, proposer de la reporter au sprint suivant |
+| Build échoue | Tenter un fix. Si impossible → revert + signaler |
+| Tests échouent | Si régression → corriger. Si fragile → signaler |
+| Issue trop complexe | Signaler, proposer report au sprint suivant |
 | Conflit de merge | Résoudre si trivial, sinon demander à l'utilisateur |
-| Skill spécialisé non disponible | Implémenter directement avec les connaissances disponibles |
 
-### Mise à jour GitHub Project — OBLIGATOIRE à chaque transition
+### Mise à jour GitHub Project — OBLIGATOIRE
 
-Sprintix **DOIT** mettre à jour le statut dans le GitHub Project à chaque étape.
-Ne **JAMAIS** laisser une issue en "Backlog" si elle est en cours de traitement.
-
-**Transitions obligatoires :**
-1. Début de traitement → Statut = "In Progress" (🏗️ En cours)
-2. Implémentation terminée + build vert → Statut = "Done" (✅ Terminé)
-3. Issue bloquée ou reportée → Statut = "Backlog" + commentaire
-
-**Commandes :**
-
-```bash
-# Récupérer le project number
-gh project list --owner @me --format json
-
-# Lister les items pour trouver l'ID
-gh project item-list <PROJECT_NUMBER> --owner @me --format json
-
-# Mettre à jour le statut
-gh project item-edit --project-id <PROJECT_ID> --id <ITEM_ID> \
-  --field-id <STATUS_FIELD_ID> --single-select-option-id <OPTION_ID>
-```
-
-En cas d'erreur API GitHub : réessayer 2 fois, puis consigner l'échec dans
-`.sprint/sprint-N.md` et continuer l'exécution.
+Transitions : début → "In Progress" (🏗️), build vert → "Done" (✅), bloquée → "Backlog" + commentaire.
+Pour les commandes `gh project`, voir `references/github-project-api.md`.
 
 ---
 
 ## Mode STATUS — Suivi de progression
 
-### Affichage
+Affiche la progression du sprint : barre visuelle, statut par phase, dernière/prochaine issue, blocages.
+Voir `references/sprint-plan-template.md` pour le format d'affichage.
 
-```markdown
-## Sprint N — [Titre]
-📅 2026-03-23 → 2026-04-05 | ⏱️ Jour 3/14
-
-### Progression
-████████░░░░ 5/7 issues (71%)
-
-### Par phase
-| Phase | Issues | Terminées | Statut |
-|-------|--------|-----------|--------|
-| 1 — Prérequis | 2 | 2/2 | ✅ Complète |
-| 2 — Indépendantes | 4 | 3/4 | 🏗️ En cours |
-| 3 — Review | 1 | 0/1 | ⏳ En attente |
-
-### Dernière issue traitée
-✅ #56 — console.log résiduels (il y a 2h)
-
-### Prochaine issue
-🎯 #53 — Email expéditeur codé en dur
-
-### Blocages
-(aucun)
-```
-
-### Sources de données
-1. **`.sprint/sprint-N.md`** : plan et checkboxes
-2. **GitHub Project** : statuts et métadonnées
-3. **Git log** : commits récents avec `closes #N`
+Sources : `.sprint/sprint-N.md` (checkboxes), GitHub Project (statuts), Git log (commits `closes #N`).
 
 ---
 
 ## Mode NEXT — Prochaine issue
 
-Raccourci qui :
-1. Détermine le sprint en cours (plus récent fichier `.sprint/sprint-N.md`)
-2. Trouve la première issue non cochée dans le plan
+1. Détermine le sprint en cours (plus récent `.sprint/sprint-N.md`)
+2. Trouve la première issue non cochée
 3. Lance le mode RUN sur cette seule issue
 
 ---
@@ -327,170 +181,35 @@ Raccourci qui :
 | RGPD, données personnelles | rgpdix | securix, databasix |
 | Console.log, typo, cleanup | soclix | — |
 
-### Délégation à /issue
-
-Pour chaque issue, Sprintix invoque `/issue #N` qui suit son propre workflow
-en 6 étapes. Sprintix ajoute le contexte sprint :
-
-```
-Contexte sprint pour /issue :
-- Sprint : N
-- Phase : X (nom de la phase)
-- Ordre : Y/Z
-- Issues précédentes déjà traitées : #A, #B, #C
-- Build status : ✅ vert
-```
-
----
-
-## Génération du plan — Algorithme d'ordonnancement
-
-### Étape 1 : Collecte
-
-```
-issues[] ← gh project item-list (filtrées par sprint)
-Pour chaque issue :
-  - priorité ← champ "Priorité" du projet (Critique > Haute > Moyenne > Basse)
-  - domaine ← labels ou champ "App" (socle, links, creai, omega)
-  - effort ← champ "Effort" ou estimation depuis le body
-  - fichiers ← analyse du body (localisation mentionnée)
-  - dépendances ← mentions "dépend de #N" ou "bloqué par #N"
-```
-
-### Étape 2 : Graphe de dépendances
-
-```
-Pour chaque paire (issue_A, issue_B) :
-  Si A.fichiers ∩ B.fichiers ≠ ∅ → A dépend de B (ou inversement, selon priorité)
-  Si A.body mentionne "dépend de #B" → A dépend de B
-  Si A est un prérequis (env vars, config) → tout dépend de A
-```
-
-### Étape 3 : Tri topologique + priorité
-
-```
-phases[] ← []
-remaining ← toutes les issues
-
-Tant que remaining n'est pas vide :
-  batch ← issues de remaining sans dépendance non résolue
-  Trier batch par (priorité DESC, effort ASC)
-  phases.push(batch)
-  remaining -= batch
-```
-
-### Étape 4 : Annotation des phases
-
-```
-Pour chaque phase :
-  Si contient des issues critiques sans parallélisme → "séquentiel"
-  Si toutes les issues sont indépendantes → "parallélisable"
-  Si contient des CVE ou breaking changes → "review humain requis"
-```
+Pour chaque issue, Sprintix invoque `/issue #N` avec le contexte sprint (numéro, phase, ordre, issues précédentes, build status).
 
 ---
 
 ## Points de contrôle inter-phases
 
-Entre chaque phase, Sprintix vérifie systématiquement :
-
-```bash
-# 1. Build complet
-pnpm build
-
-# 2. Tests
-pnpm test
-
-# 3. Lint (si configuré)
-pnpm lint 2>/dev/null || true
-
-# 4. Git status propre
-git status --porcelain  # doit être vide
-```
-
-Si un point de contrôle échoue :
-1. **Identifier** la cause (quelle issue a cassé quoi)
-2. **Tenter** une correction automatique
-3. **Si impossible** → arrêter le sprint et signaler
+Entre chaque phase : `pnpm build` + `pnpm test` + `pnpm lint` + `git status --porcelain` (doit être vide).
+Si échec : identifier la cause, tenter correction, sinon arrêter le sprint.
 
 ---
 
 ## Reprise après interruption
 
-Quand Sprintix est relancé sur un sprint déjà commencé :
-
-1. Lire `.sprint/sprint-N.md`
-2. Identifier les issues cochées (✅) → les sauter
-3. Vérifier le pipeline sur l'état actuel du code
-4. Reprendre à la première issue non cochée
-5. Signaler les issues qui étaient "En cours" mais non terminées
-
----
-
-## Format de mise à jour du plan
-
-Quand une issue est terminée, mettre à jour `.sprint/sprint-N.md` :
-
-```markdown
-# Avant
-| 3 | #51 | Index manquants sur audit_logs | 🟠 Haute | databasix | — | — |
-
-# Après
-| ✅ 3 | #51 | Index manquants sur audit_logs | 🟠 Haute | databasix | — | Fait (2026-03-24) |
-```
+1. Lire `.sprint/sprint-N.md`, identifier les issues cochées → les sauter
+2. Vérifier le pipeline sur l'état actuel du code
+3. Reprendre à la première issue non cochée
+4. Signaler les issues "En cours" non terminées
 
 ---
 
 ## Vérification finale d'exhaustivité
 
-Avant de générer le rapport de fin de sprint :
-
-1. `gh project item-list` → lister **TOUTES** les issues du sprint
-2. Pour chaque issue :
-   - Vérifier qu'un commit `closes #N` existe dans le git log
-   - Vérifier que l'issue est CLOSED sur GitHub
-   - Vérifier que le statut Project est "Done"
-3. Si des issues sont encore OPEN :
-   → **NE PAS** générer le rapport
-   → Lister les issues manquantes
-   → Demander : "X issues restent non traitées. Voulez-vous les implémenter
-     maintenant ou les reporter au sprint suivant ?"
-
-Le rapport **DOIT** inclure une section "Issues non traitées" si des issues
-ont été reportées, avec justification pour chacune.
+Avant le rapport : `gh project item-list` → vérifier pour chaque issue : commit `closes #N`, issue CLOSED, statut "Done". Si delta > 0 → NE PAS générer le rapport, lister les manquantes.
 
 ---
 
 ## Rapport de fin de sprint
 
-À la fin du sprint (toutes les issues cochées ou explicitement reportées), générer un rapport :
-
-```markdown
-## Rapport Sprint N — [Titre]
-
-### Résumé
-- **Période :** 2026-03-23 → 2026-04-05
-- **Issues traitées :** 7/7 (100%)
-- **Commits :** 9
-- **Fichiers modifiés :** 23
-
-### Issues complétées
-| # | Issue | Commit | Fichiers | Résultat |
-|---|-------|--------|----------|----------|
-| 1 | #44 | abc1234 | 5 | ✅ |
-| 2 | #52 | def5678 | 3 | ✅ |
-| ... | | | | |
-
-### Métriques de qualité
-- Build : ✅ (les 3 apps)
-- Tests : ✅ (X tests, Y% couverture)
-- Lint : ✅
-- CVE : X restantes (vs Y avant sprint)
-
-### Recommandations pour le Sprint N+1
-- [Issues reportées le cas échéant]
-- [Dettes techniques découvertes pendant le sprint]
-```
+Générer un rapport à la fin du sprint. Voir `references/sprint-plan-template.md` pour le template complet. Le rapport DOIT inclure une section "Issues non traitées" si des issues ont été reportées.
 
 ---
 
@@ -498,63 +217,19 @@ ont été reportées, avec justification pour chacune.
 
 | Anti-pattern | Correction |
 |-------------|-----------|
-| Implémenter sans lire l'issue | Toujours lire le body complet via `gh issue view` |
+| Implémenter sans lire l'issue | Toujours lire le body via `gh issue view` |
 | Continuer après un build cassé | STOP immédiat, corriger ou revert |
-| Sauter les points de contrôle | Les checkpoints sont obligatoires entre phases |
-| Tout commiter dans un seul commit | Un commit par issue, avec `closes #N` |
+| Sauter les points de contrôle | Checkpoints obligatoires entre phases |
+| Tout commiter en un seul commit | Un commit par issue avec `closes #N` |
 | Ignorer les flags ⚠️ REVIEW | Toujours s'arrêter et demander validation |
-| Modifier le plan sans signaler | Toute déviation du plan doit être communiquée |
-| Exécuter en mode 100% autonome | Les review gates existent pour une raison |
-
----
-
-## Synchronisation bidirectionnelle GitHub Projects
-
-Sprintix maintient une synchronisation stricte entre `.sprint/sprint-N.md` et le GitHub
-Project à chaque transition d'issue :
-
-### Lecture enrichie du Project
-
-```bash
-# Récupérer les issues avec tous les champs custom (priorité, effort, itération)
-gh project item-list <PROJECT_NUMBER> --owner @me --format json \
-  | jq '.items[] | select(.iteration == "Sprint N") | {
-      number: .content.number,
-      title: .content.title,
-      status: .status,
-      priority: .priority,
-      effort: .effort,
-      labels: .content.labels
-    }'
-```
-
-### Mise à jour automatique des colonnes
-
-À chaque transition d'issue dans la boucle d'exécution :
-
-| Événement Sprintix | Action GitHub Project |
-|---------------------|---------------------|
-| Issue lue et analysée | Status → "In Progress" |
-| Implémentation terminée + build vert | Status → "Done" |
-| Issue bloquée | Status → "Blocked" + commentaire |
-| Issue reportée au sprint suivant | Changer l'itération + commentaire |
-
-### Vérification de cohérence en fin de sprint
-
-```bash
-# Comparer les issues "Done" dans le Project vs cochées dans le plan
-PROJECT_DONE=$(gh project item-list ... | jq '[.items[] | select(.status=="Done")] | length')
-PLAN_DONE=$(grep -c "^| ✅" .sprint/sprint-N.md)
-
-if [ "$PROJECT_DONE" != "$PLAN_DONE" ]; then
-  echo "⚠️ Incohérence : $PROJECT_DONE done dans Project vs $PLAN_DONE dans le plan"
-fi
-```
+| Modifier le plan sans signaler | Toute déviation doit être communiquée |
 
 ---
 
 ## Références
 
+- `references/sprint-plan-template.md` — Templates de plan, statut et rapport de sprint
+- `references/ordering-algorithm.md` — Algorithme détaillé d'ordonnancement des issues
 - `references/execution-patterns.md` — Patterns d'exécution et cas limites
-- `references/github-project-api.md` — Commandes gh pour manipuler les projets
+- `references/github-project-api.md` — Commandes gh pour les projets (+ synchronisation bidirectionnelle)
 - `references/execution-checklist.md` — Checklist d'exécution exhaustive (avant/pendant/après sprint)

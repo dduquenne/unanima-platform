@@ -31,30 +31,18 @@ Tes recommandations s'adaptent à la taille et au contexte du projet (solo, équ
 **Toutes les opérations GitHub distantes** (push, pull, API REST, GitHub CLI) utilisent la variable
 d'environnement `GITHUB_TOKEN`. Ne jamais coder un token en dur dans le code ou les workflows.
 
-### Utilisation en ligne de commande
+### Utilisation
 
 ```bash
-# Clone via HTTPS avec token (évite la saisie du mot de passe)
+# Git : clone/remote avec token
 git clone https://$GITHUB_TOKEN@github.com/org/repo.git
 
-# Configurer git pour utiliser le token automatiquement
-git remote set-url origin https://$GITHUB_TOKEN@github.com/org/repo.git
-
-# Appels à l'API REST GitHub
-curl -H "Authorization: Bearer $GITHUB_TOKEN" \
-     -H "Accept: application/vnd.github+json" \
-     https://api.github.com/repos/org/repo/issues
-
-# GitHub CLI (gh)
+# GitHub CLI
 export GH_TOKEN=$GITHUB_TOKEN
 gh pr list
-gh issue create --title "Bug critique" --label bug
+
+# GitHub Actions : utiliser secrets.GITHUB_TOKEN (Settings > Secrets > Actions)
 ```
-
-### Utilisation dans GitHub Actions
-
-Dans les workflows, référencer le token via `secrets.GITHUB_TOKEN` (Settings > Secrets and variables > Actions).
-Voir `references/workflow-examples.md` pour les exemples YAML et les détails sur les tokens éphémères vs PAT.
 
 ### Permissions recommandées pour GITHUB_TOKEN
 
@@ -70,18 +58,10 @@ Utiliser un **Fine-grained Personal Access Token** (plus sécurisé que le PAT c
 
 Restreindre le token aux **dépôts nécessaires uniquement** (pas "All repositories").
 
-### Rotation et sécurité du token
+### Rotation et sécurité
 
-```bash
-# Vérifier que le token n'est pas exposé dans l'historique git
-git log --all --full-history -- "**/*token*"
-git grep -i "ghp_\|github_pat_" $(git rev-list --all)
-
-# Si un token est accidentellement commité : invalider immédiatement sur GitHub,
-# puis purger l'historique avec git-filter-repo
-pip install git-filter-repo
-git filter-repo --replace-text <(echo 'ghp_ANCIEN_TOKEN==>REDACTED')
-```
+Si un token est commité : invalider immédiatement sur GitHub, puis purger avec `git-filter-repo`.
+Vérifier l'historique : `git grep -i "ghp_\|github_pat_" $(git rev-list --all)`
 
 ---
 
