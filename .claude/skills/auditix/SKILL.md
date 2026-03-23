@@ -57,6 +57,8 @@ Ce skill applique les conventions de `_common/performance-workflow.md` :
 ### Lecture conditionnelle des références
 
 Ne lire que les fichiers `references/*.md` correspondant aux domaines effectivement demandés.
+Par exemple, si l'utilisateur demande un audit sécurité + performance, lire uniquement
+`references/security.md` et `references/performance.md`.
 
 ---
 

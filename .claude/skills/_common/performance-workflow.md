@@ -173,66 +173,66 @@ Exemples concrets :
 
 ## Pattern 6 : Gestion des tokens et anti-cascade
 
-La fenetre de contexte est une ressource limitee. Chaque token consomme charge le
-SKILL.md complet du skill declenche, plus les references lues, plus les documents
-sources, plus la conversation. Quand le contexte se remplit, les messages anterieurs
-sont compresses et des informations peuvent etre perdues.
+La fenêtre de contexte est une ressource limitée. Chaque token consommé charge le
+SKILL.md complet du skill déclenché, plus les références lues, plus les documents
+sources, plus la conversation. Quand le contexte se remplit, les messages antérieurs
+sont compressés et des informations peuvent être perdues.
 
-### Regle anti-cascade
+### Règle anti-cascade
 
-Ne jamais invoquer un skill complementaire (`compatibility.recommends`) dans la meme
-conversation sauf si l'utilisateur le demande explicitement. Chaque skill charge ajoute
+Ne jamais invoquer un skill complémentaire (`compatibility.recommends`) dans la même
+conversation sauf si l'utilisateur le demande explicitement. Chaque skill chargé ajoute
 des centaines de lignes au contexte.
 
 Exemple :
-- projetix genere une SFD → ne PAS invoquer documentalix pour le frontmatter,
-  ni ergonomix pour la validation UX, ni recettix pour les criteres d'acceptation.
+- projetix génère une SFD → ne PAS invoquer documentalix pour le frontmatter,
+  ni ergonomix pour la validation UX, ni recettix pour les critères d'acceptation.
 - Si l'utilisateur veut ces enrichissements, il les demandera dans une conversation
-  separee ou explicitement.
+  séparée ou explicitement.
 
-### Regle de compacite des SKILL.md
+### Règle de compacité des SKILL.md
 
-Le SKILL.md est charge EN ENTIER quand le skill est declenche. Chaque ligne consomme
+Le SKILL.md est chargé EN ENTIER quand le skill est déclenché. Chaque ligne consomme
 des tokens. Objectifs de taille :
 
-| Categorie | Lignes max SKILL.md | Strategy |
+| Catégorie | Lignes max SKILL.md | Stratégie |
 |-----------|-------------------|----------|
 | Skill simple | < 200 lignes | Tout inline |
-| Skill standard | 200-350 lignes | Templates inline, details en references |
-| Skill complexe | 350-500 lignes | Minimum inline, maximum en references |
-| > 500 lignes | A reduire | Extraire templates, exemples, code vers references |
+| Skill standard | 200-350 lignes | Templates inline, détails en références |
+| Skill complexe | 350-500 lignes | Minimum inline, maximum en références |
+| > 500 lignes | À réduire | Extraire templates, exemples, code vers références |
 
-### Regle de compacite des outputs
+### Règle de compacité des outputs
 
-Pour les documents generes, privilegier la densite sur la verbosité :
-- Pas de repetition des instructions dans la sortie
-- Pas de commentaires explicatifs dans les templates generes
-- Pas de sections vides ("A completer") — les omettre si pas de contenu
-- Ecrire le fichier directement sans repeter son contenu dans la conversation
+Pour les documents générés, privilégier la densité sur la verbosité :
+- Pas de répétition des instructions dans la sortie
+- Pas de commentaires explicatifs dans les templates générés
+- Pas de sections vides ("À compléter") — les omettre si pas de contenu
+- Écrire le fichier directement sans répéter son contenu dans la conversation
 
-### Delegation aux sous-agents
+### Délégation aux sous-agents
 
-Quand un skill genere un document long, le sous-agent herite d'un contexte vierge.
+Quand un skill génère un document long, le sous-agent hérite d'un contexte vierge.
 C'est un avantage majeur : le sous-agent ne porte pas le poids de la conversation
-parente. En fournissant au sous-agent uniquement le contexte minimal necessaire
-(template + donnees), on economise des milliers de tokens.
+parente. En fournissant au sous-agent uniquement le contexte minimal nécessaire
+(template + données), on économise des milliers de tokens.
 
 ---
 
-## Integration dans un SKILL.md
+## Intégration dans un SKILL.md
 
-Pour appliquer ces conventions, ajouter dans chaque SKILL.md qui genere des livrables :
+Pour appliquer ces conventions, ajouter dans chaque SKILL.md qui génère des livrables :
 
 ```markdown
 ## Conventions de performance
 
 Ce skill applique les conventions de `_common/performance-workflow.md` :
 - Feedback continu (message avant chaque phase)
-- Generation incrementale (structure → validation → contenu → assemblage)
-- Lecture conditionnelle des references (pas de lecture systematique)
-- Cadrage du scope avant execution
-- Anti-cascade (ne pas invoquer de skills complementaires sauf demande explicite)
-- Compacite des outputs (densite > verbosite)
+- Génération incrémentale (structure → validation → contenu → assemblage)
+- Lecture conditionnelle des références (pas de lecture systématique)
+- Cadrage du scope avant exécution
+- Anti-cascade (ne pas invoquer de skills complémentaires sauf demande explicite)
+- Compacité des outputs (densité > verbosité)
 ```
 
-Puis adapter le workflow du skill en consequence.
+Puis adapter le workflow du skill en conséquence.
