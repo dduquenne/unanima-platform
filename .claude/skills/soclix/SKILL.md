@@ -273,8 +273,69 @@ Fondations) où de nombreuses issues touchent le socle et pourraient interagir.
 
 ---
 
+## Phase 6 — Matrice de compatibilité
+
+### 6.1 Principe
+
+Soclix maintient une matrice de compatibilité formelle entre les versions des packages
+partagés et les apps consommatrices. Cette matrice permet de savoir à tout instant
+quelle version de chaque package est utilisée par chaque app, et de détecter les
+incompatibilités potentielles.
+
+### 6.2 Format de la matrice
+
+```markdown
+## Matrice de compatibilité — Socle Unanima
+
+*Mise à jour : YYYY-MM-DD*
+
+| Package | Version socle | Links | CREAI | Omega | Breaking changes |
+|---------|--------------|-------|-------|-------|-----------------|
+| @unanima/core | 1.3.0 | ✅ 1.3.0 | ✅ 1.3.0 | ✅ 1.3.0 | — |
+| @unanima/auth | 1.2.0 | ✅ 1.2.0 | ✅ 1.2.0 | ✅ 1.2.0 | — |
+| @unanima/db | 1.1.0 | ✅ 1.1.0 | ✅ 1.1.0 | ✅ 1.1.0 | — |
+| @unanima/dashboard | 1.4.0 | ✅ 1.4.0 | ✅ 1.4.0 | ⚠️ 1.3.0 | ChartWrapper API v1.4 |
+| @unanima/email | 1.0.0 | ✅ 1.0.0 | ✅ 1.0.0 | ✅ 1.0.0 | — |
+| @unanima/rgpd | 1.1.0 | ✅ 1.1.0 | ✅ 1.1.0 | ✅ 1.1.0 | — |
+```
+
+### 6.3 Génération automatique
+
+```bash
+# Vérifier les versions consommées par chaque app
+for app in links creai omega; do
+  echo "=== $app ==="
+  grep -E '"@unanima/' apps/$app/package.json | sed 's/[",]//g' | awk '{print $1, $2}'
+done
+
+# Vérifier les versions publiées par chaque package
+for pkg in core auth db dashboard email rgpd; do
+  echo "=== @unanima/$pkg ==="
+  jq '.version' packages/$pkg/package.json
+done
+```
+
+### 6.4 Règles de compatibilité
+
+| Situation | Statut | Action requise |
+|-----------|--------|----------------|
+| Toutes les apps sur la même version | ✅ Aligné | Aucune |
+| Une app en retard d'une version mineure | ⚠️ Décalage | Planifier la migration |
+| Une app en retard d'une version majeure | 🔴 Incompatible | Migration urgente |
+| Breaking change en cours (expand phase) | 🟡 En transition | Suivre le plan expand/contract |
+
+### 6.5 Quand mettre à jour la matrice
+
+- Après chaque modification d'un package partagé
+- Après chaque migration d'une app vers une nouvelle version
+- À chaque début de sprint (vérification de cohérence)
+- Sur demande de Pilotix lors de la planification
+
+---
+
 ## Références
 
 Pour les détails de gestion du monorepo :
 - `references/impact-analysis.md` — Procédure détaillée d'analyse d'impact
 - `references/package-lifecycle.md` — Cycle de vie complet d'un package partagé
+- `references/compatibility-matrix.md` — Historique des matrices de compatibilité

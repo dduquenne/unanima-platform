@@ -33,6 +33,16 @@ ne sait pas si c'est un bug, un problème de performance, ou de la dette techniq
 > **Règle d'or : diagnostiquer avant de traiter. Un bon diagnostic oriente vers le bon
 > spécialiste. Un mauvais diagnostic fait perdre du temps à tout le monde.**
 
+> **Quand utiliser Diagnostix vs les spécialistes ?**
+> - **Diagnostix** : le symptôme est **ambigu** — l'utilisateur décrit un problème vague
+>   ("ça ne va pas", "quelque chose cloche", "tout est lent et bugué") et on ne sait pas
+>   encore dans quel domaine se situe la cause. Diagnostix fait le triage.
+> - **Anomalix** : le bug est **identifié** — message d'erreur précis, crash reproductible.
+> - **Optimix** : le problème de **performance est identifié** — lenteur mesurable, build long.
+> - **Auditix** : un **audit est demandé** — revue de qualité, dette technique à mesurer.
+>
+> En cas de doute, commencer par Diagnostix : il orientera vers le bon spécialiste.
+
 ---
 
 ## Phase 1 — Triage rapide (< 5 min)

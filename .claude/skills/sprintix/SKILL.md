@@ -19,6 +19,8 @@ compatibility:
     - testix        # Pour la validation entre les phases
     - deploix       # Pour les vérifications de déploiement post-sprint
     - auditix       # Pour le bilan qualité post-sprint
+    - pipelinix     # Pour vérifier que la CI est verte à chaque phase
+    - observix      # Pour le monitoring post-sprint en production
 ---
 
 # Sprintix — Exécuteur de Sprints
@@ -503,6 +505,51 @@ ont été reportées, avec justification pour chacune.
 | Ignorer les flags ⚠️ REVIEW | Toujours s'arrêter et demander validation |
 | Modifier le plan sans signaler | Toute déviation du plan doit être communiquée |
 | Exécuter en mode 100% autonome | Les review gates existent pour une raison |
+
+---
+
+## Synchronisation bidirectionnelle GitHub Projects
+
+Sprintix maintient une synchronisation stricte entre `.sprint/sprint-N.md` et le GitHub
+Project à chaque transition d'issue :
+
+### Lecture enrichie du Project
+
+```bash
+# Récupérer les issues avec tous les champs custom (priorité, effort, itération)
+gh project item-list <PROJECT_NUMBER> --owner @me --format json \
+  | jq '.items[] | select(.iteration == "Sprint N") | {
+      number: .content.number,
+      title: .content.title,
+      status: .status,
+      priority: .priority,
+      effort: .effort,
+      labels: .content.labels
+    }'
+```
+
+### Mise à jour automatique des colonnes
+
+À chaque transition d'issue dans la boucle d'exécution :
+
+| Événement Sprintix | Action GitHub Project |
+|---------------------|---------------------|
+| Issue lue et analysée | Status → "In Progress" |
+| Implémentation terminée + build vert | Status → "Done" |
+| Issue bloquée | Status → "Blocked" + commentaire |
+| Issue reportée au sprint suivant | Changer l'itération + commentaire |
+
+### Vérification de cohérence en fin de sprint
+
+```bash
+# Comparer les issues "Done" dans le Project vs cochées dans le plan
+PROJECT_DONE=$(gh project item-list ... | jq '[.items[] | select(.status=="Done")] | length')
+PLAN_DONE=$(grep -c "^| ✅" .sprint/sprint-N.md)
+
+if [ "$PROJECT_DONE" != "$PLAN_DONE" ]; then
+  echo "⚠️ Incohérence : $PROJECT_DONE done dans Project vs $PLAN_DONE dans le plan"
+fi
+```
 
 ---
 
