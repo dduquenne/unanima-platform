@@ -1,0 +1,431 @@
+<!-- MAQ-09 | Planification Rendez-vous | Link's Accompagnement | v1.0 | 2026-03-23 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- BACKGROUND                                          -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- HEADER                                              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <rect x="0" y="0" width="1440" height="60" fill="#0D3B6E"/>
+
+  <!-- Logo mark -->
+  <rect x="24" y="14" width="32" height="32" rx="6" fill="#1E6FC0"/>
+  <text x="40" y="35" font-size="16" font-weight="800" fill="white" text-anchor="middle">U</text>
+
+  <!-- Logo text -->
+  <text x="66" y="28" font-size="16" font-weight="700" fill="white">Link's</text>
+  <text x="66" y="44" font-size="11" font-weight="400" fill="#A8C8E8">Accompagnement</text>
+
+  <!-- Separator -->
+  <line x1="130" y1="16" x2="130" y2="44" stroke="#1E6FC0" stroke-width="1" opacity="0.6"/>
+
+  <!-- Nav links -->
+  <text x="150" y="35" font-size="13" fill="#A8C8E8" cursor="pointer">Tableau de bord</text>
+  <text x="264" y="35" font-size="13" fill="#A8C8E8" cursor="pointer">Bénéficiaires</text>
+  <text x="370" y="35" font-size="13" fill="#A8C8E8" cursor="pointer">Agenda</text>
+
+  <!-- User info (right) -->
+  <!-- Avatar -->
+  <circle cx="1340" cy="30" r="18" fill="#1E6FC0"/>
+  <text x="1340" y="35" font-size="13" font-weight="600" fill="white" text-anchor="middle">SM</text>
+
+  <!-- Name + role -->
+  <text x="1318" y="24" font-size="13" font-weight="600" fill="white" text-anchor="end">Sophie Martin</text>
+  <text x="1318" y="40" font-size="11" fill="#A8C8E8" text-anchor="end">Consultante</text>
+
+  <!-- Logout button -->
+  <rect x="1368" y="18" width="56" height="24" rx="4" fill="none" stroke="#A8C8E8" stroke-width="1"/>
+  <text x="1396" y="34" font-size="11" fill="#A8C8E8" text-anchor="middle">Quitter</text>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SIDEBAR                                             -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <rect x="0" y="60" width="220" height="840" fill="#0D3B6E"/>
+
+  <!-- Sidebar nav items -->
+  <!-- Dashboard -->
+  <rect x="0" y="68" width="220" height="40" fill="none"/>
+  <text x="24" y="93" font-size="13" fill="#A8C8E8">📊  Tableau de bord</text>
+
+  <!-- Bénéficiaires (active context) -->
+  <rect x="0" y="116" width="220" height="40" fill="#1E6FC0" opacity="0.3" rx="0"/>
+  <rect x="0" y="116" width="3" height="40" fill="#1E6FC0"/>
+  <text x="24" y="141" font-size="13" fill="white" font-weight="600">👥  Bénéficiaires</text>
+
+  <!-- Agenda -->
+  <rect x="0" y="164" width="220" height="40" fill="none"/>
+  <text x="24" y="189" font-size="13" fill="#A8C8E8">📅  Agenda</text>
+
+  <!-- Documents -->
+  <rect x="0" y="212" width="220" height="40" fill="none"/>
+  <text x="24" y="237" font-size="13" fill="#A8C8E8">📄  Documents</text>
+
+  <!-- Rapports -->
+  <rect x="0" y="260" width="220" height="40" fill="none"/>
+  <text x="24" y="285" font-size="13" fill="#A8C8E8">📈  Rapports</text>
+
+  <!-- Separator -->
+  <line x1="16" y1="316" x2="204" y2="316" stroke="#1E6FC0" stroke-width="1" opacity="0.4"/>
+
+  <!-- Paramètres -->
+  <rect x="0" y="324" width="220" height="40" fill="none"/>
+  <text x="24" y="349" font-size="13" fill="#A8C8E8">⚙️  Paramètres</text>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- MAIN CONTENT AREA                                   -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- Main area background -->
+  <rect x="220" y="60" width="1220" height="840" fill="#F5F7FA"/>
+
+  <!-- ── Breadcrumb ── -->
+  <text x="240" y="88" font-size="12" fill="#6B7280">
+    <tspan fill="#1E6FC0" cursor="pointer">Tableau de bord</tspan>
+    <tspan fill="#9CA3AF"> › </tspan>
+    <tspan fill="#1E6FC0" cursor="pointer">Marie Dupont</tspan>
+    <tspan fill="#9CA3AF"> › </tspan>
+    <tspan fill="#4A4A4A" font-weight="500">Planification</tspan>
+  </text>
+
+  <!-- ── Page title ── -->
+  <text x="240" y="122" font-size="22" font-weight="700" fill="#0D3B6E">Marie Dupont</text>
+  <text x="240" y="144" font-size="13" fill="#6B7280">Bilan de compétences · Démarré le 01/03/2026</text>
+
+  <!-- Status badge on title row -->
+  <rect x="440" y="108" width="90" height="22" rx="11" fill="#EEF7ED"/>
+  <circle cx="455" cy="119" r="4" fill="#28A745"/>
+  <text x="463" y="123" font-size="11" font-weight="600" fill="#28A745">En cours</text>
+
+  <!-- ── Tabs ── -->
+  <rect x="240" y="160" width="960" height="40" rx="0" fill="none"/>
+
+  <!-- Tab: Réponses -->
+  <rect x="240" y="160" width="140" height="40" rx="0" fill="none"/>
+  <text x="310" y="185" font-size="13" fill="#6B7280" text-anchor="middle" cursor="pointer">Réponses</text>
+  <line x1="240" y1="200" x2="380" y2="200" stroke="#DCE1EB" stroke-width="2"/>
+
+  <!-- Tab: Planification (active) -->
+  <rect x="380" y="160" width="160" height="40" rx="0" fill="none"/>
+  <text x="460" y="185" font-size="13" font-weight="600" fill="#1E6FC0" text-anchor="middle" cursor="pointer">Planification</text>
+  <line x1="380" y1="200" x2="540" y2="200" stroke="#1E6FC0" stroke-width="2"/>
+
+  <!-- Tab: Comptes-rendus -->
+  <rect x="540" y="160" width="180" height="40" rx="0" fill="none"/>
+  <text x="630" y="185" font-size="13" fill="#6B7280" text-anchor="middle" cursor="pointer">Comptes-rendus</text>
+  <line x1="540" y1="200" x2="720" y2="200" stroke="#DCE1EB" stroke-width="2"/>
+
+  <!-- Full-width bottom border for tab bar -->
+  <line x1="240" y1="200" x2="1200" y2="200" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- ── Main Card ── -->
+  <rect x="240" y="220" width="760" height="600" rx="8" fill="white" stroke="#DCE1EB" stroke-width="1" filter="url(#shadow)"/>
+
+  <!-- Card title -->
+  <text x="272" y="258" font-size="16" font-weight="700" fill="#0D3B6E">Planification des séances — Marie Dupont</text>
+  <text x="272" y="276" font-size="12" fill="#6B7280">6 séances prévues au total · 2 planifiées</text>
+
+  <!-- ─ Section label ─ -->
+  <text x="272" y="308" font-size="13" font-weight="600" fill="#4A4A4A">Dates des séances</text>
+
+  <!-- ── COLUMN HEADERS ── -->
+  <text x="272" y="330" font-size="11" font-weight="600" fill="#9CA3AF" letter-spacing="0.5">SÉANCE</text>
+  <text x="380" y="330" font-size="11" font-weight="600" fill="#9CA3AF" letter-spacing="0.5">DATE</text>
+  <text x="560" y="330" font-size="11" font-weight="600" fill="#9CA3AF" letter-spacing="0.5">HEURE</text>
+  <text x="668" y="330" font-size="11" font-weight="600" fill="#9CA3AF" letter-spacing="0.5">STATUT</text>
+
+  <line x1="272" y1="336" x2="968" y2="336" stroke="#F3F4F6" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SÉANCE 1 — Planifiée                       -->
+  <!-- ══════════════════════════════════════════ -->
+  <rect x="272" y="344" width="80" height="16" rx="0" fill="none"/>
+  <text x="272" y="356" font-size="13" font-weight="600" fill="#4A4A4A">Séance 1</text>
+
+  <!-- Date input (filled) -->
+  <rect x="360" y="342" width="168" height="36" rx="6" fill="white" stroke="#1E6FC0" stroke-width="1.5"/>
+  <!-- Calendar icon -->
+  <rect x="372" y="350" width="14" height="13" rx="2" fill="none" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="376" y1="350" x2="376" y2="347" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="382" y1="350" x2="382" y2="347" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="370" y1="354" x2="388" y2="354" stroke="#1E6FC0" stroke-width="0.8"/>
+  <text x="392" y="364" font-size="13" fill="#1E6FC0" font-weight="500">15/04/2026</text>
+
+  <!-- Time input (filled) -->
+  <rect x="544" y="342" width="100" height="36" rx="6" fill="white" stroke="#1E6FC0" stroke-width="1.5"/>
+  <!-- Clock icon -->
+  <circle cx="558" cy="360" r="7" fill="none" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="558" y1="355" x2="558" y2="360" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="558" y1="360" x2="562" y2="363" stroke="#1E6FC0" stroke-width="1.2"/>
+  <text x="572" y="364" font-size="13" fill="#1E6FC0" font-weight="500">14:00</text>
+
+  <!-- Badge Planifiée -->
+  <rect x="660" y="347" width="100" height="26" rx="13" fill="#EEF7ED" stroke="#28A745" stroke-width="1"/>
+  <circle cx="675" cy="360" r="4" fill="#28A745"/>
+  <text x="683" y="364" font-size="11" font-weight="600" fill="#28A745">Planifiée ✓</text>
+
+  <line x1="272" y1="390" x2="968" y2="390" stroke="#F9FAFB" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SÉANCE 2 — Planifiée                       -->
+  <!-- ══════════════════════════════════════════ -->
+  <text x="272" y="412" font-size="13" font-weight="600" fill="#4A4A4A">Séance 2</text>
+
+  <!-- Date input (filled) -->
+  <rect x="360" y="398" width="168" height="36" rx="6" fill="white" stroke="#1E6FC0" stroke-width="1.5"/>
+  <rect x="372" y="406" width="14" height="13" rx="2" fill="none" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="376" y1="406" x2="376" y2="403" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="382" y1="406" x2="382" y2="403" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="370" y1="410" x2="388" y2="410" stroke="#1E6FC0" stroke-width="0.8"/>
+  <text x="392" y="420" font-size="13" fill="#1E6FC0" font-weight="500">29/04/2026</text>
+
+  <!-- Time input (filled) -->
+  <rect x="544" y="398" width="100" height="36" rx="6" fill="white" stroke="#1E6FC0" stroke-width="1.5"/>
+  <circle cx="558" cy="416" r="7" fill="none" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="558" y1="411" x2="558" y2="416" stroke="#1E6FC0" stroke-width="1.2"/>
+  <line x1="558" y1="416" x2="562" y2="419" stroke="#1E6FC0" stroke-width="1.2"/>
+  <text x="572" y="420" font-size="13" fill="#1E6FC0" font-weight="500">14:00</text>
+
+  <!-- Badge Planifiée -->
+  <rect x="660" y="403" width="100" height="26" rx="13" fill="#EEF7ED" stroke="#28A745" stroke-width="1"/>
+  <circle cx="675" cy="416" r="4" fill="#28A745"/>
+  <text x="683" y="420" font-size="11" font-weight="600" fill="#28A745">Planifiée ✓</text>
+
+  <line x1="272" y1="446" x2="968" y2="446" stroke="#F9FAFB" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SÉANCE 3 — À planifier                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <text x="272" y="468" font-size="13" font-weight="500" fill="#9CA3AF">Séance 3</text>
+
+  <!-- Date input (empty) -->
+  <rect x="360" y="454" width="168" height="36" rx="6" fill="#FAFAFA" stroke="#DCE1EB" stroke-width="1"/>
+  <rect x="372" y="462" width="14" height="13" rx="2" fill="none" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="376" y1="462" x2="376" y2="459" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="382" y1="462" x2="382" y2="459" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="370" y1="466" x2="388" y2="466" stroke="#D1D5DB" stroke-width="0.8"/>
+  <text x="392" y="476" font-size="12" fill="#C4C9D4">jj/mm/aaaa</text>
+
+  <!-- Time input (empty) -->
+  <rect x="544" y="454" width="100" height="36" rx="6" fill="#FAFAFA" stroke="#DCE1EB" stroke-width="1"/>
+  <circle cx="558" cy="472" r="7" fill="none" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="558" y1="467" x2="558" y2="472" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="558" y1="472" x2="562" y2="475" stroke="#D1D5DB" stroke-width="1.2"/>
+  <text x="572" y="476" font-size="12" fill="#C4C9D4">hh:mm</text>
+
+  <!-- Badge À planifier -->
+  <rect x="660" y="459" width="108" height="26" rx="13" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1"/>
+  <circle cx="675" cy="472" r="4" fill="#D1D5DB"/>
+  <text x="683" y="476" font-size="11" font-weight="500" fill="#9CA3AF">À planifier</text>
+
+  <line x1="272" y1="502" x2="968" y2="502" stroke="#F9FAFB" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SÉANCE 4 — À planifier                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <text x="272" y="524" font-size="13" font-weight="500" fill="#9CA3AF">Séance 4</text>
+
+  <rect x="360" y="510" width="168" height="36" rx="6" fill="#FAFAFA" stroke="#DCE1EB" stroke-width="1"/>
+  <rect x="372" y="518" width="14" height="13" rx="2" fill="none" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="376" y1="518" x2="376" y2="515" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="382" y1="518" x2="382" y2="515" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="370" y1="522" x2="388" y2="522" stroke="#D1D5DB" stroke-width="0.8"/>
+  <text x="392" y="532" font-size="12" fill="#C4C9D4">jj/mm/aaaa</text>
+
+  <rect x="544" y="510" width="100" height="36" rx="6" fill="#FAFAFA" stroke="#DCE1EB" stroke-width="1"/>
+  <circle cx="558" cy="528" r="7" fill="none" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="558" y1="523" x2="558" y2="528" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="558" y1="528" x2="562" y2="531" stroke="#D1D5DB" stroke-width="1.2"/>
+  <text x="572" y="532" font-size="12" fill="#C4C9D4">hh:mm</text>
+
+  <rect x="660" y="515" width="108" height="26" rx="13" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1"/>
+  <circle cx="675" cy="528" r="4" fill="#D1D5DB"/>
+  <text x="683" y="532" font-size="11" font-weight="500" fill="#9CA3AF">À planifier</text>
+
+  <line x1="272" y1="558" x2="968" y2="558" stroke="#F9FAFB" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SÉANCE 5 — À planifier                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <text x="272" y="580" font-size="13" font-weight="500" fill="#9CA3AF">Séance 5</text>
+
+  <rect x="360" y="566" width="168" height="36" rx="6" fill="#FAFAFA" stroke="#DCE1EB" stroke-width="1"/>
+  <rect x="372" y="574" width="14" height="13" rx="2" fill="none" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="376" y1="574" x2="376" y2="571" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="382" y1="574" x2="382" y2="571" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="370" y1="578" x2="388" y2="578" stroke="#D1D5DB" stroke-width="0.8"/>
+  <text x="392" y="588" font-size="12" fill="#C4C9D4">jj/mm/aaaa</text>
+
+  <rect x="544" y="566" width="100" height="36" rx="6" fill="#FAFAFA" stroke="#DCE1EB" stroke-width="1"/>
+  <circle cx="558" cy="584" r="7" fill="none" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="558" y1="579" x2="558" y2="584" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="558" y1="584" x2="562" y2="587" stroke="#D1D5DB" stroke-width="1.2"/>
+  <text x="572" y="588" font-size="12" fill="#C4C9D4">hh:mm</text>
+
+  <rect x="660" y="571" width="108" height="26" rx="13" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1"/>
+  <circle cx="675" cy="584" r="4" fill="#D1D5DB"/>
+  <text x="683" y="588" font-size="11" font-weight="500" fill="#9CA3AF">À planifier</text>
+
+  <line x1="272" y1="614" x2="968" y2="614" stroke="#F9FAFB" stroke-width="1"/>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SÉANCE 6 — À planifier                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <text x="272" y="636" font-size="13" font-weight="500" fill="#9CA3AF">Séance 6</text>
+
+  <rect x="360" y="622" width="168" height="36" rx="6" fill="#FAFAFA" stroke="#DCE1EB" stroke-width="1"/>
+  <rect x="372" y="630" width="14" height="13" rx="2" fill="none" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="376" y1="630" x2="376" y2="627" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="382" y1="630" x2="382" y2="627" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="370" y1="634" x2="388" y2="634" stroke="#D1D5DB" stroke-width="0.8"/>
+  <text x="392" y="644" font-size="12" fill="#C4C9D4">jj/mm/aaaa</text>
+
+  <rect x="544" y="622" width="100" height="36" rx="6" fill="#FAFAFA" stroke="#DCE1EB" stroke-width="1"/>
+  <circle cx="558" cy="640" r="7" fill="none" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="558" y1="635" x2="558" y2="640" stroke="#D1D5DB" stroke-width="1.2"/>
+  <line x1="558" y1="640" x2="562" y2="643" stroke="#D1D5DB" stroke-width="1.2"/>
+  <text x="572" y="644" font-size="12" fill="#C4C9D4">hh:mm</text>
+
+  <rect x="660" y="627" width="108" height="26" rx="13" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1"/>
+  <circle cx="675" cy="640" r="4" fill="#D1D5DB"/>
+  <text x="683" y="644" font-size="11" font-weight="500" fill="#9CA3AF">À planifier</text>
+
+  <!-- ── Bouton Enregistrer les dates ── -->
+  <rect x="272" y="676" width="416" height="44" rx="8" fill="#1E6FC0"/>
+  <!-- Hover effect indicator -->
+  <rect x="272" y="676" width="416" height="44" rx="8" fill="white" opacity="0.04"/>
+  <text x="480" y="703" font-size="14" font-weight="600" fill="white" text-anchor="middle">Enregistrer les dates</text>
+
+  <!-- ── Séparateur ── -->
+  <line x1="272" y1="740" x2="968" y2="740" stroke="#DCE1EB" stroke-width="1"/>
+  <rect x="380" y="733" width="180" height="14" fill="white"/>
+  <text x="470" y="744" font-size="11" font-weight="600" fill="#9CA3AF" text-anchor="middle" letter-spacing="0.5">VISIOCONFÉRENCE</text>
+
+  <!-- ── Section Lien visio ── -->
+  <text x="272" y="772" font-size="13" font-weight="600" fill="#4A4A4A">Lien de connexion visio <tspan font-weight="400" fill="#9CA3AF">(optionnel)</tspan></text>
+
+  <!-- URL input -->
+  <rect x="272" y="782" width="560" height="40" rx="6" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Link icon -->
+  <rect x="284" y="795" width="14" height="10" rx="3" fill="none" stroke="#6B7280" stroke-width="1.2"/>
+  <line x1="291" y1="800" x2="302" y2="800" stroke="#6B7280" stroke-width="1.2"/>
+  <text x="308" y="806" font-size="11" fill="#6B7280">https://teams.microsoft.com/l/meetup-join/...</text>
+
+  <!-- Bouton Enregistrer le lien (secondary) -->
+  <rect x="848" y="782" width="120" height="40" rx="6" fill="white" stroke="#1E6FC0" stroke-width="1.5"/>
+  <text x="908" y="806" font-size="13" font-weight="600" fill="#1E6FC0" text-anchor="middle">Enregistrer</text>
+
+  <!-- Note info -->
+  <rect x="272" y="835" width="14" height="14" rx="2" fill="none"/>
+  <!-- Info icon circle -->
+  <circle cx="279" cy="842" r="7" fill="#EEF4FB" stroke="#1E6FC0" stroke-width="1"/>
+  <text x="279" y="846" font-size="9" font-weight="700" fill="#1E6FC0" text-anchor="middle">i</text>
+  <text x="295" y="846" font-size="11" fill="#6B7280">Ce lien sera visible par Marie Dupont dans son espace bénéficiaire</text>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- RIGHT SIDE PANEL — Info bénéficiaire                -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <rect x="1028" y="220" width="320" height="340" rx="8" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Panel header -->
+  <rect x="1028" y="220" width="320" height="52" rx="8" fill="#F8FAFC"/>
+  <rect x="1028" y="252" width="320" height="20" fill="#F8FAFC"/>
+  <line x1="1028" y1="272" x2="1348" y2="272" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1048" y="250" font-size="13" font-weight="700" fill="#0D3B6E">Fiche bénéficiaire</text>
+
+  <!-- Avatar -->
+  <circle cx="1066" cy="308" r="22" fill="#1E6FC0" opacity="0.15"/>
+  <text x="1066" y="313" font-size="16" font-weight="700" fill="#1E6FC0" text-anchor="middle">MD</text>
+
+  <!-- Nom -->
+  <text x="1100" y="300" font-size="15" font-weight="700" fill="#0D3B6E">Marie Dupont</text>
+  <text x="1100" y="318" font-size="12" fill="#6B7280">marie.dupont@email.fr</text>
+  <text x="1100" y="334" font-size="12" fill="#6B7280">+33 6 12 34 56 78</text>
+
+  <line x1="1048" y1="350" x2="1328" y2="350" stroke="#F3F4F6" stroke-width="1"/>
+
+  <!-- Infos bilan -->
+  <text x="1048" y="372" font-size="11" font-weight="600" fill="#9CA3AF" letter-spacing="0.5">BILAN EN COURS</text>
+
+  <text x="1048" y="394" font-size="12" fill="#6B7280">Type</text>
+  <text x="1200" y="394" font-size="12" font-weight="600" fill="#4A4A4A" text-anchor="end">CPF · 24h</text>
+
+  <line x1="1048" y1="403" x2="1328" y2="403" stroke="#F9FAFB" stroke-width="1"/>
+
+  <text x="1048" y="421" font-size="12" fill="#6B7280">Démarrage</text>
+  <text x="1200" y="421" font-size="12" font-weight="600" fill="#4A4A4A" text-anchor="end">01/03/2026</text>
+
+  <line x1="1048" y1="430" x2="1328" y2="430" stroke="#F9FAFB" stroke-width="1"/>
+
+  <text x="1048" y="448" font-size="12" fill="#6B7280">Séances prévues</text>
+  <text x="1200" y="448" font-size="12" font-weight="600" fill="#4A4A4A" text-anchor="end">6 séances</text>
+
+  <line x1="1048" y1="457" x2="1328" y2="457" stroke="#F9FAFB" stroke-width="1"/>
+
+  <text x="1048" y="475" font-size="12" fill="#6B7280">Progression</text>
+  <text x="1200" y="475" font-size="12" font-weight="600" fill="#1E6FC0" text-anchor="end">2 / 6 planifiées</text>
+
+  <!-- Progress bar -->
+  <rect x="1048" y="482" width="280" height="6" rx="3" fill="#F3F4F6"/>
+  <rect x="1048" y="482" width="93" height="6" rx="3" fill="#1E6FC0"/>
+
+  <!-- Phases -->
+  <text x="1048" y="504" font-size="11" font-weight="600" fill="#9CA3AF" letter-spacing="0.5">PHASE ACTUELLE</text>
+
+  <rect x="1048" y="512" width="280" height="30" rx="6" fill="#FFF7ED" stroke="#FF6B35" stroke-width="1"/>
+  <rect x="1058" y="520" width="10" height="14" rx="2" fill="#FF6B35" opacity="0.3"/>
+  <rect x="1060" y="522" width="6" height="10" rx="1" fill="#FF6B35"/>
+  <text x="1076" y="531" font-size="12" font-weight="600" fill="#FF6B35">Phase préliminaire</text>
+  <text x="1280" y="531" font-size="11" fill="#FF6B35" text-anchor="end">Sem. 3/8</text>
+
+  <!-- Separator -->
+  <line x1="1048" y1="550" x2="1328" y2="550" stroke="#F3F4F6" stroke-width="1"/>
+
+  <!-- ── Second side card: Prochaine séance ── -->
+  <rect x="1028" y="580" width="320" height="130" rx="8" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+
+  <rect x="1028" y="580" width="320" height="48" rx="8" fill="#F8FAFC"/>
+  <rect x="1028" y="608" width="320" height="20" fill="#F8FAFC"/>
+  <line x1="1028" y1="628" x2="1348" y2="628" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1048" y="608" font-size="13" font-weight="700" fill="#0D3B6E">Prochaine séance</text>
+
+  <!-- Date highlight -->
+  <rect x="1048" y="638" width="56" height="56" rx="8" fill="#EEF4FB" stroke="#1E6FC0" stroke-width="1"/>
+  <text x="1076" y="660" font-size="18" font-weight="800" fill="#1E6FC0" text-anchor="middle">15</text>
+  <text x="1076" y="676" font-size="11" font-weight="600" fill="#1E6FC0" text-anchor="middle">AVR</text>
+  <text x="1076" y="690" font-size="10" fill="#9CA3AF" text-anchor="middle">2026</text>
+
+  <!-- Time & details -->
+  <text x="1120" y="653" font-size="15" font-weight="700" fill="#0D3B6E">14:00 — Séance 1</text>
+  <text x="1120" y="669" font-size="12" fill="#6B7280">Visioconférence</text>
+  <rect x="1120" y="678" width="80" height="20" rx="10" fill="#EEF7ED"/>
+  <circle cx="1132" cy="688" r="3.5" fill="#28A745"/>
+  <text x="1140" y="692" font-size="10" font-weight="600" fill="#28A745">Confirmée</text>
+
+  <!-- ── Third side card: Activité récente ── -->
+  <rect x="1028" y="728" width="320" height="90" rx="8" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+
+  <rect x="1028" y="728" width="320" height="44" rx="8" fill="#F8FAFC"/>
+  <rect x="1028" y="752" width="320" height="20" fill="#F8FAFC"/>
+  <line x1="1028" y1="772" x2="1348" y2="772" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1048" y="752" font-size="13" font-weight="700" fill="#0D3B6E">Activité récente</text>
+
+  <circle cx="1058" cy="793" r="3" fill="#28A745"/>
+  <text x="1070" y="797" font-size="11" fill="#6B7280">Réponse envoyée — <tspan font-weight="600" fill="#4A4A4A">Phase 1 · Q3</tspan></text>
+  <text x="1320" y="797" font-size="10" fill="#9CA3AF" text-anchor="end">Il y a 2h</text>
+
+  <circle cx="1058" cy="810" r="3" fill="#1E6FC0"/>
+  <text x="1070" y="814" font-size="11" fill="#6B7280">Connexion bénéficiaire</text>
+  <text x="1320" y="814" font-size="10" fill="#9CA3AF" text-anchor="end">Hier 09:12</text>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SHADOW FILTER DEF                                   -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0D3B6E" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+</svg>

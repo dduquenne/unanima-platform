@@ -1,0 +1,420 @@
+<!-- MAQ-04 | Dashboard Consultant | Link's Accompagnement | v1.0 | 2026-03-23 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FOND GLOBAL
+  ═══════════════════════════════════════════════════════════ -->
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════════════════════ -->
+  <rect x="0" y="0" width="1440" height="64" fill="#0D3B6E"/>
+  <!-- Trait de séparation subtil en bas du header -->
+  <rect x="0" y="63" width="1440" height="1" fill="#1E6FC0" opacity="0.5"/>
+
+  <!-- Logo : icône ronde + texte -->
+  <!-- Cercle icône -->
+  <circle cx="36" cy="32" r="18" fill="#1E6FC0"/>
+  <!-- Lettre L stylisée -->
+  <text x="36" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">L</text>
+  <!-- Nom application -->
+  <text x="64" y="27" font-size="13" font-weight="700" fill="#FFFFFF" letter-spacing="0.3">Link's Accompagnement</text>
+  <text x="64" y="44" font-size="10" font-weight="400" fill="#A0C4E8" letter-spacing="0.2">Plateforme de suivi des bilans de compétences</text>
+
+  <!-- Droite : utilisateur + déconnexion -->
+  <!-- Séparateur vertical -->
+  <rect x="1272" y="18" width="1" height="28" fill="#1E6FC0" opacity="0.6"/>
+  <!-- Avatar -->
+  <circle cx="1296" cy="32" r="16" fill="#1E6FC0"/>
+  <text x="1296" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">SM</text>
+  <!-- Nom et rôle -->
+  <text x="1320" y="27" font-size="13" font-weight="600" fill="#FFFFFF">Sophie Martin</text>
+  <text x="1320" y="44" font-size="11" font-weight="400" fill="#A0C4E8">Consultante</text>
+  <!-- Bouton déconnexion -->
+  <g cursor="pointer">
+    <rect x="1390" y="20" width="36" height="24" rx="4" fill="none" stroke="#1E6FC0" stroke-width="1.5"/>
+    <!-- Icône "exit" simplifiée -->
+    <line x1="1401" y1="32" x2="1412" y2="32" stroke="#A0C4E8" stroke-width="1.5" stroke-linecap="round"/>
+    <polyline points="1409,28 1414,32 1409,36" fill="none" stroke="#A0C4E8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <line x1="1408" y1="24" x2="1408" y2="22" stroke="#A0C4E8" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <text x="1408" y="52" text-anchor="middle" font-size="9" fill="#A0C4E8">Quitter</text>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       BARRE DE NAVIGATION SECONDAIRE
+  ═══════════════════════════════════════════════════════════ -->
+  <rect x="0" y="64" width="1440" height="48" fill="#FFFFFF" filter="url(#shadow-nav)"/>
+  <rect x="0" y="111" width="1440" height="1" fill="#DCE1EB"/>
+
+  <!-- Onglets navigation -->
+  <!-- Onglet actif : Dashboard -->
+  <rect x="24" y="64" width="120" height="48" fill="none"/>
+  <rect x="24" y="108" width="120" height="3" fill="#1E6FC0" rx="1.5"/>
+  <text x="84" y="94" text-anchor="middle" font-size="13" font-weight="600" fill="#1E6FC0">Dashboard</text>
+
+  <!-- Onglet Agenda -->
+  <text x="206" y="94" text-anchor="middle" font-size="13" font-weight="400" fill="#A0AAB9">Agenda</text>
+
+  <!-- Onglet Documents -->
+  <text x="330" y="94" text-anchor="middle" font-size="13" font-weight="400" fill="#A0AAB9">Documents</text>
+
+  <!-- Onglet Rapports -->
+  <text x="454" y="94" text-anchor="middle" font-size="13" font-weight="400" fill="#A0AAB9">Rapports</text>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ZONE DE CONTENU PRINCIPAL
+  ═══════════════════════════════════════════════════════════ -->
+
+  <!-- En-tête de section -->
+  <text x="48" y="154" font-size="22" font-weight="700" fill="#0D3B6E">Mon portefeuille bénéficiaires</text>
+
+  <!-- Indicateur bénéficiaires actifs -->
+  <rect x="48" y="166" width="176" height="26" rx="13" fill="#E8F1FA"/>
+  <circle cx="65" cy="179" r="5" fill="#1E6FC0"/>
+  <text x="76" y="183" font-size="12" font-weight="600" fill="#1E6FC0">4 bénéficiaires actifs</text>
+
+  <!-- Ligne de séparation légère -->
+  <rect x="48" y="204" width="1344" height="1" fill="#DCE1EB"/>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TABLEAU
+  ═══════════════════════════════════════════════════════════ -->
+
+  <!-- Conteneur tableau -->
+  <rect x="48" y="216" width="1344" height="494" rx="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- ── EN-TÊTE DU TABLEAU ── -->
+  <rect x="48" y="216" width="1344" height="50" rx="10" fill="#F5F7FA"/>
+  <!-- Coins du bas du header carrés -->
+  <rect x="48" y="246" width="1344" height="20" fill="#F5F7FA"/>
+  <rect x="48" y="265" width="1344" height="1" fill="#DCE1EB"/>
+
+  <!-- Labels colonnes -->
+  <text x="80" y="247" font-size="11" font-weight="700" fill="#A0AAB9" letter-spacing="0.8" text-decoration="none">BÉNÉFICIAIRE</text>
+  <text x="328" y="247" font-size="11" font-weight="700" fill="#A0AAB9" letter-spacing="0.8">PROGRESSION</text>
+  <text x="500" y="247" font-size="11" font-weight="700" fill="#A0AAB9" letter-spacing="0.8">PHASES 1–6</text>
+  <text x="780" y="247" font-size="11" font-weight="700" fill="#A0AAB9" letter-spacing="0.8">PROCHAINE SÉANCE</text>
+  <text x="1040" y="247" font-size="11" font-weight="700" fill="#A0AAB9" letter-spacing="0.8">ACTION</text>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       LIGNE 1 — Marie Dupont (fond blanc)
+  ════════════════════════════════════════════════════════ -->
+  <rect x="49" y="266" width="1342" height="72" fill="#FFFFFF"/>
+  <rect x="48" y="337" width="1344" height="1" fill="#DCE1EB"/>
+
+  <!-- Avatar initiales -->
+  <circle cx="72" cy="302" r="20" fill="#E8F1FA"/>
+  <text x="72" y="307" text-anchor="middle" font-size="13" font-weight="700" fill="#1E6FC0">MD</text>
+
+  <!-- Nom + email -->
+  <text x="104" y="296" font-size="14" font-weight="600" fill="#4A4A4A">Marie Dupont</text>
+  <text x="104" y="314" font-size="12" font-weight="400" fill="#A0AAB9">marie.dupont@email.com</text>
+
+  <!-- Progression : barre + ratio -->
+  <rect x="304" y="294" width="120" height="6" rx="3" fill="#DCE1EB"/>
+  <rect x="304" y="294" width="40" height="6" rx="3" fill="#1E6FC0"/>
+  <text x="434" y="300" font-size="12" font-weight="600" fill="#1E6FC0">2 / 6</text>
+
+  <!-- Pastilles phases : 2 vertes, 1 orange active, 3 grises -->
+  <!-- Phase 1 : vert -->
+  <circle cx="516" cy="302" r="10" fill="#28A745"/>
+  <text x="516" y="307" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <!-- Phase 2 : vert -->
+  <circle cx="548" cy="302" r="10" fill="#28A745"/>
+  <text x="548" y="307" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <!-- Phase 3 : orange (en cours) -->
+  <circle cx="580" cy="302" r="10" fill="#FF6B35"/>
+  <circle cx="580" cy="302" r="4" fill="#FFFFFF"/>
+  <!-- Phase 4 : gris -->
+  <circle cx="612" cy="302" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+  <!-- Phase 5 : gris -->
+  <circle cx="644" cy="302" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+  <!-- Phase 6 : gris -->
+  <circle cx="676" cy="302" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+
+  <!-- Prochaine séance -->
+  <!-- Icône calendrier -->
+  <rect x="780" y="292" width="16" height="14" rx="2" fill="none" stroke="#1E6FC0" stroke-width="1.5"/>
+  <line x1="784" y1="290" x2="784" y2="295" stroke="#1E6FC0" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="792" y1="290" x2="792" y2="295" stroke="#1E6FC0" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="780" y1="298" x2="796" y2="298" stroke="#1E6FC0" stroke-width="1"/>
+  <text x="804" y="303" font-size="13" font-weight="500" fill="#4A4A4A">15/04/2026</text>
+
+  <!-- Bouton action -->
+  <rect x="1040" y="284" width="148" height="36" rx="6" fill="#1E6FC0"/>
+  <text x="1114" y="307" text-anchor="middle" font-size="13" font-weight="600" fill="#FFFFFF">Voir le dossier</text>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       LIGNE 2 — Jean Martin (fond #F5F7FA)
+  ════════════════════════════════════════════════════════ -->
+  <rect x="49" y="338" width="1342" height="72" fill="#F9FAFB"/>
+  <rect x="48" y="409" width="1344" height="1" fill="#DCE1EB"/>
+
+  <!-- Avatar -->
+  <circle cx="72" cy="374" r="20" fill="#E8F1FA"/>
+  <text x="72" y="379" text-anchor="middle" font-size="13" font-weight="700" fill="#1E6FC0">JM</text>
+
+  <!-- Nom + email -->
+  <text x="104" y="368" font-size="14" font-weight="600" fill="#4A4A4A">Jean Martin</text>
+  <text x="104" y="386" font-size="12" font-weight="400" fill="#A0AAB9">jean.martin@email.com</text>
+
+  <!-- Progression -->
+  <rect x="304" y="366" width="120" height="6" rx="3" fill="#DCE1EB"/>
+  <rect x="304" y="366" width="80" height="6" rx="3" fill="#1E6FC0"/>
+  <text x="434" y="372" font-size="12" font-weight="600" fill="#1E6FC0">4 / 6</text>
+
+  <!-- Pastilles phases : 4 vertes, 1 orange active, 1 grise -->
+  <circle cx="516" cy="374" r="10" fill="#28A745"/>
+  <text x="516" y="379" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <circle cx="548" cy="374" r="10" fill="#28A745"/>
+  <text x="548" y="379" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <circle cx="580" cy="374" r="10" fill="#28A745"/>
+  <text x="580" y="379" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <circle cx="612" cy="374" r="10" fill="#28A745"/>
+  <text x="612" y="379" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <!-- Phase 5 : orange (en cours) -->
+  <circle cx="644" cy="374" r="10" fill="#FF6B35"/>
+  <circle cx="644" cy="374" r="4" fill="#FFFFFF"/>
+  <!-- Phase 6 : gris -->
+  <circle cx="676" cy="374" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+
+  <!-- Prochaine séance -->
+  <rect x="780" y="364" width="16" height="14" rx="2" fill="none" stroke="#1E6FC0" stroke-width="1.5"/>
+  <line x1="784" y1="362" x2="784" y2="367" stroke="#1E6FC0" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="792" y1="362" x2="792" y2="367" stroke="#1E6FC0" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="780" y1="370" x2="796" y2="370" stroke="#1E6FC0" stroke-width="1"/>
+  <text x="804" y="375" font-size="13" font-weight="500" fill="#4A4A4A">22/04/2026</text>
+
+  <!-- Bouton action -->
+  <rect x="1040" y="356" width="148" height="36" rx="6" fill="#1E6FC0"/>
+  <text x="1114" y="379" text-anchor="middle" font-size="13" font-weight="600" fill="#FFFFFF">Voir le dossier</text>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       LIGNE 3 — Claire Bernard (fond blanc)
+  ════════════════════════════════════════════════════════ -->
+  <rect x="49" y="410" width="1342" height="72" fill="#FFFFFF"/>
+  <rect x="48" y="481" width="1344" height="1" fill="#DCE1EB"/>
+
+  <!-- Avatar -->
+  <circle cx="72" cy="446" r="20" fill="#F0F0F5"/>
+  <text x="72" y="451" text-anchor="middle" font-size="13" font-weight="700" fill="#A0AAB9">CB</text>
+
+  <!-- Nom + email -->
+  <text x="104" y="440" font-size="14" font-weight="600" fill="#4A4A4A">Claire Bernard</text>
+  <text x="104" y="458" font-size="12" font-weight="400" fill="#A0AAB9">claire.bernard@email.com</text>
+
+  <!-- Progression -->
+  <rect x="304" y="438" width="120" height="6" rx="3" fill="#DCE1EB"/>
+  <!-- Barre vide (0/6) -->
+  <text x="434" y="444" font-size="12" font-weight="600" fill="#A0AAB9">0 / 6</text>
+
+  <!-- Pastilles : 6 grises -->
+  <circle cx="516" cy="446" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+  <circle cx="548" cy="446" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+  <circle cx="580" cy="446" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+  <circle cx="612" cy="446" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+  <circle cx="644" cy="446" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+  <circle cx="676" cy="446" r="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+
+  <!-- Prochaine séance : "À planifier" avec badge d'avertissement -->
+  <rect x="780" y="436" width="92" height="22" rx="11" fill="#FFF3EE"/>
+  <text x="826" y="451" text-anchor="middle" font-size="11" font-weight="600" fill="#FF6B35">À planifier</text>
+
+  <!-- Bouton action -->
+  <rect x="1040" y="428" width="148" height="36" rx="6" fill="#1E6FC0"/>
+  <text x="1114" y="451" text-anchor="middle" font-size="13" font-weight="600" fill="#FFFFFF">Voir le dossier</text>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       LIGNE 4 — Paul Rousseau (fond #F5F7FA) — TERMINÉ
+  ════════════════════════════════════════════════════════ -->
+  <rect x="49" y="482" width="1342" height="72" fill="#F9FAFB"/>
+  <rect x="48" y="553" width="1344" height="1" fill="#DCE1EB"/>
+
+  <!-- Avatar -->
+  <circle cx="72" cy="518" r="20" fill="#D4EDDA"/>
+  <text x="72" y="523" text-anchor="middle" font-size="13" font-weight="700" fill="#28A745">PR</text>
+
+  <!-- Nom + email + badge "Terminé" -->
+  <text x="104" y="510" font-size="14" font-weight="600" fill="#4A4A4A">Paul Rousseau</text>
+  <!-- Badge Terminé -->
+  <rect x="222" y="499" width="76" height="18" rx="9" fill="#D4EDDA"/>
+  <!-- Coche badge -->
+  <text x="253" y="512" text-anchor="middle" font-size="10" font-weight="700" fill="#28A745">Terminé ✓</text>
+  <text x="104" y="530" font-size="12" font-weight="400" fill="#A0AAB9">paul.rousseau@email.com</text>
+
+  <!-- Progression -->
+  <rect x="304" y="510" width="120" height="6" rx="3" fill="#DCE1EB"/>
+  <rect x="304" y="510" width="120" height="6" rx="3" fill="#28A745"/>
+  <text x="434" y="516" font-size="12" font-weight="600" fill="#28A745">6 / 6</text>
+
+  <!-- Pastilles : 6 vertes -->
+  <circle cx="516" cy="518" r="10" fill="#28A745"/>
+  <text x="516" y="523" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <circle cx="548" cy="518" r="10" fill="#28A745"/>
+  <text x="548" y="523" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <circle cx="580" cy="518" r="10" fill="#28A745"/>
+  <text x="580" y="523" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <circle cx="612" cy="518" r="10" fill="#28A745"/>
+  <text x="612" y="523" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <circle cx="644" cy="518" r="10" fill="#28A745"/>
+  <text x="644" y="523" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+  <circle cx="676" cy="518" r="10" fill="#28A745"/>
+  <text x="676" y="523" text-anchor="middle" font-size="11" font-weight="700" fill="#FFFFFF">✓</text>
+
+  <!-- Prochaine séance : "Bilan terminé" -->
+  <rect x="780" y="508" width="100" height="22" rx="11" fill="#D4EDDA"/>
+  <text x="830" y="523" text-anchor="middle" font-size="11" font-weight="600" fill="#28A745">Bilan terminé</text>
+
+  <!-- Bouton action (outline pour ligne terminée) -->
+  <rect x="1040" y="500" width="148" height="36" rx="6" fill="none" stroke="#1E6FC0" stroke-width="1.5"/>
+  <text x="1114" y="523" text-anchor="middle" font-size="13" font-weight="600" fill="#1E6FC0">Voir le dossier</text>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       PIED DU TABLEAU — zone arrondie bas
+  ════════════════════════════════════════════════════════ -->
+  <!-- Coins arrondis bas -->
+  <rect x="49" y="554" width="1342" height="156" fill="#FFFFFF"/>
+  <!-- Arrondi réel bas (masque les coins internes) -->
+  <rect x="48" y="690" width="1344" height="20" rx="0" fill="#FFFFFF"/>
+
+  <!-- Légende des pastilles -->
+  <text x="80" y="584" font-size="12" font-weight="600" fill="#A0AAB9">Légende :</text>
+  <!-- Terminée -->
+  <circle cx="148" cy="580" r="8" fill="#28A745"/>
+  <text x="148" y="584" text-anchor="middle" font-size="9" font-weight="700" fill="#FFFFFF">✓</text>
+  <text x="162" y="584" font-size="12" fill="#4A4A4A">Phase terminée</text>
+  <!-- En cours -->
+  <circle cx="278" cy="580" r="8" fill="#FF6B35"/>
+  <circle cx="278" cy="580" r="3" fill="#FFFFFF"/>
+  <text x="292" y="584" font-size="12" fill="#4A4A4A">Phase en cours</text>
+  <!-- Non commencée -->
+  <circle cx="414" cy="580" r="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="2"/>
+  <text x="428" y="584" font-size="12" fill="#4A4A4A">Phase non commencée</text>
+
+  <!-- Ligne séparation pied de tableau -->
+  <rect x="48" y="596" width="1344" height="1" fill="#DCE1EB"/>
+
+  <!-- Pied de page tableau : total + pagination -->
+  <text x="80" y="632" font-size="13" font-weight="400" fill="#A0AAB9">Affichage de 4 bénéficiaires sur 4</text>
+
+  <!-- Pagination (simulée) -->
+  <rect x="1220" y="616" width="32" height="28" rx="6" fill="#F5F7FA" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1236" y="634" text-anchor="middle" font-size="12" fill="#A0AAB9">«</text>
+
+  <rect x="1258" y="616" width="32" height="28" rx="6" fill="#1E6FC0"/>
+  <text x="1274" y="634" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF">1</text>
+
+  <rect x="1296" y="616" width="32" height="28" rx="6" fill="#F5F7FA" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1312" y="634" text-anchor="middle" font-size="12" fill="#A0AAB9">»</text>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CARTES KPI (ligne du bas)
+  ═══════════════════════════════════════════════════════════ -->
+
+  <!-- Carte 1 : Bilans en cours -->
+  <rect x="48" y="728" width="314" height="112" rx="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Bande colorée gauche -->
+  <rect x="48" y="728" width="5" height="112" rx="2" fill="#1E6FC0"/>
+  <!-- Icône -->
+  <rect x="304" y="742" width="40" height="40" rx="8" fill="#E8F1FA"/>
+  <text x="324" y="768" text-anchor="middle" font-size="20" fill="#1E6FC0">📋</text>
+  <!-- Valeur -->
+  <text x="72" y="776" font-size="32" font-weight="700" fill="#0D3B6E">3</text>
+  <!-- Label -->
+  <text x="72" y="800" font-size="12" font-weight="500" fill="#A0AAB9">Bilans en cours</text>
+  <!-- Tendance -->
+  <text x="72" y="820" font-size="11" fill="#28A745">↑ +1 ce mois</text>
+
+  <!-- Carte 2 : Séances cette semaine -->
+  <rect x="382" y="728" width="314" height="112" rx="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <rect x="382" y="728" width="5" height="112" rx="2" fill="#FF6B35"/>
+  <rect x="638" y="742" width="40" height="40" rx="8" fill="#FFF3EE"/>
+  <text x="658" y="768" text-anchor="middle" font-size="20" fill="#FF6B35">📅</text>
+  <text x="406" y="776" font-size="32" font-weight="700" fill="#0D3B6E">5</text>
+  <text x="406" y="800" font-size="12" font-weight="500" fill="#A0AAB9">Séances cette semaine</text>
+  <text x="406" y="820" font-size="11" fill="#FF6B35">2 à planifier</text>
+
+  <!-- Carte 3 : Bilans terminés -->
+  <rect x="716" y="728" width="314" height="112" rx="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <rect x="716" y="728" width="5" height="112" rx="2" fill="#28A745"/>
+  <rect x="972" y="742" width="40" height="40" rx="8" fill="#D4EDDA"/>
+  <text x="992" y="768" text-anchor="middle" font-size="20" fill="#28A745">✅</text>
+  <text x="740" y="776" font-size="32" font-weight="700" fill="#0D3B6E">1</text>
+  <text x="740" y="800" font-size="12" font-weight="500" fill="#A0AAB9">Bilans terminés</text>
+  <text x="740" y="820" font-size="11" fill="#28A745">↑ +1 ce mois</text>
+
+  <!-- Carte 4 : Taux de complétion moyen -->
+  <rect x="1050" y="728" width="342" height="112" rx="10" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <rect x="1050" y="728" width="5" height="112" rx="2" fill="#0D3B6E"/>
+  <rect x="1348" y="742" width="40" height="40" rx="8" fill="#E8F1FA"/>
+  <text x="1368" y="768" text-anchor="middle" font-size="20" fill="#0D3B6E">📊</text>
+  <!-- Valeur : 58% = (2+4+0+6) / (6*4) = 12/24 = 50% arrondi affiché comme KPI illustratif -->
+  <text x="1074" y="776" font-size="32" font-weight="700" fill="#0D3B6E">58%</text>
+  <text x="1074" y="800" font-size="12" font-weight="500" fill="#A0AAB9">Taux de complétion moyen</text>
+  <!-- Mini barre de progression -->
+  <rect x="1074" y="812" width="200" height="5" rx="2.5" fill="#DCE1EB"/>
+  <rect x="1074" y="812" width="116" height="5" rx="2.5" fill="#1E6FC0"/>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FILTRES ET ACTIONS (zone entre titre et tableau)
+  ═══════════════════════════════════════════════════════════ -->
+
+  <!-- Barre de recherche -->
+  <rect x="48" y="208" width="0" height="0"/>
+  <!-- Boutons de filtre (positionnés juste au-dessus du tableau) -->
+  <!-- Filtre actif : Tous -->
+  <rect x="48" y="175" width="64" height="28" rx="6" fill="#1E6FC0"/>
+  <text x="80" y="193" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF">Tous (4)</text>
+
+  <!-- Filtre : En cours -->
+  <rect x="120" y="175" width="80" height="28" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="160" y="193" text-anchor="middle" font-size="12" font-weight="500" fill="#4A4A4A">En cours (2)</text>
+
+  <!-- Filtre : À démarrer -->
+  <rect x="208" y="175" width="94" height="28" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="255" y="193" text-anchor="middle" font-size="12" font-weight="500" fill="#4A4A4A">À démarrer (1)</text>
+
+  <!-- Filtre : Terminés -->
+  <rect x="310" y="175" width="84" height="28" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="352" y="193" text-anchor="middle" font-size="12" font-weight="500" fill="#4A4A4A">Terminés (1)</text>
+
+  <!-- Barre de recherche (à droite) -->
+  <rect x="1144" y="175" width="248" height="28" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône loupe -->
+  <circle cx="1162" cy="189" r="6" fill="none" stroke="#A0AAB9" stroke-width="1.5"/>
+  <line x1="1166" y1="193" x2="1170" y2="197" stroke="#A0AAB9" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="1178" y="194" font-size="12" fill="#A0AAB9">Rechercher un bénéficiaire…</text>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════════ -->
+  <rect x="0" y="868" width="1440" height="32" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="0"/>
+  <rect x="0" y="868" width="1440" height="1" fill="#DCE1EB"/>
+  <text x="720" y="888" text-anchor="middle" font-size="11" fill="#A0AAB9">Link's Accompagnement — Plateforme de suivi des bilans de compétences — © 2026 Unanima</text>
+  <text x="1392" y="888" text-anchor="middle" font-size="11" fill="#A0AAB9">v1.0</text>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FILTRES (définitions)
+  ═══════════════════════════════════════════════════════════ -->
+  <defs>
+    <filter id="shadow-nav" x="0" y="0" width="100%" height="200%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0D3B6E" flood-opacity="0.06"/>
+    </filter>
+    <filter id="shadow-card">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0D3B6E" flood-opacity="0.07"/>
+    </filter>
+  </defs>
+
+</svg>
