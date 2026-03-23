@@ -80,18 +80,14 @@ Pour chaque page/composant, vérifier ces 10 points critiques :
 **Score Lighthouse :** XX/100
 
 ### Résultats par critère
-
 | Critère | Statut | Détail | Priorité |
 |---------|--------|--------|----------|
 | Navigation clavier | ✅/⚠️/❌ | [Description] | P1/P2/P3 |
-| ... | | | |
 
 ### Non-conformités
-
 | # | Page/Composant | Critère WCAG | Description | Correction proposée |
 |---|---------------|--------------|-------------|---------------------|
 | 1 | LoginForm | 1.3.1 | Input sans label | Ajouter htmlFor + id |
-| ... | | | | |
 
 ### Recommandations
 1. [Recommandation prioritaire]
@@ -102,154 +98,14 @@ Pour chaque page/composant, vérifier ces 10 points critiques :
 
 ## Phase 2 — Composants accessibles
 
-### 2.1 Patterns fondamentaux
+Chaque composant interactif doit respecter les patterns ARIA appropriés. Les exemples de code
+détaillés pour chaque type de composant sont dans `references/aria-patterns.md` :
 
-#### Boutons
-
-```typescript
-// ✅ Bouton accessible
-<button
-  type="button"
-  onClick={handleAction}
-  aria-label="Supprimer le bénéficiaire Jean Dupont"  // Si le texte visible ne suffit pas
-  aria-disabled={isLoading}
-  disabled={isLoading}
->
-  <TrashIcon aria-hidden="true" />  {/* Icône décorative masquée */}
-  <span>Supprimer</span>
-</button>
-
-// ❌ Bouton inaccessible
-<div onClick={handleAction} className="btn">Supprimer</div>
-// Problèmes : pas focusable, pas de rôle, pas de gestion clavier
-```
-
-#### Formulaires
-
-```typescript
-// ✅ Formulaire accessible
-<div role="group" aria-labelledby="section-identity">
-  <h2 id="section-identity">Identité du bénéficiaire</h2>
-
-  <div>
-    <label htmlFor="fullname">
-      Nom complet <span aria-hidden="true">*</span>
-      <span className="sr-only">(obligatoire)</span>
-    </label>
-    <input
-      id="fullname"
-      type="text"
-      required
-      aria-required="true"
-      aria-invalid={errors.fullname ? "true" : undefined}
-      aria-describedby={errors.fullname ? "fullname-error" : "fullname-hint"}
-    />
-    <p id="fullname-hint" className="text-sm text-muted">
-      Prénom et nom de famille
-    </p>
-    {errors.fullname && (
-      <p id="fullname-error" role="alert" className="text-sm text-destructive">
-        {errors.fullname.message}
-      </p>
-    )}
-  </div>
-</div>
-```
-
-#### Tableaux de données
-
-```typescript
-// ✅ Tableau de données accessible (DataTable du socle)
-<table aria-label="Liste des bénéficiaires">
-  <caption className="sr-only">
-    Liste des 42 bénéficiaires, triée par nom. Page 1 sur 5.
-  </caption>
-  <thead>
-    <tr>
-      <th scope="col" aria-sort={sortDir}>
-        <button onClick={toggleSort} aria-label="Trier par nom">
-          Nom {sortDir === 'ascending' ? '↑' : '↓'}
-        </button>
-      </th>
-      <th scope="col">Email</th>
-      <th scope="col">Statut</th>
-      <th scope="col">
-        <span className="sr-only">Actions</span>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    {data.map(row => (
-      <tr key={row.id}>
-        <td>{row.name}</td>
-        <td>{row.email}</td>
-        <td>
-          <StatusBadge status={row.status} />
-          {/* Le StatusBadge doit rendre le texte lisible, pas juste une couleur */}
-        </td>
-        <td>
-          <button aria-label={`Modifier ${row.name}`}>Modifier</button>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-```
-
-#### Modales
-
-```typescript
-// ✅ Modale accessible avec focus trap
-function AccessibleModal({ isOpen, onClose, title, children }) {
-  const modalRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (isOpen) {
-      // Capturer le focus dans la modale
-      const firstFocusable = modalRef.current?.querySelector<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      )
-      firstFocusable?.focus()
-    }
-  }, [isOpen])
-
-  return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-      ref={modalRef}
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') onClose()
-        // Focus trap logic...
-      }}
-    >
-      <h2 id="modal-title">{title}</h2>
-      {children}
-      <button onClick={onClose}>Fermer</button>
-    </div>
-  )
-}
-```
-
-### 2.2 Classe utilitaire sr-only
-
-```css
-/* Texte visible uniquement par les lecteurs d'écran */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-```
-
-Tailwind CSS fournit cette classe nativement : `className="sr-only"`.
+- **Boutons** : élément `<button>` natif, `aria-label` si texte insuffisant, icônes décoratives masquées
+- **Formulaires** : `<label>` + `htmlFor`, `aria-required`, `aria-invalid`, `aria-describedby` pour erreurs/hints
+- **Tableaux** : `aria-label`/`<caption>`, `scope="col"`, `aria-sort` pour colonnes triables, actions labellisées
+- **Modales** : `role="dialog"`, `aria-modal="true"`, focus trap, fermeture par Échap
+- **Classe sr-only** : texte visible uniquement par lecteurs d'écran (fournie nativement par Tailwind)
 
 ---
 
@@ -257,30 +113,7 @@ Tailwind CSS fournit cette classe nativement : `className="sr-only"`.
 
 ### 3.1 Landmarks
 
-Chaque page doit avoir une structure de landmarks claire :
-
-```html
-<body>
-  <a href="#main-content" className="sr-only focus:not-sr-only">
-    Aller au contenu principal
-  </a>
-
-  <header role="banner">
-    <nav aria-label="Navigation principale">...</nav>
-  </header>
-
-  <aside role="complementary" aria-label="Barre latérale">
-    <nav aria-label="Navigation secondaire">...</nav>
-  </aside>
-
-  <main id="main-content" role="main">
-    <h1>Titre de la page</h1>
-    ...
-  </main>
-
-  <footer role="contentinfo">...</footer>
-</body>
-```
+Chaque page doit avoir : skip link ("Aller au contenu principal"), `<header>` avec `<nav>`, `<main>`, `<footer>`, et `<aside>` si nécessaire. Voir `references/aria-patterns.md` pour le template HTML complet.
 
 ### 3.2 Navigation clavier
 
@@ -296,181 +129,31 @@ Chaque page doit avoir une structure de landmarks claire :
 
 ### 3.3 Focus management
 
-```typescript
-// Gestion du focus après navigation SPA (Next.js App Router)
-'use client'
-import { usePathname } from 'next/navigation'
-import { useEffect } from 'react'
-
-export function RouteAnnouncer() {
-  const pathname = usePathname()
-
-  useEffect(() => {
-    // Annoncer le changement de page aux lecteurs d'écran
-    const title = document.title
-    const announcer = document.getElementById('route-announcer')
-    if (announcer) {
-      announcer.textContent = title
-    }
-    // Remettre le focus en haut de la page
-    document.getElementById('main-content')?.focus()
-  }, [pathname])
-
-  return (
-    <div
-      id="route-announcer"
-      role="status"
-      aria-live="assertive"
-      aria-atomic="true"
-      className="sr-only"
-    />
-  )
-}
-```
+Gestion du focus après navigation SPA (Next.js App Router) via un composant `RouteAnnouncer` qui annonce le changement de page aux lecteurs d'écran et remet le focus sur `#main-content`. Voir `references/aria-patterns.md` pour l'implémentation.
 
 ---
 
 ## Phase 4 — Contenus dynamiques et ARIA live
 
-### 4.1 Régions live
+Utiliser `aria-live` pour annoncer les changements de contenu aux lecteurs d'écran :
+- **`role="status"` + `aria-live="polite"`** : notifications de succès, compteurs de résultats
+- **`role="alert"` + `aria-live="assertive"`** : erreurs critiques (interrompt le lecteur)
+- **`aria-busy="true"`** : squelettes de chargement
+- **Spinners** : `role="status"` avec texte sr-only "Chargement en cours..."
 
-```typescript
-// Notification de succès
-<div role="status" aria-live="polite">
-  {saveSuccess && "Les modifications ont été enregistrées."}
-</div>
-
-// Alerte d'erreur (interrompt le lecteur)
-<div role="alert" aria-live="assertive">
-  {criticalError && `Erreur : ${criticalError.message}`}
-</div>
-
-// Compteur de résultats (mise à jour discrète)
-<div aria-live="polite" aria-atomic="true">
-  {`${results.length} résultats trouvés`}
-</div>
-```
-
-### 4.2 Chargement
-
-```typescript
-// Skeleton accessible
-<div aria-busy="true" aria-label="Chargement des données...">
-  <Skeleton className="h-12 w-full" />
-  <Skeleton className="h-12 w-full" />
-</div>
-
-// Spinner avec annonce
-<div role="status">
-  <Spinner aria-hidden="true" />
-  <span className="sr-only">Chargement en cours...</span>
-</div>
-```
+Voir `references/aria-patterns.md` pour les exemples de code détaillés.
 
 ---
 
 ## Phase 5 — Tests automatisés d'accessibilité
 
-### 5.1 Tests axe-core avec Playwright
-
-```typescript
-import { test, expect } from '@playwright/test'
-import AxeBuilder from '@axe-core/playwright'
-
-test.describe('Accessibilité — Dashboard', () => {
-  test('page dashboard conforme WCAG 2.1 AA', async ({ page }) => {
-    await page.goto('/dashboard')
-
-    const results = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
-      .analyze()
-
-    expect(results.violations).toEqual([])
-  })
-
-  test('formulaire de bénéficiaire conforme', async ({ page }) => {
-    await page.goto('/beneficiaires/new')
-
-    const results = await new AxeBuilder({ page })
-      .include('#beneficiaire-form')
-      .withTags(['wcag2a', 'wcag2aa'])
-      .analyze()
-
-    expect(results.violations).toEqual([])
-  })
-
-  test('navigation clavier complète', async ({ page }) => {
-    await page.goto('/dashboard')
-
-    // Vérifier le skip link
-    await page.keyboard.press('Tab')
-    const skipLink = page.getByText('Aller au contenu principal')
-    await expect(skipLink).toBeFocused()
-
-    // Vérifier que tous les éléments interactifs sont atteignables
-    const interactiveElements = await page.$$('button, a, input, select, textarea, [tabindex="0"]')
-    for (const el of interactiveElements) {
-      const tabindex = await el.getAttribute('tabindex')
-      expect(tabindex).not.toBe('-1')
-    }
-  })
-})
-```
-
-### 5.2 Tests de contraste
-
-```typescript
-test('contraste suffisant sur le thème Links', async ({ page }) => {
-  await page.goto('/login')
-
-  const results = await new AxeBuilder({ page })
-    .withRules(['color-contrast'])
-    .analyze()
-
-  // Aucune violation de contraste
-  expect(results.violations.filter(v => v.id === 'color-contrast')).toEqual([])
-})
-```
-
-### 5.3 Configuration CI
-
-```yaml
-# Projet Playwright dédié accessibilité
-# playwright.config.ts
-{
-  projects: [
-    { name: 'accessibility', testDir: './tests/a11y' }
-  ]
-}
-```
+Tests axe-core avec Playwright pour vérifier la conformité WCAG 2.1 AA de chaque page et composant. Inclut les tests de navigation clavier et de contraste. Voir `references/testing-guide.md` pour les exemples complets de tests et la configuration CI.
 
 ---
 
 ## Phase 6 — Référentiel RGAA
 
-### 6.1 Correspondance RGAA ↔ WCAG
-
-Le RGAA (Référentiel Général d'Amélioration de l'Accessibilité) est l'implémentation française
-du WCAG. Pour les applications métier françaises comme celles d'Unanima, la conformité RGAA
-peut être exigée contractuellement.
-
-| Thématique RGAA | Critères WCAG | Composants Unanima concernés |
-|-----------------|---------------|------------------------------|
-| 1. Images | 1.1.1 | KPICard, ChartWrapper, maquettes |
-| 3. Couleurs | 1.4.1, 1.4.3 | StatusBadge, AlertPanel, thèmes |
-| 5. Tableaux | 1.3.1 | DataTable |
-| 7. Scripts | 2.1.1, 4.1.2 | Tous les composants interactifs |
-| 8. Éléments obligatoires | 3.1.1, 4.1.1 | Layout, pages |
-| 11. Formulaires | 1.3.1, 3.3.2 | LoginForm, tous les formulaires métier |
-| 12. Navigation | 2.4.1, 3.2.3 | Sidebar, SearchBar, Layout |
-
-### 6.2 Déclaration d'accessibilité
-
-Chaque app doit publier une page `/accessibilite` contenant :
-- Niveau de conformité visé (WCAG 2.1 AA)
-- Liste des non-conformités connues avec plan de correction
-- Coordonnées pour signaler un problème d'accessibilité
-- Date du dernier audit
+Correspondance RGAA/WCAG et obligations de déclaration d'accessibilité pour les apps françaises. Voir `references/rgaa-checklist.md` pour la table complète de correspondance et les exigences de la page `/accessibilite`.
 
 ---
 
@@ -508,14 +191,13 @@ Les composants partagés doivent être accessibles **par défaut** :
 | `outline: none` sans alternative | Focus invisible | Garder l'outline ou fournir un style custom |
 | Couleur seule pour transmettre l'info | Invisible aux daltoniens | Ajouter texte ou icône |
 | Placeholder comme label | Disparaît à la saisie | Toujours un `<label>` associé |
-| `aria-hidden="true"` sur du contenu important | Masqué aux lecteurs d'écran | Réserver aux éléments décoratifs |
+| `aria-hidden="true"` sur contenu important | Masqué aux lecteurs d'écran | Réserver aux éléments décoratifs |
 | Autoplay vidéo/audio | Perturbant et inaccessible | Contrôles utilisateur obligatoires |
 
 ---
 
 ## Références
 
-Pour les guides détaillés par type de composant :
-- `references/aria-patterns.md` — Patterns ARIA détaillés pour chaque type de composant
+- `references/aria-patterns.md` — Patterns ARIA détaillés : boutons, formulaires, tableaux, modales, landmarks, focus management, live regions, chargement
 - `references/rgaa-checklist.md` — Checklist RGAA complète avec correspondance WCAG
-- `references/testing-guide.md` — Guide complet des tests automatisés d'accessibilité
+- `references/testing-guide.md` — Guide complet des tests automatisés d'accessibilité (Playwright + axe-core)

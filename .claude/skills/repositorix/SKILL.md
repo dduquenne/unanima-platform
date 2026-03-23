@@ -31,52 +31,18 @@ Tes recommandations s'adaptent à la taille et au contexte du projet (solo, équ
 **Toutes les opérations GitHub distantes** (push, pull, API REST, GitHub CLI) utilisent la variable
 d'environnement `GITHUB_TOKEN`. Ne jamais coder un token en dur dans le code ou les workflows.
 
-### Utilisation en ligne de commande
+### Utilisation
 
 ```bash
-# Clone via HTTPS avec token (évite la saisie du mot de passe)
+# Git : clone/remote avec token
 git clone https://$GITHUB_TOKEN@github.com/org/repo.git
 
-# Configurer git pour utiliser le token automatiquement
-git remote set-url origin https://$GITHUB_TOKEN@github.com/org/repo.git
-
-# Appels à l'API REST GitHub
-curl -H "Authorization: Bearer $GITHUB_TOKEN" \
-     -H "Accept: application/vnd.github+json" \
-     https://api.github.com/repos/org/repo/issues
-
-# GitHub CLI (gh)
+# GitHub CLI
 export GH_TOKEN=$GITHUB_TOKEN
 gh pr list
-gh issue create --title "Bug critique" --label bug
+
+# GitHub Actions : utiliser secrets.GITHUB_TOKEN (Settings > Secrets > Actions)
 ```
-
-### Utilisation dans GitHub Actions
-
-Dans les workflows, référencer le token via `secrets.GITHUB_TOKEN` (à déclarer dans
-Settings > Secrets and variables > Actions) :
-
-```yaml
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # ← pour checkout avec droits d'écriture
-
-      - name: Appel API GitHub
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create v${{ env.VERSION }} --generate-notes
-```
-
-> **Note :** GitHub Actions injecte automatiquement un token éphémère via `github.token`
-> ou `env.GITHUB_TOKEN` (droits limités au dépôt courant, durée de vie = durée du job).
-> Le secret `secrets.GITHUB_TOKEN` défini manuellement dans Settings est un **PAT ou
-> Fine-grained token** avec des droits étendus. Préférer ce dernier pour les opérations
-> cross-repo, les packages, ou les accès organisation.
 
 ### Permissions recommandées pour GITHUB_TOKEN
 
@@ -92,18 +58,10 @@ Utiliser un **Fine-grained Personal Access Token** (plus sécurisé que le PAT c
 
 Restreindre le token aux **dépôts nécessaires uniquement** (pas "All repositories").
 
-### Rotation et sécurité du token
+### Rotation et sécurité
 
-```bash
-# Vérifier que le token n'est pas exposé dans l'historique git
-git log --all --full-history -- "**/*token*"
-git grep -i "ghp_\|github_pat_" $(git rev-list --all)
-
-# Si un token est accidentellement commité : invalider immédiatement sur GitHub,
-# puis purger l'historique avec git-filter-repo
-pip install git-filter-repo
-git filter-repo --replace-text <(echo 'ghp_ANCIEN_TOKEN==>REDACTED')
-```
+Si un token est commité : invalider immédiatement sur GitHub, puis purger avec `git-filter-repo`.
+Vérifier l'historique : `git grep -i "ghp_\|github_pat_" $(git rev-list --all)`
 
 ---
 
@@ -196,29 +154,15 @@ Respecter **Conventional Commits 1.0** pour permettre la génération automatiqu
 | `chore`    | Maintenance (sans impact sur le code de prod)      |
 | `revert`   | Annulation d'un commit précédent                   |
 
-### Exemples
+### Exemple
 ```bash
 feat(auth): ajouter l'authentification OAuth2 avec Google
 
 Implémente le flux Authorization Code avec PKCE.
-Ferme l'issue de sécurité identifiée en audit.
-
 Closes #142
 ```
-```bash
-fix(api): corriger la pagination sur l'endpoint /users
 
-Le curseur était réinitialisé à chaque requête, provoquant
-des boucles infinies sur les grandes collections.
-
-Fixes #98
-```
-```bash
-feat!: supprimer le support de Node.js < 18
-
-BREAKING CHANGE: Les versions de Node.js antérieures à 18
-ne sont plus supportées. Mettre à jour avant de déployer.
-```
+Plus d'exemples (fix, breaking change, etc.) : voir `references/commit-examples.md`.
 
 **Bonnes pratiques commits :**
 - Commits atomiques : une modification logique par commit
@@ -239,88 +183,13 @@ Composant    : component:frontend | component:backend | component:ci | component
 Taille       : size:XS | size:S | size:M | size:L | size:XL
 ```
 
-### Template bug report (`.github/ISSUE_TEMPLATE/bug_report.md`)
-```markdown
----
-name: 🐛 Rapport de bug
-about: Signaler un comportement inattendu
-labels: bug, status:needs-triage
----
-
-## Description
-<!-- Description claire et concise du bug -->
-
-## Comportement attendu
-<!-- Ce qui devrait se passer -->
-
-## Comportement observé
-<!-- Ce qui se passe réellement -->
-
-## Étapes pour reproduire
-1. Aller sur '...'
-2. Cliquer sur '...'
-3. Observer '...'
-
-## Environnement
-- OS : [ex. Ubuntu 22.04]
-- Version : [ex. 1.4.2]
-- Navigateur : [si applicable]
-
-## Logs / Screenshots
-<!-- Joindre si pertinent -->
-```
-
-### Template feature request (`.github/ISSUE_TEMPLATE/feature_request.md`)
-```markdown
----
-name: ✨ Demande de fonctionnalité
-about: Proposer une nouvelle idée
-labels: enhancement
----
-
-## Problème à résoudre
-<!-- Quelle frustration ou besoin cette feature adresse-t-elle ? -->
-
-## Solution proposée
-<!-- Description claire de ce que vous souhaitez -->
-
-## Alternatives considérées
-<!-- Autres approches envisagées -->
-
-## Contexte additionnel
-<!-- Captures d'écran, références, exemples -->
-```
+Templates d'issues (bug report et feature request) : voir `references/templates.md` pour les fichiers complets.
 
 ---
 
 ## 5. Pull Requests
 
-### Template PR (`.github/PULL_REQUEST_TEMPLATE.md`)
-```markdown
-## Description
-<!-- Que fait cette PR ? Pourquoi ce changement ? -->
-
-## Type de changement
-- [ ] 🐛 Bug fix
-- [ ] ✨ Nouvelle fonctionnalité
-- [ ] 💥 Breaking change
-- [ ] 📚 Documentation
-- [ ] ♻️ Refactorisation
-- [ ] ⚡ Performance
-
-## Issue(s) liée(s)
-Closes #<!-- numéro -->
-
-## Checklist
-- [ ] Mon code suit les conventions du projet
-- [ ] J'ai effectué une auto-review de mon code
-- [ ] J'ai ajouté des tests couvrant mes changements
-- [ ] Les tests existants passent
-- [ ] J'ai mis à jour la documentation si nécessaire
-- [ ] J'ai mis à jour le CHANGELOG.md
-
-## Screenshots (si applicable)
-```
+Template PR : voir `references/templates.md` pour le fichier `.github/PULL_REQUEST_TEMPLATE.md` complet.
 
 ### Règles de review
 - Au moins 1 approbation requise avant merge
@@ -333,95 +202,7 @@ Closes #<!-- numéro -->
 
 ## 6. GitHub Actions (CI/CD)
 
-### Workflow CI de base (`.github/workflows/ci.yml`)
-```yaml
-name: CI
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  test:
-    name: Tests (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        # Ajouter node-version, python-version, etc. selon le projet
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup (adapter selon langage)
-        uses: actions/setup-node@v4  # ou setup-python@v5, etc.
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Installer les dépendances
-        run: npm ci
-
-      - name: Linter
-        run: npm run lint
-
-      - name: Tests unitaires
-        run: npm test -- --coverage
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-```
-
-### Workflow de release automatisée (`.github/workflows/release.yml`)
-```yaml
-name: Release
-
-on:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-
-permissions:
-  contents: write
-
-jobs:
-  release:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Générer le changelog
-        id: changelog
-        uses: orhun/git-cliff-action@v3
-        with:
-          config: cliff.toml
-          args: --latest
-
-      - name: Créer la release GitHub
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          body: ${{ steps.changelog.outputs.content }}
-          draft: false
-          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-beta') }}
-```
+Workflows CI et release complets : voir `references/workflow-examples.md` pour les YAML de `ci.yml` et `release.yml`.
 
 ### Bonnes pratiques Actions
 - Épingler les actions par SHA (`uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683`)
@@ -450,31 +231,9 @@ jobs:
 ```
 
 ### Processus de release
-```bash
-# 1. Créer la branche release
-git checkout -b release/1.2.0 develop
 
-# 2. Bumper la version (package.json, pyproject.toml, etc.)
-npm version minor --no-git-tag-version
-
-# 3. Mettre à jour CHANGELOG.md
-# Ajouter section [1.2.0] - YYYY-MM-DD
-
-# 4. Commit de version
-git commit -am "chore(release): préparer la version 1.2.0"
-
-# 5. Merger dans main et taguer
-git checkout main && git merge --no-ff release/1.2.0
-git tag -a v1.2.0 -m "Release version 1.2.0"
-git push origin main --tags
-
-# 6. Merger en retour dans develop
-git checkout develop && git merge --no-ff release/1.2.0
-git push origin develop
-
-# 7. Supprimer la branche release
-git branch -d release/1.2.0
-```
+Créer une branche `release/X.Y.Z` depuis `develop`, bumper la version, mettre à jour le CHANGELOG,
+merger dans `main` avec tag, puis merger en retour dans `develop`. Détails : voir `references/release-process.md`.
 
 ---
 
@@ -585,3 +344,6 @@ Pour aller plus loin, lire les fichiers de référence :
 - `references/gitflow.md` — Détail complet du Git Flow et cas particuliers
 - `references/actions-catalog.md` — Catalogue d'actions GitHub réutilisables
 - `references/commit-examples.md` — Exemples de messages de commit par domaine
+- `references/workflows.md` — Workflows GitHub Actions complets (CI, release)
+- `references/issue-templates.md` — Templates d'issues (bug, feature) et PR
+- `references/release-process.md` — Processus de release avec commandes

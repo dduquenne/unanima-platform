@@ -180,85 +180,23 @@ L'utilisateur ne doit jamais avoir à se souvenir d'une information d'un écran 
 
 ### 4.1 Tableaux de données (DataTable)
 
-```typescript
-// Fonctionnalités obligatoires pour un tableau métier :
-interface DataTableFeatures {
-  sorting: boolean          // Tri multi-colonnes
-  filtering: boolean        // Filtres par colonne + recherche globale
-  pagination: boolean       // Ou scroll infini selon le volume
-  selection: boolean        // Sélection multiple + bulk actions
-  columnVisibility: boolean // L'utilisateur choisit ses colonnes
-  export: boolean           // CSV/Excel si pertinent
-  rowActions: 'inline' | 'menu'  // Actions rapides sur chaque ligne
-  emptyState: ReactNode     // État vide explicite avec action
-  loadingState: ReactNode   // Skeleton cohérent avec la structure
-  errorState: ReactNode     // État erreur avec retry
-}
-
-// Pattern : actions inline sur hover (desktop)
-// <tr className="group">
-//   <td className="opacity-0 group-hover:opacity-100 transition-opacity">
-//     <RowActions />
-//   </td>
-// </tr>
-```
+Fonctionnalités obligatoires : tri multi-colonnes, filtres + recherche globale, pagination, sélection multiple + bulk actions, visibilité des colonnes, export CSV/Excel, actions inline sur hover, et les 3 états (vide/chargement/erreur).
+Voir `references/composants-patterns-code.md` pour l'interface `DataTableFeatures` et le pattern d'actions inline.
 
 ### 4.2 Formulaires métier
 
-```typescript
-// Architecture d'un formulaire métier robuste :
-// 1. Schéma de validation séparé (Zod recommandé)
-// 2. État : pristine / dirty / submitting / submitted
-// 3. Validation : onBlur pour les champs, onSubmit pour la cohérence globale
-// 4. Sauvegarde auto brouillon (localStorage ou API) si > 5 champs
-// 5. Indicateur "Modifications non sauvegardées" (beforeunload)
-// 6. Retour utilisateur : succès inline, erreurs inline ET résumé en haut
-
-// Groupement des champs : sections nommées avec légende
-// <fieldset>
-//   <legend className="text-sm font-semibold text-foreground mb-4">
-//     Coordonnées
-//   </legend>
-//   <div className="grid grid-cols-2 gap-4">
-//     <FormField name="firstName" ... />
-//     <FormField name="lastName" ... />
-//   </div>
-// </fieldset>
-```
+Architecture robuste : schéma Zod séparé, 4 états (pristine/dirty/submitting/submitted), validation onBlur + onSubmit, sauvegarde auto brouillon si > 5 champs, indicateur "non sauvegardé", erreurs inline ET résumé en haut. Grouper les champs en `<fieldset>` avec `<legend>`.
+Voir `references/composants-patterns-code.md` pour les exemples de code.
 
 ### 4.3 États vides, chargement et erreur
 
-```typescript
-// RÈGLE : Tout composant qui charge des données DOIT implémenter les 4 états :
-// 1. Loading  → Skeleton (pas de spinner global sauf exception)
-// 2. Empty    → Illustration + message contextuel + action
-// 3. Error    → Message explicite + bouton "Réessayer" + code erreur discret
-// 4. Data     → Contenu réel
-
-// État vide — Jamais "Aucun résultat" seul :
-// <EmptyState
-//   icon={<FileTextIcon />}
-//   title="Aucune facture pour ce client"
-//   description="Les factures apparaîtront ici dès qu'une commande sera validée."
-//   action={<Button>Créer une facture</Button>}
-// />
-```
+Tout composant chargeant des données DOIT implémenter 4 états : Loading (skeleton), Empty (illustration + message + action), Error (message + retry + code), Data. Jamais "Aucun résultat" seul.
+Voir `references/composants-patterns-code.md` pour le pattern `EmptyState`.
 
 ### 4.4 Notifications & Feedback
 
-```typescript
-// Hiérarchie des feedbacks selon l'urgence :
-type FeedbackLevel =
-  | 'toast'    // Info/succès transitoire — 3-5s, coin bas-droite
-  | 'banner'   // Avertissement persistant — en haut de zone contenu
-  | 'inline'   // Erreur de champ — sous le champ concerné
-  | 'modal'    // Confirmation action critique — bloque l'interface
-  | 'badge'    // Compteur statut — dans la nav/sidebar
-
-// JAMAIS : alert() natif du navigateur
-// JAMAIS : toast d'erreur seul sans log ni code de référence
-// TOUJOURS : les toasts de succès peuvent être fermés manuellement
-```
+5 niveaux de feedback selon l'urgence : toast (transitoire 3-5s), banner (persistant), inline (sous le champ), modal (bloquant), badge (compteur nav). Jamais `alert()` natif. Jamais toast d'erreur sans code de référence.
+Voir `references/composants-patterns-code.md` pour le type `FeedbackLevel`.
 
 ---
 
@@ -266,59 +204,13 @@ type FeedbackLevel =
 
 ### 5.1 Typage strict orienté domaine métier
 
-```typescript
-// ✅ Types domaine explicites — éviter les primitives seules
-type UserId = string & { readonly __brand: 'UserId' }
-type InvoiceId = string & { readonly __brand: 'InvoiceId' }
-type Amount = number & { readonly __brand: 'Amount' } // en centimes
-
-// ✅ États métier exhaustifs
-type InvoiceStatus =
-  | 'draft'
-  | 'pending_approval'
-  | 'approved'
-  | 'sent'
-  | 'paid'
-  | 'overdue'
-  | 'cancelled'
-
-// ✅ Résultats avec discriminant — pas d'exceptions pour le contrôle de flux
-type Result<T, E = Error> =
-  | { ok: true;  data: T }
-  | { ok: false; error: E }
-```
+Utiliser des branded types (`UserId`, `InvoiceId`, `Amount`) pour éviter les primitives seules. Définir des unions discriminées exhaustives pour les états métier. Utiliser `Result<T, E>` plutôt que des exceptions pour le contrôle de flux.
+Voir `references/composants-patterns-code.md` pour les exemples de branded types et Result.
 
 ### 5.2 Structure de composant métier
 
-```typescript
-import type { FC } from 'react'
-import { cn } from '@/lib/utils'
-
-// 1. Types d'abord
-interface InvoiceRowProps {
-  invoice: Invoice
-  onEdit: (id: InvoiceId) => void
-  onDelete: (id: InvoiceId) => Promise<void>
-  isSelected: boolean
-  onToggleSelect: (id: InvoiceId) => void
-}
-
-// 2. Composant
-const InvoiceRow: FC<InvoiceRowProps> = ({
-  invoice,
-  onEdit,
-  onDelete,
-  isSelected,
-  onToggleSelect,
-}) => {
-  // hooks
-  // derived state (mémorisation si calcul coûteux)
-  // handlers (useCallback si passé en prop)
-  // render
-}
-
-export default InvoiceRow
-```
+Ordre obligatoire : 1) Types/interface des props, 2) Composant fonctionnel avec destructuration, 3) Hooks, 4) Derived state (mémorisation si coûteux), 5) Handlers (useCallback si passé en prop), 6) Render.
+Voir `references/composants-patterns-code.md` pour l'exemple `InvoiceRow`.
 
 ### 5.3 Conventions de nommage
 
@@ -350,16 +242,7 @@ export default InvoiceRow
 - [ ] **Actions icônes** : `aria-label` descriptif sur chaque bouton icône seul
 - [ ] **Titres de page** : `<title>` mis à jour à chaque navigation SPA
 
-```typescript
-// ✅ Pattern focus trap pour les modales
-// Utiliser @radix-ui/react-dialog ou @headlessui/react — ne pas réimplémenter
-
-// ✅ Annonce des changements de page (SPA)
-// useEffect(() => {
-//   document.title = `${pageTitle} — NomApplication`
-//   announcePageChange(pageTitle) // aria-live region
-// }, [pageTitle])
-```
+Focus trap : utiliser `@radix-ui/react-dialog` ou `@headlessui/react` (ne pas réimplémenter). Annonce SPA : mettre à jour `document.title` et `aria-live` region à chaque navigation. Pour la checklist détaillée, consulter `references/accessibilite-metier.md` et le skill **accessibilix**.
 
 ---
 
@@ -377,25 +260,8 @@ export default InvoiceRow
 
 ### Patterns de performance métier
 
-```typescript
-// ✅ Optimistic UI pour les actions fréquentes
-const handleToggleStatus = async (id: InvoiceId) => {
-  // 1. Mise à jour optimiste immédiate
-  updateLocalState(id, 'processing')
-  // 2. Requête async
-  const result = await invoiceService.toggle(id)
-  // 3. Correction si erreur
-  if (!result.ok) revertLocalState(id)
-}
-
-// ✅ Virtualisation pour les longues listes (> 100 items)
-// TanStack Virtual ou react-window
-import { useVirtualizer } from '@tanstack/react-virtual'
-
-// ✅ Debounce pour la recherche — 300ms
-// ✅ Mémorisation des résultats de requête — React Query / SWR
-// ✅ Pagination côté serveur — jamais charger toute la base
-```
+Optimistic UI pour les actions fréquentes (mise à jour locale immédiate, revert si erreur). Virtualisation (TanStack Virtual) pour listes > 100 items. Debounce 300ms pour la recherche. React Query/SWR pour le cache. Pagination serveur obligatoire.
+Voir `references/composants-patterns-code.md` pour les exemples d'implémentation.
 
 ---
 
@@ -403,43 +269,18 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 
 Applications métier = souvent multi-langues, multi-fuseaux, multi-formats.
 
-```typescript
-// ✅ Jamais de texte en dur dans le JSX
-// ❌ <p>Aucun résultat trouvé</p>
-// ✅ <p>{t('table.emptyState.noResults')}</p>
-
-// ✅ Formats localisés systématiques
-const formatter = new Intl.NumberFormat(locale, { style: 'currency', currency })
-const dateFormatter = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' })
-
-// ✅ Ordre logique des champs selon la locale (prénom/nom inversé en Asie)
-// ✅ Support RTL dès le départ si pertinent (dir="rtl", logical CSS properties)
-// CSS : margin-inline-start plutôt que margin-left
-```
+- Jamais de texte en dur dans le JSX — utiliser des clés de traduction (`t('key')`)
+- Formats localisés via `Intl.NumberFormat` et `Intl.DateTimeFormat`
+- Ordre logique des champs selon la locale (prénom/nom inversé en Asie)
+- Support RTL dès le départ si pertinent (`dir="rtl"`, logical CSS properties : `margin-inline-start`)
 
 ---
 
 ## 9. Gestion des Rôles & Permissions dans l'UI
 
-```typescript
-// ✅ Pattern : hook de permission
-function usePermission(action: Permission): boolean {
-  const { user } = useAuth()
-  return hasPermission(user.roles, action)
-}
-
-// ✅ Composant conditionnel avec fallback gracieux
-const canEdit = usePermission('invoice:edit')
-
-// Afficher le bouton désactivé + tooltip > le masquer totalement
-// L'utilisateur comprend qu'une action existe, même s'il n'y a pas accès
-<Button
-  disabled={!canEdit}
-  title={!canEdit ? "Droits insuffisants pour modifier" : undefined}
->
-  Modifier
-</Button>
-```
+- Utiliser un hook `usePermission(action)` basé sur `useAuth()` et le moteur RBAC
+- Afficher le bouton **désactivé + tooltip** plutôt que le masquer totalement (l'utilisateur comprend qu'une action existe, même sans accès)
+- Pattern : `<Button disabled={!canEdit} title={!canEdit ? "Droits insuffisants" : undefined}>Modifier</Button>`
 
 ---
 
@@ -477,6 +318,7 @@ const canEdit = usePermission('invoice:edit')
 
 ## 12. Références Complémentaires
 
+- `references/composants-patterns-code.md` — Exemples de code extraits : DataTable, formulaires, états, feedback, typage domaine, composants, performance
 - `references/design-system-metier.md` — Tokens, palette, typographie pour apps métier
 - `references/composants-metier.md` — DataTable, FormBuilder, StatusBadge, ActionMenu, EmptyState
 - `references/patterns-etat.md` — Gestion état async (React Query), formulaires (React Hook Form + Zod), optimistic UI

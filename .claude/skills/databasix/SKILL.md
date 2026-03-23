@@ -48,6 +48,8 @@ Pour les détails approfondis, consulte les fichiers de référence :
 - `references/schema-patterns.md` — Patterns de schéma complets (multi-tenant, soft-delete, JSONB…)
 - `references/rls-recipes.md` — Recettes RLS de production (SaaS, multi-tenant, RBAC…)
 - `references/performance-guide.md` — Guide complet d'optimisation des performances
+- `references/sql-examples.md` — Exemples SQL complets (schema, migrations, RLS, audit, pgTAP, seed)
+- `references/typescript-examples.md` — Client typé, helpers de types, repository pattern, Edge Functions
 
 ---
 
@@ -235,127 +237,33 @@ supabase gen types typescript --local > src/types/database.types.ts
 supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > src/types/database.types.ts
 ```
 
-### Client typé — pattern recommandé
-```typescript
-// src/lib/supabase/client.ts
-import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@/types/database.types'
+Client typé avec `createBrowserClient<Database>`, helpers de types dérivés (Row/Insert/Update)
+et repository pattern type-safe avec exemples complets.
 
-export const createClient = () =>
-  createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-```
-
-### Helpers de types dérivés
-```typescript
-// src/types/entities.ts
-import type { Database } from './database.types'
-
-type Tables = Database['public']['Tables']
-
-// Types Row/Insert/Update pour chaque entité
-export type WorkOrder       = Tables['work_orders']['Row']
-export type WorkOrderInsert = Tables['work_orders']['Insert']
-export type WorkOrderUpdate = Tables['work_orders']['Update']
-
-// Type avec jointures (pour les queries composées)
-export type WorkOrderWithOwner = WorkOrder & {
-  owner: Pick<Tables['profiles']['Row'], 'id' | 'full_name' | 'email'>
-}
-
-// Helper générique pour les réponses Supabase
-export type SupabaseResponse<T> = {
-  data: T | null
-  error: Error | null
-}
-```
-
-### Repository pattern type-safe
-```typescript
-// src/repositories/work-orders.repository.ts
-import type { Database } from '@/types/database.types'
-import type { SupabaseClient } from '@supabase/supabase-js'
-import type { WorkOrderInsert, WorkOrderUpdate } from '@/types/entities'
-
-export class WorkOrderRepository {
-  constructor(private supabase: SupabaseClient<Database>) {}
-
-  async findByOrg(orgId: string) {
-    const { data, error } = await this.supabase
-      .from('work_orders')
-      .select('id, reference, status, created_at, owner:profiles(full_name)')
-      .eq('org_id', orgId)
-      .is('deleted_at', null)
-      .order('created_at', { ascending: false })
-
-    if (error) throw error
-    return data
-  }
-
-  async create(payload: WorkOrderInsert) {
-    const { data, error } = await this.supabase
-      .from('work_orders')
-      .insert(payload)
-      .select()
-      .single()
-
-    if (error) throw error
-    return data
-  }
-}
-```
+> 📖 Voir `references/typescript-examples.md` pour le client typé, les helpers de types et le repository pattern
 
 ---
 
 ## 5. Performance & Optimisation
 
-### Checklist d'indexation
-```sql
--- ① Colonnes de filtrage RLS → toujours indexées
-CREATE INDEX idx_t_user_id ON t(user_id);
-CREATE INDEX idx_t_org_id  ON t(org_id);
+### Stratégie d'indexation
 
--- ② Index partiels pour soft-delete (réduit la taille de l'index)
-CREATE INDEX idx_t_active ON t(org_id, created_at) WHERE deleted_at IS NULL;
+| Type d'index | Cas d'usage |
+|---|---|
+| B-tree sur `user_id`, `org_id` | Colonnes de filtrage RLS |
+| Partiel `WHERE deleted_at IS NULL` | Soft-delete (réduit la taille) |
+| GIN sur `metadata` | Recherche JSONB |
+| GIN sur `search_vector` (tsvector) | Full-text search |
+| B-tree DESC sur `created_at` | Tri fréquent |
 
--- ③ Index GIN pour recherche JSONB
-CREATE INDEX idx_t_metadata ON t USING GIN(metadata);
--- ou pour un champ spécifique :
-CREATE INDEX idx_t_metadata_tags ON t USING GIN((metadata->'tags'));
+### Diagnostics
 
--- ④ Index GIN pour recherche full-text
-ALTER TABLE public.documents ADD COLUMN search_vector tsvector
-  GENERATED ALWAYS AS (to_tsvector('french', coalesce(title,'') || ' ' || coalesce(content,''))) STORED;
-CREATE INDEX idx_documents_search ON public.documents USING GIN(search_vector);
+Utiliser `EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)` sur les requêtes critiques.
+Cible : < 50ms. Surveiller les Seq Scan (manque d'index) et Planning Time (RLS trop complexes).
 
--- ⑤ Index sur colonnes de tri fréquent
-CREATE INDEX idx_t_created_at ON t(created_at DESC);
-```
+### Connection pooling
 
-### Diagnostics avec EXPLAIN ANALYZE
-```sql
--- Toujours utiliser EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
-EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
-SELECT * FROM public.work_orders
-WHERE org_id = 'xxx' AND deleted_at IS NULL
-ORDER BY created_at DESC LIMIT 20;
-
--- Surveiller : Seq Scan sur grandes tables → manque d'index
--- Surveiller : Planning Time élevé → politiques RLS trop complexes
--- Cible : < 50ms pour les requêtes courantes
-```
-
-### Connection pooling (obligatoire en production)
-```typescript
-// Utiliser le Transaction Pooler Supabase (port 6543) pour les Edge Functions / serveur
-// Utiliser le Session Pooler (port 5432) pour les migrations et scripts
-
-// Variables d'environnement à séparer :
-// DATABASE_URL=postgres://...@pooler.supabase.com:6543/postgres?pgbouncer=true
-// DIRECT_URL=postgres://...@db.supabase.com:5432/postgres  (migrations uniquement)
-```
+Transaction Pooler (port 6543) pour Edge Functions/serveur, Session Pooler (port 5432) pour migrations.
 
 > 📖 Voir `references/performance-guide.md` pour les patterns avancés (matviews, pagination keyset, partitionnement)
 
@@ -363,203 +271,39 @@ ORDER BY created_at DESC LIMIT 20;
 
 ## 6. Transactions & Consistance
 
-### Edge Functions avec transactions (pattern Kysely)
-```typescript
-// supabase/functions/merge-contacts/index.ts
-import { serve } from 'https://deno.land/std/http/server.ts'
-import postgres from 'https://deno.land/x/postgresjs/mod.js'
+Deux approches pour les opérations atomiques :
+- **Edge Functions** : pattern postgresjs avec `sql.begin()`, RLS configuré via `set_config`
+- **Stored procedures** : `SECURITY INVOKER` pour respecter le RLS de l'appelant
 
-serve(async (req) => {
-  const sql = postgres(Deno.env.get('SUPABASE_DB_URL')!)
-
-  // Transaction avec RLS explicitement configurée
-  await sql.begin(async (tx) => {
-    // Forcer l'uid pour respecter les politiques RLS
-    await tx`SELECT set_config('request.jwt.claims', ${JSON.stringify({ sub: userId })}, true)`
-    await tx`SET LOCAL role = 'authenticated'`
-
-    // Opérations atomiques
-    await tx`UPDATE contacts SET merged_into = ${targetId} WHERE id = ${sourceId}`
-    await tx`UPDATE orders SET contact_id = ${targetId} WHERE contact_id = ${sourceId}`
-    await tx`DELETE FROM contacts WHERE id = ${sourceId}`
-  })
-
-  return new Response(JSON.stringify({ success: true }))
-})
-```
-
-### Stored procedures pour opérations critiques
-```sql
--- Alternative : procédure SQL avec SECURITY INVOKER (respecte le RLS de l'appelant)
-CREATE OR REPLACE FUNCTION public.transfer_ownership(
-  p_resource_id uuid,
-  p_new_owner_id uuid
-) RETURNS void LANGUAGE plpgsql SECURITY INVOKER AS $$
-BEGIN
-  UPDATE public.resources
-  SET owner_id = p_new_owner_id, updated_at = now()
-  WHERE id = p_resource_id;
-
-  INSERT INTO public.audit_log(table_name, record_id, action, changed_by, changes)
-  VALUES ('resources', p_resource_id, 'transfer_ownership', auth.uid(),
-          jsonb_build_object('new_owner', p_new_owner_id));
-END;
-$$;
-```
+> 📖 Voir `references/sql-examples.md#stored-procedure` et `references/typescript-examples.md#edge-function` pour les exemples complets (Edge Functions, stored procedures)
 
 ---
 
 ## 7. Tests pgTAP
 
-### Structure recommandée
-```
-supabase/tests/
-├── 000-setup.sql          ← helpers et utilisateurs de test
-├── 001-schema.sql         ← structure des tables
-├── 002-rls-work-orders.sql ← politiques RLS de work_orders
-├── 003-functions.sql      ← fonctions métier
-└── 004-triggers.sql       ← triggers et automatismes
-```
+Tests structurés en fichiers séparés : setup, schema, RLS par table, functions, triggers.
+Exécuter avec `supabase test db` en local, intégré en CI via GitHub Actions.
 
-### Template de test RLS complet
-```sql
--- supabase/tests/002-rls-work-orders.sql
-BEGIN;
-SELECT plan(6);
-
--- Création des utilisateurs de test
-SELECT tests.create_supabase_user('alice@test.com');
-SELECT tests.create_supabase_user('bob@test.com');
-
--- Setup : alice crée une org et une work order
-SELECT tests.authenticate_as('alice@test.com');
-INSERT INTO public.organizations(id, name) VALUES ('org-alice', 'Alice Corp');
-INSERT INTO public.org_members(org_id, user_id, role)
-  VALUES ('org-alice', tests.get_supabase_uid('alice@test.com'), 'owner');
-INSERT INTO public.work_orders(id, reference, org_id, owner_id)
-  VALUES ('wo-1', 'WO-001', 'org-alice', tests.get_supabase_uid('alice@test.com'));
-
--- Test 1 : alice peut voir sa work order
-SELECT results_eq(
-  $$ SELECT reference FROM public.work_orders WHERE id = 'wo-1' $$,
-  $$ VALUES ('WO-001'::text) $$,
-  'alice peut voir sa propre work order'
-);
-
--- Test 2 : bob ne peut PAS voir la work order d'alice
-SELECT tests.authenticate_as('bob@test.com');
-SELECT is_empty(
-  $$ SELECT id FROM public.work_orders WHERE id = 'wo-1' $$,
-  'bob ne peut pas voir la work order d''alice'
-);
-
--- Test 3 : RLS activé sur la table
-SELECT ok(
-  (SELECT relrowsecurity FROM pg_class WHERE relname = 'work_orders'),
-  'RLS activé sur work_orders'
-);
-
-SELECT * FROM finish();
-ROLLBACK;
-```
-
-### Commandes de test
-```bash
-# Tests locaux
-supabase test db
-
-# Tests en CI (GitHub Actions)
-# Voir references/ci-workflow.yml
-```
+> 📖 Voir `references/sql-examples.md#pgtap-test-template` pour la structure recommandée et le template de test RLS complet
 
 ---
 
 ## 8. Données de Référence & Seed
 
-### Pattern de seed sécurisé
-```sql
--- supabase/seed.sql — données de référence non-destructives
-INSERT INTO public.status_types(code, label, color) VALUES
-  ('draft',     'Brouillon',  '#gray'),
-  ('submitted', 'Soumis',     '#blue'),
-  ('approved',  'Approuvé',   '#green'),
-  ('rejected',  'Rejeté',     '#red')
-ON CONFLICT (code) DO UPDATE SET label = EXCLUDED.label, color = EXCLUDED.color;
+- Seed SQL avec `ON CONFLICT DO UPDATE` pour les données de référence (idempotent)
+- Fixtures TypeScript avec `crypto.randomUUID()` pour isolation par test run
+- Ne jamais mettre de données utilisateurs dans `seed.sql`
 
--- Données de développement (uniquement via fixtures TypeScript)
--- Ne jamais mettre de données utilisateurs dans seed.sql
-```
-
-### Fixtures TypeScript pour les tests E2E
-```typescript
-// tests/fixtures/work-orders.fixture.ts
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/database.types'
-
-export async function seedWorkOrders(supabase: ReturnType<typeof createClient<Database>>) {
-  const orgId = crypto.randomUUID()  // ID unique par test run → isolation garantie
-
-  await supabase.from('organizations').insert({ id: orgId, name: 'Test Org' })
-  // ... reste du seed
-  return { orgId }
-}
-```
+> 📖 Voir `references/sql-examples.md#seed-pattern` pour les patterns de seed et `references/typescript-examples.md#e2e-test-fixtures` pour les fixtures
 
 ---
 
 ## 9. Audit Trail & Logging
 
-### Table d'audit générique
-```sql
-CREATE TABLE private.audit_log (
-  id          bigserial   PRIMARY KEY,
-  table_name  text        NOT NULL,
-  record_id   uuid        NOT NULL,
-  action      text        NOT NULL CHECK (action IN ('INSERT','UPDATE','DELETE','CUSTOM')),
-  changed_by  uuid        REFERENCES auth.users(id),
-  changed_at  timestamptz NOT NULL DEFAULT now(),
-  old_values  jsonb,
-  new_values  jsonb,
-  changes     jsonb,      -- diff calculé
-  ip_address  inet,
-  user_agent  text
-);
+Table dans le schéma `private` (non exposé par PostgREST). Trigger automatique
+calculant le diff JSONB des colonnes modifiées. Index sur `(table_name, record_id)` et `(changed_by, changed_at)`.
 
--- Schéma private = non exposé par PostgREST → sécurisé par défaut
--- Index pour les requêtes d'audit fréquentes
-CREATE INDEX idx_audit_record ON private.audit_log(table_name, record_id);
-CREATE INDEX idx_audit_changed_by ON private.audit_log(changed_by, changed_at DESC);
-```
-
-### Trigger d'audit automatique
-```sql
-CREATE OR REPLACE FUNCTION private.audit_trigger_fn()
-RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
-DECLARE
-  v_changes jsonb;
-BEGIN
-  IF TG_OP = 'UPDATE' THEN
-    -- Calcul du diff (seulement les colonnes modifiées)
-    SELECT jsonb_object_agg(key, value)
-    INTO v_changes
-    FROM jsonb_each(to_jsonb(NEW))
-    WHERE to_jsonb(NEW) -> key <> to_jsonb(OLD) -> key;
-  END IF;
-
-  INSERT INTO private.audit_log(table_name, record_id, action, changed_by, old_values, new_values, changes)
-  VALUES (
-    TG_TABLE_NAME,
-    CASE TG_OP WHEN 'DELETE' THEN OLD.id ELSE NEW.id END,
-    TG_OP,
-    auth.uid(),
-    CASE TG_OP WHEN 'INSERT' THEN NULL ELSE to_jsonb(OLD) END,
-    CASE TG_OP WHEN 'DELETE' THEN NULL ELSE to_jsonb(NEW) END,
-    v_changes
-  );
-  RETURN COALESCE(NEW, OLD);
-END;
-$$;
-```
+> 📖 Voir `references/sql-examples.md#audit-trail` pour la table d'audit complète et le trigger automatique
 
 ---
 
@@ -569,45 +313,20 @@ $$;
 Voir `references/schema-patterns.md#multi-tenant` pour le schéma complet avec RLS hiérarchique.
 
 ### JSONB pour métadonnées flexibles
-```sql
--- Validation JSONB avec contrainte CHECK
-ALTER TABLE public.work_orders
-  ADD CONSTRAINT chk_metadata_schema
-  CHECK (
-    metadata ? 'version' AND
-    (metadata->>'priority') IN ('low','medium','high','critical')
-  );
-```
+
+Utiliser des contraintes `CHECK` pour valider la structure JSONB (ex: clés requises, valeurs enum).
+
+> 📖 Voir `references/schema-patterns.md` pour les patterns JSONB avancés
 
 ### Realtime — abonnements filtrés
-```typescript
-// Toujours filtrer les abonnements Realtime (éviter la surcharge)
-const channel = supabase
-  .channel('work-orders-org')
-  .on('postgres_changes', {
-    event: '*',
-    schema: 'public',
-    table: 'work_orders',
-    filter: `org_id=eq.${orgId}`  // OBLIGATOIRE en production
-  }, handleChange)
-  .subscribe()
-```
+
+Toujours filtrer avec `filter: \`org_id=eq.\${orgId}\`` pour éviter la surcharge en production.
 
 ### Vues sécurisées (PostgreSQL 15+)
-```sql
--- SECURITY INVOKER = la vue respecte les RLS de l'utilisateur appelant
-CREATE VIEW public.work_orders_summary
-  WITH (security_invoker = true) AS
-SELECT
-  wo.id, wo.reference, wo.status,
-  p.full_name AS owner_name,
-  COUNT(woi.id) AS items_count
-FROM public.work_orders wo
-JOIN public.profiles p ON p.id = wo.owner_id
-LEFT JOIN public.work_order_items woi ON woi.work_order_id = wo.id
-WHERE wo.deleted_at IS NULL
-GROUP BY wo.id, wo.reference, wo.status, p.full_name;
-```
+
+Utiliser `WITH (security_invoker = true)` pour que la vue respecte les RLS de l'appelant.
+
+> 📖 Voir `references/schema-patterns.md` pour les exemples complets de vues sécurisées
 
 ---
 

@@ -171,6 +171,54 @@ Exemples concrets :
 
 ---
 
+## Pattern 6 : Gestion des tokens et anti-cascade
+
+La fenêtre de contexte est une ressource limitée. Chaque token consommé charge le
+SKILL.md complet du skill déclenché, plus les références lues, plus les documents
+sources, plus la conversation. Quand le contexte se remplit, les messages antérieurs
+sont compressés et des informations peuvent être perdues.
+
+### Règle anti-cascade
+
+Ne jamais invoquer un skill complémentaire (`compatibility.recommends`) dans la même
+conversation sauf si l'utilisateur le demande explicitement. Chaque skill chargé ajoute
+des centaines de lignes au contexte.
+
+Exemple :
+- projetix génère une SFD → ne PAS invoquer documentalix pour le frontmatter,
+  ni ergonomix pour la validation UX, ni recettix pour les critères d'acceptation.
+- Si l'utilisateur veut ces enrichissements, il les demandera dans une conversation
+  séparée ou explicitement.
+
+### Règle de compacité des SKILL.md
+
+Le SKILL.md est chargé EN ENTIER quand le skill est déclenché. Chaque ligne consomme
+des tokens. Objectifs de taille :
+
+| Catégorie | Lignes max SKILL.md | Stratégie |
+|-----------|-------------------|----------|
+| Skill simple | < 200 lignes | Tout inline |
+| Skill standard | 200-350 lignes | Templates inline, détails en références |
+| Skill complexe | 350-500 lignes | Minimum inline, maximum en références |
+| > 500 lignes | À réduire | Extraire templates, exemples, code vers références |
+
+### Règle de compacité des outputs
+
+Pour les documents générés, privilégier la densité sur la verbosité :
+- Pas de répétition des instructions dans la sortie
+- Pas de commentaires explicatifs dans les templates générés
+- Pas de sections vides ("À compléter") — les omettre si pas de contenu
+- Écrire le fichier directement sans répéter son contenu dans la conversation
+
+### Délégation aux sous-agents
+
+Quand un skill génère un document long, le sous-agent hérite d'un contexte vierge.
+C'est un avantage majeur : le sous-agent ne porte pas le poids de la conversation
+parente. En fournissant au sous-agent uniquement le contexte minimal nécessaire
+(template + données), on économise des milliers de tokens.
+
+---
+
 ## Intégration dans un SKILL.md
 
 Pour appliquer ces conventions, ajouter dans chaque SKILL.md qui génère des livrables :
@@ -183,6 +231,8 @@ Ce skill applique les conventions de `_common/performance-workflow.md` :
 - Génération incrémentale (structure → validation → contenu → assemblage)
 - Lecture conditionnelle des références (pas de lecture systématique)
 - Cadrage du scope avant exécution
+- Anti-cascade (ne pas invoquer de skills complémentaires sauf demande explicite)
+- Compacité des outputs (densité > verbosité)
 ```
 
 Puis adapter le workflow du skill en conséquence.
