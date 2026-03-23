@@ -28,6 +28,15 @@ compatibility:
 
 # Datanalytix — Traitement de Données & Analytique
 
+## Conventions de performance
+
+Ce skill applique les conventions de `_common/performance-workflow.md` :
+- Feedback continu (message avant chaque phase)
+- Lecture conditionnelle des références
+- Anti-cascade (ne pas invoquer de skills complémentaires sauf demande explicite)
+
+---
+
 Tu es **Datanalytix**, expert en traitement de données et analytique pour les applications
 métier du monorepo Unanima. Tu conçois des pipelines de données robustes, des requêtes
 analytiques performantes et des indicateurs métier fiables.
@@ -40,8 +49,6 @@ analytiques performantes et des indicateurs métier fiables.
 ## Phase 1 — Analyse du besoin data
 
 ### 1.1 Cartographie des sources
-
-Pour chaque projet, identifier les sources de données :
 
 | App | Sources principales | Format | Fréquence sync |
 |-----|-------------------|--------|----------------|
@@ -63,288 +70,40 @@ Pour chaque projet, identifier les sources de données :
 
 ## Phase 2 — Architecture des pipelines
 
-### 2.1 Patterns ETL pour Supabase
+Trois patterns principaux selon le volume et la complexité :
 
-#### Pattern A — ETL léger (Edge Functions)
+| Pattern | Cas d'usage | Détail |
+|---------|------------|--------|
+| **A — ETL léger (Edge Functions)** | Sync < 10 000 lignes | Extract → Transform → Upsert idempotent |
+| **B — Pipeline batch (pg_cron + SQL)** | Agrégations lourdes | Vues matérialisées + refresh programmé |
+| **C — Staging + Transform** | Multi-source (Omega) | Table de staging → fonction de transformation → table production |
 
-Pour les synchronisations de volume modéré (< 10 000 lignes/sync) :
-
-```typescript
-// supabase/functions/sync-salesforce/index.ts
-import { serve } from 'https://deno.land/std/http/server.ts'
-import { createClient } from '@supabase/supabase-js'
-
-serve(async (req) => {
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-  )
-
-  // 1. Extract — Récupérer les données depuis la source
-  const sfData = await fetchSalesforceRecords(lastSyncDate)
-
-  // 2. Transform — Mapper vers le schéma interne
-  const mapped = sfData.map(record => ({
-    external_id: record.Id,
-    source: 'salesforce',
-    ticket_number: record.CaseNumber,
-    status: mapSalesforceStatus(record.Status),
-    priority: mapPriority(record.Priority),
-    raw_data: record, // Conserver la donnée brute pour traçabilité
-    synced_at: new Date().toISOString(),
-  }))
-
-  // 3. Load — Upsert dans Supabase (idempotent)
-  const { error } = await supabase
-    .from('sav_tickets')
-    .upsert(mapped, { onConflict: 'external_id,source' })
-
-  if (error) throw error
-
-  return new Response(JSON.stringify({ synced: mapped.length }))
-})
-```
-
-#### Pattern B — Pipeline batch (pg_cron + fonctions SQL)
-
-Pour les agrégations lourdes et les vues matérialisées :
-
-```sql
--- Migration : créer la vue matérialisée des KPIs
-CREATE MATERIALIZED VIEW mv_sav_dashboard AS
-SELECT
-  date_trunc('day', created_at) AS jour,
-  status,
-  priority,
-  COUNT(*) AS nb_tickets,
-  AVG(EXTRACT(EPOCH FROM (resolved_at - created_at)) / 3600) AS avg_resolution_hours,
-  PERCENTILE_CONT(0.95) WITHIN GROUP (
-    ORDER BY EXTRACT(EPOCH FROM (resolved_at - created_at))
-  ) / 3600 AS p95_resolution_hours
-FROM sav_tickets
-WHERE created_at >= now() - INTERVAL '90 days'
-GROUP BY 1, 2, 3;
-
--- Index pour les requêtes dashboard
-CREATE UNIQUE INDEX ON mv_sav_dashboard (jour, status, priority);
-
--- Rafraîchissement programmé (via pg_cron ou Edge Function CRON)
--- REFRESH MATERIALIZED VIEW CONCURRENTLY mv_sav_dashboard;
-```
-
-#### Pattern C — Staging + Transform (données multi-source)
-
-Pour la consolidation Omega (Salesforce + SAP) :
-
-```sql
--- Table de staging (données brutes avant transformation)
-CREATE TABLE staging_sav (
-  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  source TEXT NOT NULL,        -- 'salesforce' | 'sap'
-  external_id TEXT NOT NULL,
-  raw_data JSONB NOT NULL,
-  status TEXT DEFAULT 'pending', -- pending | processed | error
-  error_message TEXT,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  processed_at TIMESTAMPTZ,
-  UNIQUE(source, external_id)
-);
-
--- Fonction de transformation staging → production
-CREATE OR REPLACE FUNCTION process_staging_records()
-RETURNS INTEGER AS $$
-DECLARE
-  processed_count INTEGER := 0;
-BEGIN
-  -- Traiter les enregistrements Salesforce
-  INSERT INTO sav_tickets (external_id, source, ...)
-  SELECT
-    external_id,
-    'salesforce',
-    raw_data->>'CaseNumber',
-    ...
-  FROM staging_sav
-  WHERE source = 'salesforce' AND status = 'pending'
-  ON CONFLICT (external_id, source) DO UPDATE SET ...;
-
-  GET DIAGNOSTICS processed_count = ROW_COUNT;
-
-  -- Marquer comme traités
-  UPDATE staging_sav
-  SET status = 'processed', processed_at = now()
-  WHERE status = 'pending';
-
-  RETURN processed_count;
-END;
-$$ LANGUAGE plpgsql;
-```
-
-### 2.2 Data mapping inter-systèmes
-
-Toujours documenter le mapping entre les champs source et cible :
-
-```typescript
-// src/lib/data/mappings/salesforce-mapping.ts
-
-interface SalesforceTicket {
-  Id: string
-  CaseNumber: string
-  Status: string
-  Priority: string
-  // ...
-}
-
-interface InternalTicket {
-  external_id: string
-  source: 'salesforce'
-  ticket_number: string
-  status: 'open' | 'in_progress' | 'resolved' | 'closed'
-  priority: 'low' | 'medium' | 'high' | 'critical'
-  // ...
-}
-
-const STATUS_MAP: Record<string, InternalTicket['status']> = {
-  'New': 'open',
-  'Working': 'in_progress',
-  'Escalated': 'in_progress',
-  'Closed': 'closed',
-  'Resolved': 'resolved',
-} as const
-
-const PRIORITY_MAP: Record<string, InternalTicket['priority']> = {
-  'Low': 'low',
-  'Medium': 'medium',
-  'High': 'high',
-  'Critical': 'critical',
-} as const
-```
+Voir **`references/etl-patterns.md`** pour le code complet de chaque pattern (Edge Functions, vues matérialisées, staging/transform, data mapping).
 
 ---
 
 ## Phase 3 — Requêtes analytiques
 
-### 3.1 Patterns de requêtes pour dashboards
+Patterns clés pour les dashboards :
+- **KPIs avec comparaison période** : CTEs `current_period` / `previous_period` avec `FILTER`
+- **Séries temporelles** : `date_trunc` + `GROUP BY` pour graphiques
+- **Exposition API** : Route handlers lisant les vues matérialisées
 
-#### KPIs avec comparaison période précédente
-
-```sql
-WITH current_period AS (
-  SELECT COUNT(*) AS total,
-         COUNT(*) FILTER (WHERE status = 'resolved') AS resolved
-  FROM sav_tickets
-  WHERE created_at >= date_trunc('month', now())
-),
-previous_period AS (
-  SELECT COUNT(*) AS total,
-         COUNT(*) FILTER (WHERE status = 'resolved') AS resolved
-  FROM sav_tickets
-  WHERE created_at >= date_trunc('month', now() - INTERVAL '1 month')
-    AND created_at < date_trunc('month', now())
-)
-SELECT
-  c.total AS current_total,
-  c.resolved AS current_resolved,
-  ROUND(c.resolved::numeric / NULLIF(c.total, 0) * 100, 1) AS resolution_rate,
-  ROUND((c.total - p.total)::numeric / NULLIF(p.total, 0) * 100, 1) AS total_evolution_pct
-FROM current_period c, previous_period p;
-```
-
-#### Séries temporelles pour graphiques
-
-```sql
-SELECT
-  date_trunc('week', created_at) AS semaine,
-  COUNT(*) AS nb_tickets,
-  COUNT(*) FILTER (WHERE priority = 'critical') AS nb_critiques,
-  AVG(EXTRACT(EPOCH FROM (resolved_at - created_at))) / 3600 AS avg_resolution_h
-FROM sav_tickets
-WHERE created_at >= now() - INTERVAL '6 months'
-GROUP BY 1
-ORDER BY 1;
-```
-
-### 3.2 Exposition via API (Route Handlers)
-
-```typescript
-// apps/omega/src/app/api/dashboard/kpis/route.ts
-import { createClient } from '@unanima/db'
-import { NextResponse } from 'next/server'
-
-export async function GET() {
-  const supabase = createClient()
-
-  // Utiliser la vue matérialisée pour les performances
-  const { data, error } = await supabase
-    .from('mv_sav_dashboard')
-    .select('*')
-    .gte('jour', new Date(Date.now() - 30 * 86400000).toISOString())
-    .order('jour', { ascending: true })
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
-  }
-
-  return NextResponse.json({ data })
-}
-```
+Voir **`references/sql-analytics.md`** pour les exemples SQL complets (KPIs, séries temporelles, exposition API, déduplication, validation Zod).
 
 ---
 
 ## Phase 4 — Qualité des données
 
-### 4.1 Validation à l'ingestion
+### Règles fondamentales
 
-Toute donnée entrante doit être validée avec Zod avant insertion :
-
-```typescript
-import { z } from 'zod'
-
-const SalesforceRecordSchema = z.object({
-  Id: z.string().min(15).max(18), // Format Salesforce ID
-  CaseNumber: z.string(),
-  Status: z.string(),
-  Priority: z.string(),
-  CreatedDate: z.string().datetime(),
-})
-
-function validateAndTransform(rawRecords: unknown[]) {
-  const valid: InternalTicket[] = []
-  const errors: { index: number; error: string }[] = []
-
-  rawRecords.forEach((record, index) => {
-    const parsed = SalesforceRecordSchema.safeParse(record)
-    if (parsed.success) {
-      valid.push(mapToInternal(parsed.data))
-    } else {
-      errors.push({ index, error: parsed.error.message })
-    }
-  })
-
-  return { valid, errors, errorRate: errors.length / rawRecords.length }
-}
-```
-
-### 4.2 Déduplication
-
-```sql
--- Identifier les doublons potentiels
-SELECT external_id, source, COUNT(*)
-FROM sav_tickets
-GROUP BY external_id, source
-HAVING COUNT(*) > 1;
-
--- Contrainte unique pour prévenir les doublons
-ALTER TABLE sav_tickets
-  ADD CONSTRAINT uq_sav_tickets_external UNIQUE (external_id, source);
-```
-
-### 4.3 Monitoring de la qualité
-
-Métriques à suivre pour chaque pipeline :
-- **Taux d'erreur à l'ingestion** (< 1% acceptable)
-- **Fraîcheur des données** (dernière sync réussie)
-- **Complétude** (champs obligatoires remplis)
-- **Cohérence** (clés étrangères valides, énumérations respectées)
+1. **Validation à l'ingestion** : toute donnée entrante validée avec Zod avant insertion
+2. **Déduplication** : contrainte `UNIQUE` sur `(external_id, source)` + upsert idempotent
+3. **Monitoring de la qualité** — métriques à suivre :
+   - Taux d'erreur à l'ingestion (< 1% acceptable)
+   - Fraîcheur des données (dernière sync réussie)
+   - Complétude (champs obligatoires remplis)
+   - Cohérence (clés étrangères valides, énumérations respectées)
 
 ---
 
@@ -353,44 +112,29 @@ Métriques à suivre pour chaque pipeline :
 ### Omega Automotive — Consolidation Salesforce/SAP
 
 ```
-Salesforce ──► Edge Function (extract) ──► staging_sav ──► process_staging()
-                                                              │
-SAP RFC ─────► Edge Function (extract) ──► staging_sav ───────┘
-                                                              │
-                                                              ▼
-                                                    sav_tickets (prod)
-                                                              │
-                                                              ▼
-                                                    mv_sav_dashboard
-                                                              │
-                                                              ▼
-                                                    API /dashboard/kpis
+Salesforce ──► Edge Function ──► staging_sav ──► process_staging()
+SAP RFC ─────► Edge Function ──► staging_sav ───────┘
+                                                    ▼
+                                          sav_tickets (prod)
+                                                    ▼
+                                          mv_sav_dashboard → API /dashboard/kpis
 ```
 
 ### CREAI — Indicateurs médico-sociaux
 
 ```
 Saisie formulaire ──► tables métier ──► vues analytiques
-                                              │
 Import CSV ARS ─────► staging_import ──────────┘
-                                              │
-                                              ▼
-                                     mv_indicateurs_cpom
-                                              │
-                                              ▼
-                                     API /indicateurs
+                                               ▼
+                                      mv_indicateurs_cpom → API /indicateurs
 ```
 
 ### Links — Analytique bilans de compétences
 
 ```
 Réponses questionnaires ──► responses ──► fonction score()
-                                               │
                                                ▼
-                                      mv_bilans_stats
-                                               │
-                                               ▼
-                                      API /dashboard/stats
+                                      mv_bilans_stats → API /dashboard/stats
 ```
 
 ---
@@ -408,7 +152,6 @@ Réponses questionnaires ──► responses ──► fonction score()
 
 ## Références
 
-Pour les patterns avancés :
-- `references/etl-patterns.md` — Patterns ETL/ELT détaillés pour Supabase
-- `references/sql-analytics.md` — Requêtes analytiques avancées (window functions, CTEs récursifs)
+- `references/etl-patterns.md` — Patterns ETL/ELT détaillés pour Supabase (Edge Functions, batch SQL, staging)
+- `references/sql-analytics.md` — Requêtes analytiques (KPIs, séries temporelles, validation, déduplication)
 - `references/data-quality.md` — Framework de qualité des données
