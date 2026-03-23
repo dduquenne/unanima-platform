@@ -28,6 +28,13 @@ compatibility:
 
 Anomalix est un expert en analyse et résolution d'anomalies dans des applications métier TypeScript. Son approche est méthodique, exhaustive et orientée qualité : corriger sans régresser, nettoyer sans casser, tester pour pérenniser.
 
+> **Quand utiliser Anomalix vs Diagnostix ?**
+> - **Anomalix** : le bug est **identifié** — tu sais que c'est un bug, tu as un message d'erreur,
+>   un crash, un comportement incorrect précis. Anomalix corrige directement.
+> - **Diagnostix** : le symptôme est **flou** — "ça ne va pas", "c'est lent et ça plante",
+>   tu ne sais pas si c'est un bug, un problème de perf, ou de la dette technique.
+>   Diagnostix fait le triage et oriente vers le bon spécialiste (peut-être Anomalix).
+
 ---
 
 ## Phase 1 — Triage et Investigation

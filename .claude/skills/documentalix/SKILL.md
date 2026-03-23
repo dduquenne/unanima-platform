@@ -254,6 +254,88 @@ Voir `references/migration-guide.md` pour le workflow complet de migration docum
 
 ---
 
+## Phase 6 — Détection automatique des documents obsolètes
+
+### 6.1 Critères d'obsolescence
+
+Documentalix détecte proactivement les documents qui nécessitent une attention :
+
+| Signal | Seuil | Action |
+|--------|-------|--------|
+| Date `updated` > 90 jours | ⚠️ Alerte fraîcheur | Vérifier si le contenu est toujours exact |
+| Date `updated` > 180 jours | 🔴 Alerte critique | Réviser ou archiver |
+| Statut `draft` > 30 jours | ⚠️ Draft abandonné | Finaliser ou supprimer |
+| Statut `deprecated` > 90 jours | 🔴 À supprimer | Archiver définitivement |
+| Liens internes cassés | ⚠️ Incohérence | Corriger les références |
+| Document non référencé dans INDEX.md | ⚠️ Orphelin | Ajouter à l'index ou supprimer |
+
+### 6.2 Rapport de fraîcheur automatique
+
+Générer un rapport de fraîcheur documentaire à chaque invocation d'audit :
+
+```markdown
+## Rapport de fraîcheur documentaire — YYYY-MM-DD
+
+### Statistiques
+- Documents total : N
+- À jour (< 90 jours) : N (XX%)
+- Attention requise (90-180 jours) : N (XX%)
+- Obsolètes (> 180 jours) : N (XX%)
+- Drafts abandonnés (> 30 jours) : N
+- Orphelins (hors INDEX) : N
+
+### Documents nécessitant une action
+
+| Document | Statut | Dernière MAJ | Âge | Action recommandée |
+|----------|--------|-------------|-----|-------------------|
+| SPEC-AUTH-login-v1.2.md | approved | 2025-09-15 | 189j | 🔴 Réviser |
+| GUIDE-DEV-setup-v1.0.md | draft | 2025-12-01 | 112j | ⚠️ Finaliser |
+```
+
+---
+
+## Phase 7 — Génération automatique d'index documentaire
+
+### 7.1 Index tabulaire complet
+
+Documentalix génère un `INDEX.md` structuré automatiquement en scannant l'arborescence `docs/` :
+
+```markdown
+# Index Documentaire — Unanima Platform
+
+*Généré automatiquement le YYYY-MM-DD — N documents référencés*
+
+## Par catégorie
+
+### Architecture (02-architecture/)
+| ID | Titre | Version | Statut | MAJ | Fraîcheur |
+|----|-------|---------|--------|-----|-----------|
+| ADR-INFRA-choix-bdd | Choix de BDD | 1.0 | approved | 2025-10-01 | 🟢 |
+
+### Spécifications (03-specifications/)
+| ID | Titre | Version | Statut | MAJ | Fraîcheur |
+|----|-------|---------|--------|-----|-----------|
+| SPEC-AUTH-login-oauth2 | Login OAuth2 | 1.2 | approved | 2025-09-15 | 🟠 |
+
+## Par statut
+- **approved** : N documents
+- **review** : N documents
+- **draft** : N documents
+- **archived** : N documents
+
+## Alertes
+- 🔴 N documents obsolètes (> 180 jours)
+- ⚠️ N documents à vérifier (> 90 jours)
+- ⚠️ N drafts abandonnés (> 30 jours)
+```
+
+### 7.2 Actualisation automatique
+
+L'index doit être régénéré à chaque opération documentaire (création, modification, archivage).
+Documentalix vérifie systématiquement la cohérence entre l'index et le système de fichiers.
+
+---
+
 ## Règles absolues (non négociables)
 
 1. **Jamais de document sans frontmatter YAML** — c'est l'identité du document
@@ -261,3 +343,4 @@ Voir `references/migration-guide.md` pour le workflow complet de migration docum
 3. **Jamais de suppression** d'un document approuvé — toujours archiver
 4. **Toujours mettre à jour INDEX.md** après toute opération documentaire
 5. **La charte documentaire prime** sur les habitudes individuelles — documenter les exceptions
+6. **Toujours vérifier la fraîcheur** lors d'un audit — signaler les documents > 90 jours

@@ -19,6 +19,9 @@ compatibility:
     - soclix        # Pour évaluer l'impact sur le socle commun lors de la planification
     - documentalix  # Pour documenter les plans et décisions d'orchestration (ADR)
     - sprintix      # Pour exécuter les plans de sprint séquentiellement (bras armé de pilotix)
+    - pipelinix     # Pour la configuration des pipelines CI/CD associées au plan
+    - accessibilix  # Pour inclure les critères d'accessibilité dans le plan
+    - observix      # Pour planifier la mise en place du monitoring
 ---
 
 # Pilotix — Orchestrateur & Tech Lead Virtuel
@@ -306,8 +309,55 @@ Si un opérateur demande "exécute le sprint 2 — juste les features" :
 
 ---
 
+## Phase 7 — Intégration avancée GitHub Projects
+
+Pilotix exploite activement GitHub Projects pour synchroniser le plan avec la réalité :
+
+### 7.1 Lecture automatisée du GitHub Project
+
+```bash
+# Lister les colonnes et statuts du projet
+gh project field-list <PROJECT_NUMBER> --owner @me --format json
+
+# Récupérer toutes les issues avec leur statut et itération
+gh project item-list <PROJECT_NUMBER> --owner @me --format json \
+  | jq '.items[] | {id: .id, title: .title, status: .status, iteration: .iteration}'
+
+# Compter les issues par statut
+gh project item-list <PROJECT_NUMBER> --owner @me --format json \
+  | jq '[.items[] | .status] | group_by(.) | map({status: .[0], count: length})'
+```
+
+### 7.2 Synchronisation plan → Project
+
+Quand Pilotix génère ou met à jour un plan :
+
+1. **Créer les issues manquantes** dans le repo via `gh issue create`
+2. **Assigner au bon sprint/itération** dans le Project
+3. **Définir la priorité** via les champs custom du Project
+4. **Lier les issues** entre elles (bloqué par / bloque)
+5. **Déplacer les colonnes** selon l'état du plan :
+   - Plan validé → "Ready"
+   - En cours → "In Progress"
+   - Terminé → "Done"
+   - Reporté → "Backlog" + commentaire justificatif
+
+### 7.3 Détection de dérive
+
+À chaque invocation de Pilotix, vérifier la cohérence :
+
+| Vérification | Commande | Action si écart |
+|-------------|----------|-----------------|
+| Issues orphelines (dans Project, pas dans plan) | `gh project item-list` vs `.sprint/` | Ajouter au plan ou retirer du sprint |
+| Issues fantômes (dans plan, pas dans Project) | Diff inversé | Créer dans le Project |
+| Statuts incohérents (Done dans Project mais non cochée) | Comparaison croisée | Réconcilier |
+| Sprint overload (> 15 issues) | Count | Recommander un split |
+
+---
+
 ## Références
 
 Pour les détails des workflows de chaque skill, consulter :
 - `references/workflow-patterns.md` — Patterns de workflows multi-skills courants
 - `references/estimation-guide.md` — Guide d'estimation par type de tâche
+- `references/github-projects-api.md` — API GitHub Projects : commandes et patterns

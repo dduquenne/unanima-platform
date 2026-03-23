@@ -322,6 +322,76 @@ des seuils n'est pas atteint.
 
 ---
 
+## 10. Rapport HTML interactif
+
+En complément des livrables .docx/.xlsx contractuels, Recettix
+peut produire un **rapport HTML interactif** pour faciliter le
+partage et la consultation des résultats de recette.
+
+### Avantages du format HTML
+
+| Aspect | .docx | HTML interactif |
+|--------|-------|-----------------|
+| Partage | Pièce jointe email | Lien URL |
+| Navigation | Scroll linéaire | Filtres, onglets, recherche |
+| Mise à jour | Nouvelle version du fichier | Mis à jour en temps réel |
+| Données | Tableaux statiques | Tableaux triables, filtrables |
+| Graphiques | Images statiques | Charts interactifs |
+
+### Structure du rapport HTML
+
+```html
+<!-- rapport-recette.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Rapport de Recette — [Projet] — [Date]</title>
+  <style>/* Tailwind-like utility classes inline */</style>
+</head>
+<body>
+  <header>
+    <h1>Rapport de Recette</h1>
+    <nav><!-- Onglets : Synthèse | Fonctionnel | Technique | Anomalies --></nav>
+  </header>
+
+  <section id="synthese">
+    <!-- KPIs : taux de réussite, couverture, anomalies -->
+    <!-- Graphique en barres : résultats par domaine -->
+    <!-- Verdict : Réceptionné / Avec réserves / Refusé -->
+  </section>
+
+  <section id="fonctionnel">
+    <!-- Tableau filtrable des cas de test -->
+    <!-- Filtres : statut (passé/échoué/bloqué), module, priorité -->
+  </section>
+
+  <section id="technique">
+    <!-- Couverture de code (graphique) -->
+    <!-- Performance (Core Web Vitals) -->
+    <!-- Sécurité (résultats OWASP) -->
+    <!-- Accessibilité (score WCAG) -->
+  </section>
+
+  <section id="anomalies">
+    <!-- Tableau des anomalies triable par criticité -->
+    <!-- Détail par anomalie (accordéon) -->
+  </section>
+
+  <script>/* Interactivité : filtres, tri, graphiques Chart.js */</script>
+</body>
+</html>
+```
+
+### Génération
+
+Le rapport HTML est généré après la campagne de recette avec
+les données agrégées des différentes campagnes (fonctionnel,
+technique, sécurité, accessibilité). Il peut être hébergé
+sur Vercel en tant que page statique ou partagé par email.
+
+---
+
 ## Références complémentaires
 
 - `references/plan-recette-template.md` — Template Plan de
@@ -330,3 +400,5 @@ des seuils n'est pas atteint.
   commandes, check-lists par type de test
 - `references/pvr-rvf-template.md` — Templates PVR et RVF
   prêts à l'emploi
+- `references/rapport-html-template.md` — Template du rapport
+  HTML interactif
