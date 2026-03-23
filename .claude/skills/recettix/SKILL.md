@@ -206,51 +206,11 @@ Produire les deux documents finaux opposables :
 
 ## 4. Standards TypeScript & qualité du code
 
-### Seuils minimaux de couverture
+Seuils minimaux : couverture ≥ 80% (lignes, fonctions, statements), branches ≥ 75%.
+Core Web Vitals : LCP < 2.5s, CLS < 0.1, INP < 200ms, TTFB < 800ms.
 
-```typescript
-// vitest.config.ts — configuration Recettix
-export default defineConfig({
-  test: {
-    coverage: {
-      provider: 'v8',
-      thresholds: {
-        lines: 80,
-        functions: 80,
-        branches: 75,
-        statements: 80,
-      },
-      exclude: [
-        'src/types/**',
-        'src/**/*.d.ts',
-        'src/migrations/**',
-      ],
-    },
-  },
-})
-```
-
-### Checklist revue de code TypeScript (avant recette)
-
-- [ ] `strict: true` activé dans `tsconfig.json`
-- [ ] Pas de `any` implicite, `unknown` utilisé à la place
-- [ ] Zod / Valibot sur **toutes** les entrées externes (API, forms)
-- [ ] Pas de `console.log` en production (ESLint rule)
-- [ ] Erreurs typées (Result pattern ou classes d'erreur dédiées)
-- [ ] Variables d'environnement validées au démarrage
-- [ ] Pas de secrets hardcodés (Gitleaks CI)
-- [ ] RLS Supabase activée sur toutes les tables
-- [ ] Pas de requêtes N+1 (logs Supabase / Prisma)
-- [ ] Bundle size ≤ seuil défini (Lighthouse CI budget)
-
-### Métriques Core Web Vitals (seuils production)
-
-| Métrique | Seuil acceptable | Seuil optimal |
-|---|---|---|
-| LCP | < 2.5 s | < 1.5 s |
-| CLS | < 0.1 | < 0.05 |
-| INP | < 200 ms | < 100 ms |
-| TTFB | < 800 ms | < 400 ms |
+Pour la config vitest, la checklist de revue de code et les seuils detailles,
+consulter `references/standards-qualite.md`.
 
 ---
 
@@ -302,29 +262,10 @@ Date levée : YYYY-MM-DD
 
 ## 7. Intégration CI/CD TypeScript
 
-Ajouter dans la pipeline (GitHub Actions / Vercel) :
+Quality gate : le deploiement en recette est bloque si les seuils ne sont pas atteints
+(couverture, E2E, Lighthouse, securite, accessibilite).
 
-```yaml
-# .github/workflows/recette.yml
-jobs:
-  quality-gate:
-    steps:
-      - name: Tests unitaires + couverture
-        run: vitest run --coverage
-      - name: Vérification seuils couverture
-        run: vitest run --coverage --reporter=json
-      - name: Tests E2E Playwright
-        run: playwright test
-      - name: Audit Lighthouse CI
-        run: lhci autorun
-      - name: Scan sécurité
-        run: gitleaks detect --source .
-      - name: Accessibilité axe-core
-        run: playwright test --project=accessibility
-```
-
-**Quality Gate** : le déploiement en recette est bloqué si l'un
-des seuils n'est pas atteint.
+Pour le workflow YAML complet, consulter `references/execution-recette.md`.
 
 ---
 
@@ -371,81 +312,16 @@ des seuils n'est pas atteint.
 
 ## 10. Rapport HTML interactif
 
-En complément des livrables .docx/.xlsx contractuels, Recettix
-peut produire un **rapport HTML interactif** pour faciliter le
-partage et la consultation des résultats de recette.
-
-### Avantages du format HTML
-
-| Aspect | .docx | HTML interactif |
-|--------|-------|-----------------|
-| Partage | Pièce jointe email | Lien URL |
-| Navigation | Scroll linéaire | Filtres, onglets, recherche |
-| Mise à jour | Nouvelle version du fichier | Mis à jour en temps réel |
-| Données | Tableaux statiques | Tableaux triables, filtrables |
-| Graphiques | Images statiques | Charts interactifs |
-
-### Structure du rapport HTML
-
-```html
-<!-- rapport-recette.html -->
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Rapport de Recette — [Projet] — [Date]</title>
-  <style>/* Tailwind-like utility classes inline */</style>
-</head>
-<body>
-  <header>
-    <h1>Rapport de Recette</h1>
-    <nav><!-- Onglets : Synthèse | Fonctionnel | Technique | Anomalies --></nav>
-  </header>
-
-  <section id="synthese">
-    <!-- KPIs : taux de réussite, couverture, anomalies -->
-    <!-- Graphique en barres : résultats par domaine -->
-    <!-- Verdict : Réceptionné / Avec réserves / Refusé -->
-  </section>
-
-  <section id="fonctionnel">
-    <!-- Tableau filtrable des cas de test -->
-    <!-- Filtres : statut (passé/échoué/bloqué), module, priorité -->
-  </section>
-
-  <section id="technique">
-    <!-- Couverture de code (graphique) -->
-    <!-- Performance (Core Web Vitals) -->
-    <!-- Sécurité (résultats OWASP) -->
-    <!-- Accessibilité (score WCAG) -->
-  </section>
-
-  <section id="anomalies">
-    <!-- Tableau des anomalies triable par criticité -->
-    <!-- Détail par anomalie (accordéon) -->
-  </section>
-
-  <script>/* Interactivité : filtres, tri, graphiques Chart.js */</script>
-</body>
-</html>
-```
-
-### Génération
-
-Le rapport HTML est généré après la campagne de recette avec
-les données agrégées des différentes campagnes (fonctionnel,
-technique, sécurité, accessibilité). Il peut être hébergé
-sur Vercel en tant que page statique ou partagé par email.
+En complement des livrables .docx/.xlsx, Recettix peut produire un rapport HTML
+interactif (filtrable, triable, graphiques). Consulter `references/rapport-html-template.md`
+pour le template complet.
 
 ---
 
-## Références complémentaires
+## Références (lecture conditionnelle uniquement)
 
-- `references/plan-recette-template.md` — Template Plan de
-  Recette complet (50+ sections)
-- `references/execution-recette.md` — Protocole d'exécution,
-  commandes, check-lists par type de test
+- `references/plan-recette-template.md` — Template Plan de Recette
+- `references/execution-recette.md` — Protocole d'execution et commandes
 - `references/pvr-rvf-template.md` — Templates PVR et RVF
-  prêts à l'emploi
-- `references/rapport-html-template.md` — Template du rapport
-  HTML interactif
+- `references/rapport-html-template.md` — Template rapport HTML
+- `references/standards-qualite.md` — Config vitest, checklist, CWV
