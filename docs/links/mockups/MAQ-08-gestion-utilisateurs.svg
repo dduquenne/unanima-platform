@@ -1,0 +1,430 @@
+<!-- MAQ-08 | Gestion Utilisateurs | Link's Accompagnement | v1.0 | 2026-03-23 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="'Inter', 'Segoe UI', Arial, sans-serif">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FOND GLOBAL
+  ═══════════════════════════════════════════════════════════════ -->
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SIDEBAR GAUCHE (240px, fond #0D3B6E)
+  ═══════════════════════════════════════════════════════════════ -->
+  <rect x="0" y="0" width="240" height="900" fill="#0D3B6E"/>
+
+  <!-- Logo / Marque -->
+  <rect x="20" y="20" width="200" height="56" rx="8" fill="#1E6FC0" opacity="0.35"/>
+  <!-- Icône bilan symbolique -->
+  <circle cx="46" cy="48" r="14" fill="#FFFFFF" opacity="0.9"/>
+  <text x="46" y="53" text-anchor="middle" font-size="14" font-weight="700" fill="#0D3B6E">L</text>
+  <text x="70" y="43" font-size="13" font-weight="700" fill="#FFFFFF">Link's</text>
+  <text x="70" y="59" font-size="11" fill="#A8C6E8">Accompagnement</text>
+
+  <!-- Séparateur -->
+  <line x1="20" y1="90" x2="220" y2="90" stroke="#1E6FC0" stroke-width="1" opacity="0.4"/>
+
+  <!-- Nav label -->
+  <text x="20" y="117" font-size="9" font-weight="600" fill="#A8C6E8" letter-spacing="1.5" text-transform="uppercase">NAVIGATION</text>
+
+  <!-- Item : Dashboard -->
+  <rect x="12" y="124" width="216" height="40" rx="6" fill="transparent"/>
+  <!-- Icône grille -->
+  <rect x="28" y="136" width="5" height="5" rx="1" fill="#A8C6E8"/>
+  <rect x="35" y="136" width="5" height="5" rx="1" fill="#A8C6E8"/>
+  <rect x="28" y="143" width="5" height="5" rx="1" fill="#A8C6E8"/>
+  <rect x="35" y="143" width="5" height="5" rx="1" fill="#A8C6E8"/>
+  <text x="52" y="148" font-size="13" fill="#A8C6E8">Dashboard</text>
+
+  <!-- Item : Utilisateurs (actif) -->
+  <rect x="12" y="170" width="216" height="40" rx="6" fill="#1E6FC0"/>
+  <!-- Icône utilisateur -->
+  <circle cx="34" cy="186" r="5" fill="#FFFFFF"/>
+  <path d="M24 201 Q24 195 34 195 Q44 195 44 201" stroke="#FFFFFF" stroke-width="1.5" fill="none"/>
+  <text x="52" y="195" font-size="13" font-weight="600" fill="#FFFFFF">Utilisateurs</text>
+  <!-- Indicateur actif -->
+  <rect x="224" y="170" width="4" height="40" rx="2" fill="#FFFFFF"/>
+
+  <!-- Item : Documents -->
+  <rect x="12" y="216" width="216" height="40" rx="6" fill="transparent"/>
+  <!-- Icône document -->
+  <rect x="27" y="228" width="14" height="17" rx="2" fill="none" stroke="#A8C6E8" stroke-width="1.5"/>
+  <line x1="30" y1="234" x2="38" y2="234" stroke="#A8C6E8" stroke-width="1"/>
+  <line x1="30" y1="238" x2="38" y2="238" stroke="#A8C6E8" stroke-width="1"/>
+  <line x1="30" y1="242" x2="35" y2="242" stroke="#A8C6E8" stroke-width="1"/>
+  <text x="52" y="241" font-size="13" fill="#A8C6E8">Documents</text>
+
+  <!-- Séparateur bas -->
+  <line x1="20" y1="820" x2="220" y2="820" stroke="#1E6FC0" stroke-width="1" opacity="0.4"/>
+
+  <!-- Profil admin bas de sidebar -->
+  <circle cx="40" cy="850" r="16" fill="#1E6FC0"/>
+  <text x="40" y="855" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">SA</text>
+  <text x="64" y="845" font-size="12" font-weight="600" fill="#FFFFFF">Super Admin</text>
+  <text x="64" y="861" font-size="10" fill="#A8C6E8">Administrateur</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       HEADER (zone droite, hauteur 64px)
+  ═══════════════════════════════════════════════════════════════ -->
+  <rect x="240" y="0" width="1200" height="64" fill="#FFFFFF"/>
+  <line x1="240" y1="64" x2="1440" y2="64" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Breadcrumb -->
+  <text x="268" y="35" font-size="12" fill="#A8C6E8">Administration</text>
+  <text x="356" y="35" font-size="12" fill="#A8C6E8"> / </text>
+  <text x="368" y="35" font-size="12" font-weight="600" fill="#4A4A4A">Gestion des utilisateurs</text>
+
+  <!-- Badge admin header -->
+  <rect x="1080" y="18" width="120" height="28" rx="14" fill="#F5F7FA" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône bouclier -->
+  <path d="M1098 27 L1098 37 Q1098 41 1102 42 Q1106 41 1106 37 L1106 27 L1102 25 Z" fill="#1E6FC0" opacity="0.2" stroke="#1E6FC0" stroke-width="1"/>
+  <text x="1112" y="37" font-size="11" font-weight="600" fill="#0D3B6E">Administrateur</text>
+
+  <!-- Bouton déconnexion -->
+  <rect x="1220" y="18" width="116" height="28" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône logout -->
+  <path d="M1232 25 L1232 37" stroke="#4A4A4A" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M1236 28 L1240 32 L1236 36" stroke="#4A4A4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="1246" y="37" font-size="12" fill="#4A4A4A">Déconnexion</text>
+
+  <!-- Séparateur vertical header -->
+  <line x1="1210" y1="14" x2="1210" y2="50" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ZONE PRINCIPALE (x=240, y=64, w=1200, h=836)
+  ═══════════════════════════════════════════════════════════════ -->
+
+  <!-- Titre de page -->
+  <text x="268" y="118" font-size="22" font-weight="700" fill="#0D3B6E">Gestion des utilisateurs</text>
+  <text x="268" y="140" font-size="13" fill="#6B7280">Gérez les comptes bénéficiaires et consultantes de la plateforme.</text>
+
+  <!-- ──────────────────────────────────────────────────────────────
+       BARRE D'ACTIONS : Tabs + Bouton créer
+  ────────────────────────────────────────────────────────────────── -->
+
+  <!-- Tab Bénéficiaires (actif) -->
+  <rect x="268" y="162" width="160" height="38" rx="6 6 0 0" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <rect x="268" y="196" width="160" height="3" fill="#1E6FC0"/>
+  <text x="348" y="186" text-anchor="middle" font-size="13" font-weight="600" fill="#1E6FC0">Bénéficiaires</text>
+  <!-- Badge count -->
+  <rect x="394" y="170" width="24" height="18" rx="9" fill="#1E6FC0"/>
+  <text x="406" y="183" text-anchor="middle" font-size="10" font-weight="700" fill="#FFFFFF">3</text>
+
+  <!-- Tab Consultantes -->
+  <rect x="430" y="162" width="140" height="38" rx="6 6 0 0" fill="#F5F7FA" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="500" y="186" text-anchor="middle" font-size="13" fill="#6B7280">Consultantes</text>
+  <!-- Badge count -->
+  <rect x="556" y="170" width="24" height="18" rx="9" fill="#6B7280" opacity="0.3"/>
+  <text x="568" y="183" text-anchor="middle" font-size="10" font-weight="600" fill="#4A4A4A">2</text>
+
+  <!-- Bouton "Créer un compte" -->
+  <rect x="1084" y="163" width="168" height="36" rx="8" fill="#1E6FC0"/>
+  <!-- Icône + -->
+  <line x1="1101" y1="181" x2="1111" y2="181" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="1106" y1="176" x2="1106" y2="186" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  <text x="1120" y="186" font-size="13" font-weight="600" fill="#FFFFFF">Créer un compte</text>
+
+  <!-- ──────────────────────────────────────────────────────────────
+       CARTE PRINCIPALE (tableau)
+  ────────────────────────────────────────────────────────────────── -->
+  <rect x="268" y="199" width="984" height="530" rx="0 0 12 12" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Barre de recherche + filtres -->
+  <rect x="288" y="219" width="320" height="38" rx="8" fill="#F5F7FA" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône loupe -->
+  <circle cx="308" cy="238" r="7" fill="none" stroke="#6B7280" stroke-width="1.5"/>
+  <line x1="313" y1="243" x2="318" y2="248" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="328" y="243" font-size="12" fill="#9CA3AF">Rechercher un bénéficiaire...</text>
+
+  <!-- Filtre statut -->
+  <rect x="624" y="219" width="140" height="38" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône filtre -->
+  <path d="M640 230 L654 230 L649 237 L649 244 L645 242 L645 237 Z" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="660" y="243" font-size="12" fill="#4A4A4A">Tous les statuts</text>
+  <text x="748" y="243" font-size="10" fill="#9CA3AF">▾</text>
+
+  <!-- Filtre consultante -->
+  <rect x="780" y="219" width="160" height="38" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="800" y="243" font-size="12" fill="#4A4A4A">Toutes les consultantes</text>
+  <text x="926" y="243" font-size="10" fill="#9CA3AF">▾</text>
+
+  <!-- Résultat recherche info -->
+  <text x="960" y="243" font-size="12" fill="#6B7280">3 résultats</text>
+
+  <!-- Séparateur sous barre recherche -->
+  <line x1="268" y1="272" x2="1252" y2="272" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- ── EN-TÊTE DU TABLEAU ───────────────────────────────────── -->
+  <rect x="268" y="272" width="984" height="40" fill="#F8FAFC"/>
+  <line x1="268" y1="312" x2="1252" y2="312" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Checkbox en-tête -->
+  <rect x="296" y="284" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+
+  <!-- Labels colonnes -->
+  <text x="330" y="297" font-size="11" font-weight="600" fill="#6B7280" letter-spacing="0.5">NOM</text>
+  <!-- Icône tri -->
+  <text x="360" y="293" font-size="8" fill="#9CA3AF">▲</text>
+  <text x="360" y="301" font-size="8" fill="#9CA3AF">▼</text>
+
+  <text x="510" y="297" font-size="11" font-weight="600" fill="#6B7280" letter-spacing="0.5">EMAIL</text>
+
+  <text x="690" y="297" font-size="11" font-weight="600" fill="#6B7280" letter-spacing="0.5">CONSULTANTE ASSIGNÉE</text>
+
+  <text x="900" y="297" font-size="11" font-weight="600" fill="#6B7280" letter-spacing="0.5">STATUT</text>
+
+  <text x="1020" y="297" font-size="11" font-weight="600" fill="#6B7280" letter-spacing="0.5">ACTIONS</text>
+
+  <!-- Séparateurs colonnes en-tête -->
+  <line x1="490" y1="278" x2="490" y2="312" stroke="#DCE1EB" stroke-width="1" opacity="0.5"/>
+  <line x1="670" y1="278" x2="670" y2="312" stroke="#DCE1EB" stroke-width="1" opacity="0.5"/>
+  <line x1="880" y1="278" x2="880" y2="312" stroke="#DCE1EB" stroke-width="1" opacity="0.5"/>
+  <line x1="990" y1="278" x2="990" y2="312" stroke="#DCE1EB" stroke-width="1" opacity="0.5"/>
+
+  <!-- ═══════════════════════════════════════
+       LIGNE 1 : Marie Dupont
+  ═══════════════════════════════════════ -->
+  <rect x="268" y="312" width="984" height="60" fill="#FFFFFF"/>
+  <line x1="268" y1="372" x2="1252" y2="372" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Checkbox -->
+  <rect x="296" y="326" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+
+  <!-- Avatar Marie Dupont -->
+  <circle cx="324" cy="342" r="16" fill="#E0ECFA"/>
+  <text x="324" y="347" text-anchor="middle" font-size="12" font-weight="700" fill="#1E6FC0">MD</text>
+
+  <!-- Nom -->
+  <text x="348" y="339" font-size="13" font-weight="600" fill="#0D3B6E">Marie Dupont</text>
+  <text x="348" y="356" font-size="11" fill="#9CA3AF">Bénéficiaire · Inscrite le 12 jan. 2026</text>
+
+  <!-- Email -->
+  <text x="510" y="342" font-size="12" fill="#4A4A4A">marie.dupont@email.fr</text>
+
+  <!-- Consultante assignée -->
+  <circle cx="698" cy="342" r="12" fill="#E8F5EC"/>
+  <text x="698" y="347" text-anchor="middle" font-size="9" font-weight="700" fill="#28A745">SM</text>
+  <text x="718" y="342" font-size="12" fill="#4A4A4A">Sophie Martin</text>
+
+  <!-- Badge Actif -->
+  <rect x="900" y="330" width="56" height="22" rx="11" fill="#D1FAE5"/>
+  <circle cx="916" cy="341" r="4" fill="#28A745"/>
+  <text x="924" y="345" font-size="11" font-weight="600" fill="#28A745">Actif</text>
+
+  <!-- Bouton Modifier -->
+  <rect x="1010" y="328" width="80" height="28" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône crayon -->
+  <path d="M1024 340 L1028 336 L1033 341 L1029 345 Z" fill="none" stroke="#1E6FC0" stroke-width="1.5" stroke-linejoin="round"/>
+  <line x1="1024" y1="345" x2="1024" y2="348" stroke="#1E6FC0" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="1040" y="347" font-size="12" fill="#1E6FC0">Modifier</text>
+
+  <!-- Bouton Désactiver -->
+  <rect x="1100" y="328" width="86" height="28" rx="6" fill="#FFF7F4" stroke="#FF6B35" stroke-width="1"/>
+  <!-- Icône interdiction -->
+  <circle cx="1116" cy="342" r="5" fill="none" stroke="#FF6B35" stroke-width="1.5"/>
+  <line x1="1113" y1="339" x2="1119" y2="345" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="1128" y="347" font-size="12" fill="#FF6B35">Désactiver</text>
+
+  <!-- ═══════════════════════════════════════
+       LIGNE 2 : Jean Martin
+  ═══════════════════════════════════════ -->
+  <rect x="268" y="372" width="984" height="60" fill="#FAFBFC"/>
+  <line x1="268" y1="432" x2="1252" y2="432" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Checkbox -->
+  <rect x="296" y="386" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+
+  <!-- Avatar Jean Martin -->
+  <circle cx="324" cy="402" r="16" fill="#E0ECFA"/>
+  <text x="324" y="407" text-anchor="middle" font-size="12" font-weight="700" fill="#1E6FC0">JM</text>
+
+  <!-- Nom -->
+  <text x="348" y="399" font-size="13" font-weight="600" fill="#0D3B6E">Jean Martin</text>
+  <text x="348" y="416" font-size="11" fill="#9CA3AF">Bénéficiaire · Inscrit le 8 fév. 2026</text>
+
+  <!-- Email -->
+  <text x="510" y="402" font-size="12" fill="#4A4A4A">jean.martin@email.fr</text>
+
+  <!-- Consultante assignée -->
+  <circle cx="698" cy="402" r="12" fill="#E8F5EC"/>
+  <text x="698" y="407" text-anchor="middle" font-size="9" font-weight="700" fill="#28A745">SM</text>
+  <text x="718" y="402" font-size="12" fill="#4A4A4A">Sophie Martin</text>
+
+  <!-- Badge Actif -->
+  <rect x="900" y="390" width="56" height="22" rx="11" fill="#D1FAE5"/>
+  <circle cx="916" cy="401" r="4" fill="#28A745"/>
+  <text x="924" y="405" font-size="11" font-weight="600" fill="#28A745">Actif</text>
+
+  <!-- Bouton Modifier -->
+  <rect x="1010" y="388" width="80" height="28" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <path d="M1024 400 L1028 396 L1033 401 L1029 405 Z" fill="none" stroke="#1E6FC0" stroke-width="1.5" stroke-linejoin="round"/>
+  <line x1="1024" y1="405" x2="1024" y2="408" stroke="#1E6FC0" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="1040" y="407" font-size="12" fill="#1E6FC0">Modifier</text>
+
+  <!-- Bouton Désactiver -->
+  <rect x="1100" y="388" width="86" height="28" rx="6" fill="#FFF7F4" stroke="#FF6B35" stroke-width="1"/>
+  <circle cx="1116" cy="402" r="5" fill="none" stroke="#FF6B35" stroke-width="1.5"/>
+  <line x1="1113" y1="399" x2="1119" y2="405" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="1128" y="407" font-size="12" fill="#FF6B35">Désactiver</text>
+
+  <!-- ═══════════════════════════════════════
+       LIGNE 3 : Pierre Blanc
+  ═══════════════════════════════════════ -->
+  <rect x="268" y="432" width="984" height="60" fill="#FFFFFF"/>
+  <line x1="268" y1="492" x2="1252" y2="492" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Checkbox -->
+  <rect x="296" y="446" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+
+  <!-- Avatar Pierre Blanc (inactif, grisé) -->
+  <circle cx="324" cy="462" r="16" fill="#F3F4F6"/>
+  <text x="324" y="467" text-anchor="middle" font-size="12" font-weight="700" fill="#9CA3AF">PB</text>
+
+  <!-- Nom (grisé) -->
+  <text x="348" y="459" font-size="13" font-weight="600" fill="#9CA3AF">Pierre Blanc</text>
+  <text x="348" y="476" font-size="11" fill="#9CA3AF">Bénéficiaire · Désactivé le 15 mar. 2026</text>
+
+  <!-- Email (grisé) -->
+  <text x="510" y="462" font-size="12" fill="#9CA3AF">pierre.blanc@email.fr</text>
+
+  <!-- Consultante non assignée -->
+  <text x="698" y="462" font-size="20" fill="#D1D5DB">—</text>
+
+  <!-- Badge Inactif -->
+  <rect x="900" y="450" width="62" height="22" rx="11" fill="#FEE2E2"/>
+  <circle cx="916" cy="461" r="4" fill="#EF4444"/>
+  <text x="924" y="465" font-size="11" font-weight="600" fill="#EF4444">Inactif</text>
+
+  <!-- Bouton Modifier -->
+  <rect x="1010" y="448" width="80" height="28" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <path d="M1024 460 L1028 456 L1033 461 L1029 465 Z" fill="none" stroke="#1E6FC0" stroke-width="1.5" stroke-linejoin="round"/>
+  <line x1="1024" y1="465" x2="1024" y2="468" stroke="#1E6FC0" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="1040" y="467" font-size="12" fill="#1E6FC0">Modifier</text>
+
+  <!-- Bouton Réactiver (vert) -->
+  <rect x="1100" y="448" width="84" height="28" rx="6" fill="#F0FDF4" stroke="#28A745" stroke-width="1"/>
+  <!-- Icône refresh -->
+  <path d="M1112 462 A5 5 0 1 1 1122 462" stroke="#28A745" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M1120 458 L1122 462 L1118 462" stroke="#28A745" stroke-width="1.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+  <text x="1130" y="467" font-size="12" fill="#28A745">Réactiver</text>
+
+  <!-- ── PAGINATION ──────────────────────────────────────────── -->
+  <rect x="268" y="692" width="984" height="52" rx="0 0 12 12" fill="#FFFFFF"/>
+  <line x1="268" y1="692" x2="1252" y2="692" stroke="#DCE1EB" stroke-width="1"/>
+
+  <text x="296" y="722" font-size="12" fill="#6B7280">Affichage de 1 à 3 sur 3 résultats</text>
+
+  <!-- Pages -->
+  <rect x="1070" y="710" width="32" height="26" rx="6" fill="#1E6FC0"/>
+  <text x="1086" y="727" text-anchor="middle" font-size="12" font-weight="600" fill="#FFFFFF">1</text>
+
+  <!-- Prev (désactivé) -->
+  <rect x="1032" y="710" width="32" height="26" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <path d="M1052 718 L1046 723 L1052 728" stroke="#D1D5DB" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Next (désactivé) -->
+  <rect x="1108" y="710" width="32" height="26" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <path d="M1118 718 L1124 723 L1118 728" stroke="#D1D5DB" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Sélecteur lignes par page -->
+  <text x="1150" y="722" font-size="11" fill="#6B7280">10 / page</text>
+  <text x="1196" y="722" font-size="10" fill="#9CA3AF">▾</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       OVERLAY SEMI-TRANSPARENT (modal ouvert)
+  ═══════════════════════════════════════════════════════════════ -->
+  <rect x="240" y="0" width="1200" height="900" fill="#0D3B6E" opacity="0.45"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       MODAL : Nouveau bénéficiaire
+  ═══════════════════════════════════════════════════════════════ -->
+  <!-- Ombre portée -->
+  <rect x="484" y="183" width="476" height="532" rx="14" fill="#000000" opacity="0.18"/>
+
+  <!-- Fond modal -->
+  <rect x="480" y="179" width="476" height="532" rx="14" fill="#FFFFFF"/>
+
+  <!-- En-tête modal -->
+  <rect x="480" y="179" width="476" height="70" rx="14 14 0 0" fill="#FFFFFF"/>
+  <line x1="480" y1="249" x2="956" y2="249" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Indicateur couleur en-tête -->
+  <rect x="480" y="179" width="6" height="70" rx="3 0 0 3" fill="#1E6FC0"/>
+
+  <!-- Titre modal -->
+  <text x="510" y="208" font-size="18" font-weight="700" fill="#0D3B6E">Nouveau bénéficiaire</text>
+  <text x="510" y="228" font-size="12" fill="#6B7280">Créez un compte d'accès à la plateforme Link's.</text>
+
+  <!-- Bouton fermer (X) -->
+  <rect x="914" y="191" width="28" height="28" rx="6" fill="#F5F7FA"/>
+  <line x1="922" y1="199" x2="934" y2="211" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+  <line x1="934" y1="199" x2="922" y2="211" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Corps du formulaire -->
+  <!-- Champs Prénom + Nom (en ligne) -->
+  <text x="510" y="280" font-size="12" font-weight="600" fill="#4A4A4A">Prénom <tspan fill="#EF4444">*</tspan></text>
+  <rect x="510" y="288" width="200" height="38" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+  <text x="524" y="311" font-size="12" fill="#9CA3AF">Ex: Marie</text>
+
+  <text x="726" y="280" font-size="12" font-weight="600" fill="#4A4A4A">Nom <tspan fill="#EF4444">*</tspan></text>
+  <rect x="726" y="288" width="200" height="38" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+  <text x="740" y="311" font-size="12" fill="#9CA3AF">Ex: Dupont</text>
+
+  <!-- Champ Email -->
+  <text x="510" y="358" font-size="12" font-weight="600" fill="#4A4A4A">Adresse email <tspan fill="#EF4444">*</tspan></text>
+  <rect x="510" y="366" width="416" height="38" rx="8" fill="#FFFFFF" stroke="#1E6FC0" stroke-width="2"/>
+  <!-- Icône email -->
+  <rect x="522" y="378" width="14" height="11" rx="2" fill="none" stroke="#1E6FC0" stroke-width="1.2"/>
+  <path d="M522 379 L529 385 L536 379" stroke="#1E6FC0" stroke-width="1.2" fill="none"/>
+  <text x="544" y="389" font-size="12" fill="#4A4A4A">beneficiaire@exemple.fr</text>
+  <!-- Focus ring -->
+  <rect x="507" y="363" width="422" height="44" rx="10" fill="none" stroke="#1E6FC0" stroke-width="2" opacity="0.2"/>
+
+  <!-- Champ Consultante (select) -->
+  <text x="510" y="436" font-size="12" font-weight="600" fill="#4A4A4A">Consultante assignée</text>
+  <text x="648" y="436" font-size="11" fill="#9CA3AF">(optionnel)</text>
+  <rect x="510" y="444" width="416" height="38" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+  <!-- Icône user dans select -->
+  <circle cx="526" cy="463" r="5" fill="none" stroke="#6B7280" stroke-width="1.2"/>
+  <path d="M519 473 Q519 469 526 469 Q533 469 533 473" stroke="#6B7280" stroke-width="1.2" fill="none"/>
+  <text x="542" y="468" font-size="12" fill="#9CA3AF">Sélectionner une consultante...</text>
+  <!-- Flèche select -->
+  <path d="M910 458 L916 464 L922 458" stroke="#6B7280" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Message info (icône + texte) -->
+  <rect x="510" y="500" width="416" height="44" rx="8" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <!-- Icône info -->
+  <circle cx="526" cy="522" r="8" fill="#DBEAFE"/>
+  <text x="526" y="526" text-anchor="middle" font-size="10" font-weight="700" fill="#1E6FC0">i</text>
+  <text x="542" y="516" font-size="11" fill="#1D4ED8">Un email de bienvenue sera automatiquement envoyé</text>
+  <text x="542" y="531" font-size="11" fill="#1D4ED8">avec les instructions de connexion.</text>
+
+  <!-- Séparateur footer modal -->
+  <line x1="480" y1="560" x2="956" y2="560" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Footer modal : boutons -->
+  <!-- Bouton Annuler -->
+  <rect x="510" y="574" width="120" height="40" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+  <text x="570" y="599" text-anchor="middle" font-size="13" font-weight="500" fill="#4A4A4A">Annuler</text>
+
+  <!-- Bouton Créer le compte (primary) -->
+  <rect x="690" y="574" width="236" height="40" rx="8" fill="#1E6FC0"/>
+  <!-- Icône check -->
+  <path d="M708 594 L713 599 L722 588" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="808" y="599" text-anchor="middle" font-size="13" font-weight="600" fill="#FFFFFF">Créer le compte</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       INDICATEURS / STATS (hors tableau, bande en haut à droite)
+  ═══════════════════════════════════════════════════════════════ -->
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       LIGNES DE SÉPARATION COLONNES TABLEAU (visibles dans lignes)
+  ═══════════════════════════════════════════════════════════════ -->
+  <!-- Colonne Email -->
+  <line x1="490" y1="312" x2="490" y2="692" stroke="#F3F4F6" stroke-width="1"/>
+  <!-- Colonne Consultante -->
+  <line x1="670" y1="312" x2="670" y2="692" stroke="#F3F4F6" stroke-width="1"/>
+  <!-- Colonne Statut -->
+  <line x1="880" y1="312" x2="880" y2="692" stroke="#F3F4F6" stroke-width="1"/>
+  <!-- Colonne Actions -->
+  <line x1="990" y1="312" x2="990" y2="692" stroke="#F3F4F6" stroke-width="1"/>
+
+</svg>
