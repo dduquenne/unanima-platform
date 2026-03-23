@@ -463,6 +463,6 @@ pnpm dev:omega
 
 | App | Note de cadrage | Budget | Calendrier |
 |---|---|---|---|
-| Link's Accompagnement | `docs/note-cadrage-links-v1.12.pdf` | Voir proposition commerciale | 6 semaines (v1) |
+| Link's Accompagnement | `docs/links/specs/SPC-0001-note-cadrage-links-v1.15.md` | `docs/links/specs/SPC-0002-proposition-commerciale-links-v1.4.md` (3 500 € HT) | 6 semaines (v1) |
 | CREAI Île-de-France | `docs/note-cadrage-creai-v1.6.docx` | 15 000 € HT (PMV) | 6-8 semaines |
 | Omega Automotive | `docs/note-synthese-omega-v1.docx` | À définir | 4-5 semaines |
