@@ -15,7 +15,7 @@ compatibility:
 
 # Skill : Projetix
 
-Spécialiste en rédaction de documents de projet informatique d'applications métier.  
+Spécialiste en rédaction de documents de projet informatique d'applications métier.
 Maîtrise deux grands livrables complémentaires :
 
 1. **La note de cadrage** — analyse des besoins en vue d'une proposition commerciale
@@ -23,7 +23,60 @@ Maîtrise deux grands livrables complémentaires :
 
 ---
 
-## Philosophie générale
+## Conventions de performance
+
+Ce skill applique les conventions de `_common/performance-workflow.md` :
+- **Feedback continu** : afficher un message avant chaque phase de travail
+- **Génération incrémentale** : structure d'abord, puis contenu section par section
+- **Lecture conditionnelle** : ne lire que les références nécessaires à la demande
+- **Cadrage du scope** : clarifier le périmètre avant de commencer
+- **Parallélisation** : utiliser des sous-agents pour les SFD multi-Epics
+
+---
+
+## Étape 0 — Cadrage rapide (TOUJOURS faire cette étape)
+
+Avant toute génération, clarifier avec l'utilisateur en UNE question :
+
+```
+Avant de commencer, quelques précisions rapides :
+1. **Type de livrable** : note de cadrage ou spécifications fonctionnelles (SFD) ?
+2. **Scope** : document complet, ou une section/un Epic spécifique ?
+3. **Format** : Markdown inline, fichier .md, ou .docx ?
+4. **Inputs disponibles** : brief client, entretien, documents existants ?
+```
+
+Si l'utilisateur demande un document complet (SFD ou note de cadrage), annoncer
+l'approche incrémentale :
+
+```
+Je vais procéder en passes successives :
+1. D'abord la structure (plan / arborescence Epics-Features) pour validation
+2. Puis le contenu détaillé, section par section
+3. Enfin l'assemblage du document final
+Cela permet de corriger la direction à chaque étape sans tout régénérer.
+```
+
+---
+
+## Étape 1 — Lecture conditionnelle des références
+
+Ne pas lire systématiquement les 4 fichiers de référence. Appliquer cette grille :
+
+| Demande | Fichiers à lire | Fichiers à NE PAS lire |
+|---------|----------------|----------------------|
+| Une seule User Story | Aucun (templates ci-dessous suffisent) | Tous |
+| SFD complète | `references/user-stories.md` | `note-cadrage.md`, `glossaire-methodes.md` |
+| Note de cadrage | `references/note-cadrage.md` | `user-stories.md`, `glossaire-methodes.md` |
+| Story mapping | `references/story-mapping.md` | Les autres |
+| Question sur une méthode | `references/glossaire-methodes.md` | Les autres |
+
+Les templates essentiels sont intégrés ci-dessous (section 3 et 4) pour éviter
+des lectures systématiques.
+
+---
+
+## 2. Philosophie générale
 
 Un bon document de spécification est un **outil de dialogue**, pas un monument juridique. Il doit :
 - Être **compréhensible** par toutes les parties (métier, développeurs, direction)
@@ -34,68 +87,74 @@ Un bon document de spécification est un **outil de dialogue**, pas un monument 
 
 ---
 
-## 1. Note de cadrage — Analyse des besoins (pré-vente)
+## 3. Note de cadrage — Template intégré
 
-La note de cadrage est le premier livrable stratégique. Elle transforme une expression de besoin brut en une vision structurée qui fonde la proposition commerciale.
+La note de cadrage transforme une expression de besoin brut en une vision structurée
+qui fonde la proposition commerciale.
 
-### Quand la produire
-
-- Après un premier entretien client ou réception d'un brief
-- Avant la rédaction d'un devis ou d'une proposition commerciale
-- Pour aligner toutes les parties sur la compréhension du projet
-
-### Structure recommandée (CADRE)
+### Structure CADRE
 
 ```
 C — Contexte & enjeux métier
 A — Acteurs & parties prenantes
-D — Domaine fonctionnel & périmètre
+D — Domaine fonctionnel & périmètre (avec MoSCoW)
 R — Risques & contraintes identifiés
 E — Estimation de valeur & orientations techniques
 ```
 
-Pour chaque section, consulte le fichier de référence : `references/note-cadrage.md`
+### Workflow de génération (par passes)
 
-### Techniques d'analyse des besoins à appliquer
+```
+[Phase 1/3] — Structure et périmètre
+  Afficher le plan CADRE avec les grandes lignes de chaque section.
+  → Attendre validation de l'utilisateur.
 
-**1. Le modèle des 5 Why (pourquoi récursif)**
-Avant de spécifier quoi que ce soit, questionne la racine du besoin :
-> "L'utilisateur veut exporter en Excel." → Pourquoi ? → "Pour le donner au comptable." → Pourquoi pas un rapport PDF ? → "La comptable retraite les données." → Solution réelle : un export avec les bons champs, pas forcément Excel.
+[Phase 2/3] — Rédaction section par section
+  Pour chaque section C, A, D, R, E :
+    Afficher "Rédaction de la section [X]..." puis générer le contenu.
+    Afficher le résultat de la section immédiatement.
 
-**2. Jobs-to-be-Done (JTBD)**
-Formule chaque besoin comme un job : *"Quand [situation], je veux [action], pour [résultat attendu]."*
-Cela évite de spécifier des features inutiles.
+[Phase 3/3] — Assemblage et écriture
+  Compiler le document final et l'écrire dans le fichier cible.
+```
 
-**3. Matrice des parties prenantes**
-Identifie pour chaque acteur : son rôle, ses attentes, ses contraintes, son niveau d'implication.
+### Techniques d'analyse des besoins
 
-**4. MoSCoW priorisé**
-- **Must Have** : indispensable au lancement (MVP)
-- **Should Have** : important mais pas bloquant
-- **Could Have** : valeur ajoutée si temps/budget
-- **Won't Have** : explicitement hors périmètre (réduit le scope creep)
+**5 Why** — Questionner la racine du besoin avant de spécifier :
+> "L'utilisateur veut exporter en Excel." → Pourquoi ? → Solution réelle : un export avec les bons champs.
 
-**5. Persona utilisateur**
-Crée 1 à 3 personas représentatifs pour ancrer les besoins dans la réalité d'usage.
+**Jobs-to-be-Done** — Formuler chaque besoin comme : *"Quand [situation], je veux [action], pour [résultat]."*
+
+**MoSCoW** — Must Have (MVP) / Should Have / Could Have / Won't Have (hors périmètre)
+
+Pour des détails approfondis sur la structure CADRE, consulter `references/note-cadrage.md`.
 
 ---
 
-## 2. Spécifications fonctionnelles — User Stories
+## 4. Spécifications fonctionnelles — Templates intégrés
 
-Les spécifications sont la traduction contractuelle des besoins en langage compréhensible par les développeurs ET les métiers.
-
-### Architecture des spécifications (3 niveaux)
+### Architecture en 3 niveaux
 
 ```
 EPIC (thème fonctionnel majeur)
   └── FEATURE (fonctionnalité cohérente)
         └── USER STORY (unité de valeur livrable)
-              └── CRITÈRES D'ACCEPTATION (vérifiables)
+              └── CRITÈRES D'ACCEPTATION (BDD/Gherkin)
 ```
 
-Pour le détail de chaque niveau, consulte : `references/user-stories.md`
+### Template Epic
 
-### Format d'une User Story (standard)
+```
+EPIC-[ID] | [NOM COURT EN MAJUSCULES]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Description : [Ce que cet ensemble de fonctionnalités permet d'accomplir]
+Valeur métier : [Bénéfice global]
+Indicateur de succès : [Comment mesurer le succès]
+User Stories : [US-01, US-02, US-03...]
+Lot / Release : [MVP / V2 / V3]
+```
+
+### Template User Story
 
 ```
 US-[ID] | [TITRE COURT]
@@ -115,7 +174,7 @@ Scénario 1 : [NOM DU SCÉNARIO NOMINAL]
   QUAND [action déclenchante]
   ALORS [résultat attendu vérifiable]
 
-Scénario 2 : [NOM DU SCÉNARIO ALTERNATIF]
+Scénario 2 : [CAS ALTERNATIF]
   ÉTANT DONNÉ [...]
   QUAND [...]
   ALORS [...]
@@ -128,12 +187,8 @@ Scénario 3 : [CAS D'ERREUR / LIMITE]
 RÈGLES MÉTIER
   - RG-[ID] : [Description de la règle]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-MAQUETTES / RÉFÉRENCES
-  - [Lien ou description de la maquette]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 DÉPENDANCES
-  - Dépend de : [US-XX]
-  - Bloque : [US-YY]
+  - Dépend de : [US-XX]  |  Bloque : [US-YY]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 DEFINITION OF DONE (DoD)
   □ Code développé et revu
@@ -143,81 +198,108 @@ DEFINITION OF DONE (DoD)
   □ Validé par le PO/client
 ```
 
-### Règles d'or pour les User Stories de qualité
+### Règles INVEST
 
-**INVEST** — Chaque US doit être :
-- **I**ndépendante : livrable seule si possible
-- **N**égociable : le comment est à définir ensemble
-- **V**aluable : apporte une valeur métier réelle
-- **E**stimable : l'équipe peut l'évaluer
-- **S**mall : réalisable en un sprint (≤ 5j)
-- **T**estable : les critères d'acceptation sont vérifiables
+Chaque US doit être : **I**ndépendante, **N**égociable, **V**aluable, **E**stimable, **S**mall (≤ 5j), **T**estable.
 
-**Pièges à éviter :**
-- US formulée en termes techniques ("stocker en base de données...")
-- US sans bénéfice métier explicite ("afin de..." vide)
-- US trop large (= Epic non découpé)
-- Critères d'acceptation vagues ("le système doit être rapide")
-- Oublier les cas d'erreur et les cas limites
+Pour des détails approfondis sur les User Stories, consulter `references/user-stories.md`.
 
 ---
 
-## 3. Workflow de rédaction recommandé
+## 5. Workflow de génération — SFD complète (document long)
 
-### Phase 1 — Découverte (avec ou sans brief)
-1. Analyser les inputs disponibles (brief, entretien, documents existants)
-2. Identifier les acteurs et leurs jobs-to-be-done
-3. Cartographier le domaine fonctionnel (story mapping)
-4. Lister les hypothèses et risques
+Ce workflow s'applique dès que le livrable dépasse une poignée de User Stories.
+L'objectif est d'éliminer les périodes silencieuses et de permettre des corrections
+précoces.
 
-### Phase 2 — Cadrage
-1. Rédiger la note de cadrage (structure CADRE)
-2. Valider la priorisation MoSCoW avec le client
-3. Définir le MVP et les lots successifs
-4. Estimer la volumétrie fonctionnelle
+### Passe 1 — Structure (rapide, ~30 secondes)
 
-### Phase 3 — Spécifications
-1. Définir les Epics et Features (arborescence)
-2. Rédiger les User Stories du MVP en priorité
-3. Ajouter les critères d'acceptation en BDD/Gherkin
-4. Identifier les règles métier et les dépendances
-5. Compléter la DoD et les liens maquettes
+Afficher :
+```
+[Phase 1/3] — Génération de la structure Epics/Features
+```
 
-### Phase 4 — Révision et livraison
-1. Vérifier la complétude (INVEST check)
-2. Relecture orientée "développeur" (ambiguïtés ?)
-3. Relecture orientée "recette" (testabilité ?)
-4. Livraison au format adapté (Markdown, Word, Jira, Notion...)
+Puis générer et afficher UNIQUEMENT l'arborescence :
+
+```
+EPIC-01 | AUTHENTIFICATION ET GESTION DES ACCÈS
+  ├── FEAT-01.1 | Inscription et connexion (3 US)
+  └── FEAT-01.2 | Gestion des rôles et permissions (2 US)
+
+EPIC-02 | GESTION DES BÉNÉFICIAIRES
+  ├── FEAT-02.1 | Création et modification de fiche (4 US)
+  └── FEAT-02.2 | Recherche et filtrage (2 US)
+...
+```
+
+Demander validation : *"Cette structure vous convient-elle ? Je peux ajuster avant
+de détailler les User Stories."*
+
+### Passe 2 — Contenu détaillé (Epic par Epic)
+
+**Pour les SFD avec 3+ Epics**, utiliser des sous-agents parallèles :
+
+```
+[Phase 2/3] — Génération du contenu détaillé
+  Lancement de la rédaction des Epics en parallèle...
+```
+
+Lancer un sous-agent par Epic via l'outil Agent, en fournissant à chacun :
+- Le nom et la description de l'Epic
+- La liste des Features et US à détailler
+- Le template User Story (ci-dessus)
+- Les conventions de nommage (IDs séquentiels)
+- Le contexte métier minimal nécessaire
+
+Chaque sous-agent génère ses US et renvoie le résultat.
+
+**Pour les SFD avec 1-2 Epics**, générer séquentiellement en affichant la progression :
+
+```
+  Epic 1 : Authentification (3 US)... en cours
+  Epic 1 : Authentification (3 US)... terminé
+  Epic 2 : Gestion des bénéficiaires (5 US)... en cours
+```
+
+### Passe 3 — Assemblage
+
+```
+[Phase 3/3] — Assemblage du document final
+  Compilation dans [chemin/du/fichier.md]...
+```
+
+Assembler les résultats de tous les sous-agents (ou des générations séquentielles)
+dans le fichier cible. Ajouter le frontmatter documentalix si applicable.
 
 ---
 
-## 4. Formats de sortie disponibles
+## 6. Posture et ton des documents
 
-Selon le besoin exprimé, produis :
+- **Note de cadrage** : ton professionnel, orienté valeur client, accessible aux décideurs non-techniques
+- **Spécifications fonctionnelles** : précis, non ambigu, factuel — chaque phrase a une seule interprétation
+- **Toujours** : reprendre le vocabulaire du client, illustrer avec des exemples de son contexte
 
-| Livrable | Format conseillé | Référence |
+---
+
+## 7. Formats de sortie
+
+| Livrable | Format conseillé | Référence (si besoin) |
 |---|---|---|
 | Note de cadrage | `.docx` ou `.md` | `references/note-cadrage.md` |
 | Backlog User Stories | `.md` structuré ou `.docx` | `references/user-stories.md` |
-| Fiche US unique | Bloc Markdown inline | Format section 2 ci-dessus |
+| Fiche US unique | Bloc Markdown inline | Templates section 4 |
 | Story Map visuelle | Tableau Markdown | `references/story-mapping.md` |
 | Glossaire métier | Table Markdown | Inline |
 
-Pour la génération de fichiers `.docx`, consulte le skill `docx` avant de produire le fichier.
+Pour la génération de fichiers `.docx`, consulter le skill `docx` avant de produire le fichier.
 
 ---
 
-## 5. Posture et ton des documents
+## Références complémentaires (lecture conditionnelle)
 
-- **Note de cadrage** : ton professionnel, orienté valeur client, accessible aux décideurs non-techniques. Éviter le jargon technique.
-- **Spécifications fonctionnelles** : précis, non ambigu, factuel. Chaque phrase doit avoir une seule interprétation possible.
-- **Toujours** : utiliser le vocabulaire du client (reprendre ses termes), illustrer avec des exemples concrets tirés de son contexte.
+Ces fichiers ne sont à lire que si la demande le justifie (cf. grille de l'étape 1) :
 
----
-
-## Références complémentaires
-
-- `references/note-cadrage.md` — Structure détaillée et modèle complet d'une note de cadrage
-- `references/user-stories.md` — Guide approfondi User Stories, Epics, Features, BDD
-- `references/story-mapping.md` — Technique de User Story Mapping (Jeff Patton)
-- `references/glossaire-methodes.md` — Définitions des méthodes (Agile, SAFe, Shape Up...)
+- `references/note-cadrage.md` — Structure CADRE détaillée, exemples de formulation, questions clés
+- `references/user-stories.md` — Guide approfondi Epics, Features, US, critères BDD
+- `references/story-mapping.md` — Technique de Story Mapping (Jeff Patton)
+- `references/glossaire-methodes.md` — Définitions Agile, SAFe, Shape Up, BDD, Scrum, Kanban

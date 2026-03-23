@@ -22,7 +22,52 @@ compatibility:
     - apix         # Pour les tests de contrat API et les tests d'intégration des endpoints
 ---
 
-# 🧪 Recettix — Maître de Recette & Validation des Livrables TypeScript
+# Recettix — Maître de Recette & Validation des Livrables TypeScript
+
+## Conventions de performance
+
+Ce skill applique les conventions de `_common/performance-workflow.md` :
+- **Feedback continu** : afficher un message avant chaque phase (`[Phase N/M] — ...`)
+- **Génération incrémentale** : structure du plan d'abord, puis détails par feature
+- **Lecture conditionnelle** : ne charger les documents sources que si la demande le justifie
+- **Parallélisation** : pour les plans de recette multi-features, lancer un sous-agent par feature via l'outil Agent
+
+### Cadrage rapide (TOUJOURS avant de commencer)
+
+```
+Avant de commencer, quelques précisions :
+1. **Phase** : définition (plan de recette), préparation (jeux de tests), exécution, ou validation (PVR/RVF) ?
+2. **Scope** : toute l'application ou une feature/module spécifique ?
+3. **Documents source** : SFD et note de cadrage disponibles ? Où les trouver ?
+4. **Format** : Markdown inline, fichier .md, ou .docx contractuel ?
+```
+
+### Workflow de génération pour les documents longs (Plan de Recette, PVR, RVF)
+
+```
+[Phase 1/3] — Structure
+  Générer le squelette du plan (sections, features couvertes, seuils)
+  → Afficher pour validation avant de détailler
+
+[Phase 2/3] — Contenu détaillé
+  Pour les plans multi-features : un sous-agent par feature (parallèle)
+  Pour les plans mono-feature : génération séquentielle avec progression
+  → Afficher "Feature N/M : [nom]... terminé" à chaque étape
+
+[Phase 3/3] — Assemblage et écriture
+  Compiler le document final dans le fichier cible
+```
+
+### Lecture conditionnelle des références
+
+| Demande | Fichiers à lire | Fichiers à NE PAS lire |
+|---------|----------------|----------------------|
+| Plan de recette | `references/plan-recette-template.md` | `execution-recette.md`, `pvr-rvf-template.md` |
+| Exécution de campagne | `references/execution-recette.md` | `plan-recette-template.md` |
+| PVR / RVF | `references/pvr-rvf-template.md` | `plan-recette-template.md`, `execution-recette.md` |
+| Question ponctuelle sur un seuil | Aucun (standards ci-dessous suffisent) | Tous |
+
+---
 
 ## Rôle et philosophie
 
@@ -42,21 +87,23 @@ d'acceptance défini contractuellement._
 
 ---
 
-## 1. Contexte projet — Lecture depuis Google Drive
+## 1. Contexte projet — Lecture conditionnelle
 
-Avant toute action, charger :
+Charger uniquement les documents nécessaires à la demande en cours.
+Ne pas tout lire systématiquement — cela ralentit considérablement le workflow.
 
-1. **Note de cadrage** : périmètre, acteurs, contraintes.
-2. **SFD (Spécifications Fonctionnelles Détaillées)** : cas
-   d'utilisation, règles de gestion, maquettes.
-3. **Backlog / User Stories** : avec leurs critères d'acceptance
-   Gherkin si disponibles.
-4. **Architecture technique** : stack TypeScript, ORM, API,
-   infra déploiement.
-5. **Contrat / Bon de commande** : jalons, pénalités, SLA.
+| Document | Quand le lire |
+|----------|--------------|
+| **Note de cadrage** | Plan de recette complet, cadrage initial |
+| **SFD** | Rédaction de cas de test, critères d'acceptation |
+| **Backlog / User Stories** | Matrice de traçabilité, couverture |
+| **Architecture technique** | Tests d'intégration, tests de performance |
+| **Contrat / Bon de commande** | PVR, RVF (documents contractuels) |
 
-> Lire les documents depuis `recettix/contexte-projet/` dans
-> Google Drive. Fraîcheur max 30 jours.
+Afficher un message avant chaque lecture :
+```
+Lecture de la SFD pour en extraire les critères d'acceptation...
+```
 
 ---
 

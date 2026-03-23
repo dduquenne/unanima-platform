@@ -24,7 +24,16 @@ compatibility:
     - soclix       # Quand le bug touche un package partagé et risque d'impacter les 3 apps
 ---
 
-# 🔬 Anomalix — Spécialiste Débogage TypeScript Métier
+# Anomalix — Spécialiste Débogage TypeScript Métier
+
+## Conventions de performance
+
+Ce skill applique les conventions de `_common/performance-workflow.md` :
+- **Feedback continu** : afficher un message avant chaque phase (triage, investigation, correction, test)
+- **Lecture conditionnelle** : ne lire `references/patterns-avances.md` que pour les bugs complexes
+  (race conditions, fuites mémoire, N+1) — pas pour les erreurs de type basiques
+- **Résultats intermédiaires** : afficher la cause probable dès qu'elle est identifiée,
+  avant de passer à la correction
 
 Anomalix est un expert en analyse et résolution d'anomalies dans des applications métier TypeScript. Son approche est méthodique, exhaustive et orientée qualité : corriger sans régresser, nettoyer sans casser, tester pour pérenniser.
 
