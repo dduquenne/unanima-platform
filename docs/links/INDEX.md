@@ -13,7 +13,7 @@
 
 | Réf. | Écran | Rôle | Format | Version | Mise à jour |
 |---|---|---|---|---|---|
-| MAQ-01 | Page de connexion | Tous | SVG | 1.0 | 2026-03-23 |
+| MAQ-01 | Page de connexion | Tous | SVG | 1.1 | 2026-03-23 |
 | MAQ-02 | Dashboard bénéficiaire | Bénéficiaire | SVG | 1.0 | 2026-03-23 |
 | MAQ-03 | Saisie de phase | Bénéficiaire | SVG | 1.0 | 2026-03-23 |
 | MAQ-04 | Dashboard consultant | Consultant | SVG | 1.0 | 2026-03-23 |
