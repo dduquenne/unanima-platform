@@ -173,3 +173,43 @@ gh project item-list $PROJECT --owner $OWNER --format json | \
       })
   '
 ```
+
+---
+
+## Synchronisation bidirectionnelle
+
+### Lecture enrichie du Project
+
+```bash
+# Récupérer les issues avec tous les champs custom (priorité, effort, itération)
+gh project item-list <PROJECT_NUMBER> --owner @me --format json \
+  | jq '.items[] | select(.iteration == "Sprint N") | {
+      number: .content.number,
+      title: .content.title,
+      status: .status,
+      priority: .priority,
+      effort: .effort,
+      labels: .content.labels
+    }'
+```
+
+### Mise à jour automatique des colonnes
+
+| Événement Sprintix | Action GitHub Project |
+|---------------------|---------------------|
+| Issue lue et analysée | Status → "In Progress" |
+| Implémentation terminée + build vert | Status → "Done" |
+| Issue bloquée | Status → "Blocked" + commentaire |
+| Issue reportée au sprint suivant | Changer l'itération + commentaire |
+
+### Vérification de cohérence en fin de sprint
+
+```bash
+# Comparer les issues "Done" dans le Project vs cochées dans le plan
+PROJECT_DONE=$(gh project item-list ... | jq '[.items[] | select(.status=="Done")] | length')
+PLAN_DONE=$(grep -c "^| ✅" .sprint/sprint-N.md)
+
+if [ "$PROJECT_DONE" != "$PLAN_DONE" ]; then
+  echo "⚠️ Incohérence : $PROJECT_DONE done dans Project vs $PLAN_DONE dans le plan"
+fi
+```
