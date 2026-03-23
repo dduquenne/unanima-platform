@@ -1,0 +1,271 @@
+<!-- MAQ-03 | Saisie Phase | Link's Accompagnement | v1.0 | 2026-03-23 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, -apple-system, sans-serif">
+
+  <!-- ─── Fond global ─── -->
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+
+  <!-- ══════════════════════════════════════════════
+       HEADER
+  ══════════════════════════════════════════════ -->
+  <rect x="0" y="0" width="1440" height="64" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Logo mark (carré coloré) -->
+  <rect x="32" y="16" width="32" height="32" rx="6" fill="#1E6FC0"/>
+  <text x="48" y="36" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">L</text>
+
+  <!-- Nom application -->
+  <text x="74" y="27" fill="#0D3B6E" font-size="15" font-weight="700">Link's</text>
+  <text x="74" y="44" fill="#1E6FC0" font-size="12" font-weight="400">Accompagnement</text>
+
+  <!-- Séparateur vertical -->
+  <line x1="160" y1="16" x2="160" y2="48" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Tag plateforme -->
+  <text x="172" y="36" fill="#6B7280" font-size="12">Suivi des bilans de compétences</text>
+
+  <!-- Zone utilisateur (droite) -->
+  <!-- Avatar cercle -->
+  <circle cx="1328" cy="32" r="20" fill="#E8F0FB"/>
+  <text x="1328" y="37" text-anchor="middle" fill="#1E6FC0" font-size="13" font-weight="600">ML</text>
+
+  <!-- Nom utilisateur -->
+  <text x="1302" y="27" text-anchor="end" fill="#4A4A4A" font-size="13" font-weight="500">Marie Lambert</text>
+  <text x="1302" y="42" text-anchor="end" fill="#9CA3AF" font-size="11">Bénéficiaire</text>
+
+  <!-- Bouton déconnexion -->
+  <rect x="1360" y="18" width="60" height="28" rx="5" fill="none" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1390" y="36" text-anchor="middle" fill="#6B7280" font-size="11">Quitter</text>
+
+  <!-- ══════════════════════════════════════════════
+       BREADCRUMB
+  ══════════════════════════════════════════════ -->
+  <rect x="0" y="64" width="1440" height="40" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="0.5"/>
+  <text x="40" y="89" fill="#9CA3AF" font-size="12">Tableau de bord</text>
+  <!-- Chevron -->
+  <text x="138" y="89" fill="#9CA3AF" font-size="12">›</text>
+  <text x="150" y="89" fill="#1E6FC0" font-size="12" font-weight="500">Phase 2 : Explorer mes compétences</text>
+
+  <!-- ══════════════════════════════════════════════
+       CONTENU PRINCIPAL — colonne centrale
+  ══════════════════════════════════════════════ -->
+
+  <!-- Conteneur page -->
+  <rect x="200" y="120" width="1040" height="730" rx="0" fill="none"/>
+
+  <!-- ── En-tête de phase ── -->
+  <!-- Titre + badge -->
+  <text x="200" y="158" fill="#0D3B6E" font-size="26" font-weight="700">Phase 2 — Explorer mes compétences</text>
+
+  <!-- Badge "En cours" -->
+  <rect x="613" y="138" width="84" height="26" rx="13" fill="#FFF3EC" stroke="#FF6B35" stroke-width="1"/>
+  <circle cx="629" cy="151" r="4" fill="#FF6B35"/>
+  <text x="637" y="156" fill="#FF6B35" font-size="11" font-weight="600">En cours</text>
+
+  <!-- Autosave indicator -->
+  <!-- Icône cloud/disquette symbolique -->
+  <circle cx="723" cy="151" r="7" fill="none" stroke="#9CA3AF" stroke-width="1.2"/>
+  <polyline points="720,151 723,148 726,151" fill="none" stroke="#9CA3AF" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="723" y1="148" x2="723" y2="155" stroke="#9CA3AF" stroke-width="1.2" stroke-linecap="round"/>
+  <text x="736" y="156" fill="#9CA3AF" font-size="11">Sauvegarde automatique toutes les 30s</text>
+
+  <!-- Trait séparateur -->
+  <line x1="200" y1="174" x2="1240" y2="174" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- ── Section Documents ── -->
+  <rect x="200" y="186" width="1040" height="78" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Icône dossier -->
+  <rect x="218" y="200" width="18" height="14" rx="2" fill="#1E6FC0" opacity="0.15"/>
+  <rect x="218" y="197" width="10" height="4" rx="1" fill="#1E6FC0" opacity="0.25"/>
+  <text x="244" y="212" fill="#0D3B6E" font-size="13" font-weight="600">Documents de cette phase</text>
+
+  <!-- Document 1 — PDF -->
+  <rect x="218" y="222" width="220" height="30" rx="5" fill="#F8FAFC" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- PDF icon -->
+  <rect x="226" y="228" width="16" height="18" rx="2" fill="#DC2626" opacity="0.85"/>
+  <text x="234" y="240" text-anchor="middle" fill="#FFFFFF" font-size="7" font-weight="700">PDF</text>
+  <text x="248" y="241" fill="#1E6FC0" font-size="12" text-decoration="underline">Guide_Phase2_Exploration.pdf</text>
+
+  <!-- Document 2 — DOCX -->
+  <rect x="452" y="222" width="240" height="30" rx="5" fill="#F8FAFC" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- DOCX icon -->
+  <rect x="460" y="228" width="16" height="18" rx="2" fill="#2563EB" opacity="0.85"/>
+  <text x="468" y="240" text-anchor="middle" fill="#FFFFFF" font-size="6" font-weight="700">DOCX</text>
+  <text x="482" y="241" fill="#1E6FC0" font-size="12" text-decoration="underline">Fiche_Competences_Modele.docx</text>
+
+  <!-- ── Indicateur de progression ── -->
+  <rect x="200" y="276" width="1040" height="6" rx="3" fill="#E5E7EB"/>
+  <rect x="200" y="276" width="312" height="6" rx="3" fill="#1E6FC0"/>
+  <!-- Libellé progression -->
+  <text x="200" y="296" fill="#6B7280" font-size="11">3 questions complétées sur 10</text>
+  <text x="1240" y="296" text-anchor="end" fill="#1E6FC0" font-size="11" font-weight="500">30 %</text>
+
+  <!-- ══════════════════════════════════════════════
+       QUESTION 1
+  ══════════════════════════════════════════════ -->
+  <rect x="200" y="308" width="1040" height="156" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Numéro question -->
+  <circle cx="224" cy="334" r="14" fill="#1E6FC0"/>
+  <text x="224" y="339" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">1</text>
+
+  <!-- Intitulé question -->
+  <text x="248" y="334" fill="#0D3B6E" font-size="14" font-weight="600">Quelles compétences avez-vous développées dans vos expériences passées ?</text>
+
+  <!-- Optionnel tag -->
+  <rect x="1172" y="322" width="56" height="20" rx="10" fill="#F3F4F6"/>
+  <text x="1200" y="336" text-anchor="middle" fill="#9CA3AF" font-size="10">Optionnel</text>
+
+  <!-- Textarea Q1 — partiellement remplie -->
+  <rect x="218" y="350" width="1006" height="96" rx="6" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+  <!-- Texte simulé partiellement saisi -->
+  <text x="232" y="370" fill="#4A4A4A" font-size="13">Au cours de mes 8 années dans le secteur de la formation, j'ai développé des compétences en ingénierie pédagogique,</text>
+  <text x="232" y="388" fill="#4A4A4A" font-size="13">notamment la conception de parcours de formation blended learning. J'ai également renforcé mes capacités d'écoute active</text>
+  <text x="232" y="406" fill="#4A4A4A" font-size="13">et d'accompagnement individuel lors des entretiens de développement professionnel avec les collaborateurs.</text>
+  <!-- Curseur clignotant simulé -->
+  <line x1="232" y1="416" x2="232" y2="430" stroke="#1E6FC0" stroke-width="1.5" opacity="0.7"/>
+
+  <!-- ══════════════════════════════════════════════
+       QUESTION 2
+  ══════════════════════════════════════════════ -->
+  <rect x="200" y="476" width="1040" height="156" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <circle cx="224" cy="502" r="14" fill="#1E6FC0"/>
+  <text x="224" y="507" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="700">2</text>
+
+  <text x="248" y="502" fill="#0D3B6E" font-size="14" font-weight="600">Quels sont vos points forts selon vous ?</text>
+
+  <!-- Tag obligatoire -->
+  <rect x="1172" y="490" width="60" height="20" rx="10" fill="#FEF9EC" stroke="#F59E0B" stroke-width="0.8"/>
+  <text x="1202" y="504" text-anchor="middle" fill="#D97706" font-size="10">Requis</text>
+
+  <!-- Textarea Q2 — partiellement remplie -->
+  <rect x="218" y="518" width="1006" height="96" rx="6" fill="#FFFFFF" stroke="#1E6FC0" stroke-width="1.5"/>
+  <!-- Focus ring subtil -->
+  <rect x="216" y="516" width="1010" height="100" rx="7" fill="none" stroke="#1E6FC0" stroke-width="0.5" opacity="0.3"/>
+  <!-- Texte saisi -->
+  <text x="232" y="538" fill="#4A4A4A" font-size="13">Je pense que mes principaux points forts sont ma capacité à créer du lien avec les personnes que j'accompagne,</text>
+  <text x="232" y="556" fill="#4A4A4A" font-size="13">ainsi que mon sens de l'organisation. Je suis également reconnu(e) pour ma pédagogie et ma patience.</text>
+  <!-- Placeholder de suite -->
+  <text x="232" y="574" fill="#C9CFD9" font-size="13" font-style="italic">Continuez votre réponse...</text>
+
+  <!-- ══════════════════════════════════════════════
+       QUESTION 3
+  ══════════════════════════════════════════════ -->
+  <rect x="200" y="644" width="1040" height="140" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <circle cx="224" cy="670" r="14" fill="#E5E7EB"/>
+  <text x="224" y="675" text-anchor="middle" fill="#9CA3AF" font-size="12" font-weight="700">3</text>
+
+  <text x="248" y="670" fill="#0D3B6E" font-size="14" font-weight="600">Dans quels domaines vous sentez-vous le plus à l'aise ?</text>
+
+  <!-- Textarea Q3 — vide avec placeholder -->
+  <rect x="218" y="686" width="1006" height="80" rx="6" fill="#FAFBFC" stroke="#DCE1EB" stroke-width="1.5"/>
+  <text x="232" y="730" fill="#C9CFD9" font-size="13" font-style="italic">Décrivez les domaines ou secteurs dans lesquels vous vous sentez compétent(e) et épanoui(e)...</text>
+
+  <!-- Indicateur "7 questions restantes" -->
+  <text x="200" y="804" fill="#9CA3AF" font-size="12" font-style="italic">↓  7 autres questions à compléter (faire défiler)</text>
+
+  <!-- ══════════════════════════════════════════════
+       BARRE D'ACTIONS BAS DE PAGE
+  ══════════════════════════════════════════════ -->
+  <!-- Fond barre -->
+  <rect x="0" y="836" width="1440" height="64" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Message indicatif -->
+  <!-- Icône info -->
+  <circle cx="220" cy="868" r="9" fill="#E8F0FB"/>
+  <text x="220" y="872" text-anchor="middle" fill="#1E6FC0" font-size="10" font-weight="700">i</text>
+  <text x="236" y="872" fill="#6B7280" font-size="12">Vous pourrez modifier vos réponses après validation</text>
+
+  <!-- Bouton "Sauvegarder" (secondaire, outline) -->
+  <rect x="1040" y="848" width="148" height="40" rx="6" fill="#FFFFFF" stroke="#1E6FC0" stroke-width="1.5"/>
+  <text x="1114" y="872" text-anchor="middle" fill="#1E6FC0" font-size="13" font-weight="500">Sauvegarder</text>
+
+  <!-- Bouton "Valider la phase" (primary) -->
+  <rect x="1202" y="848" width="174" height="40" rx="6" fill="#1E6FC0"/>
+  <!-- Ombre légère simulée -->
+  <rect x="1204" y="852" width="170" height="36" rx="5" fill="url(#btnGradient)"/>
+  <text x="1289" y="872" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="600">Valider la phase →</text>
+
+  <!-- ══════════════════════════════════════════════
+       SIDEBAR — Progression des phases (gauche)
+  ══════════════════════════════════════════════ -->
+  <rect x="0" y="104" width="184" height="732" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="0.5"/>
+
+  <!-- Titre sidebar -->
+  <text x="20" y="138" fill="#6B7280" font-size="10" font-weight="600" letter-spacing="0.08em">MON PARCOURS</text>
+
+  <!-- Phase 1 — Terminée -->
+  <rect x="12" y="148" width="160" height="48" rx="6" fill="#F0FDF4"/>
+  <!-- Checkmark circle -->
+  <circle cx="30" cy="172" r="11" fill="#28A745"/>
+  <polyline points="25,172 29,176 35,168" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="48" y="168" fill="#166534" font-size="12" font-weight="600">Phase 1</text>
+  <text x="48" y="182" fill="#4ADE80" font-size="10">Terminée ✓</text>
+
+  <!-- Phase 2 — Active -->
+  <rect x="12" y="204" width="160" height="52" rx="6" fill="#EBF4FF" stroke="#1E6FC0" stroke-width="1.5"/>
+  <circle cx="30" cy="230" r="11" fill="#1E6FC0"/>
+  <text x="30" y="234" text-anchor="middle" fill="#FFFFFF" font-size="10" font-weight="700">2</text>
+  <text x="48" y="225" fill="#1E6FC0" font-size="12" font-weight="700">Phase 2</text>
+  <text x="48" y="239" fill="#6B7280" font-size="10">Explorer mes compétences</text>
+  <!-- Mini barre de progression -->
+  <rect x="48" y="246" width="112" height="3" rx="1.5" fill="#BFDBFE"/>
+  <rect x="48" y="246" width="33" height="3" rx="1.5" fill="#1E6FC0"/>
+
+  <!-- Phase 3 — À venir -->
+  <rect x="12" y="264" width="160" height="48" rx="6" fill="#F9FAFB"/>
+  <circle cx="30" cy="288" r="11" fill="#E5E7EB"/>
+  <text x="30" y="292" text-anchor="middle" fill="#9CA3AF" font-size="10" font-weight="700">3</text>
+  <text x="48" y="284" fill="#9CA3AF" font-size="12">Phase 3</text>
+  <text x="48" y="298" fill="#C9CFD9" font-size="10">Définir mon projet</text>
+
+  <!-- Phase 4 — À venir -->
+  <rect x="12" y="320" width="160" height="48" rx="6" fill="#F9FAFB"/>
+  <circle cx="30" cy="344" r="11" fill="#E5E7EB"/>
+  <text x="30" y="348" text-anchor="middle" fill="#9CA3AF" font-size="10" font-weight="700">4</text>
+  <text x="48" y="340" fill="#9CA3AF" font-size="12">Phase 4</text>
+  <text x="48" y="354" fill="#C9CFD9" font-size="10">Plan d'action</text>
+
+  <!-- Phase 5 — À venir -->
+  <rect x="12" y="376" width="160" height="48" rx="6" fill="#F9FAFB"/>
+  <circle cx="30" cy="400" r="11" fill="#E5E7EB"/>
+  <text x="30" y="404" text-anchor="middle" fill="#9CA3AF" font-size="10" font-weight="700">5</text>
+  <text x="48" y="396" fill="#9CA3AF" font-size="12">Phase 5</text>
+  <text x="48" y="410" fill="#C9CFD9" font-size="10">Synthèse finale</text>
+
+  <!-- Séparateur -->
+  <line x1="12" y1="440" x2="172" y2="440" stroke="#E5E7EB" stroke-width="0.8"/>
+
+  <!-- Contact consultant -->
+  <text x="20" y="460" fill="#6B7280" font-size="10" font-weight="600" letter-spacing="0.08em">MON CONSULTANT</text>
+  <circle cx="30" cy="485" r="14" fill="#E8F0FB"/>
+  <text x="30" y="489" text-anchor="middle" fill="#1E6FC0" font-size="11" font-weight="600">TR</text>
+  <text x="52" y="481" fill="#4A4A4A" font-size="11" font-weight="500">Thomas R.</text>
+  <text x="52" y="494" fill="#9CA3AF" font-size="10">Consultant bilan</text>
+
+  <!-- Bouton message -->
+  <rect x="12" y="504" width="160" height="30" rx="5" fill="none" stroke="#DCE1EB" stroke-width="1"/>
+  <!-- Icône message -->
+  <rect x="22" y="511" width="12" height="9" rx="1" fill="none" stroke="#6B7280" stroke-width="1"/>
+  <polyline points="22,511 28,516 34,511" fill="none" stroke="#6B7280" stroke-width="1" stroke-linecap="round"/>
+  <text x="42" y="522" fill="#6B7280" font-size="11">Envoyer un message</text>
+
+  <!-- Prochain RDV -->
+  <rect x="12" y="546" width="160" height="48" rx="6" fill="#FFF7ED" stroke="#FED7AA" stroke-width="0.8"/>
+  <text x="20" y="562" fill="#92400E" font-size="10" font-weight="600">Prochain RDV</text>
+  <text x="20" y="576" fill="#C2410C" font-size="12" font-weight="500">28 mars 2026</text>
+  <text x="20" y="588" fill="#9CA3AF" font-size="10">14h00 · Visioconférence</text>
+
+  <!-- ══════════════════════════════════════════════
+       DÉFINITIONS (dégradé bouton primaire)
+  ══════════════════════════════════════════════ -->
+  <defs>
+    <linearGradient id="btnGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.06"/>
+    </linearGradient>
+  </defs>
+
+</svg>

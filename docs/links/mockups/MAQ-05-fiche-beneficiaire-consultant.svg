@@ -1,0 +1,209 @@
+<!-- MAQ-05 | Fiche Bénéficiaire (Consultant) | Link's Accompagnement | v1.0 | 2026-03-23 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, Segoe UI, Arial, sans-serif">
+
+  <!-- ═══════════════════════════════════════════
+       FOND GLOBAL
+  ════════════════════════════════════════════ -->
+  <rect width="1440" height="900" fill="#F5F7FA"/>
+
+  <!-- ═══════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════════ -->
+  <rect x="0" y="0" width="1440" height="64" fill="#0D3B6E"/>
+
+  <!-- Logo -->
+  <rect x="32" y="18" width="28" height="28" rx="6" fill="#1E6FC0"/>
+  <text x="38" y="37" font-size="14" font-weight="700" fill="#FFFFFF" letter-spacing="0.5">L</text>
+  <text x="68" y="38" font-size="16" font-weight="700" fill="#FFFFFF" letter-spacing="0.3">Link's Accompagnement</text>
+
+  <!-- Séparateur vertical -->
+  <line x1="280" y1="18" x2="280" y2="46" stroke="#1E6FC0" stroke-width="1.5"/>
+
+  <!-- Consultante info -->
+  <circle cx="302" cy="32" r="14" fill="#1E6FC0"/>
+  <text x="302" y="37" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">SM</text>
+  <text x="324" y="30" font-size="13" font-weight="600" fill="#FFFFFF">Sophie Martin</text>
+  <text x="324" y="46" font-size="11" fill="#93C5FD">Consultante</text>
+
+  <!-- Déconnexion -->
+  <g transform="translate(1360, 20)">
+    <rect x="0" y="0" width="52" height="26" rx="4" fill="none" stroke="#93C5FD" stroke-width="1"/>
+    <text x="26" y="17" font-size="11" fill="#93C5FD" text-anchor="middle">Quitter</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════
+       BREADCRUMB
+  ════════════════════════════════════════════ -->
+  <rect x="0" y="64" width="1440" height="42" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="32" y="89" font-size="13" fill="#1E6FC0" text-decoration="underline" cursor="pointer">Tableau de bord</text>
+  <text x="148" y="89" font-size="13" fill="#9CA3AF">›</text>
+  <text x="162" y="89" font-size="13" fill="#4A4A4A" font-weight="600">Marie Dupont</text>
+
+  <!-- ═══════════════════════════════════════════
+       CARTE EN-TÊTE DE FICHE BÉNÉFICIAIRE
+  ════════════════════════════════════════════ -->
+  <rect x="32" y="124" width="1376" height="116" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Avatar initiales -->
+  <circle cx="88" cy="182" r="36" fill="#1E6FC0"/>
+  <text x="88" y="189" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">MD</text>
+
+  <!-- Infos bénéficiaire -->
+  <text x="140" y="165" font-size="22" font-weight="700" fill="#0D3B6E">Marie Dupont</text>
+  <text x="140" y="187" font-size="13" fill="#6B7280">marie.dupont@email.fr</text>
+  <text x="140" y="207" font-size="12" fill="#9CA3AF">Démarré le 10/03/2026</text>
+
+  <!-- Barre de progression globale -->
+  <text x="680" y="162" font-size="12" font-weight="600" fill="#4A4A4A">Progression globale</text>
+  <text x="680" y="178" font-size="12" fill="#6B7280">2 phases sur 6 validées</text>
+  <!-- Fond barre -->
+  <rect x="680" y="186" width="480" height="10" rx="5" fill="#E5E7EB"/>
+  <!-- Barre de progression 33% -->
+  <rect x="680" y="186" width="158" height="10" rx="5" fill="#28A745"/>
+  <!-- Label pourcentage -->
+  <text x="848" y="196" font-size="11" font-weight="700" fill="#28A745" text-anchor="middle">33%</text>
+
+  <!-- Phases labels -->
+  <text x="680" y="214" font-size="11" fill="#28A745" font-weight="600">● Phase 1</text>
+  <text x="730" y="214" font-size="11" fill="#28A745"> ✓</text>
+  <text x="760" y="214" font-size="11" fill="#28A745" font-weight="600">● Phase 2</text>
+  <text x="810" y="214" font-size="11" fill="#28A745"> ✓</text>
+  <text x="840" y="214" font-size="11" fill="#9CA3AF">○ Phase 3</text>
+  <text x="900" y="214" font-size="11" fill="#9CA3AF">○ Phase 4</text>
+  <text x="960" y="214" font-size="11" fill="#9CA3AF">○ Phase 5</text>
+  <text x="1020" y="214" font-size="11" fill="#9CA3AF">○ Phase 6</text>
+
+  <!-- Statut bilan badge -->
+  <rect x="1280" y="158" width="100" height="26" rx="13" fill="#FEF3C7"/>
+  <text x="1330" y="175" font-size="12" font-weight="600" fill="#D97706" text-anchor="middle">En cours</text>
+
+  <!-- ═══════════════════════════════════════════
+       ONGLETS DE NAVIGATION
+  ════════════════════════════════════════════ -->
+  <rect x="32" y="256" width="1376" height="48" rx="0" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Onglet Réponses (actif) -->
+  <rect x="32" y="256" width="160" height="48" fill="#FFFFFF"/>
+  <line x1="32" y1="304" x2="192" y2="304" stroke="#1E6FC0" stroke-width="3"/>
+  <text x="112" y="285" font-size="14" font-weight="700" fill="#1E6FC0" text-anchor="middle">Réponses</text>
+
+  <!-- Onglet Planification -->
+  <rect x="200" y="256" width="160" height="48" fill="#FFFFFF"/>
+  <text x="280" y="285" font-size="14" font-weight="400" fill="#6B7280" text-anchor="middle">Planification</text>
+
+  <!-- Onglet Comptes-rendus -->
+  <rect x="368" y="256" width="180" height="48" fill="#FFFFFF"/>
+  <text x="458" y="285" font-size="14" font-weight="400" fill="#6B7280" text-anchor="middle">Comptes-rendus</text>
+
+  <!-- Ligne de base des onglets -->
+  <line x1="32" y1="304" x2="1408" y2="304" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════════════════
+       CONTENU ONGLET RÉPONSES
+  ════════════════════════════════════════════ -->
+
+  <!-- Sélecteur de phases -->
+  <rect x="32" y="320" width="1376" height="64" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="52" y="343" font-size="12" font-weight="600" fill="#4A4A4A">Phase :</text>
+
+  <!-- Phase 1 (validée) -->
+  <rect x="108" y="328" width="130" height="32" rx="4" fill="#D1FAE5" stroke="#28A745" stroke-width="1.5"/>
+  <text x="173" y="348" font-size="12" font-weight="600" fill="#065F46" text-anchor="middle">Phase 1 ✓</text>
+
+  <!-- Phase 2 (active) -->
+  <rect x="248" y="328" width="130" height="32" rx="4" fill="#1E6FC0" stroke="#1E6FC0" stroke-width="1.5"/>
+  <text x="313" y="348" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Phase 2</text>
+
+  <!-- Phase 3 -->
+  <rect x="388" y="328" width="130" height="32" rx="4" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="453" y="348" font-size="12" fill="#9CA3AF" text-anchor="middle">Phase 3</text>
+
+  <!-- Phase 4 -->
+  <rect x="528" y="328" width="130" height="32" rx="4" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="593" y="348" font-size="12" fill="#9CA3AF" text-anchor="middle">Phase 4</text>
+
+  <!-- Phase 5 -->
+  <rect x="668" y="328" width="130" height="32" rx="4" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="733" y="348" font-size="12" fill="#9CA3AF" text-anchor="middle">Phase 5</text>
+
+  <!-- Phase 6 -->
+  <rect x="808" y="328" width="130" height="32" rx="4" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="873" y="348" font-size="12" fill="#9CA3AF" text-anchor="middle">Phase 6</text>
+
+  <!-- ═══════════════════════════════════════════
+       EN-TÊTE PHASE 2
+  ════════════════════════════════════════════ -->
+  <rect x="32" y="400" width="1376" height="52" rx="0" fill="#EFF6FF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="52" y="422" font-size="16" font-weight="700" fill="#0D3B6E">Phase 2 — Explorer mes compétences</text>
+  <!-- Badge "En cours" -->
+  <rect x="370" y="410" width="72" height="22" rx="11" fill="#FEF3C7"/>
+  <text x="406" y="425" font-size="11" font-weight="600" fill="#D97706" text-anchor="middle">En cours</text>
+  <!-- Sous-texte -->
+  <text x="52" y="440" font-size="12" fill="#6B7280">2 questions · Démarrée le 15/03/2026</text>
+
+  <!-- Indicateur lecture seule -->
+  <rect x="1220" y="413" width="180" height="24" rx="4" fill="#F3F4F6" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1238" y="429" font-size="11" fill="#6B7280">🔒 Mode lecture seule</text>
+
+  <!-- ═══════════════════════════════════════════
+       QUESTION 1
+  ════════════════════════════════════════════ -->
+  <rect x="32" y="468" width="1376" height="178" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Numéro de question -->
+  <circle cx="68" cy="500" r="14" fill="#1E6FC0"/>
+  <text x="68" y="505" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+
+  <!-- Texte de la question -->
+  <text x="96" y="495" font-size="14" font-weight="600" fill="#0D3B6E">Quelles compétences avez-vous développées au cours de vos expériences professionnelles les plus significatives ?</text>
+  <text x="96" y="512" font-size="12" fill="#9CA3AF">Décrivez précisément en vous appuyant sur des exemples concrets.</text>
+
+  <!-- Séparateur -->
+  <line x1="52" y1="526" x2="1388" y2="526" stroke="#F3F4F6" stroke-width="1"/>
+
+  <!-- Label réponse -->
+  <text x="96" y="548" font-size="12" font-weight="600" fill="#6B7280">Réponse du bénéficiaire</text>
+
+  <!-- Bloc réponse (lecture seule — fond distinct, pas de curseur) -->
+  <rect x="96" y="558" width="1284" height="72" rx="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+  <!-- Texture "no-edit" — coins arrondis et absence de bordure active -->
+  <text x="112" y="576" font-size="13" fill="#4A4A4A">
+    J'ai développé de solides compétences en gestion de projet lors de mes 5 années en tant que responsable de production chez Textilis. J'ai notamment
+  </text>
+  <text x="112" y="594" font-size="13" fill="#4A4A4A">
+    coordonné des équipes de 12 personnes, géré des plannings complexes et conduit des projets d'optimisation des coûts (-15% en 2024). J'ai aussi
+  </text>
+  <text x="112" y="612" font-size="13" fill="#4A4A4A">
+    acquis des compétences transverses en communication, résolution de problèmes et adaptation au changement.
+  </text>
+
+  <!-- ═══════════════════════════════════════════
+       QUESTION 2
+  ════════════════════════════════════════════ -->
+  <rect x="32" y="662" width="1376" height="152" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Numéro de question -->
+  <circle cx="68" cy="694" r="14" fill="#1E6FC0"/>
+  <text x="68" y="699" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+
+  <!-- Texte de la question -->
+  <text x="96" y="689" font-size="14" font-weight="600" fill="#0D3B6E">Quels sont vos points forts sur lesquels vous souhaitez capitaliser dans votre prochain projet professionnel ?</text>
+  <text x="96" y="706" font-size="12" fill="#9CA3AF">Identifiez 3 à 5 atouts majeurs.</text>
+
+  <!-- Séparateur -->
+  <line x1="52" y1="720" x2="1388" y2="720" stroke="#F3F4F6" stroke-width="1"/>
+
+  <!-- Label réponse -->
+  <text x="96" y="742" font-size="12" font-weight="600" fill="#9CA3AF">Réponse du bénéficiaire</text>
+
+  <!-- Bloc réponse vide — lecture seule, style "pas encore de réponse" -->
+  <rect x="96" y="752" width="1284" height="48" rx="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="112" y="781" font-size="13" font-style="italic" fill="#9CA3AF">Pas encore de réponse</text>
+
+  <!-- ═══════════════════════════════════════════
+       PIED DE PAGE
+  ════════════════════════════════════════════ -->
+  <rect x="0" y="860" width="1440" height="40" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="720" y="884" font-size="11" fill="#9CA3AF" text-anchor="middle">Link's Accompagnement · Espace consultante · Données confidentielles — usage interne uniquement</text>
+
+</svg>
