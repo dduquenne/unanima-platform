@@ -22,12 +22,14 @@
     "@unanima/eslint-config": "workspace:*",
     "@unanima/tsconfig": "workspace:*",
     "eslint": "^8.57.0",
+    "next": "^15.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript": "^5.7.3",
     "vitest": "^1.6.1"
   },
   "peerDependencies": {
+    "next": "^14.0.0 || ^15.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }
