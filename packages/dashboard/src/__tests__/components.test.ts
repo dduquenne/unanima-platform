@@ -3,11 +3,11 @@ import {
   KPICard, type KPICardProps,
   StatusBadge, type StatusBadgeProps, type StatusConfig,
   ProgressBar, type ProgressBarProps,
-  DataTable, type DataTableProps,
-  AlertPanel, type AlertPanelProps,
-  SearchBar, type SearchBarProps,
-  Layout, type LayoutProps,
-  ChartWrapper, type ChartWrapperProps,
+  DataTable,
+  AlertPanel,
+  SearchBar,
+  Layout,
+  ChartWrapper,
 } from '../index'
 
 describe('Dashboard component exports', () => {
