@@ -4,3 +4,4 @@
   "buildCommand": "cd ../.. && pnpm turbo run build --filter=@unanima/links",
   "ignoreCommand": "bash ../../scripts/vercel-ignore.sh links"
 }
+ 
