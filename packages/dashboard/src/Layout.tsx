@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, type ReactNode } from 'react'
+import Link from 'next/link'
 import { cn } from '@unanima/core'
 
 export interface NavItem {
@@ -86,9 +87,10 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
           <ul className="flex flex-col gap-0.5">
             {sidebar.map((item) => (
               <li key={item.href}>
-                <a
+                <Link
                   href={item.href}
                   aria-current={item.active ? 'page' : undefined}
+                  onClick={() => setSidebarOpen(false)}
                   className={cn(
                     'flex items-center gap-3',
                     'rounded-[var(--radius-md,0.5rem)] px-3 py-2.5',
@@ -108,7 +110,7 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
                 >
                   {item.icon && <span className="h-5 w-5 shrink-0" aria-hidden="true">{item.icon}</span>}
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

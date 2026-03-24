@@ -1,6 +1,7 @@
 'use client'
 
 import { useContext, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { AuthContext, AuthConfigContext } from './provider'
 import { hasPermission } from './rbac'
 import type { AuthContextValue } from './types'
@@ -24,14 +25,15 @@ export function useAuthConfig() {
 export function useRequireRole(role: string | string[]) {
   const { user, isLoading } = useAuth()
   const config = useAuthConfig()
+  const router = useRouter()
   const roles = Array.isArray(role) ? role : [role]
 
   useEffect(() => {
     if (isLoading) return
     if (!user || !roles.includes(user.role)) {
-      window.location.href = config.redirects.unauthorized
+      router.replace(config.redirects.unauthorized)
     }
-  }, [user, isLoading, roles, config.redirects.unauthorized])
+  }, [user, isLoading, roles, config.redirects.unauthorized, router])
 
   return { isAuthorized: user ? roles.includes(user.role) : false, isLoading }
 }
