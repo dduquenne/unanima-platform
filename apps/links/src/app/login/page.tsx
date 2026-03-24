@@ -1,13 +1,25 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useMemo } from 'react'
 import { LoginForm, useAuth } from '@unanima/auth'
 import { Card } from '@unanima/core'
+
+const ERROR_MESSAGES: Record<string, string> = {
+  compte_desactive: 'Votre compte a été désactivé. Contactez votre administrateur.',
+  auth: 'Erreur d\u2019authentification. Veuillez réessayer.',
+  config: 'Erreur de configuration du serveur.',
+}
 
 export default function LoginPage() {
   const { user, isLoading } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const urlError = useMemo(() => {
+    const errorCode = searchParams.get('error')
+    return errorCode ? ERROR_MESSAGES[errorCode] ?? null : null
+  }, [searchParams])
 
   useEffect(() => {
     if (!isLoading && user) {
@@ -38,6 +50,14 @@ export default function LoginPage() {
             Plateforme de suivi des bilans de comp&eacute;tences
           </p>
         </div>
+        {urlError && (
+          <div
+            className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+            role="alert"
+          >
+            {urlError}
+          </div>
+        )}
         <Card padding="lg">
           <LoginForm
             onResetPassword={() => router.push('/reset-password')}

@@ -46,7 +46,7 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
           .from('profiles')
           .select('*')
           .eq('id', authSession.user.id)
-          .single()
+          .maybeSingle()
 
         if (profile) {
           setUser({
@@ -56,6 +56,27 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
             role: profile.role,
             isActive: profile.is_active,
             metadata: profile.metadata ?? {},
+          })
+        } else {
+          // Profil absent en BDD — fallback sur les métadonnées auth
+          // pour éviter que user reste null (boucle de redirection).
+          // Le profil sera créé automatiquement via /api/auth/ensure-profile.
+          const authUser = authSession.user
+          setUser({
+            id: authUser.id,
+            email: authUser.email ?? '',
+            fullName:
+              (authUser.user_metadata?.full_name as string) ??
+              authUser.email?.split('@')[0] ??
+              '',
+            role: (authUser.user_metadata?.role as string) ?? 'beneficiaire',
+            isActive: true,
+            metadata: {},
+          })
+
+          // Tenter la création automatique du profil en arrière-plan
+          fetch('/api/auth/ensure-profile', { method: 'POST' }).catch(() => {
+            // Silencieux — le profil sera recréé à la prochaine connexion
           })
         }
       } else {
