@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "installCommand": "pnpm install",
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "buildCommand": "cd ../.. && pnpm turbo run build --filter=@unanima/omega",
-  "ignoreCommand": "bash ../../scripts/vercel-ignore.sh omega"
+  "ignoreCommand": "cd ../.. && npx turbo-ignore @unanima/omega"
 }

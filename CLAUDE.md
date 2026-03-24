@@ -410,7 +410,7 @@ Chaque application est déployée **indépendamment** sur Vercel. Un échec de b
 
 ### Mécanismes en place
 
-1. **Vercel `ignoreCommand`** — Chaque `vercel.json` contient un `ignoreCommand` qui appelle `scripts/vercel-ignore.sh <app>`. Ce script vérifie si les fichiers pertinents à l'app ont changé ; sinon, le déploiement est ignoré.
+1. **Vercel `ignoreCommand`** — Chaque `vercel.json` utilise `npx turbo-ignore @unanima/<app>` qui exploite le graphe de dépendances Turborepo pour déterminer si un rebuild est nécessaire. Cette commande est nativement compatible avec les shallow clones de Vercel.
 
 2. **Turborepo `--filter`** — Chaque commande de build utilise `--filter=@unanima/<app>` pour ne construire que l'app ciblée et ses dépendances.
 

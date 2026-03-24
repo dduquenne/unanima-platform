@@ -225,7 +225,7 @@ Quand le socle change, le workflow `ci-packages.yml` teste les 3 apps en parall�
 ### 5.2 Impact sur les déploiements Vercel
 
 Une modification du socle déclenche potentiellement le redéploiement des 3 apps
-(via `scripts/vercel-ignore.sh` qui détecte les changements dans `packages/`).
+(via `npx turbo-ignore` qui utilise le graphe de dépendances Turborepo).
 
 Vérifier après merge :
 - Les 3 builds Vercel se lancent

@@ -54,13 +54,15 @@ ne doit **jamais** impacter les autres.
 // apps/<app>/vercel.json
 {
   "buildCommand": "cd ../.. && pnpm turbo run build --filter=@unanima/<app>",
-  "ignoreCommand": "bash ../../scripts/vercel-ignore.sh <app>",
+  "ignoreCommand": "cd ../.. && npx turbo-ignore @unanima/<app>",
   "framework": "nextjs",
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile"
 }
 ```
 
 **Ne jamais supprimer l'`ignoreCommand`** — il garantit l'isolation des déploiements.
+L'utilisation de `turbo-ignore` (au lieu d'un script bash custom) est essentielle :
+il exploite le graphe de dépendances Turborepo et fonctionne nativement avec les shallow clones de Vercel.
 
 ---
 
