@@ -1,61 +1,126 @@
-// Types métier Links — générés manuellement en attendant supabase gen types
-// Ces types seront remplacés par les types auto-générés une fois Supabase connecté
+// Types métier Links — Schéma 6 phases (bilans de compétences)
+// Issue: #106 — Sprint 8 Fondations
+// Généré depuis le schéma Supabase — apps/links/supabase/migrations/001_links_schema.sql
 
-export interface Beneficiaire {
+// ============================================================
+// Extension de profiles (socle @unanima/db)
+// ============================================================
+
+export interface Profile {
   id: string
-  profile_id: string
-  consultant_id: string
-  statut: 'actif' | 'en_pause' | 'termine' | 'abandonne'
+  email: string
+  full_name: string
+  role: 'beneficiaire' | 'consultant' | 'super_admin'
+  is_active: boolean
+  /** FK → profiles.id : consultant assigné à ce bénéficiaire */
+  consultant_id: string | null
+  date_debut_bilan: string | null
+  date_fin_bilan: string | null
   metadata: Record<string, unknown>
   created_at: string
   updated_at: string
 }
 
-export interface Bilan {
-  id: string
-  beneficiaire_id: string
-  type: 'initial' | 'intermediaire' | 'final'
-  statut: 'brouillon' | 'en_cours' | 'termine' | 'valide'
-  date_debut: string | null
-  date_fin: string | null
-  created_at: string
-  updated_at: string
-}
+// ============================================================
+// Questionnaires et questions
+// ============================================================
 
 export interface Questionnaire {
   id: string
-  titre: string
+  /** Phase concernée : 1 à 6 */
+  phase_number: number
+  title: string
   description: string | null
-  version: number
-  is_active: boolean
+  sort_order: number
   created_at: string
 }
 
 export interface Question {
   id: string
   questionnaire_id: string
-  ordre: number
-  texte: string
-  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'radio' | 'checkbox' | 'scale'
-  options: unknown[]
-  required: boolean
+  text: string
+  sort_order: number
+  created_at: string
 }
 
-export interface Response {
+// ============================================================
+// Réponses et validation des phases
+// ============================================================
+
+export type PhaseStatus = 'libre' | 'en_cours' | 'validee'
+
+export interface PhaseResponse {
   id: string
-  bilan_id: string
+  beneficiary_id: string
   question_id: string
-  valeur: unknown
+  response_text: string | null
+  /** Phase concernée : 1 à 6 */
+  phase_number: number
+  phase_status: PhaseStatus
+  last_saved_at: string
   created_at: string
+  updated_at: string
 }
 
-export interface Document {
+export interface PhaseValidation {
   id: string
-  beneficiaire_id: string
-  bilan_id: string | null
-  nom: string
-  type: 'cv' | 'lettre_motivation' | 'synthese' | 'attestation' | 'autre'
-  storage_path: string
-  uploaded_by: string
+  beneficiary_id: string
+  /** Phase concernée : 1 à 6 */
+  phase_number: number
+  status: PhaseStatus
+  validated_at: string | null
   created_at: string
+  updated_at: string
+}
+
+// ============================================================
+// Séances de suivi
+// ============================================================
+
+export interface Session {
+  id: string
+  beneficiary_id: string
+  /** Numéro de séance : 1 à 6 */
+  session_number: number
+  scheduled_at: string | null
+  visio_url: string | null
+  created_at: string
+  updated_at: string
+}
+
+// ============================================================
+// Comptes-rendus de séances (confidentiels — consultant only)
+// ============================================================
+
+export interface SessionNote {
+  id: string
+  beneficiary_id: string
+  /** Consultant auteur de la note */
+  consultant_id: string
+  /** Numéro de séance : 1 à 6 */
+  session_number: number
+  content: string | null
+  max_length: number
+  created_at: string
+  updated_at: string
+}
+
+// ============================================================
+// Documents de phase (super_admin only)
+// ============================================================
+
+export type PhaseDocumentFileType = 'pdf' | 'docx'
+
+export interface PhaseDocument {
+  id: string
+  /** Phase concernée : 1 à 6 */
+  phase_number: number
+  filename: string
+  storage_path: string
+  display_name: string
+  file_type: PhaseDocumentFileType
+  sort_order: number
+  uploaded_by: string | null
+  created_at: string
+  updated_at: string
 }

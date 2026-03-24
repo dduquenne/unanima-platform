@@ -1,271 +1,267 @@
--- Migration 002: RLS policies for Links business tables
--- Roles: beneficiaire, consultant, super_admin
+-- Migration 002: RLS policies — Links (nouveau schéma 6 phases)
+-- Issue: #105 — Sprint 8 Fondations
+-- Rôles: beneficiaire | consultant | super_admin
+-- Règles métier: RG-CON-01, RG-CON-03, RG-ADM-01
 
 -- ============================================================
--- beneficiaires
+-- Extension profiles : accès selon le rôle
 -- ============================================================
 
--- Bénéficiaire voit son propre enregistrement
-CREATE POLICY "beneficiaires_select_own" ON public.beneficiaires
-  FOR SELECT USING (profile_id = auth.uid());
+-- Bénéficiaire voit son propre profil
+CREATE POLICY "profiles_select_own"
+  ON public.profiles FOR SELECT
+  USING (id = auth.uid());
 
--- Consultant voit ses bénéficiaires assignés
-CREATE POLICY "beneficiaires_select_consultant" ON public.beneficiaires
-  FOR SELECT USING (consultant_id = auth.uid());
+-- Consultant voit les profils de ses bénéficiaires assignés
+-- (profiles.consultant_id = auth.uid() identifie les bénéficiaires d'un consultant)
+CREATE POLICY "profiles_select_as_consultant"
+  ON public.profiles FOR SELECT
+  USING (consultant_id = auth.uid());
 
--- Super admin voit tout
-CREATE POLICY "beneficiaires_select_admin" ON public.beneficiaires
-  FOR SELECT USING (
+-- Super admin voit tous les profils
+CREATE POLICY "profiles_select_admin"
+  ON public.profiles FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles p
+      WHERE p.id = auth.uid() AND p.role = 'super_admin'
+    )
+  );
+
+-- Super admin peut modifier tous les profils (gestion des comptes)
+CREATE POLICY "profiles_update_admin"
+  ON public.profiles FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles p
+      WHERE p.id = auth.uid() AND p.role = 'super_admin'
+    )
+  );
+
+-- ============================================================
+-- questionnaires — templates de phase (lecture publique, écriture admin)
+-- ============================================================
+
+-- Lecture : tout utilisateur authentifié
+CREATE POLICY "questionnaires_select_authenticated"
+  ON public.questionnaires FOR SELECT
+  USING (auth.uid() IS NOT NULL);
+
+-- Écriture (INSERT/UPDATE/DELETE) : super_admin uniquement
+CREATE POLICY "questionnaires_all_admin"
+  ON public.questionnaires FOR ALL
+  USING (
     EXISTS (
       SELECT 1 FROM public.profiles
       WHERE id = auth.uid() AND role = 'super_admin'
     )
   );
 
--- Consultant peut créer des bénéficiaires
-CREATE POLICY "beneficiaires_insert_consultant" ON public.beneficiaires
-  FOR INSERT WITH CHECK (
-    EXISTS (
-      SELECT 1 FROM public.profiles
-      WHERE id = auth.uid() AND role IN ('consultant', 'super_admin')
-    )
-  );
+-- ============================================================
+-- questions — lecture publique, écriture admin
+-- ============================================================
 
--- Consultant peut modifier ses bénéficiaires
-CREATE POLICY "beneficiaires_update_consultant" ON public.beneficiaires
-  FOR UPDATE USING (
-    consultant_id = auth.uid()
-    OR EXISTS (
+-- Lecture : tout utilisateur authentifié
+CREATE POLICY "questions_select_authenticated"
+  ON public.questions FOR SELECT
+  USING (auth.uid() IS NOT NULL);
+
+-- Écriture : super_admin uniquement
+CREATE POLICY "questions_all_admin"
+  ON public.questions FOR ALL
+  USING (
+    EXISTS (
       SELECT 1 FROM public.profiles
       WHERE id = auth.uid() AND role = 'super_admin'
     )
   );
 
 -- ============================================================
--- bilans
+-- phase_responses — réponses bénéficiaire aux phases
+-- RG-CON-01 : isolation par beneficiary_id
 -- ============================================================
 
--- Bénéficiaire voit ses propres bilans
-CREATE POLICY "bilans_select_own" ON public.bilans
-  FOR SELECT USING (
+-- Bénéficiaire : lecture + écriture de ses propres réponses
+CREATE POLICY "phase_responses_select_own"
+  ON public.phase_responses FOR SELECT
+  USING (beneficiary_id = auth.uid());
+
+CREATE POLICY "phase_responses_insert_own"
+  ON public.phase_responses FOR INSERT
+  WITH CHECK (beneficiary_id = auth.uid());
+
+CREATE POLICY "phase_responses_update_own"
+  ON public.phase_responses FOR UPDATE
+  USING (beneficiary_id = auth.uid());
+
+-- Consultant : lecture seule des réponses de ses bénéficiaires assignés
+CREATE POLICY "phase_responses_select_consultant"
+  ON public.phase_responses FOR SELECT
+  USING (
     EXISTS (
-      SELECT 1 FROM public.beneficiaires
-      WHERE id = bilans.beneficiaire_id AND profile_id = auth.uid()
+      SELECT 1 FROM public.profiles
+      WHERE id = phase_responses.beneficiary_id
+        AND consultant_id = auth.uid()
     )
   );
 
--- Consultant voit les bilans de ses bénéficiaires
-CREATE POLICY "bilans_select_consultant" ON public.bilans
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM public.beneficiaires
-      WHERE id = bilans.beneficiaire_id AND consultant_id = auth.uid()
-    )
-  );
-
--- Super admin voit tout
-CREATE POLICY "bilans_select_admin" ON public.bilans
-  FOR SELECT USING (
+-- Super admin : accès complet
+CREATE POLICY "phase_responses_all_admin"
+  ON public.phase_responses FOR ALL
+  USING (
     EXISTS (
       SELECT 1 FROM public.profiles
       WHERE id = auth.uid() AND role = 'super_admin'
     )
   );
 
--- Consultant peut créer des bilans pour ses bénéficiaires
-CREATE POLICY "bilans_insert_consultant" ON public.bilans
-  FOR INSERT WITH CHECK (
-    EXISTS (
-      SELECT 1 FROM public.beneficiaires
-      WHERE id = bilans.beneficiaire_id AND consultant_id = auth.uid()
-    )
-    OR EXISTS (
-      SELECT 1 FROM public.profiles
-      WHERE id = auth.uid() AND role = 'super_admin'
-    )
-  );
-
--- Consultant peut modifier les bilans de ses bénéficiaires
-CREATE POLICY "bilans_update_consultant" ON public.bilans
-  FOR UPDATE USING (
-    EXISTS (
-      SELECT 1 FROM public.beneficiaires
-      WHERE id = bilans.beneficiaire_id AND consultant_id = auth.uid()
-    )
-    OR EXISTS (
-      SELECT 1 FROM public.profiles
-      WHERE id = auth.uid() AND role = 'super_admin'
-    )
-  );
-
 -- ============================================================
--- questionnaires
+-- phase_validations — validation des phases par bénéficiaire
 -- ============================================================
 
--- Tout utilisateur authentifié peut lire les questionnaires actifs
-CREATE POLICY "questionnaires_select_authenticated" ON public.questionnaires
-  FOR SELECT USING (auth.uid() IS NOT NULL);
+-- Bénéficiaire : lecture + gestion de ses propres validations
+CREATE POLICY "phase_validations_select_own"
+  ON public.phase_validations FOR SELECT
+  USING (beneficiary_id = auth.uid());
 
--- Consultant et admin peuvent créer/modifier des questionnaires
-CREATE POLICY "questionnaires_insert_consultant" ON public.questionnaires
-  FOR INSERT WITH CHECK (
+CREATE POLICY "phase_validations_insert_own"
+  ON public.phase_validations FOR INSERT
+  WITH CHECK (beneficiary_id = auth.uid());
+
+CREATE POLICY "phase_validations_update_own"
+  ON public.phase_validations FOR UPDATE
+  USING (beneficiary_id = auth.uid());
+
+-- Consultant : lecture des validations de ses bénéficiaires
+CREATE POLICY "phase_validations_select_consultant"
+  ON public.phase_validations FOR SELECT
+  USING (
     EXISTS (
       SELECT 1 FROM public.profiles
-      WHERE id = auth.uid() AND role IN ('consultant', 'super_admin')
+      WHERE id = phase_validations.beneficiary_id
+        AND consultant_id = auth.uid()
     )
   );
 
-CREATE POLICY "questionnaires_update_consultant" ON public.questionnaires
-  FOR UPDATE USING (
-    EXISTS (
-      SELECT 1 FROM public.profiles
-      WHERE id = auth.uid() AND role IN ('consultant', 'super_admin')
-    )
-  );
-
--- ============================================================
--- questions
--- ============================================================
-
--- Tout utilisateur authentifié peut lire les questions
-CREATE POLICY "questions_select_authenticated" ON public.questions
-  FOR SELECT USING (auth.uid() IS NOT NULL);
-
--- Consultant et admin peuvent gérer les questions
-CREATE POLICY "questions_insert_consultant" ON public.questions
-  FOR INSERT WITH CHECK (
-    EXISTS (
-      SELECT 1 FROM public.profiles
-      WHERE id = auth.uid() AND role IN ('consultant', 'super_admin')
-    )
-  );
-
-CREATE POLICY "questions_update_consultant" ON public.questions
-  FOR UPDATE USING (
-    EXISTS (
-      SELECT 1 FROM public.profiles
-      WHERE id = auth.uid() AND role IN ('consultant', 'super_admin')
-    )
-  );
-
-CREATE POLICY "questions_delete_consultant" ON public.questions
-  FOR DELETE USING (
-    EXISTS (
-      SELECT 1 FROM public.profiles
-      WHERE id = auth.uid() AND role IN ('consultant', 'super_admin')
-    )
-  );
-
--- ============================================================
--- responses
--- ============================================================
-
--- Bénéficiaire voit ses propres réponses
-CREATE POLICY "responses_select_own" ON public.responses
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM public.bilans b
-      JOIN public.beneficiaires ben ON b.beneficiaire_id = ben.id
-      WHERE b.id = responses.bilan_id AND ben.profile_id = auth.uid()
-    )
-  );
-
--- Consultant voit les réponses de ses bénéficiaires
-CREATE POLICY "responses_select_consultant" ON public.responses
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM public.bilans b
-      JOIN public.beneficiaires ben ON b.beneficiaire_id = ben.id
-      WHERE b.id = responses.bilan_id AND ben.consultant_id = auth.uid()
-    )
-  );
-
--- Super admin voit tout
-CREATE POLICY "responses_select_admin" ON public.responses
-  FOR SELECT USING (
+-- Super admin : accès complet (peut forcer la validation/dé-validation)
+CREATE POLICY "phase_validations_all_admin"
+  ON public.phase_validations FOR ALL
+  USING (
     EXISTS (
       SELECT 1 FROM public.profiles
       WHERE id = auth.uid() AND role = 'super_admin'
     )
   );
 
--- Bénéficiaire peut répondre aux questions de ses bilans
-CREATE POLICY "responses_insert_own" ON public.responses
-  FOR INSERT WITH CHECK (
-    EXISTS (
-      SELECT 1 FROM public.bilans b
-      JOIN public.beneficiaires ben ON b.beneficiaire_id = ben.id
-      WHERE b.id = responses.bilan_id AND ben.profile_id = auth.uid()
-    )
-  );
-
--- Bénéficiaire peut modifier ses propres réponses
-CREATE POLICY "responses_update_own" ON public.responses
-  FOR UPDATE USING (
-    EXISTS (
-      SELECT 1 FROM public.bilans b
-      JOIN public.beneficiaires ben ON b.beneficiaire_id = ben.id
-      WHERE b.id = responses.bilan_id AND ben.profile_id = auth.uid()
-    )
-  );
-
 -- ============================================================
--- documents
+-- sessions — planification des 6 séances
 -- ============================================================
 
--- Bénéficiaire voit ses propres documents
-CREATE POLICY "documents_select_own" ON public.documents
-  FOR SELECT USING (
+-- Bénéficiaire : lecture de ses propres séances
+CREATE POLICY "sessions_select_own"
+  ON public.sessions FOR SELECT
+  USING (beneficiary_id = auth.uid());
+
+-- Consultant : lecture des séances de ses bénéficiaires
+CREATE POLICY "sessions_select_consultant"
+  ON public.sessions FOR SELECT
+  USING (
     EXISTS (
-      SELECT 1 FROM public.beneficiaires
-      WHERE id = documents.beneficiaire_id AND profile_id = auth.uid()
+      SELECT 1 FROM public.profiles
+      WHERE id = sessions.beneficiary_id
+        AND consultant_id = auth.uid()
     )
   );
 
--- Consultant voit les documents de ses bénéficiaires
-CREATE POLICY "documents_select_consultant" ON public.documents
-  FOR SELECT USING (
+-- Consultant : création et modification des séances de ses bénéficiaires
+CREATE POLICY "sessions_insert_consultant"
+  ON public.sessions FOR INSERT
+  WITH CHECK (
     EXISTS (
-      SELECT 1 FROM public.beneficiaires
-      WHERE id = documents.beneficiaire_id AND consultant_id = auth.uid()
+      SELECT 1 FROM public.profiles
+      WHERE id = sessions.beneficiary_id
+        AND consultant_id = auth.uid()
     )
   );
 
--- Super admin voit tout
-CREATE POLICY "documents_select_admin" ON public.documents
-  FOR SELECT USING (
+CREATE POLICY "sessions_update_consultant"
+  ON public.sessions FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = sessions.beneficiary_id
+        AND consultant_id = auth.uid()
+    )
+  );
+
+-- Super admin : accès complet
+CREATE POLICY "sessions_all_admin"
+  ON public.sessions FOR ALL
+  USING (
     EXISTS (
       SELECT 1 FROM public.profiles
       WHERE id = auth.uid() AND role = 'super_admin'
     )
   );
 
--- Consultant et bénéficiaire peuvent uploader des documents
-CREATE POLICY "documents_insert_authenticated" ON public.documents
-  FOR INSERT WITH CHECK (
-    uploaded_by = auth.uid()
-    AND (
-      EXISTS (
-        SELECT 1 FROM public.beneficiaires
-        WHERE id = documents.beneficiaire_id
-        AND (profile_id = auth.uid() OR consultant_id = auth.uid())
-      )
-      OR EXISTS (
-        SELECT 1 FROM public.profiles
-        WHERE id = auth.uid() AND role = 'super_admin'
-      )
-    )
-  );
+-- ============================================================
+-- session_notes — comptes-rendus de séances (CONFIDENTIELS)
+-- RG-CON-03 : consultant voit uniquement ses propres notes
+-- Bénéficiaire : AUCUN accès (pas de policy → deny par défaut)
+-- ============================================================
 
--- Consultant peut supprimer les documents de ses bénéficiaires
-CREATE POLICY "documents_delete_consultant" ON public.documents
-  FOR DELETE USING (
+-- Consultant : accès exclusif à ses propres notes
+CREATE POLICY "session_notes_select_consultant"
+  ON public.session_notes FOR SELECT
+  USING (consultant_id = auth.uid());
+
+CREATE POLICY "session_notes_insert_consultant"
+  ON public.session_notes FOR INSERT
+  WITH CHECK (consultant_id = auth.uid());
+
+CREATE POLICY "session_notes_update_consultant"
+  ON public.session_notes FOR UPDATE
+  USING (consultant_id = auth.uid());
+
+CREATE POLICY "session_notes_delete_consultant"
+  ON public.session_notes FOR DELETE
+  USING (consultant_id = auth.uid());
+
+-- Super admin : lecture de toutes les notes (supervision)
+CREATE POLICY "session_notes_select_admin"
+  ON public.session_notes FOR SELECT
+  USING (
     EXISTS (
-      SELECT 1 FROM public.beneficiaires
-      WHERE id = documents.beneficiaire_id AND consultant_id = auth.uid()
-    )
-    OR EXISTS (
       SELECT 1 FROM public.profiles
       WHERE id = auth.uid() AND role = 'super_admin'
     )
   );
+
+-- ============================================================
+-- phase_documents — documents par phase (PDF/DOCX)
+-- Lecture publique authentifiée, écriture super_admin uniquement
+-- ============================================================
+
+-- Lecture : tout utilisateur authentifié
+CREATE POLICY "phase_documents_select_authenticated"
+  ON public.phase_documents FOR SELECT
+  USING (auth.uid() IS NOT NULL);
+
+-- Écriture : super_admin uniquement
+CREATE POLICY "phase_documents_all_admin"
+  ON public.phase_documents FOR ALL
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid() AND role = 'super_admin'
+    )
+  );
+
+-- ============================================================
+-- Storage bucket "phase-documents"
+-- À configurer dans Supabase Dashboard ou via CLI :
+--   supabase storage create-bucket phase-documents --public false
+-- Policies Storage :
+--   SELECT : tout utilisateur authentifié
+--   INSERT : super_admin uniquement
+-- ============================================================

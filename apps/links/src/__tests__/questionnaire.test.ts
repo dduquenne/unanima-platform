@@ -1,205 +1,159 @@
+// Tests — Schémas questionnaires et questions (nouveau schéma Sprint 8)
+// Issue: #106 — Sprint 8 Fondations
+
 import { describe, it, expect } from 'vitest'
 import {
-  createQuestionnaireSchema,
-  updateQuestionnaireSchema,
-  createQuestionSchema,
-  updateQuestionSchema,
-  createResponseSchema,
-  updateResponseSchema,
-  createDocumentSchema,
-} from '../lib/types'
+  phaseResponseSchema,
+  updatePhaseResponseSchema,
+  autosaveSchema,
+  phaseValidationSchema,
+  phaseStatusEnum,
+} from '@/lib/types/schemas'
 
-const UUID = '550e8400-e29b-41d4-a716-446655440000'
+// ============================================================
+// phaseResponseSchema — tests avancés
+// ============================================================
 
-describe('Questionnaire schemas', () => {
-  describe('createQuestionnaireSchema', () => {
-    it('accepts valid questionnaire', () => {
-      const result = createQuestionnaireSchema.safeParse({
-        titre: 'Questionnaire initial',
-        description: 'Description du questionnaire',
-      })
-      expect(result.success).toBe(true)
-      if (result.success) {
-        expect(result.data.version).toBe(1)
-        expect(result.data.is_active).toBe(true)
-      }
-    })
+describe('phaseResponseSchema — saisie de réponses', () => {
+  const baseValid = {
+    beneficiary_id: '550e8400-e29b-41d4-a716-446655440000',
+    question_id: '550e8400-e29b-41d4-a716-446655440001',
+    phase_number: 1,
+  }
 
-    it('rejects empty title', () => {
-      const result = createQuestionnaireSchema.safeParse({ titre: '' })
-      expect(result.success).toBe(false)
-    })
-
-    it('rejects title exceeding max length', () => {
-      const result = createQuestionnaireSchema.safeParse({ titre: 'a'.repeat(256) })
-      expect(result.success).toBe(false)
-    })
+  it('accepte toutes les phases de 1 à 6', () => {
+    for (let i = 1; i <= 6; i++) {
+      expect(phaseResponseSchema.safeParse({ ...baseValid, phase_number: i }).success).toBe(true)
+    }
   })
 
-  describe('updateQuestionnaireSchema', () => {
-    it('accepts partial update', () => {
-      const result = updateQuestionnaireSchema.safeParse({ is_active: false })
-      expect(result.success).toBe(true)
-    })
-
-    it('accepts empty object', () => {
-      const result = updateQuestionnaireSchema.safeParse({})
-      expect(result.success).toBe(true)
-    })
-  })
-})
-
-describe('Question schemas', () => {
-  describe('createQuestionSchema', () => {
-    it('accepts valid text question', () => {
-      const result = createQuestionSchema.safeParse({
-        questionnaire_id: UUID,
-        ordre: 0,
-        texte: 'Quel est votre parcours ?',
-        type: 'text',
-      })
-      expect(result.success).toBe(true)
-      if (result.success) {
-        expect(result.data.required).toBe(false)
-        expect(result.data.options).toEqual([])
-      }
-    })
-
-    it('accepts valid scale question', () => {
-      const result = createQuestionSchema.safeParse({
-        questionnaire_id: UUID,
-        ordre: 1,
-        texte: 'Sur une échelle de 1 à 10',
-        type: 'scale',
-        options: [1, 10],
-        required: true,
-      })
-      expect(result.success).toBe(true)
-    })
-
-    it('accepts all question types', () => {
-      const types = ['text', 'textarea', 'select', 'multiselect', 'radio', 'checkbox', 'scale']
-      for (const type of types) {
-        const result = createQuestionSchema.safeParse({
-          questionnaire_id: UUID,
-          ordre: 0,
-          texte: 'Test',
-          type,
-        })
-        expect(result.success).toBe(true)
-      }
-    })
-
-    it('rejects invalid question type', () => {
-      const result = createQuestionSchema.safeParse({
-        questionnaire_id: UUID,
-        ordre: 0,
-        texte: 'Test',
-        type: 'invalid',
-      })
-      expect(result.success).toBe(false)
-    })
-
-    it('rejects missing texte', () => {
-      const result = createQuestionSchema.safeParse({
-        questionnaire_id: UUID,
-        ordre: 0,
-        type: 'text',
-      })
-      expect(result.success).toBe(false)
-    })
+  it('rejette la phase 0 et la phase 7', () => {
+    expect(phaseResponseSchema.safeParse({ ...baseValid, phase_number: 0 }).success).toBe(false)
+    expect(phaseResponseSchema.safeParse({ ...baseValid, phase_number: 7 }).success).toBe(false)
   })
 
-  describe('updateQuestionSchema', () => {
-    it('accepts partial update', () => {
-      const result = updateQuestionSchema.safeParse({ required: true })
-      expect(result.success).toBe(true)
-    })
+  it('accepte tous les statuts valides', () => {
+    for (const status of ['libre', 'en_cours', 'validee'] as const) {
+      expect(phaseResponseSchema.safeParse({ ...baseValid, phase_status: status }).success).toBe(true)
+    }
+  })
+
+  it('applique le statut par défaut "en_cours" si absent', () => {
+    const result = phaseResponseSchema.safeParse(baseValid)
+    expect(result.success && result.data.phase_status).toBe('en_cours')
+  })
+
+  it('accepte response_text vide (brouillon)', () => {
+    expect(phaseResponseSchema.safeParse({ ...baseValid, response_text: '' }).success).toBe(true)
+  })
+
+  it('accepte response_text avec contenu long', () => {
+    expect(phaseResponseSchema.safeParse({
+      ...baseValid,
+      response_text: 'a'.repeat(5000),
+    }).success).toBe(true)
   })
 })
 
-describe('Response schemas', () => {
-  describe('createResponseSchema', () => {
-    it('accepts valid response with string value', () => {
-      const result = createResponseSchema.safeParse({
-        bilan_id: UUID,
-        question_id: UUID,
-        valeur: 'Ma réponse',
-      })
-      expect(result.success).toBe(true)
-    })
-
-    it('accepts valid response with number value', () => {
-      const result = createResponseSchema.safeParse({
-        bilan_id: UUID,
-        question_id: UUID,
-        valeur: 7,
-      })
-      expect(result.success).toBe(true)
-    })
-
-    it('accepts valid response with array value', () => {
-      const result = createResponseSchema.safeParse({
-        bilan_id: UUID,
-        question_id: UUID,
-        valeur: ['option1', 'option2'],
-      })
-      expect(result.success).toBe(true)
-    })
-
-    it('rejects missing bilan_id', () => {
-      const result = createResponseSchema.safeParse({
-        question_id: UUID,
-        valeur: 'test',
-      })
-      expect(result.success).toBe(false)
-    })
+describe('updatePhaseResponseSchema — mise à jour partielle', () => {
+  it('valide une mise à jour du texte uniquement', () => {
+    expect(updatePhaseResponseSchema.safeParse({ response_text: 'Nouveau texte' }).success).toBe(true)
   })
 
-  describe('updateResponseSchema', () => {
-    it('accepts value update', () => {
-      const result = updateResponseSchema.safeParse({ valeur: 'updated' })
-      expect(result.success).toBe(true)
-    })
+  it('valide une mise à jour du statut uniquement', () => {
+    expect(updatePhaseResponseSchema.safeParse({ phase_status: 'validee' }).success).toBe(true)
+  })
+
+  it('valide une mise à jour vide (aucun champ requis)', () => {
+    expect(updatePhaseResponseSchema.safeParse({}).success).toBe(true)
   })
 })
 
-describe('Document schemas', () => {
-  describe('createDocumentSchema', () => {
-    it('accepts valid document', () => {
-      const result = createDocumentSchema.safeParse({
-        beneficiaire_id: UUID,
-        nom: 'cv.pdf',
-        type: 'cv',
-        storage_path: 'beneficiaire-123/cv.pdf',
-        uploaded_by: UUID,
-      })
-      expect(result.success).toBe(true)
-    })
+// ============================================================
+// autosaveSchema — payload minimal pour l'autosave
+// ============================================================
 
-    it('accepts all document types', () => {
-      const types = ['cv', 'lettre_motivation', 'synthese', 'attestation', 'autre']
-      for (const type of types) {
-        const result = createDocumentSchema.safeParse({
-          beneficiaire_id: UUID,
-          nom: 'file.pdf',
-          type,
-          storage_path: 'path/file.pdf',
-          uploaded_by: UUID,
-        })
-        expect(result.success).toBe(true)
-      }
+describe('autosaveSchema — autosave (blur + 30s)', () => {
+  it('valide le payload minimal attendu', () => {
+    const result = autosaveSchema.safeParse({
+      question_id: '550e8400-e29b-41d4-a716-446655440001',
+      response_text: 'Réponse en cours de saisie...',
+      phase_number: 2,
     })
+    expect(result.success).toBe(true)
+  })
 
-    it('rejects invalid document type', () => {
-      const result = createDocumentSchema.safeParse({
-        beneficiaire_id: UUID,
-        nom: 'file.pdf',
-        type: 'invalid',
-        storage_path: 'path/file.pdf',
-        uploaded_by: UUID,
-      })
-      expect(result.success).toBe(false)
-    })
+  it('accepte response_text null (champ vidé)', () => {
+    expect(autosaveSchema.safeParse({
+      question_id: '550e8400-e29b-41d4-a716-446655440001',
+      response_text: null,
+      phase_number: 1,
+    }).success).toBe(true)
+  })
+
+  it('rejette sans question_id', () => {
+    expect(autosaveSchema.safeParse({
+      response_text: 'test',
+      phase_number: 1,
+    }).success).toBe(false)
+  })
+
+  it('rejette un question_id non-UUID', () => {
+    expect(autosaveSchema.safeParse({
+      question_id: 'not-a-uuid',
+      response_text: 'test',
+      phase_number: 1,
+    }).success).toBe(false)
+  })
+})
+
+// ============================================================
+// phaseValidationSchema — validation / dé-validation de phase
+// ============================================================
+
+describe('phaseValidationSchema — validation de phase', () => {
+  const baseValid = {
+    beneficiary_id: '550e8400-e29b-41d4-a716-446655440000',
+    phase_number: 1,
+  }
+
+  it('valide la validation d\'une phase (statut par défaut : validee)', () => {
+    const result = phaseValidationSchema.safeParse(baseValid)
+    expect(result.success).toBe(true)
+    expect(result.success && result.data.status).toBe('validee')
+  })
+
+  it('valide la dé-validation d\'une phase (statut libre)', () => {
+    const result = phaseValidationSchema.safeParse({ ...baseValid, status: 'libre' })
+    expect(result.success).toBe(true)
+  })
+
+  it('valide le statut "en_cours"', () => {
+    expect(phaseValidationSchema.safeParse({ ...baseValid, status: 'en_cours' }).success).toBe(true)
+  })
+
+  it('accepte toutes les phases de 1 à 6', () => {
+    for (let i = 1; i <= 6; i++) {
+      expect(phaseValidationSchema.safeParse({ ...baseValid, phase_number: i }).success).toBe(true)
+    }
+  })
+
+  it('rejette phase_number invalide', () => {
+    expect(phaseValidationSchema.safeParse({ ...baseValid, phase_number: 0 }).success).toBe(false)
+    expect(phaseValidationSchema.safeParse({ ...baseValid, phase_number: 7 }).success).toBe(false)
+  })
+})
+
+// ============================================================
+// phaseStatusEnum
+// ============================================================
+
+describe('phaseStatusEnum — enum partagé', () => {
+  it('contient exactement 3 valeurs', () => {
+    const values = phaseStatusEnum.options
+    expect(values).toHaveLength(3)
+    expect(values).toContain('libre')
+    expect(values).toContain('en_cours')
+    expect(values).toContain('validee')
   })
 })

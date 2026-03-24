@@ -1,45 +1,14 @@
-export {
-  getBeneficiaires,
-  getBeneficiaire,
-  createBeneficiaire,
-  updateBeneficiaire,
-  deleteBeneficiaire,
-} from './beneficiaires'
-
-export {
-  getBilans,
-  getBilan,
-  createBilan,
-  updateBilan,
-  deleteBilan,
-} from './bilans'
+// API client Links — exports centralisés (nouveau schéma Sprint 8)
 
 export {
   getQuestionnaires,
   getQuestionnaire,
-  createQuestionnaire,
-  updateQuestionnaire,
-  deleteQuestionnaire,
+  getQuestionnairesByPhase,
 } from './questionnaires'
 
 export {
-  getResponses,
-  getResponse,
-  createResponse,
-  updateResponse,
-  deleteResponse,
-} from './responses'
-
-export {
-  getDocuments,
-  getDocument,
-  createDocument,
-  deleteDocument,
-} from './documents'
-
-export {
   getQuestions,
-  createQuestion,
-  updateQuestion,
-  deleteQuestion,
+  getQuestionsByQuestionnaire,
 } from './questions'
+
+// Sprint 9 : phase-responses, phase-validations, sessions, session-notes, phase-documents, users
