@@ -15,6 +15,7 @@ const ERROR_MESSAGES: Record<string, string> = {
   compte_desactive: 'Votre compte a été désactivé. Contactez votre administrateur.',
   auth: "Erreur d'authentification. Veuillez réessayer.",
   config: 'Erreur de configuration du serveur.',
+  session_expiree: 'Votre session a expiré. Reconnectez-vous.',
 }
 
 interface LoginResponse {

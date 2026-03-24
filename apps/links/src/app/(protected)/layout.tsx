@@ -1,13 +1,17 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
+import { useCallback, useEffect, useRef } from 'react'
 import { Layout, type NavItem } from '@unanima/dashboard'
 import { useAuth, useRequireRole } from '@unanima/auth'
 import { Button } from '@unanima/core'
 
+const SESSION_MAX_DURATION_MS = 8 * 60 * 60 * 1000 // 8 hours
+const SESSION_CHECK_INTERVAL_MS = 60 * 1000 // Check every minute
+
 const consultantNav: NavItem[] = [
   { label: 'Tableau de bord', href: '/dashboard' },
-  { label: 'B\u00e9n\u00e9ficiaires', href: '/beneficiaires' },
+  { label: 'Bénéficiaires', href: '/beneficiaires' },
   { label: 'Bilans', href: '/bilans' },
   { label: 'Documents', href: '/documents' },
 ]
@@ -25,8 +29,40 @@ export default function ProtectedLayout({
 }) {
   const pathname = usePathname()
   const router = useRouter()
-  const { user, signOut, isLoading } = useAuth()
+  const { user, signOut, isLoading, session } = useAuth()
   const { isAuthorized } = useRequireRole(['beneficiaire', 'consultant', 'super_admin'])
+  const sessionStartRef = useRef<number>(Date.now())
+
+  // Session expiration check (8h max — RG-AUTH-07)
+  useEffect(() => {
+    if (!user) return
+
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - sessionStartRef.current
+      if (elapsed >= SESSION_MAX_DURATION_MS) {
+        // Session expired — force logout
+        fetch('/api/auth/logout', { method: 'POST' })
+          .catch(() => {})
+          .finally(() => {
+            signOut()
+            router.push('/login?error=session_expiree')
+          })
+      }
+    }, SESSION_CHECK_INTERVAL_MS)
+
+    return () => clearInterval(interval)
+  }, [user, signOut, router])
+
+  const handleSignOut = useCallback(async () => {
+    // Server-side logout (invalidate refresh token + clear cookies)
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+    } catch {
+      // Continue with client-side logout even if server call fails
+    }
+    await signOut()
+    router.push('/login')
+  }, [signOut, router])
 
   if (isLoading || !isAuthorized) {
     return (
@@ -45,11 +81,6 @@ export default function ProtectedLayout({
     ...item,
     active: pathname === item.href || pathname.startsWith(item.href + '/'),
   }))
-
-  const handleSignOut = async () => {
-    await signOut()
-    router.push('/login')
-  }
 
   return (
     <Layout
