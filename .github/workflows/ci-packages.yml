@@ -30,6 +30,9 @@ jobs:
       fail-fast: false
       matrix:
         app: [links, creai, omega]
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
     steps:
       - uses: actions/checkout@v4
 
@@ -47,6 +50,9 @@ jobs:
 
       - name: Lint ${{ matrix.app }}
         run: pnpm lint --filter=@unanima/${{ matrix.app }}
+
+      - name: TypeCheck ${{ matrix.app }}
+        run: pnpm --filter=@unanima/${{ matrix.app }} exec tsc --noEmit
 
       - name: Build ${{ matrix.app }}
         run: pnpm build --filter=@unanima/${{ matrix.app }}
