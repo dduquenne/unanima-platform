@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- MAQ-01 | Login | Link's Accompagnement | v2.0 | 2026-03-24 -->
 <!-- Design : Split-screen immersif — Panneau illustratif + Formulaire premium -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="'Inter', 'Segoe UI', Arial, sans-serif">
@@ -226,7 +227,7 @@
       <!-- Séparateur décoratif sous le titre -->
       <line x1="-30" y1="-170" x2="30" y2="-170" stroke="#DCE1EB" stroke-width="1.5" stroke-linecap="round"/>
 
-      <!-- ---- Champ Email ---- -->
+      <!-- ~ Champ Email ~ -->
       <g id="field-email" transform="translate(0, -130)">
         <text x="-178" y="-8" font-size="13" font-weight="600" fill="#4A4A4A">Adresse email</text>
         <!-- Input container (état normal) -->
@@ -240,7 +241,7 @@
         <text x="-130" y="31" font-size="13.5" fill="#B0BAD0">votre@email.fr</text>
       </g>
 
-      <!-- ---- Champ Mot de passe (état focus) ---- -->
+      <!-- ~ Champ Mot de passe (état focus) ~ -->
       <g id="field-password" transform="translate(0, -20)">
         <text x="-178" y="-8" font-size="13" font-weight="600" fill="#4A4A4A">Mot de passe</text>
         <!-- Input container (état focus avec ring) -->
@@ -269,12 +270,12 @@
         </g>
       </g>
 
-      <!-- ---- Lien "Mot de passe oublié ?" ---- -->
+      <!-- ~ Lien "Mot de passe oublié ?" ~ -->
       <text x="178" y="68" text-anchor="end" font-size="12.5" fill="#1E6FC0" font-weight="500">
         Mot de passe oublié ?
       </text>
 
-      <!-- ---- Message d'erreur (visible pour montrer l'état) ---- -->
+      <!-- ~ Message d'erreur (visible pour montrer l'état) ~ -->
       <g id="error-message" transform="translate(0, 92)">
         <rect x="-178" y="0" width="356" height="42" rx="10" fill="#FFF2F2" stroke="#E53935" stroke-width="1"/>
         <!-- Icône alerte -->
@@ -285,7 +286,7 @@
         </text>
       </g>
 
-      <!-- ---- Bouton "Se connecter" ---- -->
+      <!-- ~ Bouton "Se connecter" ~ -->
       <g id="btn-submit" transform="translate(0, 156)">
         <!-- Ombre du bouton -->
         <rect x="-178" y="3" width="356" height="50" rx="12" fill="#1E6FC0" opacity="0.2" filter="url(#shadow-sm)"/>
@@ -302,14 +303,14 @@
         </g>
       </g>
 
-      <!-- ---- Séparateur "ou" ---- -->
+      <!-- ~ Séparateur "ou" ~ -->
       <g transform="translate(0, 226)">
         <line x1="-178" y1="0" x2="-20" y2="0" stroke="#DCE1EB" stroke-width="1"/>
         <text x="0" y="4" text-anchor="middle" font-size="11.5" fill="#9BA8BF">ou</text>
         <line x1="20" y1="0" x2="178" y2="0" stroke="#DCE1EB" stroke-width="1"/>
       </g>
 
-      <!-- ---- Section support ---- -->
+      <!-- ~ Section support ~ -->
       <g transform="translate(0, 252)">
         <text x="0" y="0" text-anchor="middle" font-size="12.5" fill="#6B7A99">Besoin d'aide ?</text>
         <text x="0" y="20" text-anchor="middle" font-size="12.5" fill="#1E6FC0" font-weight="500">
