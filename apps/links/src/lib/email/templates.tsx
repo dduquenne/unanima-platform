@@ -10,14 +10,10 @@ import {
   Section,
   Text,
 } from '@react-email/components'
-
-const THEME = {
-  primaryColor: '#1E6FC0',
-  organizationName: "Link's Accompagnement",
-}
+import { EMAIL_THEME } from './theme'
 
 const baseStyle = {
-  backgroundColor: '#f5f7fa',
+  backgroundColor: EMAIL_THEME.background,
   fontFamily: "'Inter', 'Segoe UI', sans-serif",
 }
 
@@ -28,26 +24,26 @@ const containerStyle = {
 }
 
 const cardStyle = {
-  backgroundColor: '#ffffff',
+  backgroundColor: EMAIL_THEME.surface,
   borderRadius: '8px',
   padding: '40px',
 }
 
 const headingStyle = {
   fontSize: '24px',
-  color: '#333',
+  color: EMAIL_THEME.text,
   marginBottom: '16px',
 }
 
 const textStyle = {
   fontSize: '14px',
-  color: '#555',
+  color: EMAIL_THEME.textSecondary,
   lineHeight: '1.6',
 }
 
 const ctaStyle = {
-  backgroundColor: THEME.primaryColor,
-  color: '#ffffff',
+  backgroundColor: EMAIL_THEME.primary,
+  color: EMAIL_THEME.surface,
   padding: '12px 24px',
   borderRadius: '6px',
   textDecoration: 'none' as const,
@@ -92,9 +88,9 @@ export function NewBeneficiaireEmail({
                 Voir le tableau de bord
               </Link>
             </Section>
-            <Hr style={{ borderColor: '#eee', margin: '24px 0' }} />
-            <Text style={{ fontSize: '12px', color: '#aaa' }}>
-              {THEME.organizationName}
+            <Hr style={{ borderColor: EMAIL_THEME.borderLight, margin: '24px 0' }} />
+            <Text style={{ fontSize: '12px', color: EMAIL_THEME.textMuted }}>
+              {EMAIL_THEME.organizationName}
             </Text>
           </Section>
         </Container>
@@ -142,9 +138,9 @@ export function CompletionReminderEmail({
                 Compléter le questionnaire
               </Link>
             </Section>
-            <Hr style={{ borderColor: '#eee', margin: '24px 0' }} />
-            <Text style={{ fontSize: '12px', color: '#aaa' }}>
-              {THEME.organizationName}
+            <Hr style={{ borderColor: EMAIL_THEME.borderLight, margin: '24px 0' }} />
+            <Text style={{ fontSize: '12px', color: EMAIL_THEME.textMuted }}>
+              {EMAIL_THEME.organizationName}
             </Text>
           </Section>
         </Container>
@@ -195,9 +191,9 @@ export function BilanCompleteEmail({
                 Voir le bilan
               </Link>
             </Section>
-            <Hr style={{ borderColor: '#eee', margin: '24px 0' }} />
-            <Text style={{ fontSize: '12px', color: '#aaa' }}>
-              {THEME.organizationName}
+            <Hr style={{ borderColor: EMAIL_THEME.borderLight, margin: '24px 0' }} />
+            <Text style={{ fontSize: '12px', color: EMAIL_THEME.textMuted }}>
+              {EMAIL_THEME.organizationName}
             </Text>
           </Section>
         </Container>

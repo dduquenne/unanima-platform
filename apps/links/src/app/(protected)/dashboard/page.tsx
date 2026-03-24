@@ -5,23 +5,24 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@unanima/auth'
 import { ProgressBar, StatusBadge } from '@unanima/dashboard'
 import { Card } from '@unanima/core'
+import { Video, Calendar, ArrowRight } from 'lucide-react'
 import type { PhaseStatus } from '@/lib/types/database'
 
 const TOTAL_PHASES = 6
 
 const PHASE_LABELS: Record<number, string> = {
-  1: 'Phase préliminaire',
-  2: 'Investigation — Parcours personnel',
-  3: 'Investigation — Parcours professionnel',
-  4: 'Investigation — Projet professionnel',
-  5: 'Conclusion',
-  6: 'Suivi à 6 mois',
+  1: 'Définir mon projet',
+  2: 'Explorer mes compétences',
+  3: 'Analyser mon marché',
+  4: 'Construire mon plan',
+  5: 'Préparer mon entretien',
+  6: 'Finaliser mon bilan',
 }
 
 const PHASE_STATUS_CONFIG = {
-  libre: { label: 'Non commencée', color: 'info' as const },
+  libre: { label: 'À compléter', color: 'info' as const },
   en_cours: { label: 'En cours', color: 'primary' as const },
-  validee: { label: 'Validée', color: 'success' as const },
+  validee: { label: 'Validé', color: 'success' as const },
 }
 
 interface PhaseData {
@@ -33,14 +34,20 @@ function getFirstName(fullName: string): string {
   return fullName.split(' ')[0] ?? fullName
 }
 
-function computeProgression(phases: PhaseData[]): { validated: number; percentage: number } {
+function computeProgression(phases: PhaseData[]): {
+  validated: number
+  inProgress: number
+  remaining: number
+  percentage: number
+} {
   const validated = phases.filter((p) => p.status === 'validee').length
+  const inProgress = phases.filter((p) => p.status === 'en_cours').length
+  const remaining = TOTAL_PHASES - validated - inProgress
   const percentage = Math.round((validated / TOTAL_PHASES) * 100)
-  return { validated, percentage }
+  return { validated, inProgress, remaining, percentage }
 }
 
 function getCurrentPhase(phases: PhaseData[]): number {
-  // Find the first phase that is 'en_cours', or the first 'libre' if none in progress
   const inProgress = phases.find((p) => p.status === 'en_cours')
   if (inProgress) return inProgress.phase_number
 
@@ -49,7 +56,6 @@ function getCurrentPhase(phases: PhaseData[]): number {
     .find((p) => p.status === 'libre')
   if (firstLibre) return firstLibre.phase_number
 
-  // All validated — return phase 1
   return 1
 }
 
@@ -66,19 +72,16 @@ function getSessionStatus(session: SessionData): SessionStatus {
   return new Date(session.scheduled_at) < new Date() ? 'realisee' : 'a_venir'
 }
 
-function getNextSession(sessions: SessionData[]): SessionData | null {
-  const now = new Date()
-  const upcoming = sessions
-    .filter((s) => s.scheduled_at && new Date(s.scheduled_at) > now)
-    .sort((a, b) => new Date(a.scheduled_at!).getTime() - new Date(b.scheduled_at!).getTime())
-  return upcoming[0] ?? null
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
 }
 
-function formatSessionDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('fr-FR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
+function formatTime(dateStr: string): string {
+  return new Date(dateStr).toLocaleTimeString('fr-FR', {
     hour: '2-digit',
     minute: '2-digit',
   })
@@ -153,180 +156,216 @@ export default function DashboardPage() {
     return existing ?? { phase_number: i + 1, status: 'libre' as PhaseStatus }
   })
 
-  const { validated, percentage } = computeProgression(allPhases)
+  const { validated, inProgress, remaining, percentage } = computeProgression(allPhases)
   const currentPhase = getCurrentPhase(allPhases)
 
-  return (
-    <div className="space-y-6">
-      {/* Welcome */}
-      <div>
-        <h1 className="text-2xl font-bold text-[var(--color-text)]">
-          Bonjour {getFirstName(user.fullName)}, bienvenue dans votre espace bilan.
-        </h1>
-      </div>
-
-      {/* Global progression */}
-      <Card padding="lg">
-        <ProgressBar
-          value={percentage}
-          label={`${validated} / ${TOTAL_PHASES} phases validées`}
-          showPercentage
-          color={percentage === 100 ? 'success' : 'primary'}
-          animated
-        />
-      </Card>
-
-      {/* CTA */}
-      <button
-        onClick={() => router.push(`/bilans/${currentPhase}`)}
-        className="w-full rounded-lg bg-[var(--color-primary)] px-6 py-3 text-center font-semibold text-white transition-colors hover:bg-[var(--color-primary-dark)]"
-      >
-        Continuer le bilan
-      </button>
-
-      {/* Phase cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {allPhases.map((phase) => (
-          <button
-            key={phase.phase_number}
-            onClick={() => router.push(`/bilans/${phase.phase_number}`)}
-            className="text-left"
-          >
-            <Card
-              padding="md"
-              className={`transition-all hover:shadow-md cursor-pointer border-l-4 ${
-                phase.status === 'validee'
-                  ? 'border-l-[#28A745]'
-                  : phase.status === 'en_cours'
-                    ? 'border-l-[#1E6FC0]'
-                    : 'border-l-[#A0AAB9]'
-              }`}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0 flex-1">
-                  <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
-                    Phase {phase.phase_number}
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-[var(--color-text)]">
-                    {PHASE_LABELS[phase.phase_number] ?? `Phase ${phase.phase_number}`}
-                  </p>
-                </div>
-                <StatusBadge
-                  status={phase.status}
-                  statusConfig={PHASE_STATUS_CONFIG}
-                />
-              </div>
-            </Card>
-          </button>
-        ))}
-      </div>
-
-      {/* Session planning panel */}
-      <Card padding="lg">
-        <h2 className="mb-4 text-lg font-semibold text-[var(--color-text)]">
-          Planning des s&eacute;ances
-        </h2>
-        <SessionPlanning sessions={sessions} />
-      </Card>
-    </div>
-  )
-}
-
-// ============================================================
-// Session Planning Component
-// ============================================================
-
-const SESSION_STATUS_LABELS: Record<SessionStatus, string> = {
-  realisee: 'Réalisée',
-  a_venir: 'À venir',
-  a_planifier: 'À planifier',
-}
-
-function SessionPlanning({ sessions }: { sessions: SessionData[] }) {
   // Ensure all 6 sessions exist
   const allSessions: SessionData[] = Array.from({ length: 6 }, (_, i) => {
     const existing = sessions.find((s) => s.session_number === i + 1)
     return existing ?? { session_number: i + 1, scheduled_at: null, visio_url: null }
   })
 
-  const nextSession = getNextSession(allSessions)
-  const hasAnyDate = allSessions.some((s) => s.scheduled_at)
-
-  if (!hasAnyDate) {
-    return (
-      <p className="text-sm text-[var(--color-text-secondary)]">
-        Votre consultante planifiera vos rendez-vous prochainement.
-      </p>
-    )
-  }
-
   return (
-    <div className="space-y-3">
-      {allSessions.map((session) => {
-        const status = getSessionStatus(session)
-        const isNext = nextSession?.session_number === session.session_number
+    <div className="mx-auto max-w-[900px] space-y-8">
+      {/* ═══ WELCOME (MAQ-02) ═══ */}
+      <div>
+        <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">
+          Bonjour, {getFirstName(user.fullName)}
+        </h1>
+        <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+          Retrouvez ici le suivi de votre bilan de comp&eacute;tences.
+        </p>
+        <div className="mt-3 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" />
+      </div>
 
-        return (
-          <div
-            key={session.session_number}
-            className={`flex items-center justify-between rounded-lg border p-3 ${
-              isNext
-                ? 'border-[#1E6FC0] bg-[#1E6FC0]/5'
-                : status === 'realisee'
-                  ? 'border-gray-200 bg-gray-50'
-                  : 'border-gray-200'
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <span
-                className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold ${
-                  status === 'realisee'
-                    ? 'bg-gray-200 text-gray-500'
-                    : status === 'a_venir'
-                      ? 'bg-[#1E6FC0] text-white'
-                      : 'bg-gray-100 text-gray-400'
-                }`}
-              >
-                {session.session_number}
-              </span>
-              <div>
-                <p className="text-sm font-medium text-[var(--color-text)]">
-                  S&eacute;ance {session.session_number}
-                </p>
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  {session.scheduled_at
-                    ? formatSessionDate(session.scheduled_at)
-                    : SESSION_STATUS_LABELS[status]}
-                </p>
+      {/* ═══ SESSIONS TABLE (MAQ-02) ═══ */}
+      <section>
+        <h2 className="mb-3 text-lg font-bold text-[var(--color-primary-dark)]">
+          Vos s&eacute;ances
+        </h2>
+        <Card padding="none">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-[var(--color-surface-hover)]">
+                  <th className="px-4 py-3 text-left text-xs font-bold text-[var(--color-primary-dark)]">
+                    S&eacute;ance
+                  </th>
+                  <th className="px-4 py-3 text-center text-xs font-bold text-[var(--color-primary-dark)]">
+                    Date
+                  </th>
+                  <th className="px-4 py-3 text-center text-xs font-bold text-[var(--color-primary-dark)]">
+                    Heure
+                  </th>
+                  <th className="px-4 py-3 text-center text-xs font-bold text-[var(--color-primary-dark)]">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--color-border-light)]">
+                {allSessions.map((session) => {
+                  const status = getSessionStatus(session)
+                  const isScheduled = status === 'a_venir'
+                  const isDone = status === 'realisee'
+
+                  return (
+                    <tr key={session.session_number} className="transition-colors hover:bg-[var(--color-surface-hover)]/50">
+                      {/* Session badge */}
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ${
+                              isDone
+                                ? 'bg-[var(--color-success-light)] text-[var(--color-success)]'
+                                : isScheduled
+                                  ? 'bg-[var(--color-info-light)] text-[var(--color-primary)]'
+                                  : 'bg-[var(--color-surface-hover)] text-[var(--color-text-muted)]'
+                            }`}
+                          >
+                            {session.session_number}
+                          </span>
+                          <span className={`font-medium ${
+                            status === 'a_planifier'
+                              ? 'text-[var(--color-text-muted)]'
+                              : 'text-[var(--color-text)]'
+                          }`}>
+                            {isDone || isScheduled
+                              ? `Séance ${session.session_number}`
+                              : `Séance ${session.session_number}`}
+                          </span>
+                        </div>
+                      </td>
+                      {/* Date */}
+                      <td className="px-4 py-3 text-center">
+                        <span className={status === 'a_planifier' ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text)]'}>
+                          {session.scheduled_at ? formatDate(session.scheduled_at) : 'À planifier'}
+                        </span>
+                      </td>
+                      {/* Time */}
+                      <td className="px-4 py-3 text-center">
+                        <span className={status === 'a_planifier' ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text)]'}>
+                          {session.scheduled_at ? formatTime(session.scheduled_at) : '—'}
+                        </span>
+                      </td>
+                      {/* Action */}
+                      <td className="px-4 py-3 text-center">
+                        {isScheduled && session.visio_url ? (
+                          <a
+                            href={session.visio_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 rounded-[var(--radius-md)] bg-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text-inverse)] transition-colors hover:bg-[var(--color-primary-dark)]"
+                          >
+                            <Video className="h-3.5 w-3.5" />
+                            Rejoindre la visio
+                          </a>
+                        ) : status === 'a_planifier' ? (
+                          <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-hover)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)]">
+                            <Calendar className="h-3.5 w-3.5" />
+                            Planifier
+                          </span>
+                        ) : null}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </section>
+
+      {/* ═══ PARCOURS SECTION (MAQ-02) ═══ */}
+      <section>
+        <h2 className="text-lg font-bold text-[var(--color-primary-dark)]">
+          Votre parcours
+        </h2>
+        <p className="mt-1 text-xs text-[var(--color-text-muted)]">
+          {validated} phase{validated > 1 ? 's' : ''} valid&eacute;e{validated > 1 ? 's' : ''} &middot; {inProgress} en cours &middot; {remaining} &agrave; compl&eacute;ter
+        </p>
+        <div className="mt-3">
+          <ProgressBar
+            value={percentage}
+            color={percentage === 100 ? 'success' : 'primary'}
+            animated
+          />
+        </div>
+      </section>
+
+      {/* ═══ PHASE CARDS GRID (MAQ-02: 3×2) ═══ */}
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {allPhases.map((phase) => {
+          const isValidee = phase.status === 'validee'
+          const isEnCours = phase.status === 'en_cours'
+          const isLibre = phase.status === 'libre'
+
+          const borderColor = isValidee
+            ? 'border-[var(--color-success)]'
+            : isEnCours
+              ? 'border-[var(--color-warning)]'
+              : 'border-[var(--color-border)]'
+
+          const accentColor = isValidee
+            ? 'var(--color-success)'
+            : isEnCours
+              ? 'var(--color-warning)'
+              : 'var(--color-border)'
+
+          const numberBg = isValidee
+            ? 'bg-[var(--color-success-light)] text-[var(--color-success)]'
+            : isEnCours
+              ? 'bg-[var(--color-warning-light)] text-[var(--color-warning)]'
+              : 'bg-[var(--color-surface-hover)] text-[var(--color-text-muted)]'
+
+          return (
+            <div
+              key={phase.phase_number}
+              className={`relative overflow-hidden rounded-[var(--radius-lg)] border bg-[var(--color-surface)] p-4 transition-shadow hover:shadow-md ${borderColor}`}
+            >
+              {/* Left accent bar */}
+              <div
+                className="absolute left-0 top-0 h-full w-[5px] rounded-l-[var(--radius-lg)]"
+                style={{ backgroundColor: accentColor }}
+              />
+
+              <div className="ml-2 space-y-3">
+                {/* Phase number + title */}
+                <div className="flex items-start gap-3">
+                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${numberBg}`}>
+                    {phase.phase_number}
+                  </span>
+                  <div>
+                    <p className={`text-sm font-bold ${isLibre ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-primary-dark)]'}`}>
+                      {PHASE_LABELS[phase.phase_number] ?? `Phase ${phase.phase_number}`}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Status badge */}
+                <StatusBadge
+                  status={phase.status}
+                  statusConfig={PHASE_STATUS_CONFIG}
+                />
+
+                {/* Action button */}
+                {isLibre ? (
+                  <span className="inline-flex items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-hover)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)]">
+                    Acc&eacute;der
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => router.push(`/bilans/${phase.phase_number}`)}
+                    className="inline-flex items-center gap-1 rounded-[var(--radius-md)] bg-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text-inverse)] transition-colors hover:bg-[var(--color-primary-dark)]"
+                  >
+                    Acc&eacute;der
+                    <ArrowRight className="h-3 w-3" />
+                  </button>
+                )}
               </div>
             </div>
-
-            <div className="flex items-center gap-2">
-              <span
-                className={`text-xs font-medium ${
-                  status === 'realisee'
-                    ? 'text-gray-500'
-                    : status === 'a_venir'
-                      ? 'text-[#1E6FC0]'
-                      : 'text-gray-400'
-                }`}
-              >
-                {SESSION_STATUS_LABELS[status]}
-              </span>
-              {isNext && session.visio_url && (
-                <a
-                  href={session.visio_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-md bg-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[var(--color-primary-dark)] transition-colors"
-                >
-                  Rejoindre la visio
-                </a>
-              )}
-            </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
     </div>
   )
 }

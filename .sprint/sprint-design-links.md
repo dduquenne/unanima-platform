@@ -44,11 +44,11 @@ Corriger la source de vérité CSS puis purger les valeurs en dur.
 - #151 garantit que les pages utilisent effectivement cette source de vérité
 
 **Point de contrôle Phase 1 :**
-- [ ] Les 8 couleurs de base dans `theme.css` correspondent exactement à SPC-0003
-- [ ] Aucune couleur hex hardcodée dans `apps/links/src/app/` (hors email templates)
-- [ ] Aucune classe Tailwind `gray-*`, `red-*`, `green-*`, `orange-*`, `blue-*` dans les pages
-- [ ] Contraste WCAG AA vérifié (4.5:1 min)
-- [ ] `pnpm build --filter=@unanima/links` passe
+- [x] Les 8 couleurs de base dans `theme.css` correspondent exactement à SPC-0003
+- [x] Aucune couleur hex hardcodée dans `apps/links/src/app/` (hors email templates)
+- [x] Aucune classe Tailwind `gray-*`, `red-*`, `green-*`, `orange-*`, `blue-*` dans les pages
+- [x] Contraste WCAG AA vérifié (4.5:1 min)
+- [x] `pnpm build --filter=@unanima/links` passe
 - [ ] `pnpm test --filter=@unanima/links` passe
 
 ---
@@ -67,12 +67,12 @@ Refondre les composants visuels principaux pour correspondre aux maquettes valid
 - #154 est la page la plus visible et la plus utilisée — priorité maximale
 
 **Point de contrôle Phase 2 :**
-- [ ] Header fond bleu foncé avec logo Links, avatar utilisateur, nom + rôle
-- [ ] Sidebar avec icônes Lucide et item actif stylé
-- [ ] Dashboard bénéficiaire : tableau séances (DataTable), badges numérotés, progression détaillée
-- [ ] Cards de phases avec cercle numéroté + StatusBadge
-- [ ] Rendu conforme aux maquettes MAQ-02 et MAQ-04
-- [ ] `pnpm build --filter=@unanima/links` passe
+- [x] Header fond bleu foncé avec logo Links, avatar utilisateur, nom + rôle
+- [x] Navigation avec icônes Lucide et onglet actif stylé (tabs horizontaux, pas sidebar)
+- [x] Dashboard bénéficiaire : tableau séances, badges numérotés, progression détaillée
+- [x] Cards de phases avec cercle numéroté + StatusBadge
+- [x] Rendu conforme aux maquettes MAQ-02 et MAQ-04
+- [x] `pnpm build --filter=@unanima/links` passe
 - [ ] `pnpm test --filter=@unanima/links` passe
 
 ---
@@ -92,18 +92,18 @@ Pages secondaires et templates email.
 - Elles dépendent de la Phase 1 (palette + purge) mais pas de la Phase 2
 
 **Point de contrôle Phase 3 :**
-- [ ] Login conforme à MAQ-01 (logo, icônes, barre décorative, section aide)
-- [ ] Reset-password sans aucune classe Tailwind par défaut (red/green/orange/gray)
-- [ ] Templates email utilisent `EMAIL_THEME` centralisé, aucun hex en dur
-- [ ] `pnpm build --filter=@unanima/links` passe
+- [x] Login conforme à MAQ-01 (logo, icônes, barre décorative, section aide)
+- [x] Reset-password sans aucune classe Tailwind par défaut (red/green/orange/gray)
+- [x] Templates email utilisent `EMAIL_THEME` centralisé, aucun hex en dur
+- [x] `pnpm build --filter=@unanima/links` passe
 - [ ] `pnpm test --filter=@unanima/links` passe
 
 ---
 
 ## Vérification d'exhaustivité
-- [ ] Toutes les issues du sprint sont listées ci-dessus (7/7)
-- [ ] Aucune issue n'a été omise ou reportée sans justification
-- [ ] L'ordre respecte la règle fondation > layout > pages > transverse
+- [x] Toutes les issues du sprint sont listées ci-dessus (7/7)
+- [x] Aucune issue n'a été omise ou reportée sans justification
+- [x] L'ordre respecte la règle fondation > layout > pages > transverse
 
 ---
 

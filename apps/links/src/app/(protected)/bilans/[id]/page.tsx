@@ -302,9 +302,9 @@ export default function PhaseDetailPage() {
       </nav>
 
       {/* Phase header */}
-      <div className="rounded-lg bg-[#1E6FC0] p-4 text-white">
+      <div className="rounded-lg bg-[var(--color-primary)] p-4 text-[var(--color-text-inverse)]">
         <h1 className="text-xl font-bold">Phase {phaseNumber} &mdash; {phaseTitle}</h1>
-        <p className="mt-1 text-sm text-blue-100">
+        <p className="mt-1 text-sm text-[var(--color-primary-light)]">
           {questions.length > 0
             ? `${questions.length} question${questions.length > 1 ? 's' : ''}`
             : 'Aucune question pour cette phase'}
@@ -315,15 +315,15 @@ export default function PhaseDetailPage() {
       <div className="flex items-center justify-between">
         <div className="text-xs">
           {saveStatus === 'saving' && (
-            <span className="text-[#A0AAB9]">Sauvegarde en cours...</span>
+            <span className="text-[var(--color-text-muted)]">Sauvegarde en cours...</span>
           )}
           {saveStatus === 'saved' && lastSavedAt && (
-            <span className="text-[#A0AAB9]">
+            <span className="text-[var(--color-text-muted)]">
               Sauvegard&eacute; &agrave; {new Date(lastSavedAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
             </span>
           )}
           {persistentError && (
-            <span className="text-[#FF6B35] font-medium">
+            <span className="text-[var(--color-warning)] font-medium">
               Erreur de sauvegarde. V&eacute;rifiez votre connexion.
             </span>
           )}
@@ -391,8 +391,8 @@ export default function PhaseDetailPage() {
         <div
           className={`fixed bottom-6 right-6 z-50 rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg ${
             validationToast.includes('Erreur') || validationToast.includes('Échec')
-              ? 'bg-[#FF6B35]'
-              : 'bg-[#28A745]'
+              ? 'bg-[var(--color-warning)]'
+              : 'bg-[var(--color-success)]'
           }`}
           role="status"
         >
