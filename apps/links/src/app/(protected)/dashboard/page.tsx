@@ -196,10 +196,10 @@ export default function DashboardPage() {
               padding="md"
               className={`transition-all hover:shadow-md cursor-pointer border-l-4 ${
                 phase.status === 'validee'
-                  ? 'border-l-[#28A745]'
+                  ? 'border-l-[var(--color-success)]'
                   : phase.status === 'en_cours'
-                    ? 'border-l-[#1E6FC0]'
-                    : 'border-l-[#A0AAB9]'
+                    ? 'border-l-[var(--color-primary)]'
+                    : 'border-l-[var(--color-text-muted)]'
               }`}
             >
               <div className="flex items-start justify-between gap-2">
@@ -271,20 +271,20 @@ function SessionPlanning({ sessions }: { sessions: SessionData[] }) {
             key={session.session_number}
             className={`flex items-center justify-between rounded-lg border p-3 ${
               isNext
-                ? 'border-[#1E6FC0] bg-[#1E6FC0]/5'
+                ? 'border-[var(--color-primary)] bg-[var(--color-surface-active)]'
                 : status === 'realisee'
-                  ? 'border-gray-200 bg-gray-50'
-                  : 'border-gray-200'
+                  ? 'border-[var(--color-border-light)] bg-[var(--color-surface-hover)]'
+                  : 'border-[var(--color-border-light)]'
             }`}
           >
             <div className="flex items-center gap-3">
               <span
                 className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold ${
                   status === 'realisee'
-                    ? 'bg-gray-200 text-gray-500'
+                    ? 'bg-[var(--color-border)] text-[var(--color-text-secondary)]'
                     : status === 'a_venir'
-                      ? 'bg-[#1E6FC0] text-white'
-                      : 'bg-gray-100 text-gray-400'
+                      ? 'bg-[var(--color-primary)] text-[var(--color-text-inverse)]'
+                      : 'bg-[var(--color-surface-hover)] text-[var(--color-text-muted)]'
                 }`}
               >
                 {session.session_number}
@@ -305,10 +305,10 @@ function SessionPlanning({ sessions }: { sessions: SessionData[] }) {
               <span
                 className={`text-xs font-medium ${
                   status === 'realisee'
-                    ? 'text-gray-500'
+                    ? 'text-[var(--color-text-secondary)]'
                     : status === 'a_venir'
-                      ? 'text-[#1E6FC0]'
-                      : 'text-gray-400'
+                      ? 'text-[var(--color-primary)]'
+                      : 'text-[var(--color-text-muted)]'
                 }`}
               >
                 {SESSION_STATUS_LABELS[status]}

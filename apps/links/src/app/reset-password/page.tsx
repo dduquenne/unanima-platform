@@ -27,15 +27,15 @@ function isPasswordValid(password: string): boolean {
 }
 
 const STRENGTH_COLORS: Record<PasswordStrength, string> = {
-  weak: 'bg-red-500',
-  medium: 'bg-orange-400',
-  strong: 'bg-green-500',
+  weak: 'bg-[var(--color-danger)]',
+  medium: 'bg-[var(--color-warning)]',
+  strong: 'bg-[var(--color-success)]',
 }
 
 const STRENGTH_TEXT_COLORS: Record<PasswordStrength, string> = {
-  weak: 'text-red-600',
-  medium: 'text-orange-500',
-  strong: 'text-green-600',
+  weak: 'text-[var(--color-danger)]',
+  medium: 'text-[var(--color-warning)]',
+  strong: 'text-[var(--color-success)]',
 }
 
 const STRENGTH_WIDTHS: Record<PasswordStrength, string> = {
@@ -96,7 +96,7 @@ function RequestResetForm() {
           <Card padding="lg">
             <div className="flex flex-col gap-4">
               <div
-                className="rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700"
+                className="rounded-lg border border-[var(--color-success)]/30 bg-[var(--color-success-light)] p-3 text-sm text-[var(--color-success)]"
                 role="status"
               >
                 Si un compte existe avec l&apos;adresse <strong>{email}</strong>,
@@ -224,7 +224,7 @@ function ChangePasswordForm() {
           <Card padding="lg">
             <div className="flex flex-col gap-4">
               <div
-                className="rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700"
+                className="rounded-lg border border-[var(--color-success)]/30 bg-[var(--color-success-light)] p-3 text-sm text-[var(--color-success)]"
                 role="status"
               >
                 Votre mot de passe a &eacute;t&eacute; modifi&eacute; avec succ&egrave;s.
@@ -261,7 +261,7 @@ function ChangePasswordForm() {
             <div className="flex flex-col gap-4">
               {error && (
                 <div
-                  className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+                  className="rounded-lg border border-[var(--color-danger)]/30 bg-[var(--color-danger-light)] p-3 text-sm text-[var(--color-danger)]"
                   role="alert"
                 >
                   {error}
@@ -287,19 +287,19 @@ function ChangePasswordForm() {
                         {strength.label}
                       </span>
                     </div>
-                    <div className="h-1.5 w-full rounded-full bg-gray-200">
+                    <div className="h-1.5 w-full rounded-full bg-[var(--color-border)]">
                       <div
                         className={`h-1.5 rounded-full transition-all duration-300 ${STRENGTH_COLORS[strength.strength]} ${STRENGTH_WIDTHS[strength.strength]}`}
                       />
                     </div>
                     <ul className="mt-2 space-y-0.5 text-xs text-[var(--color-text-secondary)]">
-                      <li className={newPassword.length >= 8 ? 'text-green-600' : ''}>
+                      <li className={newPassword.length >= 8 ? 'text-[var(--color-success)]' : ''}>
                         {newPassword.length >= 8 ? '\u2713' : '\u2022'} Au moins 8 caract&egrave;res
                       </li>
-                      <li className={/[A-Z]/.test(newPassword) ? 'text-green-600' : ''}>
+                      <li className={/[A-Z]/.test(newPassword) ? 'text-[var(--color-success)]' : ''}>
                         {/[A-Z]/.test(newPassword) ? '\u2713' : '\u2022'} Au moins 1 majuscule
                       </li>
-                      <li className={/\d/.test(newPassword) ? 'text-green-600' : ''}>
+                      <li className={/\d/.test(newPassword) ? 'text-[var(--color-success)]' : ''}>
                         {/\d/.test(newPassword) ? '\u2713' : '\u2022'} Au moins 1 chiffre
                       </li>
                     </ul>

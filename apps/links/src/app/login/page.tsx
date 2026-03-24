@@ -127,7 +127,7 @@ export default function LoginPage() {
 
         {urlError && (
           <div
-            className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+            className="mb-4 rounded-lg border border-[var(--color-danger)]/30 bg-[var(--color-danger-light)] p-3 text-sm text-[var(--color-danger)]"
             role="alert"
           >
             {urlError}
@@ -141,8 +141,8 @@ export default function LoginPage() {
                 <div
                   className={`rounded-lg border p-3 text-sm ${
                     isLocked
-                      ? 'border-orange-200 bg-orange-50 text-orange-700'
-                      : 'border-red-200 bg-red-50 text-red-700'
+                      ? 'border-[var(--color-warning)]/30 bg-[var(--color-warning-light)] text-[var(--color-warning)]'
+                      : 'border-[var(--color-danger)]/30 bg-[var(--color-danger-light)] text-[var(--color-danger)]'
                   }`}
                   role="alert"
                 >
