@@ -446,6 +446,44 @@ pnpm dev:omega
 
 ---
 
+## Configuration MCP (Model Context Protocol)
+
+Le projet utilise le [MCP Supabase](https://github.com/supabase-community/supabase-mcp) pour permettre à Claude Code d'accéder directement aux bases de données des 3 projets clients.
+
+### Fichier `.mcp.json` (racine du monorepo)
+
+Le fichier `.mcp.json` à la racine définit 3 serveurs MCP, chacun scopé sur un seul projet Supabase via `--project-ref`. Claude Code charge ce fichier automatiquement.
+
+| Serveur MCP | App | project_ref |
+|---|---|---|
+| `supabase-links` | Link's Accompagnement | `wnulfyioossihuksctjb` |
+| `supabase-omega` | Omega Automotive | `grlepmbgfgafkhxhgurv` |
+| `supabase-creai` | CREAI Île-de-France | À définir |
+
+### Prérequis — Personal Access Token (PAT)
+
+Le MCP Supabase requiert un PAT Supabase dans la variable d'environnement `SUPABASE_ACCESS_TOKEN`.
+
+**Configuration locale** (à faire une fois par poste) :
+
+1. Générer un PAT sur [https://supabase.com/dashboard/account/tokens](https://supabase.com/dashboard/account/tokens)
+2. Ajouter dans `~/.claude/settings.json` :
+   ```json
+   {
+     "env": {
+       "SUPABASE_ACCESS_TOKEN": "votre-pat-ici"
+     }
+   }
+   ```
+
+> **Important** : Ne jamais committer le PAT dans le dépôt. Le fichier `~/.claude/settings.json` est personnel et non versionné.
+
+### Activation des serveurs MCP
+
+Au premier démarrage après clonage, Claude Code propose d'activer les serveurs MCP du `.mcp.json`. Approuver les 3 serveurs. Ils peuvent ensuite être gérés via `/mcp` dans Claude Code.
+
+---
+
 ## Règles strictes
 
 1. **Ne jamais importer de code d'une app vers une autre** — les apps sont isolées
