@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useMemo, type FormEvent } from 'react'
 import { useAuth } from '@unanima/auth'
 import { Button, Card, Input } from '@unanima/core'
+import { CheckCircle } from 'lucide-react'
+import Link from 'next/link'
 
 type PasswordStrength = 'weak' | 'medium' | 'strong'
 
@@ -44,12 +46,44 @@ const STRENGTH_WIDTHS: Record<PasswordStrength, string> = {
   strong: 'w-full',
 }
 
-export default function ResetPasswordPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const { resetPassword } = useAuth()
+function PageShell({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="flex min-h-screen flex-col bg-[var(--color-background)]">
+      {/* Top gradient */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-72"
+        style={{ background: 'linear-gradient(to bottom, rgba(30,111,192,0.07), transparent)' }}
+      />
 
-  // If there's a code param, this is the password change step
+      <div className="relative flex flex-1 flex-col items-center justify-center p-4">
+        {/* Logo */}
+        <div className="mb-8 text-center">
+          <div className="relative mx-auto mb-4 flex h-[72px] w-[72px] items-center justify-center rounded-full bg-[var(--color-primary)]">
+            <span className="text-3xl font-bold text-[var(--color-text-inverse)]">L</span>
+            <span className="absolute -top-0.5 right-1 h-2 w-2 rounded-full bg-[var(--color-warning)]" />
+          </div>
+        </div>
+        {children}
+      </div>
+
+      {/* Footer */}
+      <footer className="py-4 text-center">
+        <p className="text-xs text-[var(--color-text-muted)]">
+          &copy; {new Date().getFullYear()} Link&apos;s Accompagnement — Unanima Platform
+        </p>
+        <p className="mt-1 text-xs text-[var(--color-text-muted)]/70">
+          <Link href="/mentions-legales" className="hover:underline">Mentions l&eacute;gales</Link>
+          {' · '}
+          <Link href="/confidentialite" className="hover:underline">Politique de confidentialit&eacute;</Link>
+        </p>
+      </footer>
+    </main>
+  )
+}
+
+export default function ResetPasswordPage() {
+  const searchParams = useSearchParams()
+
   const isChangeMode = useMemo(() => {
     return searchParams.has('code') || searchParams.has('token')
   }, [searchParams])
@@ -86,79 +120,87 @@ function RequestResetForm() {
 
   if (success) {
     return (
-      <main className="flex min-h-screen items-center justify-center p-4">
+      <PageShell>
         <div className="w-full max-w-md">
-          <div className="mb-8 text-center">
-            <h1 className="text-2xl font-bold text-[var(--color-primary)]">
-              E-mail envoy&eacute;
-            </h1>
-          </div>
-          <Card padding="lg">
-            <div className="flex flex-col gap-4">
+          <div className="overflow-hidden rounded-[var(--radius-xl)] bg-[var(--color-surface)] shadow-[var(--shadow-lg)]">
+            <div className="h-[5px] bg-[var(--color-success)]" />
+            <div className="p-8">
+              <div className="mb-4 flex justify-center">
+                <CheckCircle className="h-12 w-12 text-[var(--color-success)]" />
+              </div>
+              <h2 className="text-center text-xl font-bold text-[var(--color-primary-dark)]">
+                E-mail envoy&eacute;
+              </h2>
+              <div className="mx-auto mt-2 mb-6 h-px w-20 bg-[var(--color-border)]" />
               <div
-                className="rounded-lg border border-[var(--color-success)]/30 bg-[var(--color-success-light)] p-3 text-sm text-[var(--color-success)]"
+                className="rounded-[var(--radius-md)] border border-[var(--color-success)]/30 bg-[var(--color-success-light)] p-3 text-sm text-[var(--color-success)]"
                 role="status"
               >
                 Si un compte existe avec l&apos;adresse <strong>{email}</strong>,
                 un e-mail de r&eacute;initialisation a &eacute;t&eacute; envoy&eacute;.
                 V&eacute;rifiez votre bo&icirc;te de r&eacute;ception.
               </div>
-              <Button variant="ghost" size="sm" onClick={() => router.push('/login')}>
-                Retour &agrave; la connexion
-              </Button>
+              <div className="mt-6">
+                <Button variant="ghost" size="sm" className="w-full" onClick={() => router.push('/login')}>
+                  Retour &agrave; la connexion
+                </Button>
+              </div>
             </div>
-          </Card>
+          </div>
         </div>
-      </main>
+      </PageShell>
     )
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-4">
+    <PageShell>
       <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-[var(--color-primary)]">
-            R&eacute;initialiser le mot de passe
-          </h1>
-          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-            Saisissez votre adresse e-mail pour recevoir un lien de r&eacute;initialisation.
-          </p>
+        <div className="overflow-hidden rounded-[var(--radius-xl)] bg-[var(--color-surface)] shadow-[var(--shadow-lg)]">
+          <div className="h-[5px] bg-[var(--color-primary)]" />
+          <div className="p-8">
+            <h2 className="text-center text-xl font-bold text-[var(--color-primary-dark)]">
+              R&eacute;initialiser le mot de passe
+            </h2>
+            <div className="mx-auto mt-2 mb-2 h-px w-20 bg-[var(--color-border)]" />
+            <p className="mb-6 text-center text-sm text-[var(--color-text-secondary)]">
+              Saisissez votre adresse e-mail pour recevoir un lien de r&eacute;initialisation.
+            </p>
+
+            <form onSubmit={handleSubmit}>
+              <div className="flex flex-col gap-4">
+                {error && (
+                  <p className="text-sm text-[var(--color-danger)]" role="alert">
+                    {error}
+                  </p>
+                )}
+
+                <Input
+                  variant="email"
+                  label="Adresse e-mail"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                />
+
+                <Button variant="primary" size="lg" loading={isSubmitting} className="w-full">
+                  Envoyer le lien
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  onClick={() => router.push('/login')}
+                >
+                  Retour &agrave; la connexion
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
-        <Card padding="lg">
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-4">
-              {error && (
-                <p className="text-sm text-[var(--color-danger)]" role="alert">
-                  {error}
-                </p>
-              )}
-
-              <Input
-                variant="email"
-                label="Adresse e-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-
-              <Button variant="primary" size="lg" loading={isSubmitting} className="w-full">
-                Envoyer le lien
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                type="button"
-                onClick={() => router.push('/login')}
-              >
-                Retour &agrave; la connexion
-              </Button>
-            </div>
-          </form>
-        </Card>
       </div>
-    </main>
+    </PageShell>
   )
 }
 
@@ -214,135 +256,143 @@ function ChangePasswordForm() {
 
   if (success) {
     return (
-      <main className="flex min-h-screen items-center justify-center p-4">
+      <PageShell>
         <div className="w-full max-w-md">
-          <div className="mb-8 text-center">
-            <h1 className="text-2xl font-bold text-[var(--color-primary)]">
-              Mot de passe mis &agrave; jour
-            </h1>
-          </div>
-          <Card padding="lg">
-            <div className="flex flex-col gap-4">
+          <div className="overflow-hidden rounded-[var(--radius-xl)] bg-[var(--color-surface)] shadow-[var(--shadow-lg)]">
+            <div className="h-[5px] bg-[var(--color-success)]" />
+            <div className="p-8">
+              <div className="mb-4 flex justify-center">
+                <CheckCircle className="h-12 w-12 text-[var(--color-success)]" />
+              </div>
+              <h2 className="text-center text-xl font-bold text-[var(--color-primary-dark)]">
+                Mot de passe mis &agrave; jour
+              </h2>
+              <div className="mx-auto mt-2 mb-6 h-px w-20 bg-[var(--color-border)]" />
               <div
-                className="rounded-lg border border-[var(--color-success)]/30 bg-[var(--color-success-light)] p-3 text-sm text-[var(--color-success)]"
+                className="rounded-[var(--radius-md)] border border-[var(--color-success)]/30 bg-[var(--color-success-light)] p-3 text-sm text-[var(--color-success)]"
                 role="status"
               >
                 Votre mot de passe a &eacute;t&eacute; modifi&eacute; avec succ&egrave;s.
                 Vous pouvez maintenant vous connecter.
               </div>
-              <Button
-                variant="primary"
-                size="lg"
-                className="w-full"
-                onClick={() => router.push('/login')}
-              >
-                Se connecter
-              </Button>
+              <div className="mt-6">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  onClick={() => router.push('/login')}
+                >
+                  Se connecter
+                </Button>
+              </div>
             </div>
-          </Card>
+          </div>
         </div>
-      </main>
+      </PageShell>
     )
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-4">
+    <PageShell>
       <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-[var(--color-primary)]">
-            Nouveau mot de passe
-          </h1>
-          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-            Choisissez un nouveau mot de passe s&eacute;curis&eacute;.
-          </p>
-        </div>
-        <Card padding="lg">
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-4">
-              {error && (
-                <div
-                  className="rounded-lg border border-[var(--color-danger)]/30 bg-[var(--color-danger-light)] p-3 text-sm text-[var(--color-danger)]"
-                  role="alert"
-                >
-                  {error}
-                </div>
-              )}
+        <div className="overflow-hidden rounded-[var(--radius-xl)] bg-[var(--color-surface)] shadow-[var(--shadow-lg)]">
+          <div className="h-[5px] bg-[var(--color-primary)]" />
+          <div className="p-8">
+            <h2 className="text-center text-xl font-bold text-[var(--color-primary-dark)]">
+              Nouveau mot de passe
+            </h2>
+            <div className="mx-auto mt-2 mb-2 h-px w-20 bg-[var(--color-border)]" />
+            <p className="mb-6 text-center text-sm text-[var(--color-text-secondary)]">
+              Choisissez un nouveau mot de passe s&eacute;curis&eacute;.
+            </p>
 
-              <div>
-                <Input
-                  variant="password"
-                  label="Nouveau mot de passe"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                  autoComplete="new-password"
-                />
-                {newPassword.length > 0 && (
-                  <div className="mt-2">
-                    <div className="mb-1 flex items-center justify-between">
-                      <span className="text-xs text-[var(--color-text-secondary)]">
-                        Force du mot de passe
-                      </span>
-                      <span className={`text-xs font-medium ${STRENGTH_TEXT_COLORS[strength.strength]}`}>
-                        {strength.label}
-                      </span>
-                    </div>
-                    <div className="h-1.5 w-full rounded-full bg-[var(--color-border)]">
-                      <div
-                        className={`h-1.5 rounded-full transition-all duration-300 ${STRENGTH_COLORS[strength.strength]} ${STRENGTH_WIDTHS[strength.strength]}`}
-                      />
-                    </div>
-                    <ul className="mt-2 space-y-0.5 text-xs text-[var(--color-text-secondary)]">
-                      <li className={newPassword.length >= 8 ? 'text-[var(--color-success)]' : ''}>
-                        {newPassword.length >= 8 ? '\u2713' : '\u2022'} Au moins 8 caract&egrave;res
-                      </li>
-                      <li className={/[A-Z]/.test(newPassword) ? 'text-[var(--color-success)]' : ''}>
-                        {/[A-Z]/.test(newPassword) ? '\u2713' : '\u2022'} Au moins 1 majuscule
-                      </li>
-                      <li className={/\d/.test(newPassword) ? 'text-[var(--color-success)]' : ''}>
-                        {/\d/.test(newPassword) ? '\u2713' : '\u2022'} Au moins 1 chiffre
-                      </li>
-                    </ul>
+            <form onSubmit={handleSubmit}>
+              <div className="flex flex-col gap-4">
+                {error && (
+                  <div
+                    className="rounded-[var(--radius-md)] border border-[var(--color-danger)]/30 bg-[var(--color-danger-light)] p-3 text-sm text-[var(--color-danger)]"
+                    role="alert"
+                  >
+                    {error}
                   </div>
                 )}
+
+                <div>
+                  <Input
+                    variant="password"
+                    label="Nouveau mot de passe"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    autoComplete="new-password"
+                  />
+                  {newPassword.length > 0 && (
+                    <div className="mt-2">
+                      <div className="mb-1 flex items-center justify-between">
+                        <span className="text-xs text-[var(--color-text-secondary)]">
+                          Force du mot de passe
+                        </span>
+                        <span className={`text-xs font-medium ${STRENGTH_TEXT_COLORS[strength.strength]}`}>
+                          {strength.label}
+                        </span>
+                      </div>
+                      <div className="h-1.5 w-full rounded-full bg-[var(--color-border)]">
+                        <div
+                          className={`h-1.5 rounded-full transition-all duration-300 ${STRENGTH_COLORS[strength.strength]} ${STRENGTH_WIDTHS[strength.strength]}`}
+                        />
+                      </div>
+                      <ul className="mt-2 space-y-0.5 text-xs text-[var(--color-text-secondary)]">
+                        <li className={newPassword.length >= 8 ? 'text-[var(--color-success)]' : ''}>
+                          {newPassword.length >= 8 ? '\u2713' : '\u2022'} Au moins 8 caract&egrave;res
+                        </li>
+                        <li className={/[A-Z]/.test(newPassword) ? 'text-[var(--color-success)]' : ''}>
+                          {/[A-Z]/.test(newPassword) ? '\u2713' : '\u2022'} Au moins 1 majuscule
+                        </li>
+                        <li className={/\d/.test(newPassword) ? 'text-[var(--color-success)]' : ''}>
+                          {/\d/.test(newPassword) ? '\u2713' : '\u2022'} Au moins 1 chiffre
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <Input
+                  variant="password"
+                  label="Confirmer le mot de passe"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  autoComplete="new-password"
+                  error={
+                    confirmPassword.length > 0 && newPassword !== confirmPassword
+                      ? 'Les mots de passe ne correspondent pas.'
+                      : undefined
+                  }
+                />
+
+                <Button
+                  variant="primary"
+                  size="lg"
+                  loading={isSubmitting}
+                  className="w-full"
+                  disabled={!valid || newPassword !== confirmPassword}
+                >
+                  Mettre &agrave; jour le mot de passe
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  onClick={() => router.push('/login')}
+                >
+                  Annuler
+                </Button>
               </div>
-
-              <Input
-                variant="password"
-                label="Confirmer le mot de passe"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                autoComplete="new-password"
-                error={
-                  confirmPassword.length > 0 && newPassword !== confirmPassword
-                    ? 'Les mots de passe ne correspondent pas.'
-                    : undefined
-                }
-              />
-
-              <Button
-                variant="primary"
-                size="lg"
-                loading={isSubmitting}
-                className="w-full"
-                disabled={!valid || newPassword !== confirmPassword}
-              >
-                Mettre &agrave; jour le mot de passe
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                type="button"
-                onClick={() => router.push('/login')}
-              >
-                Annuler
-              </Button>
-            </div>
-          </form>
-        </Card>
+            </form>
+          </div>
+        </div>
       </div>
-    </main>
+    </PageShell>
   )
 }
