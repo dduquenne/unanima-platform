@@ -1,129 +1,179 @@
--- Migration 001: Create Links business tables
--- App: Link's Accompagnement — Bilans de compétences
+-- Migration 001: Schéma BDD complet Links — Bilans de compétences (6 phases)
+-- App: Link's Accompagnement
+-- Issue: #104 — Sprint 8 Fondations
+-- Référence: SPC-0003 Spécifications fonctionnelles
 
 -- ============================================================
--- Table: beneficiaires
--- Bénéficiaires suivis par un consultant
+-- Extension de la table profiles (socle)
+-- Colonnes spécifiques à l'app Links
 -- ============================================================
-CREATE TABLE public.beneficiaires (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  profile_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
-  consultant_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE RESTRICT,
-  statut TEXT NOT NULL DEFAULT 'actif' CHECK (statut IN ('actif', 'en_pause', 'termine', 'abandonne')),
-  metadata JSONB DEFAULT '{}',
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS consultant_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  ADD COLUMN IF NOT EXISTS date_debut_bilan DATE,
+  ADD COLUMN IF NOT EXISTS date_fin_bilan DATE;
 
-ALTER TABLE public.beneficiaires ENABLE ROW LEVEL SECURITY;
-
-CREATE TRIGGER set_beneficiaires_updated_at
-  BEFORE UPDATE ON public.beneficiaires
-  FOR EACH ROW
-  EXECUTE FUNCTION public.handle_updated_at();
-
--- Indexes
-CREATE INDEX idx_beneficiaires_profile_id ON public.beneficiaires(profile_id);
-CREATE INDEX idx_beneficiaires_consultant_id ON public.beneficiaires(consultant_id);
-CREATE INDEX idx_beneficiaires_statut ON public.beneficiaires(statut);
-
--- ============================================================
--- Table: bilans
--- Bilans de compétences d'un bénéficiaire
--- ============================================================
-CREATE TABLE public.bilans (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  beneficiaire_id UUID NOT NULL REFERENCES public.beneficiaires(id) ON DELETE CASCADE,
-  type TEXT NOT NULL CHECK (type IN ('initial', 'intermediaire', 'final')),
-  statut TEXT NOT NULL DEFAULT 'brouillon' CHECK (statut IN ('brouillon', 'en_cours', 'termine', 'valide')),
-  date_debut DATE,
-  date_fin DATE,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
-
-ALTER TABLE public.bilans ENABLE ROW LEVEL SECURITY;
-
-CREATE TRIGGER set_bilans_updated_at
-  BEFORE UPDATE ON public.bilans
-  FOR EACH ROW
-  EXECUTE FUNCTION public.handle_updated_at();
-
--- Indexes
-CREATE INDEX idx_bilans_beneficiaire_id ON public.bilans(beneficiaire_id);
-CREATE INDEX idx_bilans_statut ON public.bilans(statut);
+CREATE INDEX IF NOT EXISTS idx_profiles_consultant_id ON public.profiles(consultant_id);
 
 -- ============================================================
 -- Table: questionnaires
--- Modèles de questionnaires (gérés par les consultants)
+-- Modèles de questionnaires par phase (1-6)
+-- Gérés par le super_admin
 -- ============================================================
 CREATE TABLE public.questionnaires (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  titre TEXT NOT NULL,
+  phase_number INT NOT NULL CHECK (phase_number BETWEEN 1 AND 6),
+  title TEXT NOT NULL,
   description TEXT,
-  version INT NOT NULL DEFAULT 1,
-  is_active BOOLEAN DEFAULT true,
+  sort_order INT NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
 ALTER TABLE public.questionnaires ENABLE ROW LEVEL SECURITY;
 
+CREATE INDEX idx_questionnaires_phase_number ON public.questionnaires(phase_number);
+
 -- ============================================================
 -- Table: questions
--- Questions d'un questionnaire
+-- Questions associées à un questionnaire de phase
 -- ============================================================
 CREATE TABLE public.questions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   questionnaire_id UUID NOT NULL REFERENCES public.questionnaires(id) ON DELETE CASCADE,
-  ordre INT NOT NULL,
-  texte TEXT NOT NULL,
-  type TEXT NOT NULL CHECK (type IN ('text', 'textarea', 'select', 'multiselect', 'radio', 'checkbox', 'scale')),
-  options JSONB DEFAULT '[]',
-  required BOOLEAN DEFAULT false,
-  UNIQUE (questionnaire_id, ordre)
+  text TEXT NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 
 ALTER TABLE public.questions ENABLE ROW LEVEL SECURITY;
 
--- Indexes
 CREATE INDEX idx_questions_questionnaire_id ON public.questions(questionnaire_id);
+CREATE INDEX idx_questions_sort_order ON public.questions(questionnaire_id, sort_order);
 
 -- ============================================================
--- Table: responses
--- Réponses d'un bénéficiaire à un questionnaire (dans un bilan)
+-- Table: phase_responses
+-- Réponses d'un bénéficiaire aux questions d'une phase
+-- Autosave déclenché au blur + toutes les 30s
 -- ============================================================
-CREATE TABLE public.responses (
+CREATE TABLE public.phase_responses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  bilan_id UUID NOT NULL REFERENCES public.bilans(id) ON DELETE CASCADE,
-  question_id UUID NOT NULL REFERENCES public.questions(id) ON DELETE RESTRICT,
-  valeur JSONB NOT NULL,
+  beneficiary_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  question_id UUID NOT NULL REFERENCES public.questions(id) ON DELETE CASCADE,
+  response_text TEXT,
+  phase_number INT NOT NULL CHECK (phase_number BETWEEN 1 AND 6),
+  phase_status TEXT NOT NULL DEFAULT 'libre' CHECK (phase_status IN ('libre', 'en_cours', 'validee')),
+  last_saved_at TIMESTAMPTZ DEFAULT now(),
   created_at TIMESTAMPTZ DEFAULT now(),
-  UNIQUE (bilan_id, question_id)
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE (beneficiary_id, question_id)
 );
 
-ALTER TABLE public.responses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.phase_responses ENABLE ROW LEVEL SECURITY;
 
--- Indexes
-CREATE INDEX idx_responses_bilan_id ON public.responses(bilan_id);
-CREATE INDEX idx_responses_question_id ON public.responses(question_id);
+CREATE INDEX idx_phase_responses_beneficiary_id ON public.phase_responses(beneficiary_id);
+CREATE INDEX idx_phase_responses_question_id ON public.phase_responses(question_id);
+CREATE INDEX idx_phase_responses_phase_number ON public.phase_responses(beneficiary_id, phase_number);
+
+CREATE TRIGGER set_phase_responses_updated_at
+  BEFORE UPDATE ON public.phase_responses
+  FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
 -- ============================================================
--- Table: documents
--- Documents uploadés par/pour un bénéficiaire
+-- Table: phase_validations
+-- Statut de validation de chaque phase par bénéficiaire
+-- UNIQUE (beneficiary_id, phase_number) — une seule validation par phase
 -- ============================================================
-CREATE TABLE public.documents (
+CREATE TABLE public.phase_validations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  beneficiaire_id UUID NOT NULL REFERENCES public.beneficiaires(id) ON DELETE CASCADE,
-  bilan_id UUID REFERENCES public.bilans(id) ON DELETE SET NULL,
-  nom TEXT NOT NULL,
-  type TEXT NOT NULL CHECK (type IN ('cv', 'lettre_motivation', 'synthese', 'attestation', 'autre')),
-  storage_path TEXT NOT NULL,
-  uploaded_by UUID NOT NULL REFERENCES public.profiles(id) ON DELETE RESTRICT,
-  created_at TIMESTAMPTZ DEFAULT now()
+  beneficiary_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  phase_number INT NOT NULL CHECK (phase_number BETWEEN 1 AND 6),
+  status TEXT NOT NULL DEFAULT 'libre' CHECK (status IN ('libre', 'en_cours', 'validee')),
+  validated_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE (beneficiary_id, phase_number)
 );
 
-ALTER TABLE public.documents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.phase_validations ENABLE ROW LEVEL SECURITY;
 
--- Indexes
-CREATE INDEX idx_documents_beneficiaire_id ON public.documents(beneficiaire_id);
-CREATE INDEX idx_documents_bilan_id ON public.documents(bilan_id);
+CREATE INDEX idx_phase_validations_beneficiary_id ON public.phase_validations(beneficiary_id);
+
+CREATE TRIGGER set_phase_validations_updated_at
+  BEFORE UPDATE ON public.phase_validations
+  FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
+
+-- ============================================================
+-- Table: sessions
+-- 6 séances de suivi consultant ↔ bénéficiaire
+-- UNIQUE (beneficiary_id, session_number) — une séance par numéro
+-- ============================================================
+CREATE TABLE public.sessions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  beneficiary_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  session_number INT NOT NULL CHECK (session_number BETWEEN 1 AND 6),
+  scheduled_at TIMESTAMPTZ,
+  visio_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE (beneficiary_id, session_number)
+);
+
+ALTER TABLE public.sessions ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_sessions_beneficiary_id ON public.sessions(beneficiary_id);
+
+CREATE TRIGGER set_sessions_updated_at
+  BEFORE UPDATE ON public.sessions
+  FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
+
+-- ============================================================
+-- Table: session_notes
+-- Comptes-rendus de séances (confidentiels — consultant uniquement)
+-- RG-CON-03 : confidentialité absolue, bénéficiaire sans accès
+-- ============================================================
+CREATE TABLE public.session_notes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  beneficiary_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  consultant_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE RESTRICT,
+  session_number INT NOT NULL CHECK (session_number BETWEEN 1 AND 6),
+  content TEXT,
+  max_length INT DEFAULT 10000,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE (beneficiary_id, session_number)
+);
+
+ALTER TABLE public.session_notes ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_session_notes_beneficiary_id ON public.session_notes(beneficiary_id);
+CREATE INDEX idx_session_notes_consultant_id ON public.session_notes(consultant_id);
+
+CREATE TRIGGER set_session_notes_updated_at
+  BEFORE UPDATE ON public.session_notes
+  FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
+
+-- ============================================================
+-- Table: phase_documents
+-- Documents mis à disposition par phase (PDF/DOCX)
+-- Gérés exclusivement par le super_admin
+-- Stockés dans le bucket Supabase Storage "phase-documents"
+-- ============================================================
+CREATE TABLE public.phase_documents (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  phase_number INT NOT NULL CHECK (phase_number BETWEEN 1 AND 6),
+  filename TEXT NOT NULL,
+  storage_path TEXT NOT NULL,
+  display_name TEXT NOT NULL,
+  file_type TEXT NOT NULL CHECK (file_type IN ('pdf', 'docx')),
+  sort_order INT NOT NULL DEFAULT 0,
+  uploaded_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE public.phase_documents ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_phase_documents_phase_number ON public.phase_documents(phase_number, sort_order);
+
+CREATE TRIGGER set_phase_documents_updated_at
+  BEFORE UPDATE ON public.phase_documents
+  FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();

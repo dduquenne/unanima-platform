@@ -1,119 +1,155 @@
 import { z } from 'zod'
 
 // ============================================================
-// Beneficiaires
+// Authentification
 // ============================================================
-export const beneficiaireStatutEnum = z.enum(['actif', 'en_pause', 'termine', 'abandonne'])
 
-export const createBeneficiaireSchema = z.object({
-  profile_id: z.string().uuid(),
-  consultant_id: z.string().uuid(),
-  statut: beneficiaireStatutEnum.optional().default('actif'),
-  metadata: z.record(z.string(), z.unknown()).optional().default({}),
+export const loginSchema = z.object({
+  email: z.string().email('Email invalide'),
+  password: z.string().min(8, 'Mot de passe : 8 caractères minimum'),
 })
 
-export const updateBeneficiaireSchema = z.object({
-  statut: beneficiaireStatutEnum.optional(),
-  metadata: z.record(z.string(), z.unknown()).optional(),
+export const resetPasswordRequestSchema = z.object({
+  email: z.string().email('Email invalide'),
 })
 
-// ============================================================
-// Bilans
-// ============================================================
-export const bilanTypeEnum = z.enum(['initial', 'intermediaire', 'final'])
-export const bilanStatutEnum = z.enum(['brouillon', 'en_cours', 'termine', 'valide'])
-
-export const createBilanSchema = z.object({
-  beneficiaire_id: z.string().uuid(),
-  type: bilanTypeEnum,
-  statut: bilanStatutEnum.optional().default('brouillon'),
-  date_debut: z.string().date().nullable().optional(),
-  date_fin: z.string().date().nullable().optional(),
-})
-
-export const updateBilanSchema = z.object({
-  statut: bilanStatutEnum.optional(),
-  date_debut: z.string().date().nullable().optional(),
-  date_fin: z.string().date().nullable().optional(),
+export const resetPasswordSchema = z.object({
+  password: z.string().min(8, 'Mot de passe : 8 caractères minimum'),
+  token: z.string().min(1, 'Token requis'),
 })
 
 // ============================================================
-// Questionnaires
+// Phases — enum partagé
 // ============================================================
-export const createQuestionnaireSchema = z.object({
-  titre: z.string().min(1).max(255),
-  description: z.string().nullable().optional(),
-  version: z.number().int().positive().optional().default(1),
-  is_active: z.boolean().optional().default(true),
-})
 
-export const updateQuestionnaireSchema = z.object({
-  titre: z.string().min(1).max(255).optional(),
-  description: z.string().nullable().optional(),
-  version: z.number().int().positive().optional(),
-  is_active: z.boolean().optional(),
-})
+export const phaseStatusEnum = z.enum(['libre', 'en_cours', 'validee'])
+export const phaseNumberSchema = z.number().int().min(1).max(6)
 
 // ============================================================
-// Questions
+// Phase responses (bénéficiaire — saisie + autosave)
 // ============================================================
-export const questionTypeEnum = z.enum(['text', 'textarea', 'select', 'multiselect', 'radio', 'checkbox', 'scale'])
 
-export const createQuestionSchema = z.object({
-  questionnaire_id: z.string().uuid(),
-  ordre: z.number().int().nonnegative(),
-  texte: z.string().min(1),
-  type: questionTypeEnum,
-  options: z.array(z.unknown()).optional().default([]),
-  required: z.boolean().optional().default(false),
-})
-
-export const updateQuestionSchema = z.object({
-  ordre: z.number().int().nonnegative().optional(),
-  texte: z.string().min(1).optional(),
-  type: questionTypeEnum.optional(),
-  options: z.array(z.unknown()).optional(),
-  required: z.boolean().optional(),
-})
-
-// ============================================================
-// Responses
-// ============================================================
-export const createResponseSchema = z.object({
-  bilan_id: z.string().uuid(),
+export const phaseResponseSchema = z.object({
+  beneficiary_id: z.string().uuid(),
   question_id: z.string().uuid(),
-  valeur: z.unknown(),
+  response_text: z.string().nullable().optional(),
+  phase_number: phaseNumberSchema,
+  phase_status: phaseStatusEnum.optional().default('en_cours'),
 })
 
-export const updateResponseSchema = z.object({
-  valeur: z.unknown(),
+export const updatePhaseResponseSchema = z.object({
+  response_text: z.string().nullable().optional(),
+  phase_status: phaseStatusEnum.optional(),
 })
 
-// ============================================================
-// Documents
-// ============================================================
-export const documentTypeEnum = z.enum(['cv', 'lettre_motivation', 'synthese', 'attestation', 'autre'])
-
-export const createDocumentSchema = z.object({
-  beneficiaire_id: z.string().uuid(),
-  bilan_id: z.string().uuid().nullable().optional(),
-  nom: z.string().min(1).max(255),
-  type: documentTypeEnum,
-  storage_path: z.string().min(1),
-  uploaded_by: z.string().uuid(),
+/** Payload minimal pour l'autosave (déclenché au blur + toutes les 30s) */
+export const autosaveSchema = z.object({
+  question_id: z.string().uuid(),
+  response_text: z.string().nullable(),
+  phase_number: phaseNumberSchema,
 })
 
 // ============================================================
-// Types inférés pour les inputs
+// Phase validations (bénéficiaire — valider / dé-valider une phase)
 // ============================================================
-export type CreateBeneficiaireInput = z.infer<typeof createBeneficiaireSchema>
-export type UpdateBeneficiaireInput = z.infer<typeof updateBeneficiaireSchema>
-export type CreateBilanInput = z.infer<typeof createBilanSchema>
-export type UpdateBilanInput = z.infer<typeof updateBilanSchema>
-export type CreateQuestionnaireInput = z.infer<typeof createQuestionnaireSchema>
-export type UpdateQuestionnaireInput = z.infer<typeof updateQuestionnaireSchema>
-export type CreateQuestionInput = z.infer<typeof createQuestionSchema>
-export type UpdateQuestionInput = z.infer<typeof updateQuestionSchema>
-export type CreateResponseInput = z.infer<typeof createResponseSchema>
-export type UpdateResponseInput = z.infer<typeof updateResponseSchema>
-export type CreateDocumentInput = z.infer<typeof createDocumentSchema>
+
+export const phaseValidationSchema = z.object({
+  beneficiary_id: z.string().uuid(),
+  phase_number: phaseNumberSchema,
+  status: phaseStatusEnum.optional().default('validee'),
+})
+
+export const updatePhaseValidationSchema = z.object({
+  status: phaseStatusEnum,
+})
+
+// ============================================================
+// Sessions (consultant — planification des 6 séances)
+// ============================================================
+
+export const sessionSchema = z.object({
+  beneficiary_id: z.string().uuid(),
+  session_number: z.number().int().min(1).max(6),
+  scheduled_at: z.string().datetime({ offset: true }).nullable().optional(),
+  visio_url: z.string().url('URL de visioconférence invalide').nullable().optional(),
+})
+
+export const updateSessionSchema = z.object({
+  scheduled_at: z.string().datetime({ offset: true }).nullable().optional(),
+  visio_url: z.string().url('URL de visioconférence invalide').nullable().optional(),
+})
+
+export const visioUrlSchema = z.object({
+  url: z.string().url('URL de visioconférence invalide'),
+})
+
+// ============================================================
+// Session notes (consultant — comptes-rendus confidentiels)
+// ============================================================
+
+export const sessionNoteSchema = z.object({
+  beneficiary_id: z.string().uuid(),
+  session_number: z.number().int().min(1).max(6),
+  content: z.string().max(10000, '10 000 caractères maximum').nullable().optional(),
+})
+
+export const updateSessionNoteSchema = z.object({
+  content: z.string().max(10000, '10 000 caractères maximum').nullable(),
+})
+
+// ============================================================
+// Admin — gestion des comptes utilisateurs
+// ============================================================
+
+export const createUserSchema = z.object({
+  email: z.string().email('Email invalide'),
+  full_name: z.string().min(1, 'Nom requis').max(255),
+  role: z.enum(['beneficiaire', 'consultant', 'super_admin']),
+  consultant_id: z.string().uuid().nullable().optional(),
+})
+
+export const updateUserSchema = z.object({
+  full_name: z.string().min(1).max(255).optional(),
+  role: z.enum(['beneficiaire', 'consultant', 'super_admin']).optional(),
+  is_active: z.boolean().optional(),
+  consultant_id: z.string().uuid().nullable().optional(),
+  date_debut_bilan: z.string().date().nullable().optional(),
+  date_fin_bilan: z.string().date().nullable().optional(),
+})
+
+// ============================================================
+// Admin — documents de phase (upload)
+// ============================================================
+
+export const phaseDocumentUploadSchema = z.object({
+  phase_number: phaseNumberSchema,
+  display_name: z.string().min(1).max(255),
+  file_type: z.enum(['pdf', 'docx']),
+  sort_order: z.number().int().nonnegative().optional().default(0),
+})
+
+// ============================================================
+// Types inférés depuis les schémas
+// ============================================================
+
+export type LoginInput = z.infer<typeof loginSchema>
+export type ResetPasswordRequestInput = z.infer<typeof resetPasswordRequestSchema>
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>
+
+export type PhaseResponseInput = z.infer<typeof phaseResponseSchema>
+export type UpdatePhaseResponseInput = z.infer<typeof updatePhaseResponseSchema>
+export type AutosaveInput = z.infer<typeof autosaveSchema>
+
+export type PhaseValidationInput = z.infer<typeof phaseValidationSchema>
+export type UpdatePhaseValidationInput = z.infer<typeof updatePhaseValidationSchema>
+
+export type SessionInput = z.infer<typeof sessionSchema>
+export type UpdateSessionInput = z.infer<typeof updateSessionSchema>
+
+export type SessionNoteInput = z.infer<typeof sessionNoteSchema>
+export type UpdateSessionNoteInput = z.infer<typeof updateSessionNoteSchema>
+
+export type CreateUserInput = z.infer<typeof createUserSchema>
+export type UpdateUserInput = z.infer<typeof updateUserSchema>
+
+export type PhaseDocumentUploadInput = z.infer<typeof phaseDocumentUploadSchema>
