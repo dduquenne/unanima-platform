@@ -28,11 +28,12 @@
 | 4 | #107 | [links] Middleware Next.js auth + routing RBAC 3 rôles | 🔴 Critique | S | archicodix, securix | #106 | ⚠️ Review RBAC |
 
 **Point de contrôle Phase 1 :**
-- [ ] Migrations appliquées sans erreur sur Supabase dev
-- [ ] RLS testée manuellement (3 sessions, 3 rôles)
-- [ ] Types TypeScript générés sans erreur
-- [ ] Middleware : bénéficiaire → 403 sur /beneficiaires (test manuel)
-- [ ] `pnpm build --filter=@unanima/links` vert
+- [x] Migrations appliquées sans erreur sur Supabase dev
+- [ ] RLS testée manuellement (3 sessions, 3 rôles) — ⚠️ À valider manuellement
+- [x] Types TypeScript générés sans erreur
+- [ ] Middleware : bénéficiaire → 403 sur /beneficiaires (test manuel) — ⚠️ À valider manuellement
+- [x] `pnpm build --filter=@unanima/links` vert (060bd5a)
+- [x] 53 tests unitaires Zod passent
 
 ---
 
@@ -43,9 +44,10 @@
 | 5 | #108 | [links] CI/CD pipeline (GitHub Actions + Vercel preview) | 🟡 Moyenne | S | pipelinix, deploix | — | — |
 
 **Point de contrôle Phase 2 :**
-- [ ] Workflow GitHub Actions passe sur une PR test
-- [ ] Déploiement Vercel preview déclenché automatiquement
-- [ ] Variables d'environnement configurées dans Vercel
+- [x] Workflow GitHub Actions configuré (4 jobs : lint → typecheck → test → build)
+- [ ] Workflow passe sur PR test — ⚠️ À vérifier via GitHub Actions
+- [ ] Déploiement Vercel preview déclenché automatiquement — ⚠️ À configurer
+- [ ] Variables d'environnement configurées dans Vercel — ⚠️ À configurer
 
 ---
 
