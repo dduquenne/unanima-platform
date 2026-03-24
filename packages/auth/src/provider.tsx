@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
 import type { AuthConfig, AuthContextValue, UserSession } from './types'
 
 export const AuthContext = createContext<AuthContextValue | null>(null)
@@ -20,7 +20,7 @@ function getSupabaseClient() {
     return null
   }
 
-  return createClient(url, anonKey)
+  return createBrowserClient(url, anonKey)
 }
 
 export function AuthProvider({ config, children }: AuthProviderProps) {
