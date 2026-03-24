@@ -1,9 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-const mockSelect = vi.fn()
-const mockEq = vi.fn()
-const mockSingle = vi.fn()
-const mockOrder = vi.fn()
 const mockFrom = vi.fn()
 
 vi.mock('@supabase/supabase-js', () => ({
