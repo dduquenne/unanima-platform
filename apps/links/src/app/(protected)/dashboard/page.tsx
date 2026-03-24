@@ -53,30 +53,54 @@ function getCurrentPhase(phases: PhaseData[]): number {
   return 1
 }
 
+interface SessionData {
+  session_number: number
+  scheduled_at: string | null
+  visio_url: string | null
+}
+
+type SessionStatus = 'realisee' | 'a_venir' | 'a_planifier'
+
+function getSessionStatus(session: SessionData): SessionStatus {
+  if (!session.scheduled_at) return 'a_planifier'
+  return new Date(session.scheduled_at) < new Date() ? 'realisee' : 'a_venir'
+}
+
+function getNextSession(sessions: SessionData[]): SessionData | null {
+  const now = new Date()
+  const upcoming = sessions
+    .filter((s) => s.scheduled_at && new Date(s.scheduled_at) > now)
+    .sort((a, b) => new Date(a.scheduled_at!).getTime() - new Date(b.scheduled_at!).getTime())
+  return upcoming[0] ?? null
+}
+
+function formatSessionDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
 export default function DashboardPage() {
   const { user } = useAuth()
   const router = useRouter()
   const [phases, setPhases] = useState<PhaseData[]>([])
+  const [sessions, setSessions] = useState<SessionData[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    async function loadPhases() {
-      try {
-        const response = await fetch('/api/phase-validations')
-        if (response.ok) {
-          const data = await response.json()
-          setPhases(data.data ?? [])
-        } else {
-          // No validations yet — initialize all as 'libre'
-          setPhases(
-            Array.from({ length: TOTAL_PHASES }, (_, i) => ({
-              phase_number: i + 1,
-              status: 'libre' as PhaseStatus,
-            }))
-          )
-        }
-      } catch {
-        // Fallback: all phases libre
+    async function loadData() {
+      const [phasesRes, sessionsRes] = await Promise.allSettled([
+        fetch('/api/phase-validations').then(r => r.ok ? r.json() : null),
+        fetch('/api/sessions').then(r => r.ok ? r.json() : null),
+      ])
+
+      if (phasesRes.status === 'fulfilled' && phasesRes.value?.data) {
+        setPhases(phasesRes.value.data)
+      } else {
         setPhases(
           Array.from({ length: TOTAL_PHASES }, (_, i) => ({
             phase_number: i + 1,
@@ -84,11 +108,16 @@ export default function DashboardPage() {
           }))
         )
       }
+
+      if (sessionsRes.status === 'fulfilled' && sessionsRes.value?.data) {
+        setSessions(sessionsRes.value.data)
+      }
+
       setIsLoading(false)
     }
 
     if (user) {
-      loadPhases()
+      loadData()
     }
   }, [user])
 
@@ -191,6 +220,113 @@ export default function DashboardPage() {
           </button>
         ))}
       </div>
+
+      {/* Session planning panel */}
+      <Card padding="lg">
+        <h2 className="mb-4 text-lg font-semibold text-[var(--color-text)]">
+          Planning des s&eacute;ances
+        </h2>
+        <SessionPlanning sessions={sessions} />
+      </Card>
+    </div>
+  )
+}
+
+// ============================================================
+// Session Planning Component
+// ============================================================
+
+const SESSION_STATUS_LABELS: Record<SessionStatus, string> = {
+  realisee: 'Réalisée',
+  a_venir: 'À venir',
+  a_planifier: 'À planifier',
+}
+
+function SessionPlanning({ sessions }: { sessions: SessionData[] }) {
+  // Ensure all 6 sessions exist
+  const allSessions: SessionData[] = Array.from({ length: 6 }, (_, i) => {
+    const existing = sessions.find((s) => s.session_number === i + 1)
+    return existing ?? { session_number: i + 1, scheduled_at: null, visio_url: null }
+  })
+
+  const nextSession = getNextSession(allSessions)
+  const hasAnyDate = allSessions.some((s) => s.scheduled_at)
+
+  if (!hasAnyDate) {
+    return (
+      <p className="text-sm text-[var(--color-text-secondary)]">
+        Votre consultante planifiera vos rendez-vous prochainement.
+      </p>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      {allSessions.map((session) => {
+        const status = getSessionStatus(session)
+        const isNext = nextSession?.session_number === session.session_number
+
+        return (
+          <div
+            key={session.session_number}
+            className={`flex items-center justify-between rounded-lg border p-3 ${
+              isNext
+                ? 'border-[#1E6FC0] bg-[#1E6FC0]/5'
+                : status === 'realisee'
+                  ? 'border-gray-200 bg-gray-50'
+                  : 'border-gray-200'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <span
+                className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold ${
+                  status === 'realisee'
+                    ? 'bg-gray-200 text-gray-500'
+                    : status === 'a_venir'
+                      ? 'bg-[#1E6FC0] text-white'
+                      : 'bg-gray-100 text-gray-400'
+                }`}
+              >
+                {session.session_number}
+              </span>
+              <div>
+                <p className="text-sm font-medium text-[var(--color-text)]">
+                  S&eacute;ance {session.session_number}
+                </p>
+                <p className="text-xs text-[var(--color-text-secondary)]">
+                  {session.scheduled_at
+                    ? formatSessionDate(session.scheduled_at)
+                    : SESSION_STATUS_LABELS[status]}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span
+                className={`text-xs font-medium ${
+                  status === 'realisee'
+                    ? 'text-gray-500'
+                    : status === 'a_venir'
+                      ? 'text-[#1E6FC0]'
+                      : 'text-gray-400'
+                }`}
+              >
+                {SESSION_STATUS_LABELS[status]}
+              </span>
+              {isNext && session.visio_url && (
+                <a
+                  href={session.visio_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md bg-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[var(--color-primary-dark)] transition-colors"
+                >
+                  Rejoindre la visio
+                </a>
+              )}
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }
