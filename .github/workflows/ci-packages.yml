@@ -23,6 +23,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check-rpc:
+    name: Cohérence RPC / Migrations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Vérifier cohérence RPC ↔ migrations SQL
+        run: ./scripts/check-rpc-consistency.sh
+
   build-and-test-all:
     name: Build & Test all packages and apps
     runs-on: ubuntu-latest

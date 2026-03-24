@@ -23,7 +23,8 @@
     "test:e2e": "turbo run test:e2e",
     "test:e2e:links": "turbo run test:e2e --filter=@unanima/links",
     "test:e2e:creai": "turbo run test:e2e --filter=@unanima/creai",
-    "test:e2e:omega": "turbo run test:e2e --filter=@unanima/omega"
+    "test:e2e:omega": "turbo run test:e2e --filter=@unanima/omega",
+    "check:rpc": "./scripts/check-rpc-consistency.sh"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",

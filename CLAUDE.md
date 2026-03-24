@@ -116,6 +116,7 @@ unanima-platform/
 │   └── tailwind/                ← Config Tailwind + presets de thèmes
 │
 └── scripts/
+    ├── check-rpc-consistency.sh ← Vérifie cohérence appels RPC ↔ migrations SQL
     ├── extract-app.sh           ← Script d'extraction pour livraison client
     ├── new-app.sh               ← Scaffolding d'une nouvelle app
     └── generate-types.sh        ← Génération des types Supabase
@@ -358,6 +359,9 @@ pnpm lint
 
 # Génération des types Supabase
 pnpm generate:types --filter=@unanima/links
+
+# Vérification cohérence RPC ↔ migrations SQL
+pnpm check:rpc
 
 # Extraction pour livraison client
 ./scripts/extract-app.sh links /chemin/sortie
