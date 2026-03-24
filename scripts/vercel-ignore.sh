@@ -5,12 +5,12 @@
 # Exit code 0 = skip deploy (no relevant changes)
 # Exit code 1 = proceed with deploy (changes detected)
 #
-# Usage: ./scripts/vercel-ignore.sh <app-name>
+# IMPORTANT: Vercel runs ignoreCommand from the REPOSITORY ROOT,
+# not from the configured Root Directory.
 #
-# This ensures that a deployment failure or code change in one app
-# does NOT trigger redeployment of another app.
+# Usage: ./scripts/vercel-ignore.sh <app-name>
 
-set -euo pipefail
+set -uo pipefail
 
 if [ $# -lt 1 ]; then
   echo "Usage: $0 <app-name>"
@@ -39,7 +39,23 @@ WATCHED_PATHS=(
 )
 
 # Use Vercel's VERCEL_GIT_PREVIOUS_SHA if available, otherwise compare with HEAD~1
-PREVIOUS_SHA="${VERCEL_GIT_PREVIOUS_SHA:-HEAD~1}"
+PREVIOUS_SHA="${VERCEL_GIT_PREVIOUS_SHA:-}"
+
+# If no previous SHA is available (first deployment), always deploy
+if [ -z "${PREVIOUS_SHA}" ]; then
+  echo "No previous deployment SHA found — proceeding with deployment of '${APP_NAME}'."
+  exit 1
+fi
+
+# Ensure the previous commit is available in shallow clones
+echo "Fetching previous commit ${PREVIOUS_SHA}..."
+git fetch --depth=1 origin "${PREVIOUS_SHA}" 2>/dev/null || true
+
+# Verify the commit is reachable
+if ! git cat-file -e "${PREVIOUS_SHA}" 2>/dev/null; then
+  echo "Previous SHA ${PREVIOUS_SHA} not reachable — proceeding with deployment of '${APP_NAME}'."
+  exit 1
+fi
 
 for path in "${WATCHED_PATHS[@]}"; do
   if git diff --quiet "${PREVIOUS_SHA}" HEAD -- "${path}" 2>/dev/null; then
