@@ -129,30 +129,19 @@ export default function LoginPage() {
       <div className="relative flex flex-1 flex-col items-center justify-center p-4">
         {/* ═══ LOGO + HEADLINE (MAQ-01) ═══ */}
         <div className="mb-8 text-center">
-          {/* Logo circle */}
+          {/* Logo on blue circle */}
           <div
-            className="relative mx-auto mb-4 flex items-center justify-center rounded-full"
+            className="mx-auto mb-4 flex items-center justify-center rounded-full"
             style={{
               width: 72,
               height: 72,
               backgroundColor: 'var(--color-primary)',
             }}
           >
-            <span
-              className="font-bold"
-              style={{ fontSize: 32, color: 'var(--color-text-inverse)' }}
-            >
-              L
-            </span>
-            <span
-              className="absolute rounded-full"
-              style={{
-                width: 8,
-                height: 8,
-                top: -2,
-                right: 6,
-                backgroundColor: 'var(--color-warning)',
-              }}
+            <img
+              src="/Links-logo.png"
+              alt="Link's Accompagnement"
+              style={{ height: 36 }}
             />
           </div>
           <h1

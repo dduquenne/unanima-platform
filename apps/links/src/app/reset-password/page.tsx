@@ -58,9 +58,15 @@ function PageShell({ children }: { children: React.ReactNode }) {
       <div className="relative flex flex-1 flex-col items-center justify-center p-4">
         {/* Logo */}
         <div className="mb-8 text-center">
-          <div className="relative mx-auto mb-4 flex h-[72px] w-[72px] items-center justify-center rounded-full bg-[var(--color-primary)]">
-            <span className="text-3xl font-bold text-[var(--color-text-inverse)]">L</span>
-            <span className="absolute -top-0.5 right-1 h-2 w-2 rounded-full bg-[var(--color-warning)]" />
+          <div
+            className="mx-auto mb-4 flex items-center justify-center rounded-full"
+            style={{ width: 72, height: 72, backgroundColor: 'var(--color-primary)' }}
+          >
+            <img
+              src="/Links-logo.png"
+              alt="Link's Accompagnement"
+              style={{ height: 36 }}
+            />
           </div>
         </div>
         {children}
