@@ -1,0 +1,365 @@
+<!-- MAQ-01 | Login | Link's Accompagnement | v2.0 | 2026-03-24 -->
+<!-- Design : Split-screen immersif — Panneau illustratif + Formulaire premium -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="'Inter', 'Segoe UI', Arial, sans-serif">
+
+  <!-- ======================== DEFS ======================== -->
+  <defs>
+    <!-- Ombres -->
+    <filter id="shadow-sm" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0D3B6E" flood-opacity="0.06"/>
+    </filter>
+    <filter id="shadow-md" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0D3B6E" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow-lg" x="-15%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="24" flood-color="#0D3B6E" flood-opacity="0.12"/>
+    </filter>
+    <filter id="shadow-card" x="-20%" y="-10%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="40" flood-color="#0D3B6E" flood-opacity="0.15"/>
+    </filter>
+    <filter id="glow-primary" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="20"/>
+    </filter>
+    <filter id="glow-accent" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12"/>
+    </filter>
+    <filter id="blur-bg" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+
+    <!-- Gradients -->
+    <linearGradient id="grad-panel" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#0D3B6E"/>
+      <stop offset="50%" stop-color="#134B82"/>
+      <stop offset="100%" stop-color="#0A2E58"/>
+    </linearGradient>
+    <linearGradient id="grad-btn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1E6FC0"/>
+      <stop offset="100%" stop-color="#0EA5E9"/>
+    </linearGradient>
+    <linearGradient id="grad-btn-hover" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2E7FD0"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="grad-accent-bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1E6FC0"/>
+      <stop offset="50%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="grad-orb1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0EA5E9" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#1E6FC0" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="grad-orb2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#FF6B35" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="grad-path" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0EA5E9" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#1E6FC0" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="grad-ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.03"/>
+    </linearGradient>
+
+    <!-- Clip pour le panneau gauche -->
+    <clipPath id="clip-left">
+      <rect x="0" y="0" width="620" height="900"/>
+    </clipPath>
+
+    <!-- Pattern grille subtile -->
+    <pattern id="grid-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="0.6" fill="#FFFFFF" opacity="0.08"/>
+    </pattern>
+  </defs>
+
+  <!-- ======================== PANNEAU DROIT — FOND CLAIR ======================== -->
+  <g id="right-panel">
+    <rect x="620" y="0" width="820" height="900" fill="#F5F7FA"/>
+    <!-- Motif de points subtil -->
+    <g opacity="0.4">
+      <circle cx="700" cy="100" r="1" fill="#DCE1EB"/>
+      <circle cx="740" cy="100" r="1" fill="#DCE1EB"/>
+      <circle cx="780" cy="100" r="1" fill="#DCE1EB"/>
+      <circle cx="700" cy="140" r="1" fill="#DCE1EB"/>
+      <circle cx="740" cy="140" r="1" fill="#DCE1EB"/>
+      <circle cx="780" cy="140" r="1" fill="#DCE1EB"/>
+      <circle cx="1340" cy="760" r="1" fill="#DCE1EB"/>
+      <circle cx="1380" cy="760" r="1" fill="#DCE1EB"/>
+      <circle cx="1340" cy="800" r="1" fill="#DCE1EB"/>
+      <circle cx="1380" cy="800" r="1" fill="#DCE1EB"/>
+    </g>
+    <!-- Blob décoratif en haut à droite -->
+    <circle cx="1380" cy="60" r="200" fill="#1E6FC0" opacity="0.02"/>
+    <circle cx="1400" cy="40" r="120" fill="#0EA5E9" opacity="0.03"/>
+  </g>
+
+  <!-- ======================== PANNEAU GAUCHE — ILLUSTRATIF ======================== -->
+  <g id="left-panel" clip-path="url(#clip-left)">
+    <!-- Fond dégradé sombre -->
+    <rect x="0" y="0" width="620" height="900" fill="url(#grad-panel)"/>
+
+    <!-- Grille de points subtile -->
+    <rect x="0" y="0" width="620" height="900" fill="url(#grid-pattern)"/>
+
+    <!-- Orbes lumineuses (profondeur et modernité) -->
+    <circle cx="150" cy="200" r="180" fill="url(#grad-orb1)" filter="url(#glow-primary)"/>
+    <circle cx="480" cy="680" r="140" fill="url(#grad-orb2)" filter="url(#glow-accent)"/>
+    <circle cx="520" cy="150" r="80" fill="#0EA5E9" opacity="0.06" filter="url(#glow-primary)"/>
+
+    <!-- Illustration abstraite : Parcours d'accompagnement -->
+    <g id="illustration" transform="translate(310, 380)">
+      <!-- Anneaux concentriques (symbolisant l'accompagnement, le cercle de confiance) -->
+      <circle cx="0" cy="0" r="160" fill="none" stroke="url(#grad-ring)" stroke-width="1"/>
+      <circle cx="0" cy="0" r="120" fill="none" stroke="url(#grad-ring)" stroke-width="1.2"/>
+      <circle cx="0" cy="0" r="80" fill="none" stroke="url(#grad-ring)" stroke-width="1.5"/>
+
+      <!-- Chemin courbe principal (parcours de compétences) -->
+      <path d="M -140 60 Q -80 -40, 0 -20 T 140 -60"
+            fill="none" stroke="url(#grad-path)" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M -120 100 Q -40 20, 40 40 T 160 0"
+            fill="none" stroke="#0EA5E9" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+
+      <!-- Points d'étape sur le parcours -->
+      <circle cx="-140" cy="60" r="6" fill="#0EA5E9" opacity="0.8"/>
+      <circle cx="-140" cy="60" r="12" fill="#0EA5E9" opacity="0.15"/>
+      <circle cx="0" cy="-20" r="8" fill="#1E6FC0"/>
+      <circle cx="0" cy="-20" r="16" fill="#1E6FC0" opacity="0.12"/>
+      <circle cx="140" cy="-60" r="7" fill="#FF6B35" opacity="0.9"/>
+      <circle cx="140" cy="-60" r="14" fill="#FF6B35" opacity="0.15"/>
+
+      <!-- Connexions entre points (liens d'accompagnement) -->
+      <line x1="-80" y1="-10" x2="-40" y2="-20" stroke="#FFFFFF" stroke-width="0.5" opacity="0.12"/>
+      <line x1="40" y1="-30" x2="90" y2="-50" stroke="#FFFFFF" stroke-width="0.5" opacity="0.12"/>
+
+      <!-- Formes géométriques flottantes -->
+      <!-- Losange -->
+      <g transform="translate(-60, -100) rotate(45)">
+        <rect x="-10" y="-10" width="20" height="20" rx="3" fill="none" stroke="#0EA5E9" stroke-width="1.2" opacity="0.4"/>
+      </g>
+      <!-- Triangle -->
+      <polygon points="100,80 115,105 85,105" fill="none" stroke="#FF6B35" stroke-width="1.2" opacity="0.3"/>
+      <!-- Petit cercle -->
+      <circle cx="-160" cy="-60" r="4" fill="#FFFFFF" opacity="0.15"/>
+      <circle cx="170" cy="40" r="3" fill="#0EA5E9" opacity="0.3"/>
+      <!-- Croix -->
+      <g transform="translate(60, 120)" opacity="0.2">
+        <line x1="-6" y1="0" x2="6" y2="0" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="0" y1="-6" x2="0" y2="6" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <!-- Logo Link's (grand, dans le panneau) -->
+    <g id="logo-left" transform="translate(310, 120)">
+      <!-- Conteneur logo avec glass effect -->
+      <rect x="-32" y="-32" width="64" height="64" rx="16" fill="#FFFFFF" opacity="0.1"/>
+      <rect x="-32" y="-32" width="64" height="64" rx="16" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.2"/>
+      <!-- Lettre L -->
+      <text x="0" y="12" text-anchor="middle" font-size="36" font-weight="800" fill="#FFFFFF" letter-spacing="-1">L</text>
+      <!-- Point accent orange -->
+      <circle cx="14" cy="-16" r="5" fill="#FF6B35"/>
+    </g>
+
+    <!-- Titre dans le panneau gauche -->
+    <g id="branding-text" transform="translate(310, 210)">
+      <text x="0" y="0" text-anchor="middle" font-size="28" font-weight="700" fill="#FFFFFF" letter-spacing="-0.5">
+        Link's Accompagnement
+      </text>
+      <text x="0" y="32" text-anchor="middle" font-size="15" fill="#FFFFFF" opacity="0.6" letter-spacing="0.2">
+        Votre espace de suivi personnalisé
+      </text>
+    </g>
+
+    <!-- Citation / accroche en bas du panneau -->
+    <g id="quote" transform="translate(60, 720)">
+      <!-- Barre latérale accent -->
+      <rect x="0" y="0" width="3" height="56" rx="1.5" fill="#0EA5E9" opacity="0.6"/>
+      <text x="20" y="16" font-size="14" fill="#FFFFFF" opacity="0.7" font-style="italic">
+        « Chaque parcours est unique.
+      </text>
+      <text x="20" y="36" font-size="14" fill="#FFFFFF" opacity="0.7" font-style="italic">
+        Nous vous accompagnons à chaque étape. »
+      </text>
+      <text x="20" y="56" font-size="12" fill="#FFFFFF" opacity="0.4">
+        — L'équipe Link's
+      </text>
+    </g>
+
+    <!-- Indicateurs en bas -->
+    <g id="trust-badges" transform="translate(310, 840)">
+      <!-- Badge sécurité -->
+      <g transform="translate(-120, 0)">
+        <!-- Icône cadenas -->
+        <rect x="-6" y="-1" width="12" height="9" rx="2" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.4"/>
+        <path d="M-3 -1 v-3 a3 3 0 0 1 6 0 v3" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.4" stroke-linecap="round"/>
+        <text x="14" y="6" font-size="11" fill="#FFFFFF" opacity="0.4">Connexion sécurisée</text>
+      </g>
+      <!-- Badge RGPD -->
+      <g transform="translate(60, 0)">
+        <!-- Icône bouclier -->
+        <path d="M0,-6 L6,-3 L6,3 Q6,8 0,10 Q-6,8 -6,3 L-6,-3 Z" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.4"/>
+        <text x="14" y="6" font-size="11" fill="#FFFFFF" opacity="0.4">Conforme RGPD</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ======================== ZONE FORMULAIRE (PANNEAU DROIT) ======================== -->
+  <g id="form-area" transform="translate(1030, 450)">
+    <!-- Carte formulaire avec glassmorphism subtil -->
+    <g id="login-card">
+      <!-- Ombre de la carte -->
+      <rect x="-210" y="-270" width="420" height="540" rx="20" fill="white" filter="url(#shadow-card)"/>
+      <!-- Corps carte -->
+      <rect x="-210" y="-270" width="420" height="540" rx="20" fill="#FFFFFF"/>
+      <!-- Barre accent gradient en haut -->
+      <rect x="-210" y="-270" width="420" height="4" rx="2" fill="url(#grad-accent-bar)"/>
+
+      <!-- Titre "Connexion" -->
+      <text x="0" y="-210" text-anchor="middle" font-size="24" font-weight="700" fill="#0D3B6E" letter-spacing="-0.5">
+        Connexion
+      </text>
+      <text x="0" y="-186" text-anchor="middle" font-size="13" fill="#6B7A99">
+        Accédez à votre espace sécurisé
+      </text>
+
+      <!-- Séparateur décoratif sous le titre -->
+      <line x1="-30" y1="-170" x2="30" y2="-170" stroke="#DCE1EB" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- ---- Champ Email ---- -->
+      <g id="field-email" transform="translate(0, -130)">
+        <text x="-178" y="-8" font-size="13" font-weight="600" fill="#4A4A4A">Adresse email</text>
+        <!-- Input container (état normal) -->
+        <rect x="-178" y="2" width="356" height="48" rx="12" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+        <!-- Icône enveloppe -->
+        <g transform="translate(-158, 26)">
+          <rect x="-8" y="-6" width="16" height="11" rx="2" fill="none" stroke="#9BA8BF" stroke-width="1.4"/>
+          <polyline points="-8,-6 0,2 8,-6" fill="none" stroke="#9BA8BF" stroke-width="1.4" stroke-linejoin="round"/>
+        </g>
+        <!-- Placeholder -->
+        <text x="-130" y="31" font-size="13.5" fill="#B0BAD0">votre@email.fr</text>
+      </g>
+
+      <!-- ---- Champ Mot de passe (état focus) ---- -->
+      <g id="field-password" transform="translate(0, -20)">
+        <text x="-178" y="-8" font-size="13" font-weight="600" fill="#4A4A4A">Mot de passe</text>
+        <!-- Input container (état focus avec ring) -->
+        <rect x="-180" y="0" width="360" height="52" rx="14" fill="#1E6FC0" opacity="0.06"/>
+        <rect x="-178" y="2" width="356" height="48" rx="12" fill="#FFFFFF" stroke="#1E6FC0" stroke-width="2"/>
+        <!-- Icône cadenas (bleu = focus) -->
+        <g transform="translate(-158, 26)">
+          <rect x="-7" y="-2" width="14" height="10" rx="2" fill="none" stroke="#1E6FC0" stroke-width="1.5"/>
+          <path d="M-4 -2 v-4 a4 4 0 0 1 8 0 v4" fill="none" stroke="#1E6FC0" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="0" cy="3" r="2" fill="#1E6FC0"/>
+        </g>
+        <!-- Pastilles password -->
+        <circle cx="-130" cy="26" r="3.5" fill="#4A4A4A"/>
+        <circle cx="-116" cy="26" r="3.5" fill="#4A4A4A"/>
+        <circle cx="-102" cy="26" r="3.5" fill="#4A4A4A"/>
+        <circle cx="-88" cy="26" r="3.5" fill="#4A4A4A"/>
+        <circle cx="-74" cy="26" r="3.5" fill="#4A4A4A"/>
+        <circle cx="-60" cy="26" r="3.5" fill="#4A4A4A"/>
+        <circle cx="-46" cy="26" r="3.5" fill="#4A4A4A"/>
+        <circle cx="-32" cy="26" r="3.5" fill="#4A4A4A"/>
+        <!-- Icône œil barré (afficher/masquer) -->
+        <g transform="translate(158, 26)">
+          <ellipse cx="0" cy="0" rx="9" ry="6" fill="none" stroke="#9BA8BF" stroke-width="1.4"/>
+          <circle cx="0" cy="0" r="3" fill="none" stroke="#9BA8BF" stroke-width="1.4"/>
+          <line x1="-10" y1="-8" x2="10" y2="8" stroke="#9BA8BF" stroke-width="1.4" stroke-linecap="round"/>
+        </g>
+      </g>
+
+      <!-- ---- Lien "Mot de passe oublié ?" ---- -->
+      <text x="178" y="68" text-anchor="end" font-size="12.5" fill="#1E6FC0" font-weight="500">
+        Mot de passe oublié ?
+      </text>
+
+      <!-- ---- Message d'erreur (visible pour montrer l'état) ---- -->
+      <g id="error-message" transform="translate(0, 92)">
+        <rect x="-178" y="0" width="356" height="42" rx="10" fill="#FFF2F2" stroke="#E53935" stroke-width="1"/>
+        <!-- Icône alerte -->
+        <circle cx="-156" cy="21" r="9" fill="#E53935"/>
+        <text x="-156" y="25" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">!</text>
+        <text x="-140" y="25" font-size="12.5" fill="#C62828" font-weight="500">
+          Email ou mot de passe incorrect.
+        </text>
+      </g>
+
+      <!-- ---- Bouton "Se connecter" ---- -->
+      <g id="btn-submit" transform="translate(0, 156)">
+        <!-- Ombre du bouton -->
+        <rect x="-178" y="3" width="356" height="50" rx="12" fill="#1E6FC0" opacity="0.2" filter="url(#shadow-sm)"/>
+        <!-- Bouton gradient -->
+        <rect x="-178" y="0" width="356" height="50" rx="12" fill="url(#grad-btn)"/>
+        <!-- Texte -->
+        <text x="-10" y="31" text-anchor="middle" font-size="15" font-weight="700" fill="#FFFFFF" letter-spacing="0.3">
+          Se connecter
+        </text>
+        <!-- Flèche droite -->
+        <g transform="translate(80, 25)">
+          <line x1="0" y1="0" x2="10" y2="0" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+          <polyline points="6,-4 10,0 6,4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+        </g>
+      </g>
+
+      <!-- ---- Séparateur "ou" ---- -->
+      <g transform="translate(0, 226)">
+        <line x1="-178" y1="0" x2="-20" y2="0" stroke="#DCE1EB" stroke-width="1"/>
+        <text x="0" y="4" text-anchor="middle" font-size="11.5" fill="#9BA8BF">ou</text>
+        <line x1="20" y1="0" x2="178" y2="0" stroke="#DCE1EB" stroke-width="1"/>
+      </g>
+
+      <!-- ---- Section support ---- -->
+      <g transform="translate(0, 252)">
+        <text x="0" y="0" text-anchor="middle" font-size="12.5" fill="#6B7A99">Besoin d'aide ?</text>
+        <text x="0" y="20" text-anchor="middle" font-size="12.5" fill="#1E6FC0" font-weight="500">
+          Contacter le support
+        </text>
+        <line x1="-55" y1="22" x2="55" y2="22" stroke="#1E6FC0" stroke-width="0.8" opacity="0.5"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ======================== FOOTER (panneau droit) ======================== -->
+  <g id="footer" transform="translate(1030, 860)">
+    <text x="0" y="0" text-anchor="middle" font-size="11" fill="#9BA8BF">
+      © 2026 Link's Accompagnement — Unanima Platform
+    </text>
+    <text x="0" y="18" text-anchor="middle" font-size="11" fill="#B0BAD0">
+      Mentions légales · Politique de confidentialité · RGPD
+    </text>
+  </g>
+
+  <!-- ======================== ANNOTATIONS MAQUETTE ======================== -->
+  <g id="annotations">
+    <!-- Badge version -->
+    <rect x="640" y="20" width="120" height="26" rx="8" fill="#1E6FC0" opacity="0.08"/>
+    <text x="700" y="37" text-anchor="middle" font-size="11" font-weight="600" fill="#1E6FC0">MAQ-01 · v2.0</text>
+    <!-- Badge statut -->
+    <rect x="770" y="20" width="100" height="26" rx="8" fill="#28A745" opacity="0.08"/>
+    <text x="820" y="37" text-anchor="middle" font-size="11" font-weight="600" fill="#28A745">Haute-fidélité</text>
+    <!-- Badge design -->
+    <rect x="880" y="20" width="100" height="26" rx="8" fill="#FF6B35" opacity="0.08"/>
+    <text x="930" y="37" text-anchor="middle" font-size="11" font-weight="600" fill="#FF6B35">Split-screen</text>
+    <!-- Date -->
+    <text x="1410" y="37" text-anchor="end" font-size="11" fill="#9BA8BF">2026-03-24</text>
+
+    <!-- Palette de couleurs -->
+    <g transform="translate(640, 860)">
+      <text x="0" y="0" font-size="10" fill="#9BA8BF" font-weight="600">Palette :</text>
+      <rect x="55" y="-10" width="14" height="14" rx="3" fill="#1E6FC0"/>
+      <text x="73" y="0" font-size="10" fill="#9BA8BF">Primary</text>
+      <rect x="125" y="-10" width="14" height="14" rx="3" fill="#0D3B6E"/>
+      <text x="143" y="0" font-size="10" fill="#9BA8BF">Dark</text>
+      <rect x="175" y="-10" width="14" height="14" rx="3" fill="#0EA5E9"/>
+      <text x="193" y="0" font-size="10" fill="#9BA8BF">Secondary</text>
+      <rect x="260" y="-10" width="14" height="14" rx="3" fill="#FF6B35"/>
+      <text x="278" y="0" font-size="10" fill="#9BA8BF">Accent</text>
+      <rect x="325" y="-10" width="14" height="14" rx="3" fill="#28A745"/>
+      <text x="343" y="0" font-size="10" fill="#9BA8BF">Success</text>
+      <rect x="395" y="-10" width="14" height="14" rx="3" fill="#F5F7FA" stroke="#DCE1EB" stroke-width="1"/>
+      <text x="413" y="0" font-size="10" fill="#9BA8BF">Bg</text>
+    </g>
+  </g>
+
+</svg>
