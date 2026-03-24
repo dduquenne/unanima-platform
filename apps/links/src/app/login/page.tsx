@@ -1,14 +1,33 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useMemo } from 'react'
-import { LoginForm, useAuth } from '@unanima/auth'
-import { Card } from '@unanima/core'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useAuth } from '@unanima/auth'
+import { Button, Card, Input } from '@unanima/core'
+
+const ROLE_HOME: Record<string, string> = {
+  beneficiaire: '/dashboard',
+  consultant: '/beneficiaires',
+  super_admin: '/admin',
+}
 
 const ERROR_MESSAGES: Record<string, string> = {
   compte_desactive: 'Votre compte a été désactivé. Contactez votre administrateur.',
-  auth: 'Erreur d\u2019authentification. Veuillez réessayer.',
+  auth: "Erreur d'authentification. Veuillez réessayer.",
   config: 'Erreur de configuration du serveur.',
+}
+
+interface LoginResponse {
+  error?: string
+  success?: boolean
+  role?: string
+  locked?: boolean
+  disabled?: boolean
+  attemptsRemaining?: number
+  session?: {
+    access_token: string
+    refresh_token: string
+  }
 }
 
 export default function LoginPage() {
@@ -16,16 +35,70 @@ export default function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [isLocked, setIsLocked] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const urlError = useMemo(() => {
     const errorCode = searchParams.get('error')
     return errorCode ? ERROR_MESSAGES[errorCode] ?? null : null
   }, [searchParams])
 
+  const redirectPath = useMemo(() => {
+    return searchParams.get('redirect') ?? null
+  }, [searchParams])
+
   useEffect(() => {
     if (!isLoading && user) {
-      router.replace('/dashboard')
+      const dest = ROLE_HOME[user.role] ?? '/dashboard'
+      router.replace(dest)
     }
   }, [user, isLoading, router])
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    setError(null)
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data: LoginResponse = await response.json()
+
+      if (!response.ok) {
+        setError(data.error ?? 'Erreur de connexion.')
+        setIsLocked(data.locked === true)
+        setIsSubmitting(false)
+        return
+      }
+
+      if (data.success && data.session) {
+        // Set the session client-side via Supabase
+        const { createBrowserClient } = await import('@supabase/ssr')
+        const supabase = createBrowserClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        )
+        await supabase.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token,
+        })
+
+        // Redirect based on role
+        const dest = redirectPath ?? ROLE_HOME[data.role ?? 'beneficiaire'] ?? '/dashboard'
+        router.replace(dest)
+      }
+    } catch {
+      setError('Erreur réseau. Vérifiez votre connexion.')
+      setIsSubmitting(false)
+    }
+  }
 
   if (isLoading || user) {
     return (
@@ -50,6 +123,7 @@ export default function LoginPage() {
             Plateforme de suivi des bilans de comp&eacute;tences
           </p>
         </div>
+
         {urlError && (
           <div
             className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"
@@ -58,10 +132,63 @@ export default function LoginPage() {
             {urlError}
           </div>
         )}
+
         <Card padding="lg">
-          <LoginForm
-            onResetPassword={() => router.push('/reset-password')}
-          />
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-4">
+              {error && (
+                <div
+                  className={`rounded-lg border p-3 text-sm ${
+                    isLocked
+                      ? 'border-orange-200 bg-orange-50 text-orange-700'
+                      : 'border-red-200 bg-red-50 text-red-700'
+                  }`}
+                  role="alert"
+                >
+                  {error}
+                </div>
+              )}
+
+              <Input
+                variant="email"
+                label="Adresse e-mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+                disabled={isLocked}
+              />
+
+              <Input
+                variant="password"
+                label="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+                disabled={isLocked}
+              />
+
+              <Button
+                variant="primary"
+                size="lg"
+                loading={isSubmitting}
+                className="w-full"
+                disabled={isLocked}
+              >
+                {isLocked ? 'Compte verrouillé' : 'Se connecter'}
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                type="button"
+                onClick={() => router.push('/reset-password')}
+              >
+                Mot de passe oublié ?
+              </Button>
+            </div>
+          </form>
         </Card>
       </div>
     </main>
