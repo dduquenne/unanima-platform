@@ -47,9 +47,24 @@ if [ -z "${PREVIOUS_SHA}" ]; then
   exit 1
 fi
 
-# Ensure the previous commit is available in shallow clones
+# Ensure the previous commit is available in shallow clones.
+# Strategy: progressively deepen the clone until PREVIOUS_SHA is reachable,
+# rather than fetching an arbitrary SHA directly (which may fail on GitHub
+# when the SHA is not a branch tip).
 echo "Fetching previous commit ${PREVIOUS_SHA}..."
-git fetch --depth=1 origin "${PREVIOUS_SHA}" 2>/dev/null || true
+if ! git cat-file -e "${PREVIOUS_SHA}" 2>/dev/null; then
+  for depth in 10 50 100; do
+    git fetch --deepen="${depth}" origin 2>/dev/null || true
+    if git cat-file -e "${PREVIOUS_SHA}" 2>/dev/null; then
+      break
+    fi
+  done
+fi
+
+# Final fallback: try fetching the SHA directly (works if server allows it)
+if ! git cat-file -e "${PREVIOUS_SHA}" 2>/dev/null; then
+  git fetch --depth=1 origin "${PREVIOUS_SHA}" 2>/dev/null || true
+fi
 
 # Verify the commit is reachable
 if ! git cat-file -e "${PREVIOUS_SHA}" 2>/dev/null; then
