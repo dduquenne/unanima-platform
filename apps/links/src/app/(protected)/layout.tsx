@@ -85,6 +85,9 @@ export default function ProtectedLayout({
   return (
     <Layout
       sidebar={navItems}
+      logoUrl="/logo-links.png"
+      logoAlt="Link's Accompagnement"
+      sidebarHeaderClassName="bg-[var(--color-primary-dark)] border-b-0"
       header={{
         title: "Link's Accompagnement",
         actions: (

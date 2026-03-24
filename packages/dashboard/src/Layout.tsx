@@ -19,10 +19,12 @@ export interface LayoutProps {
   }
   children: ReactNode
   logoUrl?: string
+  logoAlt?: string
+  sidebarHeaderClassName?: string
   className?: string
 }
 
-export function Layout({ sidebar, header, children, logoUrl, className }: LayoutProps) {
+export function Layout({ sidebar, header, children, logoUrl, logoAlt, sidebarHeaderClassName, className }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
@@ -76,9 +78,9 @@ export function Layout({ sidebar, header, children, logoUrl, className }: Layout
           sidebarOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
-        <div className="flex h-16 items-center border-b border-[var(--color-border-light,var(--color-border))] px-6">
+        <div className={cn("flex h-16 items-center border-b border-[var(--color-border-light,var(--color-border))] px-6", sidebarHeaderClassName)}>
           {logoUrl ? (
-            <img src={logoUrl} alt="Logo" className="h-8" />
+            <img src={logoUrl} alt={logoAlt ?? "Logo"} className="h-8" />
           ) : (
             <span className="text-lg font-bold text-[var(--color-primary)]">Unanima</span>
           )}

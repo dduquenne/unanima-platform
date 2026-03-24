@@ -117,6 +117,13 @@ export default function LoginPage() {
     <main className="flex min-h-screen items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
+          <div className="mx-auto mb-4 flex h-16 w-48 items-center justify-center rounded-lg bg-[var(--color-primary-dark)] px-4">
+            <img
+              src="/logo-links.png"
+              alt="Link's Accompagnement"
+              className="h-10"
+            />
+          </div>
           <h1 className="text-2xl font-bold text-[var(--color-primary)]">
             Link&apos;s Accompagnement
           </h1>
