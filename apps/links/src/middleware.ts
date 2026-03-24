@@ -103,17 +103,24 @@ export default async function middleware(request: NextRequest) {
     .from('profiles')
     .select('role, is_active')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
-  // Compte inexistant ou désactivé (RG-AUTH-20)
-  if (!profile || !profile.is_active) {
+  // Compte explicitement désactivé (RG-AUTH-20)
+  // IMPORTANT : ne PAS déconnecter si le profil est absent — cela
+  // provoque une boucle de redirection infinie vers /login.
+  // Un profil manquant sera créé automatiquement via /api/auth/ensure-profile.
+  if (profile && !profile.is_active) {
     await supabase.auth.signOut()
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('error', 'compte_desactive')
     return NextResponse.redirect(loginUrl)
   }
 
-  const role: string = profile.role
+  // Rôle depuis le profil, ou fallback sur les métadonnées auth, ou défaut
+  const role: string =
+    profile?.role ??
+    (user.user_metadata?.role as string | undefined) ??
+    'beneficiaire'
 
   // ── Utilisateur connecté sur /login → rediriger (RG-AUTH-11) ─
   if (pathname === '/login' || pathname === '/') {
