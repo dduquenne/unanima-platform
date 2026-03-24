@@ -30,20 +30,18 @@ export async function POST(request: NextRequest) {
   const supabase = createAdminClient()
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null
 
-  // 1. Check if account is locked
+  // 1. Check if account is locked (graceful degradation: if RPC fails, skip lock check)
   const { data: lockCheck, error: lockError } = await supabase.rpc(
     'check_login_attempt',
     { attempt_email: normalizedEmail, max_attempts: MAX_ATTEMPTS, lockout_seconds: LOCKOUT_SECONDS }
   )
 
   if (lockError) {
-    return NextResponse.json(
-      { error: 'Erreur serveur. Réessayez plus tard.' },
-      { status: 500 }
-    )
+    console.error('[auth/login] check_login_attempt RPC failed:', lockError.message)
+    // Continue without brute-force protection rather than blocking all logins
   }
 
-  if (lockCheck?.locked) {
+  if (!lockError && lockCheck?.locked) {
     // Log the locked attempt
     await supabase.from('audit_logs').insert({
       user_id: null,
