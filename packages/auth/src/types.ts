@@ -26,3 +26,14 @@ export interface AuthContextValue {
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: Error | null }>
 }
+
+export interface AuthPageConfig {
+  appName: string
+  tagline?: string
+  logo?: React.ReactNode
+  supportEmail?: string
+  legalLinks?: Array<{ label: string; href: string }>
+  roleRedirects?: Record<string, string>
+  loginEndpoint?: string
+  updatePasswordEndpoint?: string
+}
