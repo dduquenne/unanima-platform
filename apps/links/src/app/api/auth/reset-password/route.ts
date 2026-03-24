@@ -61,7 +61,30 @@ export async function POST(request: NextRequest) {
 
   // Proceed with password reset via Supabase admin client
   const supabase = createAdminClient()
-  await supabase.auth.resetPasswordForEmail(email)
+
+  // Build redirect URL for the reset callback
+  const origin = request.headers.get('origin') ?? request.nextUrl.origin
+  const redirectTo = `${origin}/auth/callback?next=/reset-password`
+
+  await supabase.auth.resetPasswordForEmail(email, { redirectTo })
+
+  // Audit log (best effort — don't reveal if email exists)
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('email', email.toLowerCase())
+    .maybeSingle()
+
+  if (profile) {
+    await supabase.from('audit_logs').insert({
+      user_id: profile.id,
+      action: 'PASSWORD_RESET_REQUESTED',
+      entity_type: 'auth',
+      entity_id: profile.id,
+      details: { email: email.toLowerCase() },
+      ip_address: ip,
+    })
+  }
 
   // Always return success to avoid email enumeration
   return NextResponse.json({
