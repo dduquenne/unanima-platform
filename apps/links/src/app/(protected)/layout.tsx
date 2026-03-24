@@ -141,17 +141,12 @@ export default function ProtectedLayout({
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
 
-            {/* Logo icon */}
-            <div className="flex items-center gap-3">
-              <div className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-primary)]">
-                <span className="text-base font-bold text-[var(--color-text-inverse)]">L</span>
-                <span className="absolute -top-0.5 right-0 h-2 w-2 rounded-full bg-[var(--color-warning)]" />
-              </div>
-              <div className="hidden sm:block">
-                <span className="text-sm font-bold tracking-wide">Link&apos;s</span>
-                <span className="ml-1.5 text-sm font-normal text-[var(--color-text-inverse)]/70">Accompagnement</span>
-              </div>
-            </div>
+            {/* Logo */}
+            <img
+              src="/Links-logo.png"
+              alt="Link's Accompagnement"
+              className="h-8 sm:h-9"
+            />
           </div>
 
           {/* Right: User info + logout */}
