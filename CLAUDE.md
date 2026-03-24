@@ -456,7 +456,7 @@ Le fichier `.mcp.json` à la racine définit 3 serveurs MCP, chacun scopé sur u
 
 | Serveur MCP | App | project_ref |
 |---|---|---|
-| `supabase-links` | Link's Accompagnement | `wnulfyioossihuksctjb` |
+| `supabase-links` | Link's Accompagnement | `vtycrvrogvfvvdnknyem` |
 | `supabase-omega` | Omega Automotive | `grlepmbgfgafkhxhgurv` |
 | `supabase-creai` | CREAI Île-de-France | À définir |
 
