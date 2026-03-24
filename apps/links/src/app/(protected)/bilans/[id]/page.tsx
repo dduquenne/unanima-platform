@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAuth } from '@unanima/auth'
-import { Card, Textarea, Button } from '@unanima/core'
+import { Card, Textarea, Button, Modal } from '@unanima/core'
 
 const AUTOSAVE_INTERVAL_MS = 30_000 // 30 seconds
 const MAX_RETRIES = 2
@@ -76,6 +76,11 @@ export default function PhaseDetailPage() {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null)
   const [persistentError, setPersistentError] = useState(false)
+  const [phaseStatus, setPhaseStatus] = useState<'libre' | 'en_cours' | 'validee'>('libre')
+  const [showValidateModal, setShowValidateModal] = useState(false)
+  const [showDevalidateModal, setShowDevalidateModal] = useState(false)
+  const [isValidating, setIsValidating] = useState(false)
+  const [validationToast, setValidationToast] = useState<string | null>(null)
 
   // Dirty state tracking per question
   const dirtyRef = useRef<Set<string>>(new Set())
@@ -94,9 +99,10 @@ export default function PhaseDetailPage() {
         return
       }
 
-      const [questRes, respRes] = await Promise.allSettled([
+      const [questRes, respRes, validRes] = await Promise.allSettled([
         fetch(`/api/questionnaires?phase_number=${phaseNumber}`).then((r) => r.ok ? r.json() : null),
         fetch(`/api/phase-responses?phase=${phaseNumber}`).then((r) => r.ok ? r.json() : null),
+        fetch('/api/phase-validations').then((r) => r.ok ? r.json() : null),
       ])
 
       if (questRes.status === 'fulfilled' && questRes.value?.data) {
@@ -113,6 +119,14 @@ export default function PhaseDetailPage() {
         }
         setResponses(respMap)
         responsesRef.current = respMap
+      }
+
+      if (validRes.status === 'fulfilled' && validRes.value?.data) {
+        const thisPhase = (validRes.value.data as Array<{ phase_number: number; status: string }>)
+          .find((v) => v.phase_number === phaseNumber)
+        if (thisPhase) {
+          setPhaseStatus(thisPhase.status as 'libre' | 'en_cours' | 'validee')
+        }
       }
 
       setIsLoading(false)
@@ -182,6 +196,79 @@ export default function PhaseDetailPage() {
     questions.forEach((q) => dirtyRef.current.add(q.id))
     saveDirtyResponses()
   }, [questions, saveDirtyResponses])
+
+  const handleValidatePhase = useCallback(async () => {
+    setIsValidating(true)
+
+    // RG-BEN-20: Step 1 — Force save all responses
+    questions.forEach((q) => dirtyRef.current.add(q.id))
+    await saveDirtyResponses()
+
+    // RG-BEN-21: If save failed, abort validation
+    if (dirtyRef.current.size > 0) {
+      setIsValidating(false)
+      setShowValidateModal(false)
+      setValidationToast('Échec de la sauvegarde. Validation annulée.')
+      setTimeout(() => setValidationToast(null), 5000)
+      return
+    }
+
+    // Step 2 — Change status to 'validee'
+    try {
+      const res = await fetch('/api/phase-validations', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phase_number: phaseNumber, status: 'validee' }),
+      })
+
+      if (!res.ok) {
+        setIsValidating(false)
+        setShowValidateModal(false)
+        setValidationToast('Erreur lors de la validation.')
+        setTimeout(() => setValidationToast(null), 5000)
+        return
+      }
+
+      setPhaseStatus('validee')
+      setShowValidateModal(false)
+      setIsValidating(false)
+
+      // Step 3 — Toast + redirect
+      setValidationToast(`Phase ${phaseNumber} validée !`)
+      setTimeout(() => {
+        router.push('/dashboard')
+      }, 1500)
+    } catch {
+      setIsValidating(false)
+      setShowValidateModal(false)
+      setValidationToast('Erreur réseau. Validation annulée.')
+      setTimeout(() => setValidationToast(null), 5000)
+    }
+  }, [phaseNumber, questions, saveDirtyResponses, router])
+
+  const handleDevalidatePhase = useCallback(async () => {
+    setIsValidating(true)
+
+    try {
+      const res = await fetch('/api/phase-validations', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phase_number: phaseNumber, status: 'en_cours' }),
+      })
+
+      if (res.ok) {
+        setPhaseStatus('en_cours')
+        setValidationToast('Phase dé-validée.')
+        setTimeout(() => setValidationToast(null), 3000)
+      }
+    } catch {
+      setValidationToast('Erreur réseau.')
+      setTimeout(() => setValidationToast(null), 5000)
+    }
+
+    setShowDevalidateModal(false)
+    setIsValidating(false)
+  }, [phaseNumber])
 
   if (isNaN(phaseNumber) || phaseNumber < 1 || phaseNumber > 6) {
     return (
@@ -274,23 +361,98 @@ export default function PhaseDetailPage() {
       )}
 
       {/* Action buttons */}
-      {questions.length > 0 && (
-        <div className="flex items-center gap-3">
-          <Button
-            variant="secondary"
-            onClick={handleManualSave}
-            loading={saveStatus === 'saving'}
-          >
-            Enregistrer
-          </Button>
+      <div className="flex items-center gap-3">
+        <Button
+          variant="secondary"
+          onClick={handleManualSave}
+          loading={saveStatus === 'saving'}
+        >
+          Enregistrer
+        </Button>
+        {phaseStatus !== 'validee' ? (
           <Button
             variant="success"
-            onClick={() => router.push(`/bilans/${phaseNumber}/valider`)}
+            onClick={() => setShowValidateModal(true)}
           >
             Valider la phase
           </Button>
+        ) : (
+          <Button
+            variant="danger"
+            onClick={() => setShowDevalidateModal(true)}
+          >
+            D&eacute;-valider
+          </Button>
+        )}
+      </div>
+
+      {/* Validation toast */}
+      {validationToast && (
+        <div
+          className={`fixed bottom-6 right-6 z-50 rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg ${
+            validationToast.includes('Erreur') || validationToast.includes('Échec')
+              ? 'bg-[#FF6B35]'
+              : 'bg-[#28A745]'
+          }`}
+          role="status"
+        >
+          {validationToast}
         </div>
       )}
+
+      {/* Validate modal */}
+      <Modal
+        open={showValidateModal}
+        onClose={() => setShowValidateModal(false)}
+        title="Valider la phase"
+        size="sm"
+        actions={
+          <>
+            <Button variant="ghost" onClick={() => setShowValidateModal(false)}>
+              Annuler
+            </Button>
+            <Button
+              variant="success"
+              onClick={handleValidatePhase}
+              loading={isValidating}
+            >
+              Confirmer
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm">
+          &Ecirc;tes-vous s&ucirc;r de vouloir valider cette phase ?
+          Vous pourrez toujours modifier vos r&eacute;ponses apr&egrave;s validation.
+        </p>
+      </Modal>
+
+      {/* De-validate modal */}
+      <Modal
+        open={showDevalidateModal}
+        onClose={() => setShowDevalidateModal(false)}
+        title="Dé-valider la phase"
+        size="sm"
+        actions={
+          <>
+            <Button variant="ghost" onClick={() => setShowDevalidateModal(false)}>
+              Annuler
+            </Button>
+            <Button
+              variant="danger"
+              onClick={handleDevalidatePhase}
+              loading={isValidating}
+            >
+              D&eacute;-valider
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm">
+          Le statut de la phase repassera &agrave; &laquo; En cours &raquo;.
+          Voulez-vous continuer ?
+        </p>
+      </Modal>
     </div>
   )
 }
