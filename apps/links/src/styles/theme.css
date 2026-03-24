@@ -1,45 +1,45 @@
 /*
  * Link's Accompagnement — Charte graphique
  * Identité : Accompagnement bienveillant, professionnel, confiance
- * Palette : Bleu azur / Turquoise / Accents chaleureux
+ * Palette : Conforme SPC-0003 (RT-04) — NE PAS MODIFIER sans validation client
  */
 :root {
-  /* --- Couleurs principales --- */
+  /* --- Couleurs principales (SPC-0003) --- */
   --color-primary: #1E6FC0;
   --color-primary-light: #4A90D9;
   --color-primary-dark: #0D3B6E;
   --color-secondary: #0EA5E9;
   --color-secondary-light: #7DD3FC;
   --color-secondary-dark: #0369A1;
-  --color-accent: #F59E0B;
-  --color-accent-light: #FCD34D;
+  --color-accent: #FF6B35;
+  --color-accent-light: #FFB088;
 
-  /* --- Couleurs sémantiques --- */
-  --color-success: #10B981;
-  --color-success-light: #D1FAE5;
-  --color-warning: #F59E0B;
-  --color-warning-light: #FEF3C7;
-  --color-danger: #EF4444;
-  --color-danger-light: #FEE2E2;
-  --color-info: #3B82F6;
-  --color-info-light: #DBEAFE;
+  /* --- Couleurs sémantiques (SPC-0003) --- */
+  --color-success: #28A745;
+  --color-success-light: #E8F6ED;
+  --color-warning: #FF6B35;
+  --color-warning-light: #FFF0EA;
+  --color-danger: #E53935;
+  --color-danger-light: #FFF2F2;
+  --color-info: #1E6FC0;
+  --color-info-light: #E8F1FA;
 
-  /* --- Surfaces et fonds --- */
-  --color-background: #F0F7FF;
+  /* --- Surfaces et fonds (SPC-0003) --- */
+  --color-background: #F5F7FA;
   --color-surface: #FFFFFF;
-  --color-surface-hover: #F8FAFC;
-  --color-surface-active: #EFF6FF;
-  --color-muted: #F1F5F9;
+  --color-surface-hover: #F0F4F9;
+  --color-surface-active: #E8F1FA;
+  --color-muted: #F0F4F9;
 
-  /* --- Texte --- */
-  --color-text: #1E293B;
-  --color-text-secondary: #64748B;
-  --color-text-muted: #94A3B8;
+  /* --- Texte (SPC-0003) --- */
+  --color-text: #4A4A4A;
+  --color-text-secondary: #6B7A99;
+  --color-text-muted: #A0AAB9;
   --color-text-inverse: #FFFFFF;
 
-  /* --- Bordures --- */
-  --color-border: #CBD5E1;
-  --color-border-light: #E2E8F0;
+  /* --- Bordures (SPC-0003) --- */
+  --color-border: #DCE1EB;
+  --color-border-light: #E5E7EB;
   --color-border-focus: #1E6FC0;
 
   /* --- Typographie --- */
@@ -77,10 +77,10 @@
   --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* --- Gradients --- */
+  /* --- Gradients (SPC-0003) --- */
   --gradient-primary: linear-gradient(135deg, #1E6FC0 0%, #0EA5E9 100%);
-  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F0F7FF 100%);
-  --gradient-accent: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #F5F7FA 100%);
+  --gradient-accent: linear-gradient(135deg, #FF6B35 0%, #E53935 100%);
 }
 
 /* --- Dark mode (système) --- */
@@ -101,9 +101,9 @@
     --color-border-light: #1E2D4A;
     --color-border-focus: #4A90D9;
 
-    --color-success-light: #064E3B;
-    --color-warning-light: #78350F;
-    --color-danger-light: #7F1D1D;
+    --color-success-light: #0A3D1F;
+    --color-warning-light: #5C2810;
+    --color-danger-light: #5C1616;
     --color-info-light: #1E3A5F;
 
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
@@ -114,7 +114,7 @@
 
     --gradient-primary: linear-gradient(135deg, #1E6FC0 0%, #0EA5E9 100%);
     --gradient-surface: linear-gradient(180deg, #1A2540 0%, #0F1729 100%);
-    --gradient-accent: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+    --gradient-accent: linear-gradient(135deg, #FF6B35 0%, #E53935 100%);
   }
 }
 
@@ -135,9 +135,9 @@
   --color-border-light: #1E2D4A;
   --color-border-focus: #4A90D9;
 
-  --color-success-light: #064E3B;
-  --color-warning-light: #78350F;
-  --color-danger-light: #7F1D1D;
+  --color-success-light: #0A3D1F;
+  --color-warning-light: #5C2810;
+  --color-danger-light: #5C1616;
   --color-info-light: #1E3A5F;
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
@@ -148,5 +148,5 @@
 
   --gradient-primary: linear-gradient(135deg, #1E6FC0 0%, #0EA5E9 100%);
   --gradient-surface: linear-gradient(180deg, #1A2540 0%, #0F1729 100%);
-  --gradient-accent: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+  --gradient-accent: linear-gradient(135deg, #FF6B35 0%, #E53935 100%);
 }
