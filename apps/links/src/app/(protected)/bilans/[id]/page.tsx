@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAuth } from '@unanima/auth'
 import { Card, Textarea, Button, Modal } from '@unanima/core'
+import { FileText, Download } from 'lucide-react'
 
 const AUTOSAVE_INTERVAL_MS = 30_000 // 30 seconds
 const MAX_RETRIES = 2
@@ -27,6 +28,12 @@ interface QuestionData {
 interface ResponseData {
   question_id: string
   response_text: string | null
+}
+
+interface PhaseDocumentData {
+  id: string
+  display_name: string
+  file_type: 'pdf' | 'docx'
 }
 
 type SaveStatus = 'idle' | 'saving' | 'saved' | 'error'
@@ -81,6 +88,8 @@ export default function PhaseDetailPage() {
   const [showDevalidateModal, setShowDevalidateModal] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
   const [validationToast, setValidationToast] = useState<string | null>(null)
+  const [documents, setDocuments] = useState<PhaseDocumentData[]>([])
+  const [downloadingDocId, setDownloadingDocId] = useState<string | null>(null)
 
   // Dirty state tracking per question
   const dirtyRef = useRef<Set<string>>(new Set())
@@ -99,10 +108,11 @@ export default function PhaseDetailPage() {
         return
       }
 
-      const [questRes, respRes, validRes] = await Promise.allSettled([
+      const [questRes, respRes, validRes, docsRes] = await Promise.allSettled([
         fetch(`/api/questionnaires?phase_number=${phaseNumber}`).then((r) => r.ok ? r.json() : null),
         fetch(`/api/phase-responses?phase=${phaseNumber}`).then((r) => r.ok ? r.json() : null),
         fetch('/api/phase-validations').then((r) => r.ok ? r.json() : null),
+        fetch(`/api/documents?phase_number=${phaseNumber}`).then((r) => r.ok ? r.json() : null),
       ])
 
       if (questRes.status === 'fulfilled' && questRes.value?.data) {
@@ -127,6 +137,10 @@ export default function PhaseDetailPage() {
         if (thisPhase) {
           setPhaseStatus(thisPhase.status as 'libre' | 'en_cours' | 'validee')
         }
+      }
+
+      if (docsRes.status === 'fulfilled' && docsRes.value?.data) {
+        setDocuments(docsRes.value.data as PhaseDocumentData[])
       }
 
       setIsLoading(false)
@@ -270,6 +284,31 @@ export default function PhaseDetailPage() {
     setIsValidating(false)
   }, [phaseNumber])
 
+  const handleDownloadDocument = useCallback(async (docId: string) => {
+    try {
+      setDownloadingDocId(docId)
+      const res = await fetch(`/api/documents/${docId}/download`)
+      if (!res.ok) throw new Error('Erreur de téléchargement')
+
+      const json = await res.json()
+      const { url, filename } = json.data
+
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      a.target = '_blank'
+      a.rel = 'noopener noreferrer'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    } catch {
+      setValidationToast('Erreur lors du téléchargement du document')
+      setTimeout(() => setValidationToast(null), 5000)
+    } finally {
+      setDownloadingDocId(null)
+    }
+  }, [])
+
   if (isNaN(phaseNumber) || phaseNumber < 1 || phaseNumber > 6) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
@@ -362,6 +401,50 @@ export default function PhaseDetailPage() {
               </label>
             </Card>
           ))}
+        </div>
+      )}
+
+      {/* Documents section — RG-BEN-27: hidden if no documents */}
+      {documents.length > 0 && (
+        <div className="rounded-xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
+          <div className="mb-4 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-[var(--color-primary)]" />
+            <h2 className="text-base font-bold text-[var(--color-primary-dark)]">
+              Documents disponibles
+            </h2>
+          </div>
+          <div className="space-y-2">
+            {documents.map((doc) => (
+              <div
+                key={doc.id}
+                className="flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-[#F9FAFB] px-4 py-3"
+              >
+                <div className="flex items-center gap-3">
+                  <FileText className="h-5 w-5 text-[#6B7280]" />
+                  <div>
+                    <p className="text-sm font-medium text-[var(--color-text)]">
+                      {doc.display_name}
+                    </p>
+                    <p className="text-xs uppercase text-[#9CA3AF]">
+                      {doc.file_type}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleDownloadDocument(doc.id)}
+                  disabled={downloadingDocId === doc.id}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-primary)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary)] transition-colors hover:bg-[var(--color-primary)] hover:text-white disabled:opacity-50"
+                >
+                  {downloadingDocId === doc.id ? (
+                    <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  ) : (
+                    <Download className="h-3.5 w-3.5" />
+                  )}
+                  Télécharger
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
