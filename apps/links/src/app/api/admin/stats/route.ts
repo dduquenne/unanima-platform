@@ -59,7 +59,7 @@ export async function GET() {
   // Fetch all phase validations for active beneficiaries to compute progression
   const { data: activeBeneficiaries } = await supabase
     .from('profiles')
-    .select('id')
+    .select('id, consultant_id')
     .eq('role', 'beneficiaire')
     .eq('is_active', true)
 
@@ -67,6 +67,7 @@ export async function GET() {
 
   let tauxAvancementMoyen = 0
   let bilansTermines = 0
+  const validatedByBenef = new Map<string, number>()
 
   if (benefIds.length > 0) {
     const { data: validations } = await supabase
@@ -76,7 +77,6 @@ export async function GET() {
       .eq('status', 'validee')
 
     // Count validated phases per beneficiary
-    const validatedByBenef = new Map<string, number>()
     for (const v of validations ?? []) {
       const current = validatedByBenef.get(v.beneficiary_id) ?? 0
       validatedByBenef.set(v.beneficiary_id, current + 1)
@@ -97,12 +97,55 @@ export async function GET() {
       : 0
   }
 
+  // Build beneficiary rows with progression + consultant name + last login
+  const consultantIds = [
+    ...new Set(
+      (activeBeneficiaries ?? [])
+        .filter((b: Record<string, unknown>) => b.consultant_id)
+        .map((b: Record<string, unknown>) => b.consultant_id as string)
+    ),
+  ]
+
+  let consultantMap = new Map<string, string>()
+  if (consultantIds.length > 0) {
+    const { data: consultants } = await supabase
+      .from('profiles')
+      .select('id, full_name')
+      .in('id', consultantIds)
+
+    for (const c of consultants ?? []) {
+      consultantMap.set(c.id, c.full_name)
+    }
+  }
+
+  // Get all beneficiary profiles with full data
+  const { data: allBenefProfiles } = await supabase
+    .from('profiles')
+    .select('id, full_name, email, consultant_id, updated_at, role')
+    .eq('role', 'beneficiaire')
+    .eq('is_active', true)
+    .order('updated_at', { ascending: false })
+
+  const beneficiaryRows = (allBenefProfiles ?? []).map(b => {
+    const validated = validatedByBenef.get(b.id) ?? 0
+    return {
+      id: b.id,
+      full_name: b.full_name,
+      email: b.email,
+      consultant_name: b.consultant_id ? consultantMap.get(b.consultant_id) ?? 'Non assignée' : 'Non assignée',
+      progress: Math.round((validated / 6) * 100),
+      updated_at: b.updated_at,
+      role: b.role,
+    }
+  })
+
   return NextResponse.json({
     data: {
-      beneficiaires_actifs: beneficiairesActifs ?? 0,
-      taux_avancement_moyen: tauxAvancementMoyen,
-      bilans_termines: bilansTermines,
-      consultantes_actives: consultantesActives ?? 0,
+      activeBeneficiaires: beneficiairesActifs ?? 0,
+      averageProgress: tauxAvancementMoyen,
+      completedBilans: bilansTermines,
+      activeConsultants: consultantesActives ?? 0,
+      beneficiaires: beneficiaryRows,
     },
   })
 }
