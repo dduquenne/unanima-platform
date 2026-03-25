@@ -366,15 +366,19 @@ export default function DashboardPage() {
 
                 {/* Action button */}
                 {isLibre ? (
-                  <span className="inline-flex items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-hover)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)]">
-                    Acc&eacute;der
-                  </span>
+                  <button
+                    onClick={() => router.push(`/bilans/${phase.phase_number}`)}
+                    className="inline-flex items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-hover)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-border)] hover:text-[var(--color-text)]"
+                  >
+                    Accéder
+                    <ArrowRight className="h-3 w-3" />
+                  </button>
                 ) : (
                   <button
                     onClick={() => router.push(`/bilans/${phase.phase_number}`)}
                     className="inline-flex items-center gap-1 rounded-[var(--radius-md)] bg-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text-inverse)] transition-colors hover:bg-[var(--color-primary-dark)]"
                   >
-                    Acc&eacute;der
+                    Accéder
                     <ArrowRight className="h-3 w-3" />
                   </button>
                 )}
