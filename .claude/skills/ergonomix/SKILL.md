@@ -16,7 +16,29 @@ Ce skill gouverne la conception et l'implémentation d'interfaces pour **applica
 
 ---
 
-## 0. Philosophie IHM Métier — À intérioriser
+## 0. Pré-requis — Consultation des specs et maquettes du projet
+
+> **OBLIGATOIRE** : Avant toute création ou modification d'écran, consulter
+> `_common/ui-spec-checklist.md` pour identifier la SFD (spécification
+> fonctionnelle) et la maquette SVG correspondantes à l'écran ciblé.
+> **Lire ces documents AVANT de commencer à coder.**
+
+### Étapes :
+1. Identifier l'app cible (Links, CREAI, Omega)
+2. Lire la checklist `_common/ui-spec-checklist.md`
+3. Ouvrir la SFD de l'app (ex : `docs/links/specs/SPC-0003-...`) et localiser
+   la User Story + les règles de gestion de l'écran
+4. Consulter la maquette SVG de l'écran dans `docs/<app>/mockups/`
+5. Vérifier la palette de couleurs dans `apps/<app>/src/styles/theme.css`
+6. Identifier les composants réutilisables existants (`packages/core/`,
+   `packages/dashboard/`)
+
+> Si aucune SFD ou maquette n'existe pour l'écran ciblé, le signaler
+> explicitement avant de procéder.
+
+---
+
+## 0b. Philosophie IHM Métier — À intérioriser
 
 > **"L'interface doit disparaître. Seule la tâche doit exister."**
 
