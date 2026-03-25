@@ -1,8 +1,60 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@unanima/db'
 import { cookies } from 'next/headers'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { getSimulationUser } from '@/lib/simulation/handlers'
+import {
+  getBeneficiairesByConsultant,
+  getPhaseValidationsForBeneficiary,
+  getSessionsForBeneficiary,
+  simulationResponses,
+} from '@/lib/simulation/fixtures'
 
 export async function GET() {
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    const simUser = await getSimulationUser()
+    const beneficiaries = getBeneficiairesByConsultant(simUser.id)
+    const now = new Date()
+
+    const data = beneficiaries.map((b) => {
+      const phases = getPhaseValidationsForBeneficiary(b.id).map((pv) => ({
+        phase_number: pv.phase_number,
+        status: pv.status,
+      }))
+      const validatedCount = phases.filter((p) => p.status === 'validee').length
+      const sessions = getSessionsForBeneficiary(b.id)
+      const nextSession = sessions
+        .filter((s) => s.scheduled_at && new Date(s.scheduled_at) > now)
+        .sort((a, b) => new Date(a.scheduled_at!).getTime() - new Date(b.scheduled_at!).getTime())[0]
+      const lastResponse = simulationResponses
+        .filter((r) => r.beneficiary_id === b.id)
+        .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())[0]
+
+      return {
+        id: b.id,
+        full_name: b.full_name,
+        email: b.email,
+        is_active: b.is_active,
+        date_debut_bilan: b.date_debut_bilan,
+        phases,
+        next_session: nextSession?.scheduled_at ?? null,
+        validated_count: validatedCount,
+        created_at: b.created_at,
+        last_activity_at: lastResponse?.updated_at ?? b.created_at,
+      }
+    })
+
+    data.sort((a, b) => {
+      if (a.next_session === null && b.next_session === null) return 0
+      if (a.next_session === null) return 1
+      if (b.next_session === null) return -1
+      return new Date(a.next_session).getTime() - new Date(b.next_session).getTime()
+    })
+
+    return NextResponse.json({ data })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 

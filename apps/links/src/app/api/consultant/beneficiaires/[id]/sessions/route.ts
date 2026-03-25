@@ -4,6 +4,8 @@ import { cookies } from 'next/headers'
 import { z } from 'zod'
 import { sendEmail } from '@unanima/email'
 import { PlanificationEmail } from '@/lib/email/templates'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { getSessionsForBeneficiary } from '@/lib/simulation/fixtures'
 
 const bulkSessionSchema = z.array(
   z.object({
@@ -18,6 +20,19 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: beneficiaryId } = await params
+
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    const sessions = getSessionsForBeneficiary(beneficiaryId)
+    return NextResponse.json({
+      data: sessions.map((s) => ({
+        session_number: s.session_number,
+        scheduled_at: s.scheduled_at,
+        visio_url: s.visio_url,
+      })),
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
@@ -80,6 +95,15 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: beneficiaryId } = await params
+
+  // ── Mode Simulation — succès sans écriture ──
+  if (isSimulationMode()) {
+    const body = await request.json().catch(() => [])
+    return NextResponse.json({
+      data: { success: true, count: Array.isArray(body) ? body.length : 0 },
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 

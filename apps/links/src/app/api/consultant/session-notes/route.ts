@@ -2,8 +2,32 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@unanima/db'
 import { cookies } from 'next/headers'
 import { updateSessionNoteSchema } from '@/lib/types/schemas'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { getSessionNotesForBeneficiary } from '@/lib/simulation/fixtures'
 
 export async function GET(request: NextRequest) {
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    const beneficiaryId = request.nextUrl.searchParams.get('beneficiary_id')
+    if (!beneficiaryId) {
+      return NextResponse.json(
+        { error: 'beneficiary_id requis', code: 'VALIDATION_ERROR' },
+        { status: 400 },
+      )
+    }
+    const notes = getSessionNotesForBeneficiary(beneficiaryId)
+    return NextResponse.json({
+      data: notes.map((n) => ({
+        id: n.id,
+        beneficiary_id: n.beneficiary_id,
+        session_number: n.session_number,
+        content: n.content,
+        created_at: n.created_at,
+        updated_at: n.updated_at,
+      })),
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
@@ -72,6 +96,18 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // ── Mode Simulation — succès sans écriture ──
+  if (isSimulationMode()) {
+    const body = await request.json().catch(() => ({}))
+    return NextResponse.json({
+      data: {
+        success: true,
+        beneficiary_id: body?.beneficiary_id ?? '',
+        session_number: body?.session_number ?? 1,
+      },
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
