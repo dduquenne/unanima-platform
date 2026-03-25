@@ -106,6 +106,22 @@ export interface SessionNote {
 }
 
 // ============================================================
+// Consultant portfolio — bénéficiaire avec parcours
+// ============================================================
+
+export interface BeneficiaireWithParcours {
+  id: string
+  full_name: string
+  email: string
+  is_active: boolean
+  date_debut_bilan: string | null
+  phases: Array<{ phase_number: number; status: PhaseStatus }>
+  next_session: string | null
+  validated_count: number
+  created_at: string
+}
+
+// ============================================================
 // Documents de phase (super_admin only)
 // ============================================================
 
