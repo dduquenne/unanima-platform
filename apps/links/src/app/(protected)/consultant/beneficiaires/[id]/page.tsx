@@ -5,6 +5,7 @@ import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { ComptesRendusTab } from './comptes-rendus'
 import { PlanificationTab } from './planification'
+import { PHASE_LABELS } from '@/config/phases.config'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -54,14 +55,6 @@ interface BeneficiaireData {
 // Constants
 // ---------------------------------------------------------------------------
 
-const PHASE_LABELS: Record<number, string> = {
-  1: 'Definir mon projet',
-  2: 'Explorer mes competences',
-  3: 'Analyser mon marche',
-  4: 'Construire mon plan',
-  5: 'Preparer mon entretien',
-  6: 'Finaliser mon bilan',
-}
 
 type TabKey = 'reponses' | 'planification' | 'comptes-rendus'
 

@@ -7,17 +7,7 @@ import { ProgressBar, StatusBadge } from '@unanima/dashboard'
 import { Card } from '@unanima/core'
 import { Video, Calendar, ArrowRight } from 'lucide-react'
 import type { PhaseStatus } from '@/lib/types/database'
-
-const TOTAL_PHASES = 6
-
-const PHASE_LABELS: Record<number, string> = {
-  1: 'Définir mon projet',
-  2: 'Explorer mes compétences',
-  3: 'Analyser mon marché',
-  4: 'Construire mon plan',
-  5: 'Préparer mon entretien',
-  6: 'Finaliser mon bilan',
-}
+import { TOTAL_PHASES, PHASE_LABELS } from '@/config/phases.config'
 
 const PHASE_STATUS_CONFIG = {
   libre: { label: 'À compléter', color: 'info' as const },
@@ -180,9 +170,16 @@ export default function DashboardPage() {
           Bonjour, {getFirstName(user.fullName)}
         </h1>
         <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-          Retrouvez ici le suivi de votre bilan de comp&eacute;tences.
+          Retrouvez ici le suivi de votre bilan de compétences.
         </p>
         <div className="mt-3 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" />
+        <button
+          onClick={() => router.push(`/bilans/${currentPhase}`)}
+          className="mt-4 inline-flex items-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-inverse)] transition-colors hover:bg-[var(--color-primary-dark)]"
+        >
+          Continuer le bilan
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
 
       {/* ═══ SESSIONS TABLE (MAQ-02) ═══ */}
@@ -366,15 +363,19 @@ export default function DashboardPage() {
 
                 {/* Action button */}
                 {isLibre ? (
-                  <span className="inline-flex items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-hover)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)]">
-                    Acc&eacute;der
-                  </span>
+                  <button
+                    onClick={() => router.push(`/bilans/${phase.phase_number}`)}
+                    className="inline-flex items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-hover)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-border)] hover:text-[var(--color-text)]"
+                  >
+                    Accéder
+                    <ArrowRight className="h-3 w-3" />
+                  </button>
                 ) : (
                   <button
                     onClick={() => router.push(`/bilans/${phase.phase_number}`)}
                     className="inline-flex items-center gap-1 rounded-[var(--radius-md)] bg-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text-inverse)] transition-colors hover:bg-[var(--color-primary-dark)]"
                   >
-                    Acc&eacute;der
+                    Accéder
                     <ArrowRight className="h-3 w-3" />
                   </button>
                 )}
