@@ -180,9 +180,16 @@ export default function DashboardPage() {
           Bonjour, {getFirstName(user.fullName)}
         </h1>
         <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-          Retrouvez ici le suivi de votre bilan de comp&eacute;tences.
+          Retrouvez ici le suivi de votre bilan de compétences.
         </p>
         <div className="mt-3 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" />
+        <button
+          onClick={() => router.push(`/bilans/${currentPhase}`)}
+          className="mt-4 inline-flex items-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-inverse)] transition-colors hover:bg-[var(--color-primary-dark)]"
+        >
+          Continuer le bilan
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
 
       {/* ═══ SESSIONS TABLE (MAQ-02) ═══ */}
