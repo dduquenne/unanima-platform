@@ -130,10 +130,14 @@ export const simulationProfiles: Profile[] = [
 
 /** Retourne le profil simulation pour un rôle donné */
 export function getSimulationProfile(role: 'beneficiaire' | 'consultant' | 'super_admin'): Profile {
-  if (role === 'super_admin') return simulationProfiles[0]
-  if (role === 'consultant') return simulationProfiles[1]
+  const admin = simulationProfiles.find((p) => p.role === 'super_admin')!
+  const consultant = simulationProfiles.find((p) => p.role === 'consultant')!
   // Default: bénéficiaire en cours (#2 — Lucas Petit)
-  return simulationProfiles[4]
+  const beneficiaire = simulationProfiles.find((p) => p.id === BENEFICIAIRE_2_ID)!
+
+  if (role === 'super_admin') return admin
+  if (role === 'consultant') return consultant
+  return beneficiaire
 }
 
 /** Retourne tous les profils par rôle */
