@@ -20,9 +20,9 @@
 
 ## Prérequis avant démarrage Sprint 11
 
-- [ ] Sprint 8 complet (BDD + RLS en place)
-- [ ] Sprint 9 complet (Auth + Espace bénéficiaire)
-- [ ] Sprint 10 complet (Espace consultant)
+- [x] Sprint 8 complet (BDD + RLS en place)
+- [x] Sprint 9 complet (Auth + Espace bénéficiaire)
+- [x] Sprint 10 complet (Espace consultant)
 - [ ] Credentials Supabase de production disponibles
 - [ ] Domaine client configuré et pointant vers Vercel
 
