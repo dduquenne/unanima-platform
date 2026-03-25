@@ -9,6 +9,7 @@
 | SPC-0002 | Proposition commerciale — Plateforme digitale de suivi des bilans de compétences | SPC | accepted | 1.4 | 2026-03-23 |
 | SPC-0003 | Spécifications fonctionnelles détaillées — Plateforme Link's Accompagnement | SPC | draft | 1.0 | 2026-03-23 |
 | SPC-0004 | Matrice de traçabilité — Spécifications → Maquettes → Code | SPC | accepted | 1.0 | 2026-03-25 |
+| SPC-0005 | Plan de recette visuelle — Application Link's Accompagnement | SPC | accepted | 1.0 | 2026-03-25 |
 
 ## Maquettes d'écrans (MAQ)
 
@@ -33,7 +34,8 @@ docs/links/
 │   ├── SPC-0001-note-cadrage-links-v1.15.md
 │   ├── SPC-0002-proposition-commerciale-links-v1.4.md
 │   ├── SPC-0003-specifications-fonctionnelles-links-v1.0.md
-│   └── SPC-0004-matrice-tracabilite-links-v1.0.md
+│   ├── SPC-0004-matrice-tracabilite-links-v1.0.md
+│   └── SPC-0005-recette-visuelle-links-v1.0.md
 └── mockups/
     ├── MAQ-01-login.svg
     ├── MAQ-02-dashboard-beneficiaire.svg
@@ -56,3 +58,4 @@ docs/links/
 | MAQ-01 à MAQ-09 | SPC-0003 | — |
 | SPC-0004 | SPC-0001, SPC-0003, MAQ-01 à MAQ-09 | — |
 | RPT-0001 | — | — |
+| SPC-0005 | SPC-0003, SPC-0004, MAQ-01 à MAQ-09 | — |
