@@ -63,10 +63,10 @@ export function LoginForm({ config, errorMessages, onResetPassword, className }:
 
   useEffect(() => {
     if (!isLoading && user) {
-      const dest = config.roleRedirects?.[user.role] ?? defaultRedirect ?? '/dashboard'
+      const dest = redirectPath ?? config.roleRedirects?.[user.role] ?? defaultRedirect ?? '/dashboard'
       router.replace(dest)
     }
-  }, [user, isLoading, router, config.roleRedirects, defaultRedirect])
+  }, [user, isLoading, router, redirectPath, config.roleRedirects, defaultRedirect])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -97,17 +97,19 @@ export function LoginForm({ config, errorMessages, onResetPassword, className }:
           process.env.NEXT_PUBLIC_SUPABASE_URL!,
           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
         )
-        await supabase.auth.setSession({
+        const { error: sessionError } = await supabase.auth.setSession({
           access_token: data.session.access_token,
           refresh_token: data.session.refresh_token,
         })
 
-        const dest =
-          redirectPath ??
-          config.roleRedirects?.[data.role ?? ''] ??
-          defaultRedirect ??
-          '/dashboard'
-        router.replace(dest)
+        if (sessionError) {
+          setError("Erreur lors de l'établissement de la session.")
+          setIsSubmitting(false)
+          return
+        }
+
+        // La navigation est gérée par le useEffect qui surveille `user`
+        // (déclenché par onAuthStateChange après setSession)
       }
     } catch {
       setError('Erreur réseau. Vérifiez votre connexion.')

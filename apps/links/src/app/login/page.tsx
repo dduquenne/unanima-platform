@@ -56,10 +56,10 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!isLoading && user) {
-      const dest = ROLE_HOME[user.role] ?? '/dashboard'
+      const dest = redirectPath ?? ROLE_HOME[user.role] ?? '/dashboard'
       router.replace(dest)
     }
-  }, [user, isLoading, router])
+  }, [user, isLoading, router, redirectPath])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -88,13 +88,19 @@ export default function LoginPage() {
           process.env.NEXT_PUBLIC_SUPABASE_URL!,
           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
         )
-        await supabase.auth.setSession({
+        const { error: sessionError } = await supabase.auth.setSession({
           access_token: data.session.access_token,
           refresh_token: data.session.refresh_token,
         })
 
-        const dest = redirectPath ?? ROLE_HOME[data.role ?? 'beneficiaire'] ?? '/dashboard'
-        router.replace(dest)
+        if (sessionError) {
+          setError("Erreur lors de l'établissement de la session.")
+          setIsSubmitting(false)
+          return
+        }
+
+        // La navigation est gérée par le useEffect qui surveille `user`
+        // (déclenché par onAuthStateChange après setSession)
       }
     } catch {
       setError('Erreur réseau. Vérifiez votre connexion.')
