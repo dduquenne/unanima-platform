@@ -395,9 +395,38 @@ export function ComptesRendusTab({
     [beneficiaryId, editContent]
   )
 
-  const handleExportPDF = useCallback(() => {
-    alert('Export PDF a venir')
-  }, [])
+  const [isExporting, setIsExporting] = useState(false)
+
+  const handleExportPDF = useCallback(async () => {
+    try {
+      setIsExporting(true)
+      const res = await fetch('/api/consultant/session-notes/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ beneficiary_id: beneficiaryId }),
+      })
+
+      if (!res.ok) throw new Error(`Erreur ${res.status}`)
+
+      const blob = await res.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      const disposition = res.headers.get('Content-Disposition')
+      const filename = disposition?.match(/filename="(.+)"/)?.[1] ?? 'comptes-rendus.pdf'
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url)
+
+      setToastMessage('PDF téléchargé avec succès')
+    } catch {
+      setToastMessage('Erreur lors de l\'export PDF')
+    } finally {
+      setIsExporting(false)
+    }
+  }, [beneficiaryId])
 
   // Count written sessions
   const writtenCount = Object.keys(notes).length
@@ -420,10 +449,15 @@ export function ComptesRendusTab({
         </h2>
         <button
           onClick={handleExportPDF}
-          className="flex items-center gap-2 rounded-lg border border-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+          disabled={isExporting}
+          className="flex items-center gap-2 rounded-lg border border-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Download className="h-4 w-4" />
-          Exporter en PDF
+          {isExporting ? (
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          ) : (
+            <Download className="h-4 w-4" />
+          )}
+          {isExporting ? 'Export en cours...' : 'Exporter en PDF'}
         </button>
       </div>
 
