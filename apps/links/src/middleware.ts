@@ -1,9 +1,11 @@
 // Middleware RBAC Links — 3 rôles, is_active, redirection post-login
 // Issue: #107 — Sprint 8 Fondations
+// Issue: #133 — Sprint 12 (simulation bypass)
 // Règles: RG-AUTH-04, RG-AUTH-05, RG-AUTH-11, RG-AUTH-20
 
 import { type NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
+import { isSimulationMode } from '@/lib/simulation/config'
 
 // ============================================================
 // Table de redirection post-login par rôle (RG-AUTH-11)
@@ -53,6 +55,33 @@ export default async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: { headers: request.headers },
   })
+
+  // ── Mode Simulation — bypass complet de l'auth Supabase ─────
+  if (isSimulationMode()) {
+    const role =
+      request.cookies.get('simulation-role')?.value ?? 'beneficiaire'
+
+    // Sur /login ou /, rediriger vers la home du rôle simulé
+    if (pathname === '/login' || pathname === '/') {
+      return NextResponse.redirect(
+        new URL(ROLE_HOME[role] ?? '/dashboard', request.url),
+      )
+    }
+
+    // Routes publiques : laisser passer
+    if (isPublicRoute(pathname)) return response
+
+    // RBAC en mode simulation
+    for (const { prefix, allowed } of ROLE_ROUTES) {
+      if (pathname.startsWith(prefix) && !allowed.includes(role)) {
+        return NextResponse.redirect(
+          new URL(ROLE_HOME[role] ?? '/dashboard', request.url),
+        )
+      }
+    }
+
+    return response
+  }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
