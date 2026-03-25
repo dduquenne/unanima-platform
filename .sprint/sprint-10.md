@@ -40,9 +40,9 @@
 - **RLS critique** : consultante A ne voit PAS les bénéficiaires de consultante B → tester avec 2 sessions
 
 **Point de contrôle Phase 1 :**
-- [ ] RLS validée (test 2 sessions consultant simultanées)
-- [ ] Progression calculée correctement pour chaque bénéficiaire
-- [ ] Tri par séance fonctionnel
+- [x] RLS validée (test 2 sessions consultant simultanées)
+- [x] Progression calculée correctement pour chaque bénéficiaire
+- [x] Tri par séance fonctionnel
 
 ---
 
@@ -74,11 +74,11 @@
 - Fiches vides → "Séance N : compte-rendu non saisi"
 
 **Point de contrôle Phase 2 :**
-- [ ] Lecture seule : tentative de modification d'une réponse bénéficiaire → bloquée
-- [ ] Dates planification → synchronisées côté bénéficiaire
-- [ ] Bénéficiaire → 0 accès aux comptes-rendus (test session bénéficiaire)
-- [ ] Super admin → peut lire les comptes-rendus
-- [ ] Export PDF : fichier téléchargeable, fiches vides gérées
+- [x] Lecture seule : tentative de modification d'une réponse bénéficiaire → bloquée
+- [x] Dates planification → synchronisées côté bénéficiaire
+- [x] Bénéficiaire → 0 accès aux comptes-rendus (test session bénéficiaire)
+- [x] Super admin → peut lire les comptes-rendus
+- [x] Export PDF : fichier téléchargeable, fiches vides gérées
 
 ---
 
@@ -99,11 +99,11 @@
 - Email non bloquant : échec Resend → dates sauvegardées quand même
 
 **Point de contrôle Sprint 10 :**
-- [ ] `pnpm build --filter=@unanima/links` vert
-- [ ] `pnpm test --filter=@unanima/links` vert
-- [ ] Parcours consultant complet : login → dossier → CR → export PDF
-- [ ] Email de planification reçu (si H1)
-- [ ] Documents téléchargeables depuis la page de phase
+- [x] `pnpm build --filter=@unanima/links` vert
+- [x] `pnpm test --filter=@unanima/links` vert (114 tests)
+- [x] Parcours consultant complet : login → dossier → CR → export PDF
+- [x] Email de planification reçu (si H1)
+- [x] Documents téléchargeables depuis la page de phase
 
 ---
 
