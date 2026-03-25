@@ -60,6 +60,12 @@ Ce skill applique les conventions de `_common/performance-workflow.md` :
 - **Scalabilité TypeScript** : les composants représentés doivent évoquer des composants React/Vue réutilisables
 
 ### Identité visuelle UNANIMA (défaut si pas de design system fourni)
+
+> **IMPORTANT** : Les apps Links, CREAI et Omega ont chacune leur propre
+> palette définie dans `apps/<app>/src/styles/theme.css` et dans la SFD.
+> Consulter `_common/ui-spec-checklist.md` pour les palettes exactes.
+> La palette UNANIMA ci-dessous ne s'applique que si aucune app n'est ciblée.
+
 - **Palette principale** : #0F172A (slate-900) fond sombre, #1E293B (slate-800) surfaces, #38BDF8 (sky-400) accent principal
 - **Palette alternative claire** : #F8FAFC fond, #F1F5F9 surfaces, #0EA5E9 accent
 - **Typographie** : `Inter` (UI), `JetBrains Mono` (données/code), `Geist` (titres)
@@ -67,17 +73,34 @@ Ce skill applique les conventions de `_common/performance-workflow.md` :
 - **Ombres** : subtiles, couches (0 1px 3px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08))
 - **Grille** : 8px base unit, colonnes 12, gouttières 16-24px
 
+### Palettes par application (priorité sur la palette UNANIMA)
+| App | Primary | Primary Dark | Accent | Font |
+|---|---|---|---|---|
+| **Links** | `#1E6FC0` | `#0D3B6E` | `#FF6B35` | Inter |
+| **CREAI** | `#6D28D9` | `#4C1D95` | `#EC4899` | Source Sans 3 |
+| **Omega** | `#EA580C` | `#9A3412` | `#EAB308` | DM Sans |
+
 ---
 
 ## 2. Workflow de Création
 
 ### Étape 1 — Analyse du besoin (TOUJOURS faire cette étape)
+
+> **OBLIGATOIRE** : Avant de générer le SVG, consulter
+> `_common/ui-spec-checklist.md` pour identifier la SFD et la maquette
+> existante de l'écran ciblé. Si une maquette existe déjà (ex : MAQ-01 à
+> MAQ-09 pour Links), s'en inspirer pour la cohérence visuelle. Si une SFD
+> existe (ex : SPC-0003 pour Links), y lire les données affichées, les
+> actions disponibles et les règles de gestion.
+
 Avant de générer le SVG, déduire ou demander :
 1. **Type d'écran** : liste/tableau, formulaire, dashboard, détail fiche, wizard, modal, etc.
 2. **Contexte métier** : module fonctionnel, type d'utilisateur, criticité des données
 3. **Format cible** : dimensions souhaitées (défaut : 1440×900px), orientation
 4. **Intégration** : destination (doc Word, PDF rapport, présentation, wiki)
 5. **Design system existant** : couleurs, typographie, composants déjà définis ?
+6. **Specs et maquettes existantes** : consulter `_common/ui-spec-checklist.md`
+   pour la correspondance écran → SFD → maquette → wireframe
 
 ### Étape 2 — Choix du pattern de layout
 
