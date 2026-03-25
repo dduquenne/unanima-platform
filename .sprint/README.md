@@ -23,7 +23,8 @@ pour séquencer l'implémentation des issues.
 ├── sprint-8.md            ← Sprint 8 — Links : Fondations BDD & Infrastructure
 ├── sprint-9.md            ← Sprint 9 — Links : EPIC-AUTH + Espace Bénéficiaire
 ├── sprint-10.md           ← Sprint 10 — Links : Espace Consultant
-└── sprint-11.md           ← Sprint 11 — Links : Super Admin + Qualité + Déploiement
+├── sprint-11.md           ← Sprint 11 — Links : Super Admin + Qualité + Déploiement
+└── sprint-12.md           ← Sprint 12 — Links : Mode Simulation (données fictives)
 ```
 
 ## Format d'un plan de sprint
