@@ -107,6 +107,12 @@ export default function AdminUtilisateursPage() {
   const [createdUser, setCreatedUser] = useState<CreatedUser | null>(null)
   const [copied, setCopied] = useState(false)
 
+  // Edit modal
+  const [editingUser, setEditingUser] = useState<UserProfile | null>(null)
+  const [editFormData, setEditFormData] = useState({ full_name: '', consultant_id: '' })
+  const [editSubmitting, setEditSubmitting] = useState(false)
+  const [editError, setEditError] = useState<string | null>(null)
+
   // Toasts
   const [toast, setToast] = useState<{
     type: 'success' | 'error'
@@ -271,6 +277,50 @@ export default function AdminUtilisateursPage() {
       setTimeout(() => setCopied(false), 2500)
     } catch {
       showToast('error', 'Impossible de copier dans le presse-papiers.')
+    }
+  }
+
+  const handleOpenEdit = (user: UserProfile) => {
+    setEditingUser(user)
+    setEditFormData({
+      full_name: user.full_name,
+      consultant_id: user.assigned_consultant?.id ?? '',
+    })
+    setEditError(null)
+  }
+
+  const handleEditUser = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingUser) return
+    setEditSubmitting(true)
+    setEditError(null)
+
+    try {
+      const body: Record<string, unknown> = {
+        full_name: editFormData.full_name.trim(),
+      }
+      if (editingUser.role === 'beneficiaire') {
+        body.consultant_id = editFormData.consultant_id || null
+      }
+
+      const res = await fetch(`/api/admin/users/${editingUser.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+
+      if (!res.ok) {
+        const errorJson = await res.json().catch(() => null)
+        throw new Error(errorJson?.error ?? 'Erreur lors de la modification.')
+      }
+
+      showToast('success', `${editFormData.full_name} mis à jour.`)
+      setEditingUser(null)
+      fetchUsers()
+    } catch (err) {
+      setEditError(err instanceof Error ? err.message : 'Erreur inconnue.')
+    } finally {
+      setEditSubmitting(false)
     }
   }
 
@@ -598,6 +648,7 @@ export default function AdminUtilisateursPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
                         <button
+                          onClick={() => handleOpenEdit(user)}
                           title="Modifier"
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
                         >
@@ -961,6 +1012,108 @@ export default function AdminUtilisateursPage() {
                 Fermer
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================================================================== */}
+      {/* EDIT MODAL                                                         */}
+      {/* ================================================================== */}
+      {editingUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setEditingUser(null)}
+          />
+          <div className="relative w-full max-w-lg mx-4 bg-white rounded-xl shadow-2xl overflow-hidden">
+            <div className="flex items-center gap-3 px-6 py-5 border-b border-[var(--color-border)] relative">
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-primary)]" />
+              <div className="w-10 h-10 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center">
+                <Pencil className="w-5 h-5 text-[var(--color-primary)]" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-[var(--color-text)]">
+                  Modifier {editingUser.full_name}
+                </h2>
+                <p className="text-xs text-[var(--color-text)]/50">
+                  {editingUser.role === 'beneficiaire' ? 'Bénéficiaire' : 'Consultante'}
+                </p>
+              </div>
+              <button
+                onClick={() => setEditingUser(null)}
+                className="absolute right-4 top-4 p-1 rounded-md hover:bg-gray-100 text-[var(--color-text)]/40 hover:text-[var(--color-text)] transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleEditUser} className="px-6 py-5 space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-[var(--color-text)]/70 mb-1.5">
+                  Nom complet
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editFormData.full_name}
+                  onChange={(e) =>
+                    setEditFormData((fd) => ({ ...fd, full_name: e.target.value }))
+                  }
+                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+                />
+              </div>
+
+              {editingUser.role === 'beneficiaire' && (
+                <div>
+                  <label className="block text-xs font-medium text-[var(--color-text)]/70 mb-1.5">
+                    Consultante assignée
+                  </label>
+                  <select
+                    value={editFormData.consultant_id}
+                    onChange={(e) =>
+                      setEditFormData((fd) => ({ ...fd, consultant_id: e.target.value }))
+                    }
+                    className="w-full px-3 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+                  >
+                    <option value="">Aucune consultante</option>
+                    {consultants
+                      .filter((c) => c.is_active)
+                      .map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.full_name}
+                        </option>
+                      ))}
+                  </select>
+                  <p className="mt-1.5 text-xs text-[var(--color-text)]/50">
+                    La réassignation prend effet immédiatement : l&apos;ancienne consultante perd l&apos;accès au dossier.
+                  </p>
+                </div>
+              )}
+
+              {editError && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs">
+                  <X className="w-4 h-4 flex-shrink-0" />
+                  {editError}
+                </div>
+              )}
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="px-4 py-2.5 text-sm font-medium rounded-lg border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  disabled={editSubmitting}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {editSubmitting ? 'Enregistrement...' : 'Enregistrer'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

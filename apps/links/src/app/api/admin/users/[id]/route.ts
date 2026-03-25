@@ -96,6 +96,13 @@ export async function PATCH(
     )
   }
 
+  // Fetch current profile for audit trail
+  const { data: currentProfile } = await supabase
+    .from('profiles')
+    .select('consultant_id, is_active, full_name')
+    .eq('id', userId)
+    .single()
+
   const updateData = {
     ...parsed.data,
     updated_at: new Date().toISOString(),
@@ -113,6 +120,27 @@ export async function PATCH(
       { error: 'Erreur de mise à jour', code: 'SERVER_ERROR' },
       { status: 500 }
     )
+  }
+
+  // Audit log for significant changes
+  const changes: Record<string, unknown> = {}
+  if (parsed.data.consultant_id !== undefined && currentProfile?.consultant_id !== parsed.data.consultant_id) {
+    changes.consultant_id = { from: currentProfile?.consultant_id, to: parsed.data.consultant_id }
+  }
+  if (parsed.data.is_active !== undefined && currentProfile?.is_active !== parsed.data.is_active) {
+    changes.is_active = { from: currentProfile?.is_active, to: parsed.data.is_active }
+  }
+
+  if (Object.keys(changes).length > 0) {
+    await supabase.from('audit_logs').insert({
+      user_id: user.id,
+      action: parsed.data.consultant_id !== undefined && currentProfile?.consultant_id !== parsed.data.consultant_id
+        ? 'CONSULTANT_REASSIGNED'
+        : 'USER_UPDATED',
+      entity_type: 'profile',
+      entity_id: userId,
+      details: changes,
+    })
   }
 
   return NextResponse.json({ data: updated })
