@@ -124,6 +124,15 @@ export default function DashboardPage() {
     }
   }, [user])
 
+  // Redirect consultant/admin to their specific dashboards
+  useEffect(() => {
+    if (user?.role === 'consultant') {
+      router.replace('/consultant/dashboard')
+    } else if (user?.role === 'super_admin') {
+      router.replace('/admin/dashboard')
+    }
+  }, [user?.role, router])
+
   if (!user || isLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
@@ -136,16 +145,14 @@ export default function DashboardPage() {
     )
   }
 
-  // If consultant or admin, show a placeholder for now
   if (user.role !== 'beneficiaire') {
     return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-[var(--color-text)]">
-          Tableau de bord
-        </h1>
-        <p className="text-[var(--color-text-secondary)]">
-          Dashboard consultant — en cours de d&eacute;veloppement.
-        </p>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div
+          className="h-10 w-10 animate-spin rounded-full border-4 border-[var(--color-primary)]/20 border-t-[var(--color-primary)]"
+          role="status"
+          aria-label="Redirection"
+        />
       </div>
     )
   }

@@ -1,0 +1,171 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { createServerClient } from '@unanima/db'
+import { cookies } from 'next/headers'
+import { updateSessionNoteSchema } from '@/lib/types/schemas'
+
+export async function GET(request: NextRequest) {
+  const cookieStore = await cookies()
+  const supabase = createServerClient(cookieStore)
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json(
+      { error: 'Non authentifié', code: 'UNAUTHORIZED' },
+      { status: 401 }
+    )
+  }
+
+  // Verify consultant role
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if (!profile || profile.role !== 'consultant') {
+    return NextResponse.json(
+      { error: 'Accès réservé aux consultants', code: 'FORBIDDEN' },
+      { status: 403 }
+    )
+  }
+
+  const beneficiaryId = request.nextUrl.searchParams.get('beneficiary_id')
+  if (!beneficiaryId) {
+    return NextResponse.json(
+      { error: 'beneficiary_id requis', code: 'VALIDATION_ERROR' },
+      { status: 400 }
+    )
+  }
+
+  // Verify consultant is assigned to this beneficiary
+  const { data: beneficiary } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', beneficiaryId)
+    .eq('consultant_id', user.id)
+    .eq('role', 'beneficiaire')
+    .single()
+
+  if (!beneficiary) {
+    return NextResponse.json(
+      { error: 'Bénéficiaire non trouvé ou non assigné', code: 'FORBIDDEN' },
+      { status: 403 }
+    )
+  }
+
+  const { data: notes, error } = await supabase
+    .from('session_notes')
+    .select('id, beneficiary_id, session_number, content, created_at, updated_at')
+    .eq('beneficiary_id', beneficiaryId)
+    .order('session_number', { ascending: true })
+
+  if (error) {
+    return NextResponse.json(
+      { error: 'Erreur serveur', code: 'SERVER_ERROR' },
+      { status: 500 }
+    )
+  }
+
+  return NextResponse.json({ data: notes ?? [] })
+}
+
+export async function POST(request: NextRequest) {
+  const cookieStore = await cookies()
+  const supabase = createServerClient(cookieStore)
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json(
+      { error: 'Non authentifié', code: 'UNAUTHORIZED' },
+      { status: 401 }
+    )
+  }
+
+  // Verify consultant role
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single()
+
+  if (!profile || profile.role !== 'consultant') {
+    return NextResponse.json(
+      { error: 'Accès réservé aux consultants', code: 'FORBIDDEN' },
+      { status: 403 }
+    )
+  }
+
+  const body = await request.json().catch(() => null)
+  if (!body) {
+    return NextResponse.json(
+      { error: 'Corps de requête invalide', code: 'VALIDATION_ERROR' },
+      { status: 400 }
+    )
+  }
+
+  const { beneficiary_id, session_number } = body
+
+  if (!beneficiary_id || typeof beneficiary_id !== 'string') {
+    return NextResponse.json(
+      { error: 'beneficiary_id requis', code: 'VALIDATION_ERROR' },
+      { status: 400 }
+    )
+  }
+
+  if (!session_number || typeof session_number !== 'number' || session_number < 1 || session_number > 6) {
+    return NextResponse.json(
+      { error: 'session_number invalide (1-6)', code: 'VALIDATION_ERROR' },
+      { status: 400 }
+    )
+  }
+
+  // Validate content with schema
+  const parsed = updateSessionNoteSchema.safeParse(body)
+  if (!parsed.success) {
+    const msg = parsed.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ')
+    return NextResponse.json(
+      { error: msg, code: 'VALIDATION_ERROR' },
+      { status: 400 }
+    )
+  }
+
+  // Verify consultant is assigned to this beneficiary
+  const { data: beneficiary } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', beneficiary_id)
+    .eq('consultant_id', user.id)
+    .eq('role', 'beneficiaire')
+    .single()
+
+  if (!beneficiary) {
+    return NextResponse.json(
+      { error: 'Bénéficiaire non trouvé ou non assigné', code: 'FORBIDDEN' },
+      { status: 403 }
+    )
+  }
+
+  const { content } = parsed.data
+
+  const { error } = await supabase
+    .from('session_notes')
+    .upsert(
+      {
+        beneficiary_id,
+        session_number,
+        content,
+        consultant_id: user.id,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'beneficiary_id,session_number' }
+    )
+
+  if (error) {
+    return NextResponse.json(
+      { error: 'Erreur de sauvegarde', code: 'SERVER_ERROR' },
+      { status: 500 }
+    )
+  }
+
+  return NextResponse.json({ data: { success: true, beneficiary_id, session_number } })
+}

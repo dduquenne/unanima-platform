@@ -16,10 +16,15 @@ interface NavTab {
 }
 
 const consultantTabs: NavTab[] = [
-  { label: 'Dashboard', href: '/dashboard', icon: <LayoutDashboard className="h-4 w-4" /> },
-  { label: 'Bénéficiaires', href: '/beneficiaires', icon: <Users className="h-4 w-4" /> },
+  { label: 'Dashboard', href: '/consultant/dashboard', icon: <LayoutDashboard className="h-4 w-4" /> },
+  { label: 'Bénéficiaires', href: '/consultant/beneficiaires', icon: <Users className="h-4 w-4" /> },
   { label: 'Documents', href: '/documents', icon: <FolderOpen className="h-4 w-4" /> },
-  { label: 'Bilans', href: '/bilans', icon: <FileText className="h-4 w-4" /> },
+]
+
+const adminTabs: NavTab[] = [
+  { label: 'Dashboard', href: '/admin/dashboard', icon: <LayoutDashboard className="h-4 w-4" /> },
+  { label: 'Utilisateurs', href: '/admin/utilisateurs', icon: <Users className="h-4 w-4" /> },
+  { label: 'Documents', href: '/documents', icon: <FolderOpen className="h-4 w-4" /> },
 ]
 
 const beneficiaireTabs: NavTab[] = [
@@ -110,8 +115,11 @@ export default function ProtectedLayout({
     )
   }
 
-  const isConsultantOrAdmin = user?.role === 'consultant' || user?.role === 'super_admin'
-  const tabs = isConsultantOrAdmin ? consultantTabs : beneficiaireTabs
+  const tabs = user?.role === 'super_admin'
+    ? adminTabs
+    : user?.role === 'consultant'
+      ? consultantTabs
+      : beneficiaireTabs
 
   const isTabActive = (href: string) =>
     pathname === href || pathname.startsWith(href + '/')
