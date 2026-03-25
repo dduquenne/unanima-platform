@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '@unanima/auth'
 import { Card } from '@unanima/core'
 import { FileText, Download, ExternalLink } from 'lucide-react'
+import { PHASE_DESCRIPTIONS } from '@/config/phases.config'
 
 interface PhaseDocument {
   id: string
@@ -12,15 +13,6 @@ interface PhaseDocument {
   file_type: 'pdf' | 'docx'
   sort_order: number
 }
-
-const PHASE_LABELS = [
-  'Phase 1 — Entretien préliminaire',
-  'Phase 2 — Investigation (aptitudes)',
-  'Phase 3 — Investigation (motivations)',
-  'Phase 4 — Investigation (compétences)',
-  'Phase 5 — Conclusions',
-  'Phase 6 — Suivi à 6 mois',
-]
 
 export default function DocumentsPage() {
   const { user } = useAuth()
@@ -93,7 +85,7 @@ export default function DocumentsPage() {
             <Card key={phase}>
               <div className="px-5 py-4 border-b border-[var(--color-border)] bg-gray-50/50">
                 <h2 className="text-sm font-semibold text-[var(--color-primary-dark)]">
-                  {PHASE_LABELS[phase - 1]}
+                  {`Phase ${phase} — ${PHASE_DESCRIPTIONS[phase]}`}
                 </h2>
               </div>
               {phaseDocs.length === 0 ? (

@@ -7,17 +7,7 @@ import { ProgressBar, StatusBadge } from '@unanima/dashboard'
 import { Card } from '@unanima/core'
 import { Video, Calendar, ArrowRight } from 'lucide-react'
 import type { PhaseStatus } from '@/lib/types/database'
-
-const TOTAL_PHASES = 6
-
-const PHASE_LABELS: Record<number, string> = {
-  1: 'Définir mon projet',
-  2: 'Explorer mes compétences',
-  3: 'Analyser mon marché',
-  4: 'Construire mon plan',
-  5: 'Préparer mon entretien',
-  6: 'Finaliser mon bilan',
-}
+import { TOTAL_PHASES, PHASE_LABELS } from '@/config/phases.config'
 
 const PHASE_STATUS_CONFIG = {
   libre: { label: 'À compléter', color: 'info' as const },

@@ -5,19 +5,11 @@ import { useParams, useRouter } from 'next/navigation'
 import { useAuth } from '@unanima/auth'
 import { Card, Textarea, Button, Modal } from '@unanima/core'
 import { FileText, Download } from 'lucide-react'
+import { PHASE_DESCRIPTIONS } from '@/config/phases.config'
 
 const AUTOSAVE_INTERVAL_MS = 30_000 // 30 seconds
 const MAX_RETRIES = 2
 const RETRY_DELAY_MS = 5_000
-
-const PHASE_LABELS: Record<number, string> = {
-  1: 'Phase préliminaire',
-  2: 'Investigation — Parcours personnel',
-  3: 'Investigation — Parcours professionnel',
-  4: 'Investigation — Projet professionnel',
-  5: 'Conclusion',
-  6: 'Suivi à 6 mois',
-}
 
 interface QuestionData {
   id: string
@@ -75,7 +67,7 @@ export default function PhaseDetailPage() {
   const { user } = useAuth()
 
   const phaseNumber = Number(params.id)
-  const phaseTitle = PHASE_LABELS[phaseNumber] ?? `Phase ${phaseNumber}`
+  const phaseTitle = PHASE_DESCRIPTIONS[phaseNumber] ?? `Phase ${phaseNumber}`
 
   const [questions, setQuestions] = useState<QuestionData[]>([])
   const [responses, setResponses] = useState<Record<string, string>>({})

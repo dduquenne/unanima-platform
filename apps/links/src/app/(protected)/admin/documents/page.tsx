@@ -13,6 +13,7 @@ import {
   Check,
   AlertTriangle,
 } from 'lucide-react'
+import { TOTAL_PHASES, PHASE_DESCRIPTIONS } from '@/config/phases.config'
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -23,15 +24,6 @@ interface PhaseDocument {
   file_type: 'pdf' | 'docx'
   sort_order: number
 }
-
-const PHASE_LABELS = [
-  'Phase 1 — Entretien préliminaire',
-  'Phase 2 — Investigation (aptitudes)',
-  'Phase 3 — Investigation (motivations)',
-  'Phase 4 — Investigation (compétences)',
-  'Phase 5 — Conclusions',
-  'Phase 6 — Suivi à 6 mois',
-]
 
 // ── Component ───────────────────────────────────────────────────────────────
 
@@ -241,7 +233,7 @@ export default function AdminDocumentsPage() {
 
       {/* Phase tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
-        {PHASE_LABELS.map((label, idx) => {
+        {Array.from({ length: TOTAL_PHASES }, (_, idx) => {
           const phase = idx + 1
           const count = phaseDocCount(phase)
           return (
@@ -271,7 +263,7 @@ export default function AdminDocumentsPage() {
 
       {/* Phase title */}
       <h2 className="text-lg font-semibold text-[var(--color-text)] mb-4">
-        {PHASE_LABELS[activePhase - 1]}
+        {`Phase ${activePhase} — ${PHASE_DESCRIPTIONS[activePhase]}`}
       </h2>
 
       {/* Document list */}
