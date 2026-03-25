@@ -96,3 +96,37 @@ test.describe('Parcours consultant Links', () => {
     await expect(page.getByText('Bénéficiaires actifs')).toBeVisible()
   })
 })
+
+test.describe('Sécurité RBAC — consultant', () => {
+  test('ne peut pas accéder à /admin/dashboard', async ({
+    consultantPage: page,
+  }) => {
+    await page.goto('/admin/dashboard')
+
+    const url = page.url()
+    const body = page.locator('body')
+
+    const isRedirected = url.includes('/login') || url.includes('/dashboard')
+    const hasForbidden = await body
+      .getByText(/interdit|accès refusé|forbidden|non autorisé/i)
+      .count()
+
+    expect(isRedirected || hasForbidden > 0).toBe(true)
+  })
+
+  test('ne peut pas accéder à /admin/utilisateurs', async ({
+    consultantPage: page,
+  }) => {
+    await page.goto('/admin/utilisateurs')
+
+    const url = page.url()
+    const body = page.locator('body')
+
+    const isRedirected = url.includes('/login') || url.includes('/dashboard')
+    const hasForbidden = await body
+      .getByText(/interdit|accès refusé|forbidden|non autorisé/i)
+      .count()
+
+    expect(isRedirected || hasForbidden > 0).toBe(true)
+  })
+})
