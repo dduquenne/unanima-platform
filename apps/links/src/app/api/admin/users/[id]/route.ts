@@ -96,6 +96,13 @@ export async function PATCH(
     )
   }
 
+  // Fetch current profile for audit trail
+  const { data: currentProfile } = await supabase
+    .from('profiles')
+    .select('consultant_id, is_active, full_name')
+    .eq('id', userId)
+    .single()
+
   const updateData = {
     ...parsed.data,
     updated_at: new Date().toISOString(),
@@ -115,11 +122,38 @@ export async function PATCH(
     )
   }
 
+  // Revoke sessions when deactivating a user
+  if (parsed.data.is_active === false && currentProfile?.is_active === true) {
+    const adminClient = createAdminClient()
+    await adminClient.auth.admin.signOut(userId, 'global')
+  }
+
+  // Audit log for significant changes
+  const changes: Record<string, unknown> = {}
+  if (parsed.data.consultant_id !== undefined && currentProfile?.consultant_id !== parsed.data.consultant_id) {
+    changes.consultant_id = { from: currentProfile?.consultant_id, to: parsed.data.consultant_id }
+  }
+  if (parsed.data.is_active !== undefined && currentProfile?.is_active !== parsed.data.is_active) {
+    changes.is_active = { from: currentProfile?.is_active, to: parsed.data.is_active }
+  }
+
+  if (Object.keys(changes).length > 0) {
+    await supabase.from('audit_logs').insert({
+      user_id: user.id,
+      action: parsed.data.consultant_id !== undefined && currentProfile?.consultant_id !== parsed.data.consultant_id
+        ? 'CONSULTANT_REASSIGNED'
+        : 'USER_UPDATED',
+      entity_type: 'profile',
+      entity_id: userId,
+      details: changes,
+    })
+  }
+
   return NextResponse.json({ data: updated })
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: userId } = await params
@@ -159,7 +193,7 @@ export async function DELETE(
   // Verify user exists
   const { data: targetProfile } = await supabase
     .from('profiles')
-    .select('id, email')
+    .select('id, email, full_name, role')
     .eq('id', userId)
     .single()
 
@@ -170,17 +204,44 @@ export async function DELETE(
     )
   }
 
-  // Log RGPD deletion in audit log before deleting
+  // Prevent deleting the last super_admin
+  if (targetProfile.role === 'super_admin') {
+    const { count } = await supabase
+      .from('profiles')
+      .select('id', { count: 'exact', head: true })
+      .eq('role', 'super_admin')
+
+    if ((count ?? 0) <= 1) {
+      return NextResponse.json(
+        { error: 'Impossible de supprimer le dernier super administrateur', code: 'FORBIDDEN' },
+        { status: 403 }
+      )
+    }
+  }
+
+  // Double confirmation: body must contain confirmation_name matching the user's full_name
+  const body = await request.json().catch(() => null)
+  const confirmationName = body?.confirmation_name
+  if (!confirmationName || confirmationName !== targetProfile.full_name) {
+    return NextResponse.json(
+      { error: 'Le nom de confirmation ne correspond pas', code: 'VALIDATION_ERROR' },
+      { status: 400 }
+    )
+  }
+
+  // Log RGPD deletion in audit log before deleting (audit_logs are preserved after deletion)
   await supabase.from('audit_logs').insert({
     user_id: user.id,
-    action: 'rgpd_delete',
+    action: 'RGPD_EFFACEMENT',
     entity_type: 'profile',
     entity_id: userId,
-    details: { deleted_email: targetProfile.email },
+    details: { deleted_email: targetProfile.email, deleted_name: targetProfile.full_name, reason: 'RGPD_effacement' },
   })
 
-  // Delete profile (CASCADE will handle related data)
-  const { error: profileError } = await supabase
+  // Delete profile (CASCADE will handle related data: phase_responses, phase_validations, sessions)
+  const adminClient = createAdminClient()
+
+  const { error: profileError } = await adminClient
     .from('profiles')
     .delete()
     .eq('id', userId)
@@ -193,7 +254,6 @@ export async function DELETE(
   }
 
   // Delete auth user via admin client
-  const adminClient = createAdminClient()
   const { error: authError } = await adminClient.auth.admin.deleteUser(userId)
 
   if (authError) {

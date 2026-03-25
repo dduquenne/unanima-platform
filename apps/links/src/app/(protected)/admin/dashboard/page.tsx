@@ -100,19 +100,15 @@ export default function AdminDashboardPage() {
 
     async function loadData() {
       try {
-        const [statsRes, usersRes] = await Promise.allSettled([
-          fetch('/api/admin/stats').then((r) => (r.ok ? r.json() : null)),
-          fetch('/api/admin/users?role=beneficiaire').then((r) =>
-            r.ok ? r.json() : null
-          ),
-        ])
+        const statsRes = await fetch('/api/admin/stats').then((r) =>
+          r.ok ? r.json() : null
+        )
 
-        if (statsRes.status === 'fulfilled' && statsRes.value?.data) {
-          setStats(statsRes.value.data)
-        }
-
-        if (usersRes.status === 'fulfilled' && usersRes.value?.data) {
-          setBeneficiaires(usersRes.value.data)
+        if (statsRes?.data) {
+          setStats(statsRes.data)
+          if (statsRes.data.beneficiaires) {
+            setBeneficiaires(statsRes.data.beneficiaires)
+          }
         }
       } finally {
         setIsLoading(false)

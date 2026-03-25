@@ -244,6 +244,15 @@ describe('createUserSchema', () => {
       role: 'manager',
     }).success).toBe(false)
   })
+
+  it('rejette le rôle super_admin', () => {
+    const result = createUserSchema.safeParse({
+      email: 'admin@example.com',
+      full_name: 'Admin User',
+      role: 'super_admin',
+    })
+    expect(result.success).toBe(false)
+  })
 })
 
 describe('updateUserSchema', () => {

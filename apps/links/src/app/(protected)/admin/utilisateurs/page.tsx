@@ -15,6 +15,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Filter,
+  Trash2,
+  Key,
+  AlertTriangle,
 } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
@@ -107,6 +110,22 @@ export default function AdminUtilisateursPage() {
   const [createdUser, setCreatedUser] = useState<CreatedUser | null>(null)
   const [copied, setCopied] = useState(false)
 
+  // Edit modal
+  const [editingUser, setEditingUser] = useState<UserProfile | null>(null)
+  const [editFormData, setEditFormData] = useState({ full_name: '', consultant_id: '' })
+  const [editSubmitting, setEditSubmitting] = useState(false)
+  const [editError, setEditError] = useState<string | null>(null)
+
+  // Delete RGPD modal
+  const [deletingUser, setDeletingUser] = useState<UserProfile | null>(null)
+  const [deleteConfirmName, setDeleteConfirmName] = useState('')
+  const [deleteSubmitting, setDeleteSubmitting] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
+
+  // Reset password modal
+  const [resetPasswordUser, setResetPasswordUser] = useState<CreatedUser | null>(null)
+  const [resetCopied, setResetCopied] = useState(false)
+
   // Toasts
   const [toast, setToast] = useState<{
     type: 'success' | 'error'
@@ -172,7 +191,7 @@ export default function AdminUtilisateursPage() {
 
   const fetchConsultants = useCallback(async () => {
     try {
-      const res = await fetch('/api/admin/users?role=consultant&limit=200')
+      const res = await fetch('/api/admin/users?role=consultant&status=active&limit=200')
       if (!res.ok) return
       const json: PaginatedResponse = await res.json()
       setConsultants(json.data)
@@ -233,24 +252,23 @@ export default function AdminUtilisateursPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          first_name: formData.first_name.trim(),
-          last_name: formData.last_name.trim(),
+          full_name: `${formData.first_name.trim()} ${formData.last_name.trim()}`,
           email: formData.email.trim(),
           role: activeTab,
-          assigned_consultant_id:
+          consultant_id:
             activeTab === 'beneficiaire' && formData.assigned_consultant_id
               ? formData.assigned_consultant_id
-              : undefined,
+              : null,
         }),
       })
 
       if (!res.ok) {
         const errorJson = await res.json().catch(() => null)
-        throw new Error(errorJson?.message ?? 'Erreur lors de la création du compte.')
+        throw new Error(errorJson?.error ?? 'Erreur lors de la création du compte.')
       }
 
-      const json: CreatedUser = await res.json()
-      setCreatedUser(json)
+      const json = await res.json()
+      setCreatedUser(json.data as CreatedUser)
       setShowCreateModal(false)
       setFormData({ first_name: '', last_name: '', email: '', assigned_consultant_id: '' })
       showToast('success', 'Compte créé avec succès.')
@@ -270,6 +288,110 @@ export default function AdminUtilisateursPage() {
       await navigator.clipboard.writeText(text)
       setCopied(true)
       setTimeout(() => setCopied(false), 2500)
+    } catch {
+      showToast('error', 'Impossible de copier dans le presse-papiers.')
+    }
+  }
+
+  const handleOpenEdit = (user: UserProfile) => {
+    setEditingUser(user)
+    setEditFormData({
+      full_name: user.full_name,
+      consultant_id: user.assigned_consultant?.id ?? '',
+    })
+    setEditError(null)
+  }
+
+  const handleEditUser = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingUser) return
+    setEditSubmitting(true)
+    setEditError(null)
+
+    try {
+      const body: Record<string, unknown> = {
+        full_name: editFormData.full_name.trim(),
+      }
+      if (editingUser.role === 'beneficiaire') {
+        body.consultant_id = editFormData.consultant_id || null
+      }
+
+      const res = await fetch(`/api/admin/users/${editingUser.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+
+      if (!res.ok) {
+        const errorJson = await res.json().catch(() => null)
+        throw new Error(errorJson?.error ?? 'Erreur lors de la modification.')
+      }
+
+      showToast('success', `${editFormData.full_name} mis à jour.`)
+      setEditingUser(null)
+      fetchUsers()
+    } catch (err) {
+      setEditError(err instanceof Error ? err.message : 'Erreur inconnue.')
+    } finally {
+      setEditSubmitting(false)
+    }
+  }
+
+  const handleDeleteUser = async () => {
+    if (!deletingUser || deleteConfirmName !== deletingUser.full_name) return
+    setDeleteSubmitting(true)
+    setDeleteError(null)
+
+    try {
+      const res = await fetch(`/api/admin/users/${deletingUser.id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ confirmation_name: deleteConfirmName }),
+      })
+
+      if (!res.ok) {
+        const errorJson = await res.json().catch(() => null)
+        throw new Error(errorJson?.error ?? 'Erreur lors de la suppression.')
+      }
+
+      showToast('success', `Compte de ${deletingUser.full_name} supprimé définitivement.`)
+      setDeletingUser(null)
+      setDeleteConfirmName('')
+      fetchUsers()
+      fetchCounts()
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : 'Erreur inconnue.')
+    } finally {
+      setDeleteSubmitting(false)
+    }
+  }
+
+  const handleResetPassword = async (user: UserProfile) => {
+    try {
+      const res = await fetch(`/api/admin/users/${user.id}/reset-password`, {
+        method: 'POST',
+      })
+
+      if (!res.ok) {
+        const errorJson = await res.json().catch(() => null)
+        throw new Error(errorJson?.error ?? 'Erreur lors de la réinitialisation.')
+      }
+
+      const json = await res.json()
+      setResetPasswordUser(json.data as CreatedUser)
+      showToast('success', 'Mot de passe réinitialisé.')
+    } catch (err) {
+      showToast('error', err instanceof Error ? err.message : 'Erreur inconnue.')
+    }
+  }
+
+  const handleCopyResetCredentials = async () => {
+    if (!resetPasswordUser) return
+    const text = `Email : ${resetPasswordUser.email}\nNouveau mot de passe temporaire : ${resetPasswordUser.temporary_password}`
+    try {
+      await navigator.clipboard.writeText(text)
+      setResetCopied(true)
+      setTimeout(() => setResetCopied(false), 2500)
     } catch {
       showToast('error', 'Impossible de copier dans le presse-papiers.')
     }
@@ -599,11 +721,19 @@ export default function AdminUtilisateursPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
                         <button
+                          onClick={() => handleOpenEdit(user)}
                           title="Modifier"
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
                         >
                           <Pencil className="w-3.5 h-3.5" />
                           Modifier
+                        </button>
+                        <button
+                          onClick={() => handleResetPassword(user)}
+                          title="Réinitialiser le mot de passe"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
+                        >
+                          <Key className="w-3.5 h-3.5" />
                         </button>
                         {user.is_active ? (
                           <button
@@ -612,7 +742,6 @@ export default function AdminUtilisateursPage() {
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-warning)]/30 text-[var(--color-warning)] hover:bg-[var(--color-warning)]/5 transition-colors"
                           >
                             <Ban className="w-3.5 h-3.5" />
-                            Désactiver
                           </button>
                         ) : (
                           <button
@@ -621,9 +750,19 @@ export default function AdminUtilisateursPage() {
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-success)]/30 text-[var(--color-success)] hover:bg-[var(--color-success)]/5 transition-colors"
                           >
                             <RefreshCw className="w-3.5 h-3.5" />
-                            Réactiver
                           </button>
                         )}
+                        <button
+                          onClick={() => {
+                            setDeletingUser(user)
+                            setDeleteConfirmName('')
+                            setDeleteError(null)
+                          }}
+                          title="Supprimer définitivement (RGPD)"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-red-200 text-red-500 hover:bg-red-50 transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -962,6 +1101,227 @@ export default function AdminUtilisateursPage() {
                 Fermer
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================================================================== */}
+      {/* RGPD DELETE MODAL                                                  */}
+      {/* ================================================================== */}
+      {deletingUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setDeletingUser(null)} />
+          <div className="relative w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl overflow-hidden">
+            <div className="flex flex-col items-center px-6 pt-8 pb-4">
+              <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mb-4">
+                <AlertTriangle className="w-7 h-7 text-red-500" />
+              </div>
+              <h2 className="text-lg font-semibold text-[var(--color-text)]">
+                Suppression définitive
+              </h2>
+              <p className="text-sm text-[var(--color-text)]/50 mt-1 text-center">
+                Cette action est <strong>irréversible</strong>. Toutes les données de {deletingUser.full_name} seront effacées (RGPD).
+              </p>
+              <p className="text-xs text-[var(--color-text)]/40 mt-2 text-center">
+                Les logs d&apos;audit seront conservés conformément à l&apos;obligation légale.
+              </p>
+            </div>
+
+            <div className="px-6 pb-6 space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-[var(--color-text)]/70 mb-1.5">
+                  Saisissez <strong>{deletingUser.full_name}</strong> pour confirmer
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirmName}
+                  onChange={(e) => setDeleteConfirmName(e.target.value)}
+                  placeholder={deletingUser.full_name}
+                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-red-200 bg-white text-[var(--color-text)] placeholder:text-[var(--color-text)]/30 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500"
+                />
+              </div>
+
+              {deleteError && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs">
+                  <X className="w-4 h-4 flex-shrink-0" />
+                  {deleteError}
+                </div>
+              )}
+
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setDeletingUser(null)}
+                  className="px-4 py-2.5 text-sm font-medium rounded-lg border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={handleDeleteUser}
+                  disabled={deleteSubmitting || deleteConfirmName !== deletingUser.full_name}
+                  className="px-4 py-2.5 text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {deleteSubmitting ? 'Suppression...' : 'Supprimer définitivement'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================================================================== */}
+      {/* RESET PASSWORD RESULT MODAL                                        */}
+      {/* ================================================================== */}
+      {resetPasswordUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => { setResetPasswordUser(null); setResetCopied(false) }}
+          />
+          <div className="relative w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl overflow-hidden">
+            <div className="flex flex-col items-center px-6 pt-8 pb-4">
+              <div className="w-14 h-14 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center mb-4">
+                <Key className="w-7 h-7 text-[var(--color-primary)]" />
+              </div>
+              <h2 className="text-lg font-semibold text-[var(--color-text)]">
+                Mot de passe réinitialisé
+              </h2>
+            </div>
+
+            <div className="mx-6 p-4 rounded-lg bg-gray-50 border border-[var(--color-border)] space-y-3">
+              <div>
+                <p className="text-xs font-medium text-[var(--color-text)]/50 mb-1">Email</p>
+                <p className="text-sm font-mono text-[var(--color-text)]">{resetPasswordUser.email}</p>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-[var(--color-text)]/50 mb-1">Nouveau mot de passe temporaire</p>
+                <p className="text-sm font-mono text-[var(--color-text)]">{resetPasswordUser.temporary_password}</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 px-6 py-6">
+              <button
+                onClick={handleCopyResetCredentials}
+                className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                  resetCopied
+                    ? 'bg-[var(--color-success)] text-white'
+                    : 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)]'
+                }`}
+              >
+                {resetCopied ? (
+                  <><Check className="w-4 h-4" /> Copié !</>
+                ) : (
+                  'Copier les identifiants'
+                )}
+              </button>
+              <button
+                onClick={() => { setResetPasswordUser(null); setResetCopied(false) }}
+                className="w-full px-4 py-2.5 text-sm font-medium rounded-lg border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================================================================== */}
+      {/* EDIT MODAL                                                         */}
+      {/* ================================================================== */}
+      {editingUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setEditingUser(null)}
+          />
+          <div className="relative w-full max-w-lg mx-4 bg-white rounded-xl shadow-2xl overflow-hidden">
+            <div className="flex items-center gap-3 px-6 py-5 border-b border-[var(--color-border)] relative">
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-primary)]" />
+              <div className="w-10 h-10 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center">
+                <Pencil className="w-5 h-5 text-[var(--color-primary)]" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-[var(--color-text)]">
+                  Modifier {editingUser.full_name}
+                </h2>
+                <p className="text-xs text-[var(--color-text)]/50">
+                  {editingUser.role === 'beneficiaire' ? 'Bénéficiaire' : 'Consultante'}
+                </p>
+              </div>
+              <button
+                onClick={() => setEditingUser(null)}
+                className="absolute right-4 top-4 p-1 rounded-md hover:bg-gray-100 text-[var(--color-text)]/40 hover:text-[var(--color-text)] transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleEditUser} className="px-6 py-5 space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-[var(--color-text)]/70 mb-1.5">
+                  Nom complet
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editFormData.full_name}
+                  onChange={(e) =>
+                    setEditFormData((fd) => ({ ...fd, full_name: e.target.value }))
+                  }
+                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+                />
+              </div>
+
+              {editingUser.role === 'beneficiaire' && (
+                <div>
+                  <label className="block text-xs font-medium text-[var(--color-text)]/70 mb-1.5">
+                    Consultante assignée
+                  </label>
+                  <select
+                    value={editFormData.consultant_id}
+                    onChange={(e) =>
+                      setEditFormData((fd) => ({ ...fd, consultant_id: e.target.value }))
+                    }
+                    className="w-full px-3 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+                  >
+                    <option value="">Aucune consultante</option>
+                    {consultants
+                      .filter((c) => c.is_active)
+                      .map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.full_name}
+                        </option>
+                      ))}
+                  </select>
+                  <p className="mt-1.5 text-xs text-[var(--color-text)]/50">
+                    La réassignation prend effet immédiatement : l&apos;ancienne consultante perd l&apos;accès au dossier.
+                  </p>
+                </div>
+              )}
+
+              {editError && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs">
+                  <X className="w-4 h-4 flex-shrink-0" />
+                  {editError}
+                </div>
+              )}
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="px-4 py-2.5 text-sm font-medium rounded-lg border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  disabled={editSubmitting}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {editSubmitting ? 'Enregistrement...' : 'Enregistrer'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
