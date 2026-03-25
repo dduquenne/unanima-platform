@@ -107,12 +107,7 @@ export default async function middleware(request: NextRequest) {
           request: { headers: request.headers },
         })
         cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, {
-            ...options,
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-          }),
+          response.cookies.set(name, value, options ?? {}),
         )
       },
     },
