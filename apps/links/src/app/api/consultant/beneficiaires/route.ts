@@ -77,6 +77,13 @@ export async function GET() {
     )
   }
 
+  // Fetch last activity (most recent phase_response) per beneficiary
+  const { data: lastResponses } = await supabase
+    .from('phase_responses')
+    .select('beneficiary_id, updated_at')
+    .in('beneficiary_id', beneficiaryIds)
+    .order('updated_at', { ascending: false })
+
   // Group validations by beneficiary
   const validationsByBenef = new Map<string, { phase_number: number; status: string }[]>()
   for (const v of validations ?? []) {
@@ -93,11 +100,20 @@ export async function GET() {
     }
   }
 
+  // Get last activity per beneficiary (most recent response update)
+  const lastActivityByBenef = new Map<string, string | null>()
+  for (const r of lastResponses ?? []) {
+    if (!lastActivityByBenef.has(r.beneficiary_id)) {
+      lastActivityByBenef.set(r.beneficiary_id, r.updated_at)
+    }
+  }
+
   // Build response
   const data = beneficiaries.map(b => {
     const phases = validationsByBenef.get(b.id) ?? []
     const validatedCount = phases.filter(p => p.status === 'validee').length
     const nextSession = nextSessionByBenef.get(b.id) ?? null
+    const lastActivity = lastActivityByBenef.get(b.id) ?? b.created_at
 
     return {
       id: b.id,
@@ -109,6 +125,7 @@ export async function GET() {
       next_session: nextSession,
       validated_count: validatedCount,
       created_at: b.created_at,
+      last_activity_at: lastActivity,
     }
   })
 
