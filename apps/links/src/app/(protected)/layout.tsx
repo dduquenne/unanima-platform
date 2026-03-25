@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useAuth, useRequireRole } from '@unanima/auth'
 import { LogOut, LayoutDashboard, Users, FileText, FolderOpen, Menu, X } from 'lucide-react'
+import { SimulationBanner } from '@/components/simulation-banner'
 
 const SESSION_MAX_DURATION_MS = 8 * 60 * 60 * 1000 // 8 hours
 const SESSION_CHECK_INTERVAL_MS = 60 * 1000 // Check every minute
@@ -126,6 +127,9 @@ export default function ProtectedLayout({
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--color-background)]">
+      {/* Bandeau Mode Simulation (Sprint 12) */}
+      <SimulationBanner />
+
       {/* Skip link (WCAG 2.4.1) */}
       <a
         href="#main-content"
