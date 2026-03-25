@@ -104,7 +104,9 @@ export const updateSessionNoteSchema = z.object({
 export const createUserSchema = z.object({
   email: z.string().email('Email invalide'),
   full_name: z.string().min(1, 'Nom requis').max(255),
-  role: z.enum(['beneficiaire', 'consultant', 'super_admin']),
+  role: z.enum(['beneficiaire', 'consultant'], {
+    error: 'Rôle invalide : seuls beneficiaire et consultant sont autorisés',
+  }),
   consultant_id: z.string().uuid().nullable().optional(),
 })
 

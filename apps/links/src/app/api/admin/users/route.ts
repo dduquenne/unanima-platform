@@ -180,6 +180,15 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Audit log
+  await adminClient.from('audit_logs').insert({
+    user_id: user.id,
+    action: 'USER_CREATED',
+    entity_type: 'profile',
+    entity_id: userId,
+    details: { created_email: email, created_role: role },
+  })
+
   return NextResponse.json({
     data: {
       user_id: userId,

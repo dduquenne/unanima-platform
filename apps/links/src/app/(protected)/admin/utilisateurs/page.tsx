@@ -172,7 +172,7 @@ export default function AdminUtilisateursPage() {
 
   const fetchConsultants = useCallback(async () => {
     try {
-      const res = await fetch('/api/admin/users?role=consultant&limit=200')
+      const res = await fetch('/api/admin/users?role=consultant&status=active&limit=200')
       if (!res.ok) return
       const json: PaginatedResponse = await res.json()
       setConsultants(json.data)
@@ -233,24 +233,23 @@ export default function AdminUtilisateursPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          first_name: formData.first_name.trim(),
-          last_name: formData.last_name.trim(),
+          full_name: `${formData.first_name.trim()} ${formData.last_name.trim()}`,
           email: formData.email.trim(),
           role: activeTab,
-          assigned_consultant_id:
+          consultant_id:
             activeTab === 'beneficiaire' && formData.assigned_consultant_id
               ? formData.assigned_consultant_id
-              : undefined,
+              : null,
         }),
       })
 
       if (!res.ok) {
         const errorJson = await res.json().catch(() => null)
-        throw new Error(errorJson?.message ?? 'Erreur lors de la création du compte.')
+        throw new Error(errorJson?.error ?? 'Erreur lors de la création du compte.')
       }
 
-      const json: CreatedUser = await res.json()
-      setCreatedUser(json)
+      const json = await res.json()
+      setCreatedUser(json.data as CreatedUser)
       setShowCreateModal(false)
       setFormData({ first_name: '', last_name: '', email: '', assigned_consultant_id: '' })
       showToast('success', 'Compte créé avec succès.')
