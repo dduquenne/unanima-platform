@@ -1,8 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@unanima/db'
 import { cookies } from 'next/headers'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { simulationDocuments, getDocumentsForPhase } from '@/lib/simulation/fixtures'
 
 export async function GET(request: NextRequest) {
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    const phaseNumber = request.nextUrl.searchParams.get('phase_number')
+    const docs = phaseNumber
+      ? getDocumentsForPhase(Number(phaseNumber))
+      : simulationDocuments
+    return NextResponse.json({
+      data: docs.map((d) => ({
+        id: d.id,
+        phase_number: d.phase_number,
+        display_name: d.display_name,
+        file_type: d.file_type,
+        sort_order: d.sort_order,
+      })),
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 

@@ -2,8 +2,24 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@unanima/db'
 import { cookies } from 'next/headers'
 import { updatePhaseValidationSchema } from '@/lib/types/schemas'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { getSimulationUser } from '@/lib/simulation/handlers'
+import { getPhaseValidationsForBeneficiary } from '@/lib/simulation/fixtures'
 
 export async function GET() {
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    const simUser = await getSimulationUser()
+    const validations = getPhaseValidationsForBeneficiary(simUser.id)
+    return NextResponse.json({
+      data: validations.map((v) => ({
+        phase_number: v.phase_number,
+        status: v.status,
+        validated_at: v.validated_at,
+      })),
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
@@ -47,6 +63,16 @@ export async function GET() {
 
 // PATCH — Validate or de-validate a phase
 export async function PATCH(request: NextRequest) {
+  // ── Mode Simulation — succès sans écriture ──
+  if (isSimulationMode()) {
+    const body = await request.json().catch(() => null)
+    return NextResponse.json({
+      success: true,
+      status: body?.status ?? 'en_cours',
+      phase_number: body?.phase_number ?? 1,
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 

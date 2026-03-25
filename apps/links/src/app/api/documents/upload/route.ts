@@ -14,6 +14,19 @@ function getFileType(mimeType: string): 'pdf' | 'docx' | null {
 }
 
 export async function POST(request: NextRequest) {
+  // ── Mode Simulation — succès simulé ──
+  if (process.env.NEXT_PUBLIC_SIMULATION_MODE === 'true') {
+    return NextResponse.json({
+      data: {
+        id: 'sim-doc-upload',
+        phase_number: 1,
+        display_name: 'Document simulé',
+        file_type: 'pdf',
+        sort_order: 1,
+      },
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 

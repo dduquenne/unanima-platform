@@ -2,12 +2,26 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient, createAdminClient } from '@unanima/db'
 import { cookies } from 'next/headers'
 import crypto from 'crypto'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { simulationProfiles } from '@/lib/simulation/fixtures'
 
 export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: userId } = await params
+
+  // ── Mode Simulation — succès simulé ──
+  if (isSimulationMode()) {
+    const profile = simulationProfiles.find((p) => p.id === userId)
+    return NextResponse.json({
+      data: {
+        email: profile?.email ?? 'user@demo.fr',
+        temporary_password: 'SimulatedP@ss1',
+      },
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 

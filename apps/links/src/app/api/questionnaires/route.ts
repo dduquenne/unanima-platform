@@ -6,8 +6,40 @@ import {
   unauthorizedResponse,
   serverErrorResponse,
 } from '@/lib/api/utils'
+import { isSimulationMode } from '@/lib/simulation/config'
+import {
+  simulationQuestionnaires,
+  getQuestionnairesByPhase as getSimQuestionnairesByPhase,
+  getQuestionsForPhase,
+} from '@/lib/simulation/fixtures'
 
 export async function GET(request: NextRequest) {
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    const phaseParam = request.nextUrl.searchParams.get('phase_number')
+    if (phaseParam) {
+      const phaseNumber = Number(phaseParam)
+      if (isNaN(phaseNumber) || phaseNumber < 1 || phaseNumber > 6) {
+        return NextResponse.json(
+          { error: 'phase_number invalide : valeur attendue entre 1 et 6', code: 'VALIDATION_ERROR' },
+          { status: 400 },
+        )
+      }
+      const questionnaires = getSimQuestionnairesByPhase(phaseNumber)
+      const questions = getQuestionsForPhase(phaseNumber)
+      // Return questionnaires with their questions embedded
+      const data = questionnaires.map((q) => ({
+        ...q,
+        questions: questions.filter((qu) => qu.questionnaire_id === q.id),
+      }))
+      return NextResponse.json({ data, meta: { total: data.length } })
+    }
+    return NextResponse.json({
+      data: simulationQuestionnaires,
+      meta: { total: simulationQuestionnaires.length, page: 1, limit: 50 },
+    })
+  }
+
   const user = await getCurrentUser()
   if (!user) return unauthorizedResponse()
 

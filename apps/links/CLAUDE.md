@@ -142,6 +142,64 @@ E2E : parcours bénéficiaire, parcours consultant, tests RBAC.
 
 ---
 
+## Mode Simulation
+
+Le mode simulation permet d'afficher tous les écrans de l'app avec des **données fictives**, sans connexion Supabase. Idéal pour les démos client et le développement frontend.
+
+### Activation
+
+```bash
+# Dans apps/links/.env.local
+NEXT_PUBLIC_SIMULATION_MODE=true
+```
+
+### Fonctionnement
+
+- **Auth bypass** : aucun appel à Supabase Auth, le middleware redirige directement vers la home du rôle
+- **API interception** : tous les route handlers retournent des données fictives depuis `src/lib/simulation/fixtures/`
+- **Sélecteur de rôle** : un bandeau ambre en haut de page permet de basculer entre bénéficiaire, consultant et admin
+- **Cookie `simulation-role`** : stocke le rôle sélectionné (défaut : `beneficiaire`)
+
+### Données fictives disponibles
+
+| Entité | Quantité | Détail |
+|--------|----------|--------|
+| Admin | 1 | Sophie Martin |
+| Consultants | 2 | Marie Dupont, Jean Bernard |
+| Bénéficiaires | 5 | Alice (terminé), Lucas (en cours 3/6), Emma (début 1/6), Thomas (nouveau), Camille (5/6) |
+| Questionnaires | 6 | 1 par phase, 4 questions chacun |
+| Sessions | 30 | 6 par bénéficiaire (passées, futures, non planifiées) |
+| Documents | 7 | 1-2 par phase (PDF/DOCX fictifs) |
+| Notes de session | 6 | Pour Alice et Lucas |
+
+### Limitations
+
+- **Pas de persistance** : les écritures (autosave, validation, création utilisateur) retournent un succès sans enregistrer
+- **Pas de téléchargement** : les documents listés n'ont pas de fichier réel associé
+- **Pas d'email** : aucun email n'est envoyé en mode simulation
+- **Aucun impact en production** : si `NEXT_PUBLIC_SIMULATION_MODE` est absent ou `false`, le mode normal est actif
+
+### Architecture
+
+```
+src/lib/simulation/
+├── config.ts              ← isSimulationMode()
+├── auth.ts                ← getSimulationSession(), cookie de rôle
+├── handlers.ts            ← getSimulationUser() pour les route handlers
+├── index.ts               ← Barrel export
+└── fixtures/
+    ├── profiles.ts        ← 8 profils (1 admin, 2 consultants, 5 bénéficiaires)
+    ├── phases.ts          ← Validations de phase par bénéficiaire
+    ├── questionnaires.ts  ← Questionnaires et questions (6 phases × 4 questions)
+    ├── responses.ts       ← Réponses pré-remplies
+    ├── sessions.ts        ← Sessions et notes de session
+    ├── documents.ts       ← Documents de phase (PDF/DOCX)
+    ├── stats.ts           ← KPIs admin calculés
+    └── index.ts           ← Barrel export
+```
+
+---
+
 ## Déploiement
 
 - **Plateforme :** Vercel (projet distinct)

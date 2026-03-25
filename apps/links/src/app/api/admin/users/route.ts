@@ -3,8 +3,44 @@ import { createServerClient, createAdminClient } from '@unanima/db'
 import { cookies } from 'next/headers'
 import { createUserSchema } from '@/lib/types/schemas'
 import crypto from 'crypto'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { simulationProfiles } from '@/lib/simulation/fixtures'
 
 export async function GET(request: NextRequest) {
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    const { searchParams } = request.nextUrl
+    const roleFilter = searchParams.get('role')
+    const search = searchParams.get('search')?.toLowerCase()
+    const status = searchParams.get('status')
+
+    let profiles = [...simulationProfiles]
+    if (roleFilter) profiles = profiles.filter((p) => p.role === roleFilter)
+    if (search) {
+      profiles = profiles.filter(
+        (p) =>
+          p.full_name.toLowerCase().includes(search) ||
+          p.email.toLowerCase().includes(search),
+      )
+    }
+    if (status === 'active') profiles = profiles.filter((p) => p.is_active)
+    else if (status === 'inactive') profiles = profiles.filter((p) => !p.is_active)
+
+    const data = profiles.map((p) => {
+      const consultant = p.consultant_id
+        ? simulationProfiles.find((c) => c.id === p.consultant_id)
+        : null
+      return {
+        ...p,
+        consultant: consultant
+          ? { full_name: consultant.full_name, email: consultant.email }
+          : null,
+      }
+    })
+
+    return NextResponse.json({ data })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
@@ -95,6 +131,18 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // ── Mode Simulation — succès simulé ──
+  if (isSimulationMode()) {
+    const body = await request.json().catch(() => ({}))
+    return NextResponse.json({
+      data: {
+        user_id: '00000000-0000-4000-a000-999999999999',
+        email: body?.email ?? 'new@demo.fr',
+        temporary_password: 'SimulatedP@ss1',
+      },
+    }, { status: 201 })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
