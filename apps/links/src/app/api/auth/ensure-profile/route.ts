@@ -2,8 +2,14 @@ import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { createAdminClient } from '@unanima/db'
 import { cookies } from 'next/headers'
+import { isSimulationMode } from '@/lib/simulation/config'
 
 export async function POST() {
+  // ── Mode Simulation — profil fictif toujours existant ──
+  if (isSimulationMode()) {
+    return NextResponse.json({ status: 'exists' })
+  }
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY

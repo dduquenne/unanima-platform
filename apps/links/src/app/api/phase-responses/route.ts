@@ -2,9 +2,31 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@unanima/db'
 import { cookies } from 'next/headers'
 import { autosaveSchema } from '@/lib/types/schemas'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { getSimulationUser } from '@/lib/simulation/handlers'
+import { getResponsesForBeneficiaryPhase } from '@/lib/simulation/fixtures'
 
 // GET — Fetch all responses for a phase
 export async function GET(request: NextRequest) {
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    const phaseNumber = request.nextUrl.searchParams.get('phase')
+    if (!phaseNumber) {
+      return NextResponse.json({ error: 'Paramètre phase requis', code: 'VALIDATION_ERROR' }, { status: 400 })
+    }
+    const simUser = await getSimulationUser()
+    const responses = getResponsesForBeneficiaryPhase(simUser.id, Number(phaseNumber))
+    return NextResponse.json({
+      data: responses.map((r) => ({
+        id: r.id,
+        question_id: r.question_id,
+        response_text: r.response_text,
+        phase_status: r.phase_status,
+        last_saved_at: r.last_saved_at,
+      })),
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
@@ -33,6 +55,14 @@ export async function GET(request: NextRequest) {
 
 // POST — Autosave a single response (upsert)
 export async function POST(request: NextRequest) {
+  // ── Mode Simulation — succès sans écriture ──
+  if (isSimulationMode()) {
+    return NextResponse.json({
+      success: true,
+      saved_at: new Date().toISOString(),
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
