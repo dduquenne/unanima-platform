@@ -21,7 +21,7 @@ const PHASE_LABELS: Record<number, string> = {
 
 const PHASE_STATUS_CONFIG = {
   libre: { label: 'À compléter', color: 'info' as const },
-  en_cours: { label: 'En cours', color: 'primary' as const },
+  en_cours: { label: 'En cours', color: 'warning' as const },
   validee: { label: 'Validé', color: 'success' as const },
 }
 
@@ -293,7 +293,7 @@ export default function DashboardPage() {
       </section>
 
       {/* ═══ PHASE CARDS GRID (MAQ-02: 3×2) ═══ */}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-[30px] sm:grid-cols-2 lg:grid-cols-3">
         {allPhases.map((phase) => {
           const isValidee = phase.status === 'validee'
           const isEnCours = phase.status === 'en_cours'
@@ -320,7 +320,7 @@ export default function DashboardPage() {
           return (
             <div
               key={phase.phase_number}
-              className={`relative overflow-hidden rounded-[var(--radius-lg)] border bg-[var(--color-surface)] p-4 transition-shadow hover:shadow-md ${borderColor}`}
+              className={`relative min-h-[110px] overflow-hidden rounded-[var(--radius-lg)] border bg-[var(--color-surface)] p-4 transition-shadow hover:shadow-md ${borderColor}`}
             >
               {/* Left accent bar */}
               <div
@@ -342,10 +342,20 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Status badge */}
-                <StatusBadge
-                  status={phase.status}
-                  statusConfig={PHASE_STATUS_CONFIG}
-                />
+                {isEnCours ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-full,9999px)] px-2.5 py-0.5 text-xs font-medium bg-[var(--color-warning-light)] text-[var(--color-warning)] ring-1 ring-inset ring-[var(--color-warning)]/20">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-[var(--color-warning)]" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-warning)]" />
+                    </span>
+                    En cours
+                  </span>
+                ) : (
+                  <StatusBadge
+                    status={phase.status}
+                    statusConfig={PHASE_STATUS_CONFIG}
+                  />
+                )}
 
                 {/* Action button */}
                 {isLibre ? (

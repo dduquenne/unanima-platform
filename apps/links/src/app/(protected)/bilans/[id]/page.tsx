@@ -342,10 +342,15 @@ export default function PhaseDetailPage() {
           {questions.map((question, index) => (
             <Card key={question.id} padding="md">
               <label className="block">
-                <span className="text-sm font-medium text-[var(--color-text)]">
-                  Question {index + 1} / {questions.length}
-                </span>
-                <p className="mt-1 text-sm text-[var(--color-text)]">{question.text}</p>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)] text-xs font-bold text-[var(--color-text-inverse)]">
+                    {index + 1}
+                  </span>
+                  <span className="text-sm font-medium text-[var(--color-text)]">
+                    Question {index + 1} / {questions.length}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm text-[var(--color-text)]">{question.text}</p>
                 <Textarea
                   value={responses[question.id] ?? ''}
                   onChange={(e) => handleChange(question.id, e.target.value)}
