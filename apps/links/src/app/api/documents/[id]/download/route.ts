@@ -38,7 +38,7 @@ export async function GET(
   // Generate signed URL using admin client (Service Role Key — never exposed client-side)
   const adminClient = createAdminClient()
   const { data: signedData, error: signError } = await adminClient.storage
-    .from('documents')
+    .from('phase-documents')
     .createSignedUrl(document.storage_path, 3600) // 60 minutes
 
   if (signError || !signedData?.signedUrl) {
