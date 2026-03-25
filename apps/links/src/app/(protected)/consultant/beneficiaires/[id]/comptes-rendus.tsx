@@ -304,11 +304,12 @@ export function ComptesRendusTab({
 
         if (!res.ok) throw new Error(`Erreur ${res.status}`)
 
+        const json = await res.json()
         const data: Array<{
           session_number: number
           content: string
           updated_at: string
-        }> = await res.json()
+        }> = json.data ?? json
 
         const map: Record<number, SessionNote> = {}
         for (const item of data) {

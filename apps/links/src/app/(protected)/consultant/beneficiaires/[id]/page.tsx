@@ -38,9 +38,16 @@ interface Phase {
   responses: Response[]
 }
 
+interface SessionData {
+  session_number: number
+  scheduled_at: string | null
+  visio_url: string | null
+}
+
 interface BeneficiaireData {
   profile: BeneficiaireProfile
   phases: Phase[]
+  sessions: SessionData[]
 }
 
 // ---------------------------------------------------------------------------
@@ -405,7 +412,8 @@ export default function BeneficiaireDetailPage() {
         })
 
         if (res.status === 403) {
-          router.replace('/consultant')
+          setError('Accès refusé — ce bénéficiaire n\u2019est pas assigné à votre portefeuille.')
+          setLoading(false)
           return
         }
 
@@ -454,7 +462,7 @@ export default function BeneficiaireDetailPage() {
 
   if (!data) return null
 
-  const { profile, phases } = data
+  const { profile, phases, sessions } = data
   const validatedCount = phases.filter((p) => p.status === 'validated').length
   const currentPhase = phases.find((p) => p.number === selectedPhase) ?? phases[0]
 
@@ -483,7 +491,7 @@ export default function BeneficiaireDetailPage() {
         <PlanificationTab
           beneficiaryId={id}
           beneficiaryName={profile.full_name}
-          sessions={[]}
+          sessions={sessions}
         />
       )}
 
@@ -491,7 +499,7 @@ export default function BeneficiaireDetailPage() {
         <ComptesRendusTab
           beneficiaryId={id}
           beneficiaryName={profile.full_name}
-          sessions={[]}
+          sessions={sessions}
         />
       )}
     </div>
