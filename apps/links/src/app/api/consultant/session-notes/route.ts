@@ -15,14 +15,14 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Verify consultant role
+  // Verify consultant or super_admin role
   const { data: profile } = await supabase
     .from('profiles')
     .select('role')
     .eq('id', user.id)
     .single()
 
-  if (!profile || profile.role !== 'consultant') {
+  if (!profile || (profile.role !== 'consultant' && profile.role !== 'super_admin')) {
     return NextResponse.json(
       { error: 'Accès réservé aux consultants', code: 'FORBIDDEN' },
       { status: 403 }
@@ -37,20 +37,22 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Verify consultant is assigned to this beneficiary
-  const { data: beneficiary } = await supabase
-    .from('profiles')
-    .select('id')
-    .eq('id', beneficiaryId)
-    .eq('consultant_id', user.id)
-    .eq('role', 'beneficiaire')
-    .single()
+  // Verify assignment (consultants see only their own, super_admin sees all)
+  if (profile.role === 'consultant') {
+    const { data: beneficiary } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', beneficiaryId)
+      .eq('consultant_id', user.id)
+      .eq('role', 'beneficiaire')
+      .single()
 
-  if (!beneficiary) {
-    return NextResponse.json(
-      { error: 'Bénéficiaire non trouvé ou non assigné', code: 'FORBIDDEN' },
-      { status: 403 }
-    )
+    if (!beneficiary) {
+      return NextResponse.json(
+        { error: 'Bénéficiaire non trouvé ou non assigné', code: 'FORBIDDEN' },
+        { status: 403 }
+      )
+    }
   }
 
   const { data: notes, error } = await supabase
@@ -147,6 +149,16 @@ export async function POST(request: NextRequest) {
 
   const { content } = parsed.data
 
+  // Check if note already exists to determine action type
+  const { data: existingNote } = await supabase
+    .from('session_notes')
+    .select('id')
+    .eq('beneficiary_id', beneficiary_id)
+    .eq('session_number', session_number)
+    .maybeSingle()
+
+  const auditAction = existingNote ? 'update_session_note' : 'create_session_note'
+
   const { error } = await supabase
     .from('session_notes')
     .upsert(
@@ -166,6 +178,17 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
+
+  // RG-CON-07: Audit log for session note creation/modification
+  await supabase
+    .from('audit_logs')
+    .insert({
+      user_id: user.id,
+      action: auditAction,
+      entity_type: 'session_note',
+      entity_id: `${beneficiary_id}:${session_number}`,
+      details: { beneficiary_id, session_number },
+    })
 
   return NextResponse.json({ data: { success: true, beneficiary_id, session_number } })
 }

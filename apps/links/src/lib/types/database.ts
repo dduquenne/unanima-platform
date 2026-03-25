@@ -119,6 +119,8 @@ export interface BeneficiaireWithParcours {
   next_session: string | null
   validated_count: number
   created_at: string
+  /** Date de dernière activité (dernière réponse ou mise à jour profil) */
+  last_activity_at: string | null
 }
 
 // ============================================================

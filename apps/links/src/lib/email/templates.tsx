@@ -150,6 +150,123 @@ export function CompletionReminderEmail({
 }
 
 // ---------------------------------------------------------------------------
+// Planification des séances → email au bénéficiaire (H1)
+// ---------------------------------------------------------------------------
+
+interface PlanificationEmailProps {
+  beneficiaireName: string
+  consultantName: string
+  sessions: Array<{
+    session_number: number
+    scheduled_at: string | null
+  }>
+  isUpdate: boolean
+  dashboardUrl: string
+}
+
+function formatDateTimeFR(iso: string): string {
+  const d = new Date(iso)
+  const date = d.toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+  const time = d.toLocaleTimeString('fr-FR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Europe/Paris',
+  })
+  return `${date} à ${time}`
+}
+
+export function PlanificationEmail({
+  beneficiaireName,
+  consultantName,
+  sessions,
+  isUpdate,
+  dashboardUrl,
+}: PlanificationEmailProps) {
+  const plannedSessions = sessions.filter((s) => s.scheduled_at)
+
+  return (
+    <Html>
+      <Head />
+      <Preview>
+        {isUpdate
+          ? 'Mise à jour de votre planning de séances'
+          : 'Vos séances de bilan ont été planifiées'}
+      </Preview>
+      <Body style={baseStyle}>
+        <Container style={containerStyle}>
+          <Section style={cardStyle}>
+            <Heading style={headingStyle}>
+              {isUpdate ? 'Planning mis à jour' : 'Séances planifiées'}
+            </Heading>
+            <Text style={textStyle}>Bonjour {beneficiaireName},</Text>
+            <Text style={textStyle}>
+              {isUpdate
+                ? `Votre consultante ${consultantName} a mis à jour le planning de vos séances.`
+                : `Votre consultante ${consultantName} a planifié vos séances de bilan de compétences.`}
+            </Text>
+
+            {/* Session list */}
+            <Section
+              style={{
+                margin: '20px 0',
+                padding: '16px',
+                backgroundColor: '#F5F7FA',
+                borderRadius: '8px',
+              }}
+            >
+              {plannedSessions.map((session) => (
+                <Text
+                  key={session.session_number}
+                  style={{
+                    fontSize: '14px',
+                    color: EMAIL_THEME.text,
+                    margin: '6px 0',
+                    lineHeight: '1.5',
+                  }}
+                >
+                  <strong>Séance {session.session_number}</strong> :{' '}
+                  {session.scheduled_at
+                    ? formatDateTimeFR(session.scheduled_at)
+                    : 'À définir'}
+                </Text>
+              ))}
+              {plannedSessions.length === 0 && (
+                <Text style={{ fontSize: '14px', color: EMAIL_THEME.textMuted }}>
+                  Aucune séance planifiée pour le moment.
+                </Text>
+              )}
+            </Section>
+
+            <Section
+              style={{ textAlign: 'center' as const, margin: '24px 0' }}
+            >
+              <Link href={dashboardUrl} style={ctaStyle}>
+                Voir mon planning
+              </Link>
+            </Section>
+
+            <Hr
+              style={{
+                borderColor: EMAIL_THEME.borderLight,
+                margin: '24px 0',
+              }}
+            />
+            <Text style={{ fontSize: '12px', color: EMAIL_THEME.textMuted }}>
+              {EMAIL_THEME.organizationName}
+            </Text>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Fin de bilan → email récapitulatif
 // ---------------------------------------------------------------------------
 

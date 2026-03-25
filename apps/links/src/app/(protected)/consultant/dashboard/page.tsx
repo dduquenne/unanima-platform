@@ -58,6 +58,14 @@ function matchesFilter(phases: Phase[], filter: FilterKey): boolean {
   return (validee + en_cours > 0) && validee < 6
 }
 
+function isInactiveSince7Days(lastActivityAt: string | null | undefined): boolean {
+  if (!lastActivityAt) return false
+  const lastActivity = new Date(lastActivityAt)
+  const sevenDaysAgo = new Date()
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+  return lastActivity < sevenDaysAgo
+}
+
 const ITEMS_PER_PAGE = 10
 
 // ---------------------------------------------------------------------------
@@ -81,8 +89,18 @@ export default function ConsultantDashboardPage() {
       try {
         const res = await fetch('/api/consultant/beneficiaires')
         if (!res.ok) throw new Error('Erreur lors du chargement')
-        const data = await res.json()
-        setBeneficiaires(data)
+        const json = await res.json()
+        const list: BeneficiaireWithParcours[] = (json.data ?? json) as BeneficiaireWithParcours[]
+        // Ensure every beneficiary has exactly 6 phase entries
+        const normalized = list.map((b) => {
+          const phaseMap = new Map(b.phases.map((p) => [p.phase_number, p.status]))
+          const phases = Array.from({ length: 6 }, (_, i) => ({
+            phase_number: i + 1,
+            status: phaseMap.get(i + 1) ?? ('libre' as const),
+          }))
+          return { ...b, phases }
+        })
+        setBeneficiaires(normalized)
       } catch {
         // silently fail – empty state will show
       } finally {
@@ -349,10 +367,14 @@ export default function ConsultantDashboardPage() {
         >
           <Users className="mb-4 h-12 w-12" style={{ color: 'var(--color-border)' }} />
           <p className="text-lg font-medium" style={{ color: 'var(--color-text)' }}>
-            Aucun bénéficiaire trouvé
+            {beneficiaires.length === 0 ? 'Aucun bénéficiaire assigné' : 'Aucun bénéficiaire trouvé'}
           </p>
           <p className="mt-1 text-sm" style={{ color: 'var(--color-text)', opacity: 0.6 }}>
-            {search ? 'Essayez avec d\u2019autres termes de recherche.' : 'Aucun bénéficiaire ne correspond à ce filtre.'}
+            {beneficiaires.length === 0
+              ? 'Contactez votre administrateur.'
+              : search
+                ? 'Essayez avec d\u2019autres termes de recherche.'
+                : 'Aucun bénéficiaire ne correspond à ce filtre.'}
           </p>
         </div>
       ) : (
@@ -406,8 +428,19 @@ export default function ConsultantDashboardPage() {
                           {getInitials(b.full_name)}
                         </div>
                         <div>
-                          <div className="font-medium" style={{ color: 'var(--color-text)' }}>
-                            {b.full_name}
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium" style={{ color: 'var(--color-text)' }}>
+                              {b.full_name}
+                            </span>
+                            {isInactiveSince7Days(b.last_activity_at) && (
+                              <span
+                                className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold text-white"
+                                style={{ backgroundColor: '#DC3545' }}
+                                title="Inactif depuis plus de 7 jours"
+                              >
+                                Inactif
+                              </span>
+                            )}
                           </div>
                           <div className="text-xs" style={{ color: 'var(--color-text)', opacity: 0.6 }}>
                             {b.email}

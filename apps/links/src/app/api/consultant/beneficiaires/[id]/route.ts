@@ -96,12 +96,100 @@ export async function GET(
     )
   }
 
+  // Fetch questionnaires and questions for all 6 phases
+  const { data: questionnaires, error: questError } = await supabase
+    .from('questionnaires')
+    .select('id, phase_number, title, description')
+    .order('phase_number', { ascending: true })
+
+  if (questError) {
+    return NextResponse.json(
+      { error: 'Erreur serveur', code: 'SERVER_ERROR' },
+      { status: 500 }
+    )
+  }
+
+  const questionnaireIds = (questionnaires ?? []).map(q => q.id)
+  let questions: Array<{ id: string; questionnaire_id: string; text: string; sort_order: number }> = []
+
+  if (questionnaireIds.length > 0) {
+    const { data: questionsData, error: qError } = await supabase
+      .from('questions')
+      .select('id, questionnaire_id, text, sort_order')
+      .in('questionnaire_id', questionnaireIds)
+      .order('sort_order', { ascending: true })
+
+    if (qError) {
+      return NextResponse.json(
+        { error: 'Erreur serveur', code: 'SERVER_ERROR' },
+        { status: 500 }
+      )
+    }
+    questions = questionsData ?? []
+  }
+
+  // Build structured phases with questions and responses
+  const responsesByQuestion = new Map<string, string | null>()
+  for (const r of phaseResponses ?? []) {
+    responsesByQuestion.set(r.question_id, r.response_text)
+  }
+
+  const validationByPhase = new Map<number, string>()
+  for (const v of phaseValidations ?? []) {
+    validationByPhase.set(v.phase_number, v.status)
+  }
+
+  const questionsByQuestionnaire = new Map<string, typeof questions>()
+  for (const q of questions) {
+    const list = questionsByQuestionnaire.get(q.questionnaire_id) ?? []
+    list.push(q)
+    questionsByQuestionnaire.set(q.questionnaire_id, list)
+  }
+
+  const phases = Array.from({ length: 6 }, (_, i) => {
+    const phaseNumber = i + 1
+    const questionnaire = (questionnaires ?? []).find(q => q.phase_number === phaseNumber)
+    const phaseQuestions = questionnaire ? (questionsByQuestionnaire.get(questionnaire.id) ?? []) : []
+    const validationStatus = validationByPhase.get(phaseNumber) ?? 'libre'
+
+    let status: 'validated' | 'active' | 'locked'
+    if (validationStatus === 'validee') {
+      status = 'validated'
+    } else if (validationStatus === 'en_cours') {
+      status = 'active'
+    } else {
+      status = 'locked'
+    }
+
+    return {
+      number: phaseNumber,
+      label: questionnaire?.title ?? `Phase ${phaseNumber}`,
+      status,
+      questions: phaseQuestions.map((q, idx) => ({
+        id: q.id,
+        number: idx + 1,
+        label: q.text,
+      })),
+      responses: phaseQuestions.map(q => ({
+        question_id: q.id,
+        text: responsesByQuestion.get(q.id) ?? null,
+      })),
+    }
+  })
+
+  // Determine beneficiary status
+  const validatedCount = (phaseValidations ?? []).filter(v => v.status === 'validee').length
+  const profileStatus = validatedCount === 6 ? 'termine' : 'en_cours'
+
   return NextResponse.json({
-    data: {
-      profile: beneficiary,
-      phase_validations: phaseValidations ?? [],
-      phase_responses: phaseResponses ?? [],
-      sessions: sessions ?? [],
+    profile: {
+      id: beneficiary.id,
+      full_name: beneficiary.full_name,
+      email: beneficiary.email,
+      started_at: beneficiary.date_debut_bilan ?? beneficiary.created_at,
+      status: profileStatus,
     },
+    phases,
+    sessions: sessions ?? [],
   })
 }
