@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@unanima/db'
 import { cookies } from 'next/headers'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { getSimulationAdminStats } from '@/lib/simulation/fixtures'
 
 export async function GET() {
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    return NextResponse.json({ data: getSimulationAdminStats() })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 

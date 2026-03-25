@@ -2,12 +2,27 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient, createAdminClient } from '@unanima/db'
 import { cookies } from 'next/headers'
 import { updateUserSchema } from '@/lib/types/schemas'
+import { isSimulationMode } from '@/lib/simulation/config'
+import { simulationProfiles } from '@/lib/simulation/fixtures'
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: userId } = await params
+
+  // ── Mode Simulation ──
+  if (isSimulationMode()) {
+    const profile = simulationProfiles.find((p) => p.id === userId)
+    if (!profile) {
+      return NextResponse.json(
+        { error: 'Utilisateur non trouvé', code: 'NOT_FOUND' },
+        { status: 404 },
+      )
+    }
+    return NextResponse.json({ data: profile })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
@@ -54,6 +69,26 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: userId } = await params
+
+  // ── Mode Simulation — succès simulé ──
+  if (isSimulationMode()) {
+    const profile = simulationProfiles.find((p) => p.id === userId)
+    if (!profile) {
+      return NextResponse.json(
+        { error: 'Utilisateur non trouvé', code: 'NOT_FOUND' },
+        { status: 404 },
+      )
+    }
+    const body = await request.json().catch(() => ({}))
+    return NextResponse.json({
+      data: {
+        ...profile,
+        ...body,
+        updated_at: new Date().toISOString(),
+      },
+    })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
@@ -157,6 +192,12 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: userId } = await params
+
+  // ── Mode Simulation — succès simulé ──
+  if (isSimulationMode()) {
+    return NextResponse.json({ data: { success: true, deleted_id: userId } })
+  }
+
   const cookieStore = await cookies()
   const supabase = createServerClient(cookieStore)
 
