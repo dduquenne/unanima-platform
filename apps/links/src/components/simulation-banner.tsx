@@ -4,7 +4,6 @@
 // Issue: #137 — Sprint 12
 
 import { useCallback } from 'react'
-import { useRouter } from 'next/navigation'
 import { isSimulationMode } from '@/lib/simulation/config'
 import { SIMULATION_ROLE_COOKIE } from '@/lib/simulation/auth'
 
@@ -13,6 +12,8 @@ const ROLE_OPTIONS = [
   { value: 'consultant', label: 'Consultant', home: '/beneficiaires' },
   { value: 'super_admin', label: 'Administrateur', home: '/admin' },
 ] as const
+
+const simulationActive = isSimulationMode()
 
 function getCookie(name: string): string | undefined {
   if (typeof document === 'undefined') return undefined
@@ -25,23 +26,20 @@ function setCookie(name: string, value: string) {
 }
 
 export function SimulationBanner() {
-  const router = useRouter()
-
-  if (!isSimulationMode()) return null
-
-  const currentRole = getCookie(SIMULATION_ROLE_COOKIE) ?? 'beneficiaire'
-
   const handleRoleChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const newRole = e.target.value
       setCookie(SIMULATION_ROLE_COOKIE, newRole)
       const home = ROLE_OPTIONS.find((r) => r.value === newRole)?.home ?? '/dashboard'
-      router.push(home)
       // Force full page reload to re-run middleware with new role
       window.location.href = home
     },
-    [router],
+    [],
   )
+
+  if (!simulationActive) return null
+
+  const currentRole = getCookie(SIMULATION_ROLE_COOKIE) ?? 'beneficiaire'
 
   return (
     <div
