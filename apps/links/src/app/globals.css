@@ -22,3 +22,13 @@
     outline-offset: 2px;
   }
 }
+
+/* Animation point pulsant — état "En cours" (MAQ-02) */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.8); }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
