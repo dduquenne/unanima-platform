@@ -9,7 +9,7 @@ import { LoginCard, FooterLinks } from './components/login-card'
 
 const ROLE_HOME: Record<string, string> = {
   beneficiaire: '/dashboard',
-  consultant: '/beneficiaires',
+  consultant: '/consultant/dashboard',
   super_admin: '/admin',
 }
 

@@ -12,7 +12,7 @@ import { isSimulationMode } from '@/lib/simulation/config'
 // ============================================================
 const ROLE_HOME: Record<string, string> = {
   beneficiaire: '/dashboard',
-  consultant: '/beneficiaires',
+  consultant: '/consultant/dashboard',
   super_admin: '/admin',
 }
 
@@ -21,6 +21,7 @@ const ROLE_HOME: Record<string, string> = {
 // ============================================================
 const ROLE_ROUTES: Array<{ prefix: string; allowed: string[] }> = [
   { prefix: '/admin', allowed: ['super_admin'] },
+  { prefix: '/consultant', allowed: ['consultant', 'super_admin'] },
   { prefix: '/beneficiaires', allowed: ['consultant', 'super_admin'] },
   { prefix: '/dashboard', allowed: ['beneficiaire'] },
   { prefix: '/bilans', allowed: ['beneficiaire', 'consultant', 'super_admin'] },
