@@ -3,6 +3,15 @@
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
+import {
+  ChevronRight,
+  Calendar,
+  Video,
+  FileText,
+  Edit3,
+  FolderOpen,
+  Lock,
+} from 'lucide-react'
 import { ComptesRendusTab } from './comptes-rendus'
 import { PlanificationTab } from './planification'
 import { PHASE_LABELS } from '@/config/phases.config'
@@ -15,8 +24,10 @@ interface BeneficiaireProfile {
   id: string
   full_name: string
   email: string
+  phone?: string
   started_at: string
   status: 'en_cours' | 'termine'
+  consultant_name?: string
 }
 
 interface Question {
@@ -37,6 +48,7 @@ interface Phase {
   status: 'validated' | 'active' | 'locked'
   questions: Question[]
   responses: Response[]
+  validated_at?: string
 }
 
 interface SessionData {
@@ -55,13 +67,13 @@ interface BeneficiaireData {
 // Constants
 // ---------------------------------------------------------------------------
 
-
-type TabKey = 'reponses' | 'planification' | 'comptes-rendus'
+type TabKey = 'parcours' | 'comptes-rendus' | 'planification' | 'documents'
 
 const TABS: { key: TabKey; label: string }[] = [
-  { key: 'reponses', label: 'Réponses' },
-  { key: 'planification', label: 'Planification' },
+  { key: 'parcours', label: 'Parcours' },
   { key: 'comptes-rendus', label: 'Comptes-rendus' },
+  { key: 'planification', label: 'Planification' },
+  { key: 'documents', label: 'Documents' },
 ]
 
 // ---------------------------------------------------------------------------
@@ -85,6 +97,19 @@ function formatDate(iso: string): string {
   })
 }
 
+function formatDateShort(iso: string): string {
+  return new Date(iso).toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+}
+
+function formatDateTime(iso: string): string {
+  const d = new Date(iso)
+  return `${d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })} à ${d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}`
+}
+
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
@@ -97,117 +122,68 @@ function LoadingSpinner() {
   )
 }
 
-function Breadcrumb({ name }: { name: string }) {
-  return (
-    <nav className="mb-6 text-sm text-[#6B7280]">
-      <Link href="/consultant" className="hover:text-[var(--color-primary)] transition-colors">
-        Tableau de bord
-      </Link>
-      <span className="mx-2">{'>'}</span>
-      <span className="text-[var(--color-text)]">{name}</span>
-    </nav>
-  )
-}
-
-function StatusBadge({ status }: { status: 'en_cours' | 'termine' }) {
-  const isTermine = status === 'termine'
-  return (
-    <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${
-        isTermine
-          ? 'bg-[#D1FAE5] text-[#065F46]'
-          : 'bg-[#FEF3C7] text-[#92400E]'
-      }`}
-    >
-      {isTermine ? 'Termine' : 'En cours'}
-    </span>
-  )
-}
-
-function ProgressBar({
-  validated,
-  total,
-}: {
-  validated: number
-  total: number
-}) {
-  const pct = total > 0 ? Math.round((validated / total) * 100) : 0
-  return (
-    <div className="flex items-center gap-3">
-      <div className="h-2 flex-1 rounded-full bg-[var(--color-border)]">
-        <div
-          className="h-full rounded-full bg-[var(--color-success)] transition-all"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-      <span className="text-xs font-medium text-[#6B7280]">
-        {validated}/{total} phases
-      </span>
-    </div>
-  )
-}
-
-function PhaseIndicators({ phases }: { phases: Phase[] }) {
-  return (
-    <div className="flex gap-1.5">
-      {phases.map((p) => (
-        <div
-          key={p.number}
-          className={`h-2 w-6 rounded-full ${
-            p.status === 'validated'
-              ? 'bg-[var(--color-success)]'
-              : p.status === 'active'
-                ? 'bg-[var(--color-primary)]'
-                : 'bg-[var(--color-border)]'
-          }`}
-          title={`Phase ${p.number} — ${PHASE_LABELS[p.number]}`}
-        />
-      ))}
-    </div>
-  )
-}
-
 // ---------------------------------------------------------------------------
-// Header Card
+// Profile Card (matches MAQ-05 exactly)
 // ---------------------------------------------------------------------------
 
-function HeaderCard({
+function ProfileCard({
   profile,
-  phases,
   validatedCount,
+  totalPhases,
 }: {
   profile: BeneficiaireProfile
-  phases: Phase[]
   validatedCount: number
+  totalPhases: number
 }) {
   return (
-    <div className="mb-6 rounded-xl border border-[var(--color-border)] bg-white p-6 shadow-sm">
+    <div
+      className="rounded-[20px] border p-6"
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderColor: '#F0E6DF',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+      }}
+    >
       <div className="flex items-start gap-5">
-        {/* Avatar */}
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)] text-lg font-bold text-white">
+        <div
+          className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-full text-xl font-bold text-white"
+          style={{ backgroundColor: '#2A7FD4' }}
+        >
           {getInitials(profile.full_name)}
         </div>
-
-        {/* Info */}
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-[22px] font-bold text-[var(--color-primary-dark)]">
+            <h1 className="text-xl font-bold" style={{ color: '#2D2017' }}>
               {profile.full_name}
             </h1>
-            <StatusBadge status={profile.status} />
+            <span
+              className="inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold"
+              style={{
+                backgroundColor: profile.status === 'termine' ? '#ECFDF5' : '#FFF0E3',
+                borderColor: profile.status === 'termine' ? '#A7F3D0' : '#FDDCBF',
+                color: profile.status === 'termine' ? '#16A34A' : '#D97706',
+              }}
+            >
+              {profile.status === 'termine' ? 'Bilan terminé' : 'Bilan en cours'}
+            </span>
           </div>
-
-          <p className="mt-1 text-sm text-[#6B7280]">{profile.email}</p>
-          <p className="mt-0.5 text-xs text-[#9CA3AF]">
-            Debut du bilan : {formatDate(profile.started_at)}
-          </p>
-
-          <div className="mt-4 max-w-md">
-            <ProgressBar validated={validatedCount} total={phases.length} />
+          <div className="mt-2 flex items-center gap-2 text-[12.5px]" style={{ color: '#6D6057' }}>
+            <span>{profile.email}</span>
+            {profile.phone && (
+              <>
+                <span className="inline-block h-1 w-1 rounded-full" style={{ backgroundColor: '#D4C8BF' }} />
+                <span>{profile.phone}</span>
+              </>
+            )}
           </div>
-
-          <div className="mt-3">
-            <PhaseIndicators phases={phases} />
+          <div className="mt-1 flex items-center gap-2 text-[11px]" style={{ color: '#A09088' }}>
+            <span>Inscription : {formatDateShort(profile.started_at)}</span>
+            {profile.consultant_name && (
+              <>
+                <span className="inline-block h-1 w-1 rounded-full" style={{ backgroundColor: '#D4C8BF' }} />
+                <span>Consultant : {profile.consultant_name}</span>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -216,148 +192,356 @@ function HeaderCard({
 }
 
 // ---------------------------------------------------------------------------
-// Tabs
+// Right Panel
 // ---------------------------------------------------------------------------
 
-function TabBar({
-  activeTab,
-  onChange,
+function NextSessionPanel({
+  sessions,
+  onTabChange,
 }: {
-  activeTab: TabKey
-  onChange: (t: TabKey) => void
+  sessions: SessionData[]
+  onTabChange: (tab: TabKey) => void
 }) {
+  const nextSession = sessions
+    .filter((s) => s.scheduled_at && new Date(s.scheduled_at) > new Date())
+    .sort((a, b) => new Date(a.scheduled_at!).getTime() - new Date(b.scheduled_at!).getTime())[0]
+
   return (
-    <div className="mb-6 flex border-b border-[var(--color-border)]">
-      {TABS.map((tab) => (
-        <button
-          key={tab.key}
-          onClick={() => onChange(tab.key)}
-          className={`px-5 py-3 text-sm font-medium transition-colors ${
-            activeTab === tab.key
-              ? 'border-b-2 border-[var(--color-primary)] text-[var(--color-primary)]'
-              : 'text-[#6B7280] hover:text-[var(--color-text)]'
-          }`}
-        >
-          {tab.label}
-        </button>
-      ))}
+    <div
+      className="rounded-[20px] border p-5"
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderColor: '#F0E6DF',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+      }}
+    >
+      <h3 className="text-[14px] font-bold" style={{ color: '#2D2017' }}>
+        Prochaine séance
+      </h3>
+      <div className="my-3 h-px" style={{ backgroundColor: '#F5EDE7' }} />
+      {nextSession ? (
+        <>
+          <p className="text-[14px] font-semibold" style={{ color: '#3D3027' }}>
+            Séance {nextSession.session_number}
+          </p>
+          <p className="mt-1 text-[12.5px]" style={{ color: '#6D6057' }}>
+            {formatDateTime(nextSession.scheduled_at!)}
+          </p>
+          {nextSession.visio_url && (
+            <button
+              className="mt-3 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12px] font-semibold text-white"
+              style={{ backgroundColor: '#2A7FD4' }}
+              onClick={() => window.open(nextSession.visio_url!, '_blank')}
+            >
+              <Video className="h-3.5 w-3.5" />
+              Rejoindre visio
+            </button>
+          )}
+        </>
+      ) : (
+        <p className="text-[12.5px] italic" style={{ color: '#A09088' }}>
+          Aucune séance planifiée
+        </p>
+      )}
     </div>
   )
 }
 
-// ---------------------------------------------------------------------------
-// Phase Selector
-// ---------------------------------------------------------------------------
-
-function PhaseSelector({
-  phases,
-  selected,
-  onSelect,
+function ActionsRapidesPanel({
+  onTabChange,
 }: {
-  phases: Phase[]
-  selected: number
-  onSelect: (n: number) => void
+  onTabChange: (tab: TabKey) => void
 }) {
+  const actions = [
+    { label: 'Planifier une séance', tab: 'planification' as TabKey },
+    { label: 'Saisir un compte-rendu', tab: 'comptes-rendus' as TabKey },
+    { label: 'Voir les documents', tab: 'documents' as TabKey },
+  ]
+
   return (
-    <div className="mb-6 flex flex-wrap gap-2">
-      {phases.map((p) => {
-        const isSelected = p.number === selected
-        const isValidated = p.status === 'validated'
-
-        let classes =
-          'rounded-lg border px-4 py-2 text-sm font-medium transition-all '
-        if (isSelected) {
-          classes += 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
-        } else if (isValidated) {
-          classes +=
-            'bg-[#D1FAE5] text-[#065F46] border-[#6EE7B7] hover:border-[#34D399]'
-        } else {
-          classes +=
-            'bg-white text-[#6B7280] border-[var(--color-border)] hover:border-[#9CA3AF]'
-        }
-
-        return (
-          <button key={p.number} onClick={() => onSelect(p.number)} className={classes}>
-            Phase {p.number}
-            {isValidated && !isSelected && ' \u2713'}
+    <div
+      className="rounded-[20px] border p-5"
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderColor: '#F0E6DF',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+      }}
+    >
+      <h3 className="text-[14px] font-bold" style={{ color: '#2D2017' }}>
+        Actions rapides
+      </h3>
+      <div className="my-3 h-px" style={{ backgroundColor: '#F5EDE7' }} />
+      <div className="space-y-2">
+        {actions.map((action) => (
+          <button
+            key={action.tab}
+            onClick={() => onTabChange(action.tab)}
+            className="flex w-full items-center justify-between rounded-[16px] border px-4 py-3 text-[12.5px] transition-colors hover:bg-[#FFF3EC]"
+            style={{
+              backgroundColor: '#FFF8F5',
+              borderColor: '#F0E6DF',
+              color: '#3D3027',
+            }}
+          >
+            {action.label}
+            <ChevronRight className="h-4 w-4" style={{ color: '#A09088' }} />
           </button>
-        )
-      })}
+        ))}
+      </div>
     </div>
   )
 }
 
 // ---------------------------------------------------------------------------
-// Phase Content (questions + responses)
+// Progress Overview Card
 // ---------------------------------------------------------------------------
 
-function PhaseContent({ phase }: { phase: Phase }) {
+function ProgressOverview({ phases }: { phases: Phase[] }) {
+  const validated = phases.filter((p) => p.status === 'validated').length
+  const enCours = phases.filter((p) => p.status === 'active').length
+  const aCompleter = phases.length - validated - enCours
+  const pct = Math.round((validated / phases.length) * 100)
+
+  return (
+    <div
+      className="rounded-[18px] border px-5 py-4"
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderColor: '#F0E6DF',
+        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
+      }}
+    >
+      <div className="flex items-center justify-between">
+        <span className="text-[14px] font-bold" style={{ color: '#2D2017' }}>
+          Progression globale
+        </span>
+        <span className="text-[13px] font-semibold" style={{ color: '#2A7FD4' }}>
+          {pct}%
+        </span>
+      </div>
+      <div
+        className="mt-2 h-[10px] w-full overflow-hidden rounded-full"
+        style={{ backgroundColor: '#F0E6DF' }}
+      >
+        <div
+          className="h-full rounded-full transition-all"
+          style={{ width: `${pct}%`, backgroundColor: '#2A7FD4' }}
+        />
+      </div>
+      <p className="mt-2 text-[11.5px]" style={{ color: '#A09088' }}>
+        {validated} phase{validated > 1 ? 's' : ''} validée{validated > 1 ? 's' : ''}
+        {enCours > 0 && ` · ${enCours} en cours`}
+        {aCompleter > 0 && ` · ${aCompleter} à compléter`}
+      </p>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Phase Card
+// ---------------------------------------------------------------------------
+
+function PhaseCard({
+  phase,
+  onViewResponses,
+}: {
+  phase: Phase
+  onViewResponses: (phaseNumber: number) => void
+}) {
+  const isValidated = phase.status === 'validated'
+  const isActive = phase.status === 'active'
+  const responsesCount = phase.responses.filter((r) => r.text != null && r.text.length > 0).length
+  const totalQuestions = phase.questions.length
+  const progressPct = totalQuestions > 0 ? Math.round((responsesCount / totalQuestions) * 100) : 0
+
+  const borderColor = isValidated ? '#22C55E' : isActive ? '#F28C5A' : '#D4C8BF'
+  const circleColor = isValidated ? '#22C55E' : isActive ? '#F28C5A' : '#A09088'
+  const circleBg = isValidated ? '#ECFDF5' : isActive ? '#FFF7ED' : '#F9F5F2'
+  const circleBorder = isValidated ? '#22C55E' : isActive ? '#F28C5A' : '#D4C8BF'
+  const titleColor = isValidated || isActive ? '#2D2017' : '#7D7068'
+  const linkColor = isValidated || isActive ? '#2A7FD4' : '#D4C8BF'
+  const subtextColor = isValidated || isActive ? '#A09088' : '#B8ADA5'
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-[18px] border px-5 py-4"
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderColor: '#F0E6DF',
+        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
+      }}
+    >
+      {/* Colored left border */}
+      <div
+        className="absolute left-0 top-0 h-full w-[5px]"
+        style={{ backgroundColor: borderColor }}
+      />
+
+      <div className="flex items-center gap-4">
+        {/* Numbered circle */}
+        <div
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[1.5px] text-[13px] font-bold"
+          style={{
+            backgroundColor: circleBg,
+            borderColor: circleBorder,
+            color: circleColor,
+          }}
+        >
+          {phase.number}
+        </div>
+
+        {/* Content */}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-[14px] font-semibold" style={{ color: titleColor }}>
+              {PHASE_LABELS[phase.number] ?? `Phase ${phase.number}`}
+            </span>
+            {/* Status badge */}
+            {isValidated && (
+              <span
+                className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10.5px] font-semibold"
+                style={{ backgroundColor: '#ECFDF5', borderColor: '#A7F3D0', color: '#16A34A' }}
+              >
+                ✓ Validé{phase.validated_at ? ` le ${formatDateShort(phase.validated_at)}` : ''}
+              </span>
+            )}
+            {isActive && (
+              <span
+                className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10.5px] font-semibold"
+                style={{ backgroundColor: '#FFF7ED', borderColor: '#FED7AA', color: '#EA780E' }}
+              >
+                En cours
+              </span>
+            )}
+            {!isValidated && !isActive && (
+              <span
+                className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10.5px] font-semibold"
+                style={{ backgroundColor: '#F9F5F2', borderColor: '#E8DDD5', color: '#A09088' }}
+              >
+                Non commencée
+              </span>
+            )}
+          </div>
+          <div className="mt-1 flex items-center gap-3">
+            <span className="text-[11.5px]" style={{ color: subtextColor }}>
+              {responsesCount}/{totalQuestions} réponse{responsesCount > 1 ? 's' : ''}
+              {isValidated && ' complétées'}
+            </span>
+            {isActive && totalQuestions > 0 && (
+              <div className="flex items-center gap-1.5">
+                <div
+                  className="h-[6px] w-[90px] overflow-hidden rounded-full"
+                  style={{ backgroundColor: '#F0E6DF' }}
+                >
+                  <div
+                    className="h-full rounded-full"
+                    style={{ width: `${progressPct}%`, backgroundColor: '#F28C5A' }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* View link */}
+        <button
+          onClick={() => onViewResponses(phase.number)}
+          className="shrink-0 text-[12.5px] font-medium whitespace-nowrap"
+          style={{ color: linkColor }}
+        >
+          Voir les réponses ›
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Phase Responses View (read-only)
+// ---------------------------------------------------------------------------
+
+function PhaseResponsesView({
+  phase,
+  onBack,
+}: {
+  phase: Phase
+  onBack: () => void
+}) {
   return (
     <div>
-      {/* Phase header */}
-      <div className="mb-6 flex items-center gap-3 flex-wrap">
-        <h2 className="text-lg font-bold text-[var(--color-primary-dark)]">
+      <button
+        onClick={onBack}
+        className="mb-4 text-[12.5px] font-medium"
+        style={{ color: '#2A7FD4' }}
+      >
+        ← Retour au parcours
+      </button>
+      <div className="mb-4 flex items-center gap-3 flex-wrap">
+        <h2 className="text-lg font-bold" style={{ color: '#2D2017' }}>
           Phase {phase.number} — {PHASE_LABELS[phase.number]}
         </h2>
         {phase.status === 'validated' && (
-          <span className="inline-flex items-center rounded-full bg-[#D1FAE5] px-2.5 py-0.5 text-xs font-medium text-[#065F46]">
+          <span className="inline-flex items-center rounded-full bg-[#ECFDF5] border border-[#A7F3D0] px-2.5 py-0.5 text-xs font-semibold text-[#16A34A]">
             Validée
           </span>
         )}
         {phase.status === 'active' && (
-          <span className="inline-flex items-center rounded-full bg-[#FEF3C7] px-2.5 py-0.5 text-xs font-medium text-[#92400E]">
+          <span className="inline-flex items-center rounded-full bg-[#FFF7ED] border border-[#FED7AA] px-2.5 py-0.5 text-xs font-semibold text-[#EA780E]">
             En cours
           </span>
         )}
-        <span className="ml-auto flex items-center gap-1.5 text-xs text-[#9CA3AF]">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3.5 w-3.5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-              clipRule="evenodd"
-            />
-          </svg>
+        <span className="ml-auto flex items-center gap-1.5 text-xs" style={{ color: '#A09088' }}>
+          <Lock className="h-3.5 w-3.5" />
           Mode lecture seule
         </span>
       </div>
 
-      {/* Questions */}
-      <div className="space-y-6">
+      <div className="space-y-5">
         {phase.questions.map((q) => {
           const response = phase.responses.find((r) => r.question_id === q.id)
           const hasResponse = response?.text != null && response.text.length > 0
 
           return (
             <div key={q.id}>
-              {/* Question */}
               <div className="flex items-start gap-3 mb-2">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)] text-xs font-bold text-white">
+                <div
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+                  style={{ backgroundColor: '#2A7FD4' }}
+                >
                   {q.number}
                 </div>
                 <div>
-                  <p className="font-semibold text-[var(--color-text)]">
+                  <p className="font-semibold text-sm" style={{ color: '#2D2017' }}>
                     {q.label}
                   </p>
                   {q.description && (
-                    <p className="mt-0.5 text-sm text-[#6B7280]">
+                    <p className="mt-0.5 text-xs" style={{ color: '#6D6057' }}>
                       {q.description}
                     </p>
                   )}
                 </div>
               </div>
 
-              {/* Response */}
               {hasResponse ? (
-                <div className="ml-10 rounded-lg border border-[var(--color-border)] bg-[#F9FAFB] p-4 text-sm text-[var(--color-text)]">
+                <div
+                  className="ml-10 rounded-[16px] border p-4 text-sm"
+                  style={{
+                    backgroundColor: '#FFFBF8',
+                    borderColor: '#F0E6DF',
+                    color: '#2D2017',
+                  }}
+                >
                   {response!.text}
                 </div>
               ) : (
-                <div className="ml-10 rounded-lg border border-dashed border-[#D1D5DB] bg-[#F9FAFB] p-4 text-sm italic text-[#9CA3AF]">
+                <div
+                  className="ml-10 rounded-[16px] border border-dashed p-4 text-sm italic"
+                  style={{
+                    borderColor: '#E8DDD5',
+                    backgroundColor: '#F9F5F2',
+                    color: '#A09088',
+                  }}
+                >
                   Pas encore de réponse
                 </div>
               )}
@@ -366,11 +550,32 @@ function PhaseContent({ phase }: { phase: Phase }) {
         })}
 
         {phase.questions.length === 0 && (
-          <p className="text-sm italic text-[#9CA3AF]">
+          <p className="text-sm italic" style={{ color: '#A09088' }}>
             Aucune question pour cette phase.
           </p>
         )}
       </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Documents Tab (placeholder)
+// ---------------------------------------------------------------------------
+
+function DocumentsTab({ beneficiaryId }: { beneficiaryId: string }) {
+  return (
+    <div
+      className="flex flex-col items-center justify-center rounded-[18px] border py-12"
+      style={{ backgroundColor: '#FFFFFF', borderColor: '#F0E6DF' }}
+    >
+      <FolderOpen className="mb-3 h-10 w-10" style={{ color: '#D4C8BF' }} />
+      <p className="text-[14px] font-medium" style={{ color: '#2D2017' }}>
+        Documents du bénéficiaire
+      </p>
+      <p className="mt-1 text-[12.5px]" style={{ color: '#A09088' }}>
+        Les documents par phase seront affichés ici.
+      </p>
     </div>
   )
 }
@@ -388,8 +593,8 @@ export default function BeneficiaireDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const [activeTab, setActiveTab] = useState<TabKey>('reponses')
-  const [selectedPhase, setSelectedPhase] = useState<number>(1)
+  const [activeTab, setActiveTab] = useState<TabKey>('parcours')
+  const [viewingPhase, setViewingPhase] = useState<number | null>(null)
 
   // Fetch data
   useEffect(() => {
@@ -416,10 +621,6 @@ export default function BeneficiaireDetailPage() {
 
         const json: BeneficiaireData = await res.json()
         setData(json)
-
-        // Default to the first active or first phase
-        const activePhase = json.phases.find((p) => p.status === 'active')
-        setSelectedPhase(activePhase?.number ?? json.phases[0]?.number ?? 1)
       } catch (err: unknown) {
         if (err instanceof DOMException && err.name === 'AbortError') return
         setError(err instanceof Error ? err.message : 'Erreur inconnue')
@@ -445,9 +646,9 @@ export default function BeneficiaireDetailPage() {
         <p className="text-sm text-red-600">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+          className="rounded-full bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
         >
-          Reessayer
+          Réessayer
         </button>
       </div>
     )
@@ -457,44 +658,116 @@ export default function BeneficiaireDetailPage() {
 
   const { profile, phases, sessions } = data
   const validatedCount = phases.filter((p) => p.status === 'validated').length
-  const currentPhase = phases.find((p) => p.number === selectedPhase) ?? phases[0]
+  const phaseBeingViewed = viewingPhase != null ? phases.find((p) => p.number === viewingPhase) : null
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <Breadcrumb name={profile.full_name} />
-      <HeaderCard
-        profile={profile}
-        phases={phases}
-        validatedCount={validatedCount}
-      />
-      <TabBar activeTab={activeTab} onChange={setActiveTab} />
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      {/* Breadcrumb */}
+      <nav className="mb-5 text-[13px]">
+        <Link href="/consultant/beneficiaires" className="transition-colors hover:underline" style={{ color: '#A09088' }}>
+          Mes bénéficiaires
+        </Link>
+        <span className="mx-2" style={{ color: '#A09088' }}>&gt;</span>
+        <span className="font-semibold" style={{ color: '#2D2017' }}>{profile.full_name}</span>
+      </nav>
 
-      {activeTab === 'reponses' && (
-        <>
-          <PhaseSelector
-            phases={phases}
-            selected={selectedPhase}
-            onSelect={setSelectedPhase}
+      {/* Two-column layout */}
+      <div className="flex gap-6">
+        {/* ============ LEFT COLUMN ============ */}
+        <div className="min-w-0 flex-1">
+          {/* Profile card */}
+          <ProfileCard
+            profile={profile}
+            validatedCount={validatedCount}
+            totalPhases={phases.length}
           />
-          {currentPhase && <PhaseContent phase={currentPhase} />}
-        </>
-      )}
 
-      {activeTab === 'planification' && (
-        <PlanificationTab
-          beneficiaryId={id}
-          beneficiaryName={profile.full_name}
-          sessions={sessions}
-        />
-      )}
+          {/* Tabs */}
+          <div className="mt-5 border-b" style={{ borderColor: '#F0E6DF' }}>
+            <div className="flex gap-1">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => {
+                    setActiveTab(tab.key)
+                    setViewingPhase(null)
+                  }}
+                  className="relative px-4 py-3 text-[14px] font-medium transition-colors"
+                  style={{
+                    color: activeTab === tab.key ? '#2A7FD4' : '#A09088',
+                  }}
+                >
+                  {tab.label}
+                  {activeTab === tab.key && (
+                    <div
+                      className="absolute bottom-0 left-4 right-4 h-[4px] rounded-t-full"
+                      style={{ backgroundColor: '#2A7FD4' }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
 
-      {activeTab === 'comptes-rendus' && (
-        <ComptesRendusTab
-          beneficiaryId={id}
-          beneficiaryName={profile.full_name}
-          sessions={sessions}
-        />
-      )}
+          {/* Tab content */}
+          <div className="mt-5">
+            {activeTab === 'parcours' && (
+              <>
+                {phaseBeingViewed ? (
+                  <PhaseResponsesView
+                    phase={phaseBeingViewed}
+                    onBack={() => setViewingPhase(null)}
+                  />
+                ) : (
+                  <>
+                    <ProgressOverview phases={phases} />
+                    <div className="mt-4 space-y-3">
+                      {phases.map((phase) => (
+                        <PhaseCard
+                          key={phase.number}
+                          phase={phase}
+                          onViewResponses={(n) => setViewingPhase(n)}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+
+            {activeTab === 'planification' && (
+              <PlanificationTab
+                beneficiaryId={id}
+                beneficiaryName={profile.full_name}
+                sessions={sessions}
+              />
+            )}
+
+            {activeTab === 'comptes-rendus' && (
+              <ComptesRendusTab
+                beneficiaryId={id}
+                beneficiaryName={profile.full_name}
+                sessions={sessions}
+              />
+            )}
+
+            {activeTab === 'documents' && (
+              <DocumentsTab beneficiaryId={id} />
+            )}
+          </div>
+        </div>
+
+        {/* ============ RIGHT COLUMN ============ */}
+        <div className="hidden w-[308px] shrink-0 lg:block">
+          <NextSessionPanel
+            sessions={sessions}
+            onTabChange={setActiveTab}
+          />
+          <div className="mt-4">
+            <ActionsRapidesPanel onTabChange={setActiveTab} />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
