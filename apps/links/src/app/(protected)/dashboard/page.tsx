@@ -1,35 +1,37 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@unanima/auth'
-import { ProgressBar, StatusBadge } from '@unanima/dashboard'
-import { Card } from '@unanima/core'
-import { Video, Calendar, ArrowRight, AlertCircle } from 'lucide-react'
+import { AlertCircle, ArrowRight, Video } from 'lucide-react'
 import type { PhaseStatus } from '@/lib/types/database'
 import { TOTAL_PHASES, PHASE_LABELS } from '@/config/phases.config'
-
-const PHASE_STATUS_CONFIG = {
-  libre: { label: 'À compléter', color: 'info' as const },
-  en_cours: { label: 'En cours', color: 'warning' as const },
-  validee: { label: 'Validé', color: 'success' as const },
-}
 
 interface PhaseData {
   phase_number: number
   status: PhaseStatus
 }
 
+interface SessionData {
+  session_number: number
+  scheduled_at: string | null
+  visio_url: string | null
+}
+
+const SESSION_LABELS: Record<number, string> = {
+  1: 'Entretien préliminaire',
+  2: 'Investigation phase 1',
+  3: 'Investigation phase 2',
+  4: 'Investigation phase 3',
+  5: 'Conclusion',
+  6: 'Suivi à 6 mois',
+}
+
 function getFirstName(fullName: string): string {
   return fullName.split(' ')[0] ?? fullName
 }
 
-function computeProgression(phases: PhaseData[]): {
-  validated: number
-  inProgress: number
-  remaining: number
-  percentage: number
-} {
+function computeProgression(phases: PhaseData[]) {
   const validated = phases.filter((p) => p.status === 'validee').length
   const inProgress = phases.filter((p) => p.status === 'en_cours').length
   const remaining = TOTAL_PHASES - validated - inProgress
@@ -40,19 +42,11 @@ function computeProgression(phases: PhaseData[]): {
 function getCurrentPhase(phases: PhaseData[]): number {
   const inProgress = phases.find((p) => p.status === 'en_cours')
   if (inProgress) return inProgress.phase_number
-
   const firstLibre = phases
     .sort((a, b) => a.phase_number - b.phase_number)
     .find((p) => p.status === 'libre')
   if (firstLibre) return firstLibre.phase_number
-
   return 1
-}
-
-interface SessionData {
-  session_number: number
-  scheduled_at: string | null
-  visio_url: string | null
 }
 
 type SessionStatus = 'realisee' | 'a_venir' | 'a_planifier'
@@ -85,7 +79,6 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [errorToast, setErrorToast] = useState<string | null>(null)
 
-  // Auto-dismiss error toast after 5s
   useEffect(() => {
     if (!errorToast) return
     const timer = setTimeout(() => setErrorToast(null), 5000)
@@ -95,8 +88,8 @@ export default function DashboardPage() {
   useEffect(() => {
     async function loadData() {
       const [phasesRes, sessionsRes] = await Promise.allSettled([
-        fetch('/api/phase-validations').then(r => r.ok ? r.json() : null),
-        fetch('/api/sessions').then(r => r.ok ? r.json() : null),
+        fetch('/api/phase-validations').then((r) => (r.ok ? r.json() : null)),
+        fetch('/api/sessions').then((r) => (r.ok ? r.json() : null)),
       ])
 
       let hasError = false
@@ -131,7 +124,6 @@ export default function DashboardPage() {
     }
   }, [user])
 
-  // Redirect consultant/admin to their specific dashboards
   useEffect(() => {
     if (user?.role === 'consultant') {
       router.replace('/consultant/dashboard')
@@ -164,7 +156,6 @@ export default function DashboardPage() {
     )
   }
 
-  // Ensure all 6 phases have an entry
   const allPhases: PhaseData[] = Array.from({ length: TOTAL_PHASES }, (_, i) => {
     const existing = phases.find((p) => p.phase_number === i + 1)
     return existing ?? { phase_number: i + 1, status: 'libre' as PhaseStatus }
@@ -173,17 +164,16 @@ export default function DashboardPage() {
   const { validated, inProgress, remaining, percentage } = computeProgression(allPhases)
   const currentPhase = getCurrentPhase(allPhases)
 
-  // Ensure all 6 sessions exist
   const allSessions: SessionData[] = Array.from({ length: 6 }, (_, i) => {
     const existing = sessions.find((s) => s.session_number === i + 1)
     return existing ?? { session_number: i + 1, scheduled_at: null, visio_url: null }
   })
 
   return (
-    <div className="mx-auto max-w-[900px] space-y-8">
+    <div className="mx-auto max-w-[1100px] space-y-8">
       {/* Error toast */}
       {errorToast && (
-        <div className="fixed top-6 right-6 z-50 flex items-center gap-3 rounded-lg border border-[#F5C6CB] bg-[#F8D7DA] px-5 py-3 text-[#721C24] shadow-lg">
+        <div className="fixed top-6 right-6 z-50 flex items-center gap-3 rounded-[var(--radius-md)] border border-[#F5C6CB] bg-[#F8D7DA] px-5 py-3 text-[#721C24] shadow-lg">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span className="text-sm font-medium">{errorToast}</span>
           <button
@@ -194,108 +184,131 @@ export default function DashboardPage() {
           </button>
         </div>
       )}
-      {/* ═══ WELCOME (MAQ-02) ═══ */}
-      <div>
-        <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">
-          Bonjour, {getFirstName(user.fullName)}
-        </h1>
-        <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-          Retrouvez ici le suivi de votre bilan de compétences.
-        </p>
-        <div className="mt-3 h-[3px] w-14 rounded-full bg-[var(--color-primary)]" />
-        <button
-          onClick={() => router.push(`/bilans/${currentPhase}`)}
-          className="mt-4 inline-flex items-center gap-2 rounded-[var(--radius-md)] bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text-inverse)] transition-colors hover:bg-[var(--color-primary-dark)]"
-        >
-          Continuer le bilan
-          <ArrowRight className="h-4 w-4" />
-        </button>
+
+      {/* ═══ WELCOME CARD ═══ */}
+      <div className="relative overflow-hidden rounded-[20px] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-md)]">
+        <div
+          className="absolute left-0 top-0 h-full w-[6px] rounded-l-[20px]"
+          style={{ backgroundColor: 'var(--color-accent)' }}
+        />
+        <div className="ml-4">
+          <h1 className="text-[26px] font-bold text-[var(--color-text)]">
+            Bonjour, {getFirstName(user.fullName)} ☀️
+          </h1>
+          <p className="mt-1 text-[15px] text-[var(--color-text-muted)]">
+            Retrouvez ici le suivi de votre bilan de compétences. Vous avancez bien !
+          </p>
+          <button
+            onClick={() => router.push(`/bilans/${currentPhase}`)}
+            className="mt-4 inline-flex items-center gap-2 rounded-[17px] bg-[var(--color-primary)] px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-primary-dark)]"
+          >
+            Continuer le bilan
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
-      {/* ═══ SESSIONS TABLE (MAQ-02) ═══ */}
+      {/* ═══ VOS SÉANCES ═══ */}
       <section>
-        <h2 className="mb-3 text-lg font-bold text-[var(--color-primary-dark)]">
+        <h2 className="mb-3 text-xl font-bold text-[var(--color-text)]">
           Vos séances
         </h2>
-        <Card padding="none">
+        <div className="overflow-hidden rounded-[20px] bg-[var(--color-surface)] shadow-[var(--shadow-md)]">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-[var(--color-surface-hover)]">
-                  <th className="px-4 py-3 text-left text-xs font-bold text-[var(--color-primary-dark)]">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)]">
                     Séance
                   </th>
-                  <th className="px-4 py-3 text-center text-xs font-bold text-[var(--color-primary-dark)]">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)]">
                     Date
                   </th>
-                  <th className="px-4 py-3 text-center text-xs font-bold text-[var(--color-primary-dark)]">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)]">
                     Heure
                   </th>
-                  <th className="px-4 py-3 text-center text-xs font-bold text-[var(--color-primary-dark)]">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--color-text-muted)]">
                     Action
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[var(--color-border-light)]">
+              <tbody>
                 {allSessions.map((session) => {
                   const status = getSessionStatus(session)
                   const isScheduled = status === 'a_venir'
                   const isDone = status === 'realisee'
+                  const isPlanned = isScheduled || isDone
 
                   return (
-                    <tr key={session.session_number} className="transition-colors hover:bg-[var(--color-surface-hover)]/50">
-                      {/* Session badge */}
-                      <td className="px-4 py-3">
+                    <tr
+                      key={session.session_number}
+                      className="border-t border-[var(--color-border-light)] transition-colors hover:bg-[var(--color-surface-hover)]/50"
+                    >
+                      <td className="px-6 py-3">
                         <div className="flex items-center gap-3">
                           <span
-                            className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ${
-                              isDone
-                                ? 'bg-[var(--color-success-light)] text-[var(--color-success)]'
-                                : isScheduled
-                                  ? 'bg-[var(--color-info-light)] text-[var(--color-primary)]'
-                                  : 'bg-[var(--color-surface-hover)] text-[var(--color-text-muted)]'
+                            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                              isPlanned
+                                ? 'bg-[var(--color-primary)] text-white'
+                                : 'bg-[var(--color-border)] text-[var(--color-text-muted)]'
                             }`}
                           >
                             {session.session_number}
                           </span>
-                          <span className={`font-medium ${
-                            status === 'a_planifier'
-                              ? 'text-[var(--color-text-muted)]'
-                              : 'text-[var(--color-text)]'
-                          }`}>
-                            {isDone || isScheduled
-                              ? `Séance ${session.session_number}`
-                              : `Séance ${session.session_number}`}
+                          <span
+                            className={`font-medium ${
+                              isPlanned
+                                ? 'text-[var(--color-text)]'
+                                : 'text-[var(--color-text-muted)]'
+                            }`}
+                          >
+                            Séance {session.session_number}
+                            {isPlanned && SESSION_LABELS[session.session_number]
+                              ? ` — ${SESSION_LABELS[session.session_number]}`
+                              : ''}
                           </span>
                         </div>
                       </td>
-                      {/* Date */}
-                      <td className="px-4 py-3 text-center">
-                        <span className={status === 'a_planifier' ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text)]'}>
-                          {session.scheduled_at ? formatDate(session.scheduled_at) : 'À planifier'}
+                      <td className="px-4 py-3">
+                        <span
+                          className={
+                            isPlanned
+                              ? 'text-[var(--color-text)]'
+                              : 'text-[var(--color-text-muted)]'
+                          }
+                        >
+                          {session.scheduled_at
+                            ? formatDate(session.scheduled_at)
+                            : 'À planifier'}
                         </span>
                       </td>
-                      {/* Time */}
-                      <td className="px-4 py-3 text-center">
-                        <span className={status === 'a_planifier' ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text)]'}>
-                          {session.scheduled_at ? formatTime(session.scheduled_at) : '—'}
+                      <td className="px-4 py-3">
+                        <span
+                          className={
+                            isPlanned
+                              ? 'text-[var(--color-text)]'
+                              : 'text-[var(--color-text-muted)]'
+                          }
+                        >
+                          {session.scheduled_at
+                            ? formatTime(session.scheduled_at)
+                            : '—'}
                         </span>
                       </td>
-                      {/* Action */}
-                      <td className="px-4 py-3 text-center">
+                      <td className="px-4 py-3">
                         {isScheduled && session.visio_url ? (
                           <a
                             href={session.visio_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 rounded-[var(--radius-md)] bg-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text-inverse)] transition-colors hover:bg-[var(--color-primary-dark)]"
+                            className="inline-flex items-center gap-1.5 rounded-[15px] bg-[var(--color-primary)] px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[var(--color-primary-dark)]"
                           >
                             <Video className="h-3.5 w-3.5" />
                             Rejoindre la visio
                           </a>
                         ) : status === 'a_planifier' ? (
-                          <span className="text-xs italic text-[var(--color-text-muted)]">
-                            À planifier par votre consultante
+                          <span className="inline-flex items-center rounded-[15px] border border-[var(--color-border)] px-4 py-1.5 text-xs font-medium text-[var(--color-text-muted)]">
+                            Planifier
                           </span>
                         ) : null}
                       </td>
@@ -305,107 +318,123 @@ export default function DashboardPage() {
               </tbody>
             </table>
           </div>
-        </Card>
+        </div>
       </section>
 
-      {/* ═══ PARCOURS SECTION (MAQ-02) ═══ */}
+      {/* ═══ VOTRE PARCOURS ═══ */}
       <section>
-        <h2 className="text-lg font-bold text-[var(--color-primary-dark)]">
+        <h2 className="text-xl font-bold text-[var(--color-text)]">
           Votre parcours
         </h2>
-        <p className="mt-1 text-xs text-[var(--color-text-muted)]">
+        <p className="mt-1 text-sm text-[var(--color-text-muted)]">
           {validated} phase{validated > 1 ? 's' : ''} validée{validated > 1 ? 's' : ''} · {inProgress} en cours · {remaining} à compléter
         </p>
-        <div className="mt-3">
-          <ProgressBar
-            value={percentage}
-            color={percentage === 100 ? 'success' : 'primary'}
-            animated
+        {/* Progress bar */}
+        <div className="mt-3 h-[10px] w-full overflow-hidden rounded-[5px] bg-[var(--color-border-light)]">
+          <div
+            className="h-full rounded-[5px] bg-[var(--color-success)] transition-all duration-500"
+            style={{ width: `${percentage}%` }}
           />
         </div>
       </section>
 
-      {/* ═══ PHASE CARDS GRID (MAQ-02: 3×2) ═══ */}
-      <div className="grid gap-[30px] sm:grid-cols-2 lg:grid-cols-3">
+      {/* ═══ PHASE CARDS GRID (3×2) ═══ */}
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {allPhases.map((phase) => {
           const isValidee = phase.status === 'validee'
           const isEnCours = phase.status === 'en_cours'
           const isLibre = phase.status === 'libre'
 
-          const borderColor = isValidee
+          const cardBg = isValidee
+            ? 'bg-[var(--color-success-light)]'
+            : isEnCours
+              ? 'bg-[#FFFAF5]'
+              : 'bg-[var(--color-surface)]'
+
+          const cardBorder = isValidee
             ? 'border-[var(--color-success)]'
             : isEnCours
-              ? 'border-[var(--color-warning)]'
+              ? 'border-[var(--color-accent)]'
               : 'border-[var(--color-border)]'
 
           const accentColor = isValidee
             ? 'var(--color-success)'
             : isEnCours
-              ? 'var(--color-warning)'
+              ? 'var(--color-accent)'
               : 'var(--color-border)'
 
           const numberBg = isValidee
-            ? 'bg-[var(--color-success-light)] text-[var(--color-success)]'
+            ? 'bg-[#D4EDDA] text-[var(--color-success)]'
             : isEnCours
-              ? 'bg-[var(--color-warning-light)] text-[var(--color-warning)]'
-              : 'bg-[var(--color-surface-hover)] text-[var(--color-text-muted)]'
+              ? 'bg-[var(--color-accent-light)] text-[var(--color-accent)]'
+              : 'bg-[#F5F0EB] text-[var(--color-text-muted)]'
 
           return (
             <div
               key={phase.phase_number}
-              className={`relative min-h-[110px] overflow-hidden rounded-[var(--radius-lg)] border bg-[var(--color-surface)] p-4 transition-shadow hover:shadow-md ${borderColor}`}
+              className={`relative overflow-hidden rounded-[18px] border-[1.5px] p-5 shadow-[var(--shadow-sm)] transition-shadow hover:shadow-[var(--shadow-md)] ${cardBg} ${cardBorder}`}
             >
               {/* Left accent bar */}
               <div
-                className="absolute left-0 top-0 h-full w-[5px] rounded-l-[var(--radius-lg)]"
+                className="absolute left-0 top-0 h-full w-[6px] rounded-l-[18px]"
                 style={{ backgroundColor: accentColor }}
               />
 
-              <div className="ml-2 space-y-3">
+              <div className="ml-3 space-y-3">
                 {/* Phase number + title */}
-                <div className="flex items-start gap-3">
-                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${numberBg}`}>
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold ${numberBg}`}
+                  >
                     {phase.phase_number}
                   </span>
-                  <div>
-                    <p className={`text-sm font-bold ${isLibre ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-primary-dark)]'}`}>
-                      {PHASE_LABELS[phase.phase_number] ?? `Phase ${phase.phase_number}`}
-                    </p>
-                  </div>
+                  <p
+                    className={`text-[15px] font-semibold ${
+                      isLibre
+                        ? 'text-[var(--color-text-muted)]'
+                        : 'text-[var(--color-text)]'
+                    }`}
+                  >
+                    {PHASE_LABELS[phase.phase_number] ?? `Phase ${phase.phase_number}`}
+                  </p>
                 </div>
 
                 {/* Status badge */}
-                {isEnCours ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-full,9999px)] px-2.5 py-0.5 text-xs font-medium bg-[var(--color-warning-light)] text-[var(--color-warning)] ring-1 ring-inset ring-[var(--color-warning)]/20">
+                {isValidee && (
+                  <span className="inline-flex items-center rounded-[12px] bg-[#D4EDDA] px-3 py-1 text-xs font-semibold text-[var(--color-success)]">
+                    ✓ Validé
+                  </span>
+                )}
+                {isEnCours && (
+                  <span className="inline-flex items-center gap-1.5 rounded-[12px] bg-[var(--color-accent-light)] px-3 py-1 text-xs font-semibold text-[var(--color-accent)]">
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-pulse-dot absolute inline-flex h-full w-full rounded-full bg-[var(--color-warning)]" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-warning)]" />
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
                     </span>
                     En cours
                   </span>
-                ) : (
-                  <StatusBadge
-                    status={phase.status}
-                    statusConfig={PHASE_STATUS_CONFIG}
-                  />
+                )}
+                {isLibre && (
+                  <span className="inline-flex items-center rounded-[12px] bg-[#F5F0EB] px-3 py-1 text-xs font-semibold text-[var(--color-text-muted)]">
+                    À compléter
+                  </span>
                 )}
 
                 {/* Action button */}
                 {isLibre ? (
                   <button
                     onClick={() => router.push(`/bilans/${phase.phase_number}`)}
-                    className="inline-flex items-center gap-1 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface-hover)] px-3 py-1.5 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-border)] hover:text-[var(--color-text)]"
+                    className="inline-flex items-center gap-1 rounded-[16px] bg-[#F5F0EB] px-4 py-2 text-[13px] font-medium text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-border)] hover:text-[var(--color-text)]"
                   >
                     Accéder
-                    <ArrowRight className="h-3 w-3" />
                   </button>
                 ) : (
                   <button
                     onClick={() => router.push(`/bilans/${phase.phase_number}`)}
-                    className="inline-flex items-center gap-1 rounded-[var(--radius-md)] bg-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold text-[var(--color-text-inverse)] transition-colors hover:bg-[var(--color-primary-dark)]"
+                    className="inline-flex items-center gap-1 rounded-[16px] bg-[var(--color-primary)] px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[var(--color-primary-dark)]"
                   >
                     Accéder
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </button>
                 )}
               </div>
