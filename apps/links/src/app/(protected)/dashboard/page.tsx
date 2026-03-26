@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@unanima/auth'
 import { ProgressBar, StatusBadge } from '@unanima/dashboard'
 import { Card } from '@unanima/core'
-import { Video, Calendar, ArrowRight } from 'lucide-react'
+import { Video, Calendar, ArrowRight, AlertCircle } from 'lucide-react'
 import type { PhaseStatus } from '@/lib/types/database'
 import { TOTAL_PHASES, PHASE_LABELS } from '@/config/phases.config'
 
@@ -83,6 +83,14 @@ export default function DashboardPage() {
   const [phases, setPhases] = useState<PhaseData[]>([])
   const [sessions, setSessions] = useState<SessionData[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [errorToast, setErrorToast] = useState<string | null>(null)
+
+  // Auto-dismiss error toast after 5s
+  useEffect(() => {
+    if (!errorToast) return
+    const timer = setTimeout(() => setErrorToast(null), 5000)
+    return () => clearTimeout(timer)
+  }, [errorToast])
 
   useEffect(() => {
     async function loadData() {
@@ -91,9 +99,12 @@ export default function DashboardPage() {
         fetch('/api/sessions').then(r => r.ok ? r.json() : null),
       ])
 
+      let hasError = false
+
       if (phasesRes.status === 'fulfilled' && phasesRes.value?.data) {
         setPhases(phasesRes.value.data)
       } else {
+        hasError = true
         setPhases(
           Array.from({ length: TOTAL_PHASES }, (_, i) => ({
             phase_number: i + 1,
@@ -104,6 +115,12 @@ export default function DashboardPage() {
 
       if (sessionsRes.status === 'fulfilled' && sessionsRes.value?.data) {
         setSessions(sessionsRes.value.data)
+      } else {
+        hasError = true
+      }
+
+      if (hasError) {
+        setErrorToast('Impossible de charger certaines données. Veuillez réessayer.')
       }
 
       setIsLoading(false)
@@ -164,6 +181,19 @@ export default function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-[900px] space-y-8">
+      {/* Error toast */}
+      {errorToast && (
+        <div className="fixed top-6 right-6 z-50 flex items-center gap-3 rounded-lg border border-[#F5C6CB] bg-[#F8D7DA] px-5 py-3 text-[#721C24] shadow-lg">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span className="text-sm font-medium">{errorToast}</span>
+          <button
+            onClick={() => setErrorToast(null)}
+            className="ml-2 text-sm opacity-60 hover:opacity-100 transition-opacity"
+          >
+            ×
+          </button>
+        </div>
+      )}
       {/* ═══ WELCOME (MAQ-02) ═══ */}
       <div>
         <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">

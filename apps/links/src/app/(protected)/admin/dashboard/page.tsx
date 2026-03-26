@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   AlertTriangle,
+  AlertCircle,
   ArrowRight,
 } from 'lucide-react'
 
@@ -92,6 +93,14 @@ export default function AdminDashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [errorToast, setErrorToast] = useState<string | null>(null)
+
+  // Auto-dismiss error toast after 5s
+  useEffect(() => {
+    if (!errorToast) return
+    const timer = setTimeout(() => setErrorToast(null), 5000)
+    return () => clearTimeout(timer)
+  }, [errorToast])
 
   // ── Data fetching ──────────────────────────────────────────────────────────
 
@@ -109,7 +118,11 @@ export default function AdminDashboardPage() {
           if (statsRes.data.beneficiaires) {
             setBeneficiaires(statsRes.data.beneficiaires)
           }
+        } else {
+          setErrorToast('Impossible de charger les données. Veuillez réessayer.')
         }
+      } catch {
+        setErrorToast('Impossible de charger les données. Veuillez réessayer.')
       } finally {
         setIsLoading(false)
       }
@@ -227,6 +240,19 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="mx-auto max-w-[1200px] space-y-8">
+      {/* Error toast */}
+      {errorToast && (
+        <div className="fixed top-6 right-6 z-50 flex items-center gap-3 rounded-lg border border-[#F5C6CB] bg-[#F8D7DA] px-5 py-3 text-[#721C24] shadow-lg">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span className="text-sm font-medium">{errorToast}</span>
+          <button
+            onClick={() => setErrorToast(null)}
+            className="ml-2 text-sm opacity-60 hover:opacity-100 transition-opacity"
+          >
+            ×
+          </button>
+        </div>
+      )}
       {/* ═══ HEADER ═══ */}
       <div>
         <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">
