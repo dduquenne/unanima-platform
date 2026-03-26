@@ -44,16 +44,10 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, authSession) => {
+    } = supabase.auth.onAuthStateChange(async (_event, authSession) => {
       setSession(authSession)
 
       if (authSession?.user) {
-        // On SIGNED_IN, signal loading so downstream guards (useRequireRole)
-        // wait for the profile fetch instead of redirecting prematurely.
-        if (event === 'SIGNED_IN') {
-          setIsLoading(true)
-        }
-
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
@@ -104,8 +98,35 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
   const signIn = useCallback(
     async (email: string, password: string) => {
       if (!supabase) return { error: new Error('Supabase client not initialized') }
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      return { error: error ? new Error(error.message) : null }
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) return { error: new Error(error.message) }
+
+      // Eagerly resolve the user profile so downstream guards
+      // (useRequireRole, protected layouts) see the correct role
+      // immediately when signIn returns — avoids the race condition
+      // where onAuthStateChange hasn't finished its async profile
+      // fetch yet (#238).
+      if (data.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .maybeSingle()
+
+        if (profile) {
+          setUser({
+            id: profile.id,
+            email: profile.email,
+            fullName: profile.full_name,
+            role: profile.role,
+            isActive: profile.is_active,
+            metadata: profile.metadata ?? {},
+          })
+          setIsLoading(false)
+        }
+      }
+
+      return { error: null }
     },
     [supabase],
   )

@@ -23,19 +23,27 @@ export function useAuthConfig() {
 }
 
 export function useRequireRole(role: string | string[]) {
-  const { user, isLoading } = useAuth()
+  const { user, session, isLoading } = useAuth()
   const config = useAuthConfig()
   const router = useRouter()
   const roles = Array.isArray(role) ? role : [role]
 
+  // A session can exist while the user profile is still being fetched
+  // (e.g. right after signIn). In that case we must NOT redirect to the
+  // login page — just wait for the profile to resolve (#238).
+  const profilePending = !!session && !user
+
   useEffect(() => {
-    if (isLoading) return
+    if (isLoading || profilePending) return
     if (!user || !roles.includes(user.role)) {
       router.replace(config.redirects.unauthorized)
     }
-  }, [user, isLoading, roles, config.redirects.unauthorized, router])
+  }, [user, session, isLoading, profilePending, roles, config.redirects.unauthorized, router])
 
-  return { isAuthorized: user ? roles.includes(user.role) : false, isLoading }
+  return {
+    isAuthorized: user ? roles.includes(user.role) : false,
+    isLoading: isLoading || profilePending,
+  }
 }
 
 export function usePermission(permission: string): boolean {
