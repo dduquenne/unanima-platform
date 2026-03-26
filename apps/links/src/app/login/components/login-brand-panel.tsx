@@ -7,146 +7,124 @@ export function LoginBrandPanel() {
     <aside
       className="relative hidden flex-col justify-between overflow-hidden lg:flex"
       style={{
-        width: '43%',
+        width: '46%',
         minWidth: 0,
-        background: 'linear-gradient(160deg, var(--color-primary-dark) 0%, #134B82 50%, #0A2E58 100%)',
+        background: 'linear-gradient(160deg, #0D3B6E 0%, #1A5BA0 100%)',
       }}
     >
-      {/* Grille de points subtile */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
-
-      {/* Orbes lumineuses */}
-      <div
-        className="pointer-events-none absolute"
-        style={{
-          top: 40,
-          left: -40,
-          width: 360,
-          height: 360,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(14,165,233,0.3) 0%, rgba(30,111,192,0.05) 70%)',
-          filter: 'blur(60px)',
-        }}
-      />
-      <div
-        className="pointer-events-none absolute"
-        style={{
-          bottom: 60,
-          right: -40,
-          width: 280,
-          height: 280,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,107,53,0.2) 0%, rgba(255,107,53,0.02) 70%)',
-          filter: 'blur(40px)',
-        }}
-      />
-      <div
-        className="pointer-events-none absolute"
-        style={{
-          top: 40,
-          right: -20,
-          width: 160,
-          height: 160,
-          borderRadius: '50%',
-          background: 'var(--color-secondary)',
-          opacity: 0.06,
-          filter: 'blur(60px)',
-        }}
-      />
-
-      {/* Contenu principal */}
-      <div className="relative z-10 flex flex-1 flex-col items-center px-8 pt-16">
-        {/* Logo */}
+      {/* Organic blob shapes (MAQ-01 chaleureux) */}
+      <div className="pointer-events-none absolute inset-0">
+        {/* Large blob top-right */}
         <div
-          className="relative flex items-center justify-center"
+          className="absolute"
           style={{
-            width: 64,
-            height: 64,
-            borderRadius: 16,
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            border: '0.8px solid rgba(255,255,255,0.2)',
+            top: -40,
+            right: -60,
+            width: 400,
+            height: 360,
+            borderRadius: '50%',
+            backgroundColor: '#FFFFFF',
+            opacity: 0.04,
+            transform: 'rotate(-15deg)',
           }}
-        >
-          <span className="text-4xl font-extrabold text-white" style={{ letterSpacing: -1 }}>
-            L
-          </span>
-          <div
-            className="absolute"
-            style={{
-              top: -4,
-              right: -4,
-              width: 10,
-              height: 10,
-              borderRadius: '50%',
-              backgroundColor: 'var(--color-accent)',
-            }}
-          />
+        />
+        {/* Blob bottom-left */}
+        <div
+          className="absolute"
+          style={{
+            bottom: -40,
+            left: -80,
+            width: 500,
+            height: 400,
+            borderRadius: '50%',
+            backgroundColor: '#FFFFFF',
+            opacity: 0.05,
+            transform: 'rotate(10deg)',
+          }}
+        />
+        {/* Warm accent blobs */}
+        <div
+          className="absolute"
+          style={{
+            top: '35%',
+            right: '15%',
+            width: 120,
+            height: 120,
+            borderRadius: '50%',
+            backgroundColor: '#FF6B35',
+            opacity: 0.08,
+          }}
+        />
+        <div
+          className="absolute"
+          style={{
+            top: '45%',
+            left: '15%',
+            width: 80,
+            height: 80,
+            borderRadius: '50%',
+            backgroundColor: '#F28C5A',
+            opacity: 0.06,
+          }}
+        />
+        <div
+          className="absolute"
+          style={{
+            bottom: '20%',
+            right: '25%',
+            width: 70,
+            height: 70,
+            borderRadius: '50%',
+            backgroundColor: '#FF6B35',
+            opacity: 0.06,
+          }}
+        />
+        {/* Wave decoration */}
+        <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 660 300" preserveAspectRatio="none" style={{ height: '33%' }}>
+          <path d="M0,200 Q160,140 330,180 Q500,220 660,160 L660,300 L0,300 Z" fill="white" opacity="0.03" />
+          <path d="M0,230 Q200,190 400,220 Q550,250 660,200 L660,300 L0,300 Z" fill="white" opacity="0.03" />
+        </svg>
+      </div>
+
+      {/* Main content */}
+      <div className="relative z-10 flex flex-1 flex-col px-10 pt-16 xl:px-12">
+        {/* Logo */}
+        <div className="flex items-baseline gap-0">
+          <span className="text-3xl font-bold text-white" style={{ letterSpacing: 0.3 }}>Link{"'"}s</span>
+          {/* Orange polygon accent */}
+          <svg width="12" height="22" viewBox="0 0 12 22" className="-ml-0.5 -mt-5" aria-hidden="true">
+            <polygon points="0,0 12,0 10,22 2,22" fill="#FF6B35" />
+          </svg>
+          <span className="ml-1 text-3xl font-normal" style={{ color: '#A8C8F0', letterSpacing: 0.3 }}>Accompagnement</span>
         </div>
 
-        {/* Titre + tagline */}
-        <h1
-          className="mt-6 font-bold text-white"
-          style={{ fontSize: 28, letterSpacing: -0.5 }}
-        >
-          Link{"'"}s Accompagnement
-        </h1>
-        <p className="mt-2 text-white/60" style={{ fontSize: 15, letterSpacing: 0.2 }}>
-          Votre espace de suivi personnalisé
+        {/* Tagline */}
+        <p className="mt-4 text-lg leading-relaxed" style={{ color: '#C4D8F0' }}>
+          Plateforme de suivi des bilans
+          <br />
+          de compétences
         </p>
 
-        {/* Illustration (masquée sur tablette) */}
+        {/* Illustration (hidden on tablet) */}
         <div className="mt-8 hidden xl:block">
           <LoginIllustration />
         </div>
       </div>
 
-      {/* Citation */}
-      <div className="relative z-10 px-12 pb-6">
-        <div className="flex gap-4">
-          <div
-            className="shrink-0"
-            style={{
-              width: 3,
-              borderRadius: 1.5,
-              backgroundColor: 'var(--color-secondary)',
-              opacity: 0.6,
-              alignSelf: 'stretch',
-            }}
-          />
-          <div>
-            <p className="text-sm italic text-white/70">
-              « Chaque parcours est unique.
-              <br />
-              Nous vous accompagnons à chaque étape. »
-            </p>
-            <p className="mt-2 text-xs text-white/40">
-              — L{"'"}équipe Link{"'"}s
-            </p>
-          </div>
-        </div>
+      {/* Bottom section */}
+      <div className="relative z-10 px-10 pb-8 xl:px-12">
+        {/* Quote */}
+        <p className="text-base font-semibold text-white/70">
+          &laquo; Chaque bilan est un nouveau départ. &raquo;
+        </p>
+        <p className="mt-2 text-sm" style={{ color: '#A8C8F0', opacity: 0.6 }}>
+          — L{"'"}équipe Link{"'"}s Accompagnement
+        </p>
 
-        {/* Badges confiance */}
-        <div className="mt-6 flex items-center justify-center gap-6 text-white/40">
-          <span className="flex items-center gap-2 text-xs">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <rect x="2" y="6" width="10" height="7" rx="2" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M4 6V4a3 3 0 0 1 6 0v2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-            </svg>
-            Connexion sécurisée
-          </span>
-          <span className="flex items-center gap-2 text-xs">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M7 1l4 2v4c0 3.5-4 6-4 6S3 10.5 3 7V3l4-2z" stroke="currentColor" strokeWidth="1.2" />
-            </svg>
-            Conforme RGPD
-          </span>
-        </div>
+        {/* Footer */}
+        <p className="mt-8 text-xs" style={{ color: '#A8C8F0', opacity: 0.4 }}>
+          © {new Date().getFullYear()} Link{"'"}s Accompagnement — Tous droits réservés
+        </p>
       </div>
     </aside>
   )
