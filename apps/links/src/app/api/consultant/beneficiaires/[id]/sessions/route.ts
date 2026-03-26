@@ -210,54 +210,73 @@ export async function PUT(
 
   // H1: Send notification email to beneficiary (non-blocking)
   // Failure to send email must NOT prevent dates from being saved
-  try {
-    const { data: beneficiaryProfile } = await supabase
-      .from('profiles')
-      .select('email, full_name')
-      .eq('id', beneficiaryId)
-      .single()
+  // Skip email if no dates actually changed
+  const hasDateChanges = parsed.data.some((s) => {
+    const existing = existingByNumber.get(s.session_number)
+    return s.scheduled_at !== (existing ?? null)
+  })
 
-    const { data: consultantProfile } = await supabase
-      .from('profiles')
-      .select('full_name')
-      .eq('id', user.id)
-      .single()
+  if (hasDateChanges) {
+    try {
+      const { data: beneficiaryProfile } = await supabase
+        .from('profiles')
+        .select('email, full_name')
+        .eq('id', beneficiaryId)
+        .single()
 
-    if (beneficiaryProfile && consultantProfile) {
-      const hasExistingDates = existingByNumber.size > 0
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://links.unanima.fr'
+      const { data: consultantProfile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .single()
 
-      const { error: emailError } = await sendEmail({
-        to: beneficiaryProfile.email,
-        subject: hasExistingDates
-          ? 'Mise à jour de votre planning de séances'
-          : 'Vos séances de bilan ont été planifiées',
-        template: PlanificationEmail({
-          beneficiaireName: beneficiaryProfile.full_name,
-          consultantName: consultantProfile.full_name,
-          sessions: parsed.data.map((s) => ({
-            session_number: s.session_number,
-            scheduled_at: s.scheduled_at,
-          })),
-          isUpdate: hasExistingDates,
-          dashboardUrl: `${baseUrl}/dashboard`,
-        }),
-        from: process.env.EMAIL_FROM_LINKS ?? 'bilan@links-accompagnement.com',
-      })
+      if (beneficiaryProfile && consultantProfile) {
+        const hasExistingDates = existingByNumber.size > 0
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://links.unanima.fr'
 
-      if (emailError) {
-        // Log failure but do not block response
-        await supabase.from('audit_logs').insert({
-          user_id: user.id,
-          action: 'email_planification_error',
-          entity_type: 'session',
-          entity_id: beneficiaryId,
-          details: { error: emailError.message },
+        const { error: emailError } = await sendEmail({
+          to: beneficiaryProfile.email,
+          subject: hasExistingDates
+            ? 'Mise à jour de votre planning de séances'
+            : 'Vos séances de bilan ont été planifiées',
+          template: PlanificationEmail({
+            beneficiaireName: beneficiaryProfile.full_name,
+            consultantName: consultantProfile.full_name,
+            sessions: parsed.data.map((s) => ({
+              session_number: s.session_number,
+              scheduled_at: s.scheduled_at,
+            })),
+            isUpdate: hasExistingDates,
+            dashboardUrl: `${baseUrl}/dashboard`,
+          }),
+          from: process.env.EMAIL_FROM_LINKS ?? 'bilan@links-accompagnement.com',
         })
+
+        if (emailError) {
+          await supabase.from('audit_logs').insert({
+            user_id: user.id,
+            action: 'SESSION_NOTIFICATION_ERROR',
+            entity_type: 'session',
+            entity_id: beneficiaryId,
+            details: { error: emailError.message },
+          })
+        } else {
+          await supabase.from('audit_logs').insert({
+            user_id: user.id,
+            action: 'SESSION_NOTIFICATION_SENT',
+            entity_type: 'session',
+            entity_id: beneficiaryId,
+            details: {
+              to: beneficiaryProfile.email,
+              isUpdate: hasExistingDates,
+              sessionsCount: parsed.data.filter((s) => s.scheduled_at).length,
+            },
+          })
+        }
       }
+    } catch {
+      // Email failure is non-blocking — dates are already saved
     }
-  } catch {
-    // Email failure is non-blocking — dates are already saved
   }
 
   return NextResponse.json({ data: { success: true, count: upsertData.length } })
