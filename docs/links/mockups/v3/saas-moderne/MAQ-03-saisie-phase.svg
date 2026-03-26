@@ -1,0 +1,269 @@
+<!-- MAQ-03 | Saisie de Phase | Link's Accompagnement | v3.0 | saas-moderne | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow-sm" x="-2%" y="-2%" width="104%" height="108%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.06"/>
+    </filter>
+    <filter id="shadow-md" x="-2%" y="-2%" width="104%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.08"/>
+    </filter>
+    <clipPath id="clip-main"><rect x="220" y="0" width="1220" height="900"/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#FAFBFC"/>
+
+  <!-- ==================== SIDEBAR (220px) ==================== -->
+  <rect x="0" y="0" width="220" height="900" fill="#0D3B6E"/>
+
+  <!-- Logo area -->
+  <rect x="0" y="0" width="220" height="70" fill="#0A3260"/>
+  <polygon points="24,22 34,18 34,42 24,38" fill="#FF6B35"/>
+  <text x="42" y="33" font-size="15" font-weight="700" fill="white">Link's</text>
+  <text x="42" y="48" font-size="11" font-weight="400" fill="#A8C4E0">Accompagnement</text>
+
+  <!-- Nav items -->
+  <!-- Dashboard -->
+  <g opacity="0.7">
+    <rect x="12" y="90" width="196" height="40" rx="6" fill="transparent"/>
+    <rect x="24" y="102" width="16" height="16" rx="3" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <rect x="27" y="105" width="4" height="4" rx="1" fill="#A8C4E0"/>
+    <rect x="33" y="105" width="4" height="4" rx="1" fill="#A8C4E0"/>
+    <rect x="27" y="111" width="4" height="4" rx="1" fill="#A8C4E0"/>
+    <rect x="33" y="111" width="4" height="4" rx="1" fill="#A8C4E0"/>
+    <text x="50" y="115" font-size="13" fill="#A8C4E0">Dashboard</text>
+  </g>
+
+  <!-- Mon bilan (active) -->
+  <g>
+    <rect x="12" y="136" width="196" height="40" rx="6" fill="rgba(255,255,255,0.1)"/>
+    <rect x="12" y="136" width="3" height="40" rx="1.5" fill="#FF6B35"/>
+    <circle cx="32" cy="156" r="8" fill="none" stroke="white" stroke-width="1.5"/>
+    <path d="M29,156 L32,159 L36,153" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    <text x="50" y="161" font-size="13" font-weight="600" fill="white">Mon bilan</text>
+  </g>
+
+  <!-- Documents -->
+  <g opacity="0.7">
+    <rect x="12" y="182" width="196" height="40" rx="6" fill="transparent"/>
+    <rect x="26" y="194" width="12" height="16" rx="2" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <path d="M30,194 L30,190 L36,190 L38,194" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <text x="50" y="207" font-size="13" fill="#A8C4E0">Documents</text>
+  </g>
+
+  <!-- Profil -->
+  <g opacity="0.7">
+    <rect x="12" y="228" width="196" height="40" rx="6" fill="transparent"/>
+    <circle cx="32" cy="248" r="7" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <path d="M25,260 Q32,254 39,260" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <text x="50" y="253" font-size="13" fill="#A8C4E0">Profil</text>
+  </g>
+
+  <!-- Sidebar footer -->
+  <line x1="20" y1="840" x2="200" y2="840" stroke="#1A5080" stroke-width="1"/>
+  <circle cx="32" cy="865" r="14" fill="#1A5080"/>
+  <text x="32" y="870" font-size="12" font-weight="600" fill="white" text-anchor="middle">MR</text>
+  <text x="54" y="862" font-size="12" fill="white">Marie Renaud</text>
+  <text x="54" y="877" font-size="10" fill="#A8C4E0">Bénéficiaire</text>
+
+  <!-- ==================== HEADER ==================== -->
+  <rect x="220" y="0" width="1220" height="56" fill="white"/>
+  <line x1="220" y1="56" x2="1440" y2="56" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Breadcrumb -->
+  <text x="244" y="34" font-size="13" fill="#8892A5">Mon bilan</text>
+  <text x="314" y="34" font-size="13" fill="#8892A5">›</text>
+  <text x="326" y="34" font-size="13" font-weight="600" fill="#1E6FC0">Phase 2</text>
+
+  <!-- User info right -->
+  <text x="1290" y="30" font-size="12" fill="#8892A5" text-anchor="end">Marie Renaud</text>
+  <text x="1300" y="30" font-size="12" fill="#8892A5">|</text>
+  <text x="1312" y="30" font-size="12" fill="#C0392B" cursor="pointer">Déconnexion</text>
+
+  <!-- ==================== PHASE SELECTOR BAR ==================== -->
+  <rect x="220" y="56" width="1220" height="60" fill="white"/>
+  <line x1="220" y1="116" x2="1440" y2="116" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Phase 1 - Completed -->
+  <g>
+    <rect x="248" y="68" width="155" height="36" rx="18" fill="#E8F5E9"/>
+    <circle cx="268" cy="86" r="9" fill="#28A745"/>
+    <path d="M264,86 L267,89 L272,83" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="282" y="90" font-size="11" fill="#2E7D32" font-weight="500">Définir mon projet</text>
+  </g>
+
+  <!-- Phase 2 - Active -->
+  <g>
+    <rect x="412" y="68" width="185" height="36" rx="18" fill="#E3F0FC" stroke="#1E6FC0" stroke-width="1.5"/>
+    <circle cx="432" cy="86" r="9" fill="#1E6FC0"/>
+    <text x="432" y="90" font-size="10" font-weight="700" fill="white" text-anchor="middle">2</text>
+    <text x="448" y="90" font-size="11" fill="#1E6FC0" font-weight="600">Explorer mes compétences</text>
+  </g>
+
+  <!-- Phase 3 -->
+  <g opacity="0.5">
+    <rect x="606" y="68" width="155" height="36" rx="18" fill="#F0F2F5"/>
+    <circle cx="626" cy="86" r="9" fill="#BCC3D0"/>
+    <text x="626" y="90" font-size="10" font-weight="600" fill="white" text-anchor="middle">3</text>
+    <text x="642" y="90" font-size="11" fill="#8892A5">Construire mon plan</text>
+  </g>
+
+  <!-- Phase 4 -->
+  <g opacity="0.5">
+    <rect x="770" y="68" width="135" height="36" rx="18" fill="#F0F2F5"/>
+    <circle cx="790" cy="86" r="9" fill="#BCC3D0"/>
+    <text x="790" y="90" font-size="10" font-weight="600" fill="white" text-anchor="middle">4</text>
+    <text x="806" y="90" font-size="11" fill="#8892A5">Valider le projet</text>
+  </g>
+
+  <!-- Phase 5 -->
+  <g opacity="0.5">
+    <rect x="914" y="68" width="130" height="36" rx="18" fill="#F0F2F5"/>
+    <circle cx="934" cy="86" r="9" fill="#BCC3D0"/>
+    <text x="934" y="90" font-size="10" font-weight="600" fill="white" text-anchor="middle">5</text>
+    <text x="950" y="90" font-size="11" fill="#8892A5">Plan d'action</text>
+  </g>
+
+  <!-- Phase 6 -->
+  <g opacity="0.5">
+    <rect x="1053" y="68" width="110" height="36" rx="18" fill="#F0F2F5"/>
+    <circle cx="1073" cy="86" r="9" fill="#BCC3D0"/>
+    <text x="1073" y="90" font-size="10" font-weight="600" fill="white" text-anchor="middle">6</text>
+    <text x="1089" y="90" font-size="11" fill="#8892A5">Synthèse</text>
+  </g>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <!-- Scrollable form area: x=220+24=244 to x=1440-280-24=1136, y=116+20=136 -->
+
+  <!-- Phase title and autosave -->
+  <text x="252" y="156" font-size="22" font-weight="700" fill="#1A2A3A">Phase 2 — Explorer mes compétences</text>
+
+  <!-- Autosave indicator -->
+  <g>
+    <circle cx="1052" cy="150" r="5" fill="#28A745"/>
+    <path d="M1050,150 L1051.5,151.5 L1054,148.5" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+    <text x="1062" y="154" font-size="11" fill="#6B7A8D">Sauvegardé il y a 2 min</text>
+  </g>
+
+  <!-- Phase description -->
+  <text x="252" y="180" font-size="13" fill="#6B7A8D">Cette phase vous invite à explorer et identifier vos compétences professionnelles, vos centres d'intérêt et vos axes de développement.</text>
+
+  <!-- ===== Question 1 Card ===== -->
+  <rect x="244" y="200" width="896" height="195" rx="8" fill="white" filter="url(#shadow-sm)"/>
+
+  <!-- Question number badge -->
+  <circle cx="270" cy="228" r="14" fill="#E3F0FC"/>
+  <text x="270" y="233" font-size="13" font-weight="700" fill="#1E6FC0" text-anchor="middle">1</text>
+
+  <!-- Question label -->
+  <text x="294" y="233" font-size="14" font-weight="600" fill="#1A2A3A">Quelles sont vos principales compétences professionnelles ?</text>
+
+  <!-- Textarea with content -->
+  <rect x="268" y="248" width="848" height="108" rx="8" fill="white" stroke="#1E6FC0" stroke-width="1.5"/>
+  <rect x="268" y="248" width="848" height="108" rx="8" fill="rgba(30,111,192,0.02)"/>
+  <!-- Focus ring -->
+  <rect x="265" y="245" width="854" height="114" rx="10" fill="none" stroke="rgba(30,111,192,0.15)" stroke-width="2"/>
+
+  <text x="280" y="272" font-size="13" fill="#2A3A4A">J'ai développé une solide expérience en gestion de projet au cours de mes 8 années dans</text>
+  <text x="280" y="292" font-size="13" fill="#2A3A4A">le secteur du conseil. Mes principales compétences incluent :</text>
+  <text x="280" y="312" font-size="13" fill="#2A3A4A">- La coordination d'équipes pluridisciplinaires (jusqu'à 12 personnes)</text>
+  <text x="280" y="332" font-size="13" fill="#2A3A4A">- L'analyse de données et la rédaction de rapports stratégiques</text>
+
+  <!-- Character count -->
+  <text x="1092" y="376" font-size="11" fill="#A0AAB8" text-anchor="end">312 / 2000 caractères</text>
+
+  <!-- ===== Question 2 Card ===== -->
+  <rect x="244" y="410" width="896" height="185" rx="8" fill="white" filter="url(#shadow-sm)"/>
+
+  <circle cx="270" cy="438" r="14" fill="#E3F0FC"/>
+  <text x="270" y="443" font-size="13" font-weight="700" fill="#1E6FC0" text-anchor="middle">2</text>
+
+  <text x="294" y="443" font-size="14" font-weight="600" fill="#1A2A3A">Quels sont vos centres d'intérêt et vos passions ?</text>
+
+  <!-- Empty textarea with placeholder -->
+  <rect x="268" y="458" width="848" height="100" rx="8" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="280" y="482" font-size="13" fill="#B0B8C8">Décrivez vos centres d'intérêt, vos loisirs et ce qui vous passionne au quotidien...</text>
+
+  <!-- Character count -->
+  <text x="1092" y="576" font-size="11" fill="#A0AAB8" text-anchor="end">0 / 2000 caractères</text>
+
+  <!-- ===== Question 3 Card ===== -->
+  <rect x="244" y="610" width="896" height="185" rx="8" fill="white" filter="url(#shadow-sm)"/>
+
+  <circle cx="270" cy="638" r="14" fill="#E3F0FC"/>
+  <text x="270" y="643" font-size="13" font-weight="700" fill="#1E6FC0" text-anchor="middle">3</text>
+
+  <text x="294" y="643" font-size="14" font-weight="600" fill="#1A2A3A">Quelles compétences aimeriez-vous développer ?</text>
+
+  <!-- Empty textarea -->
+  <rect x="268" y="658" width="848" height="100" rx="8" fill="white" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="280" y="682" font-size="13" fill="#B0B8C8">Indiquez les compétences que vous souhaitez acquérir ou renforcer...</text>
+
+  <!-- Character count -->
+  <text x="1092" y="776" font-size="11" fill="#A0AAB8" text-anchor="end">0 / 2000 caractères</text>
+
+  <!-- ===== Action Buttons ===== -->
+  <g>
+    <!-- Enregistrer (secondary) -->
+    <rect x="830" y="816" width="145" height="42" rx="8" fill="white" stroke="#1E6FC0" stroke-width="1.5"/>
+    <text x="902" y="842" font-size="13" font-weight="600" fill="#1E6FC0" text-anchor="middle">Enregistrer</text>
+
+    <!-- Valider la phase (primary) -->
+    <rect x="988" y="816" width="152" height="42" rx="8" fill="#1E6FC0"/>
+    <text x="1064" y="842" font-size="13" font-weight="600" fill="white" text-anchor="middle">Valider la phase</text>
+  </g>
+
+  <!-- Tooltip note below button -->
+  <text x="1064" y="874" font-size="10" fill="#8892A5" text-anchor="middle">La validation soumet vos réponses à votre consultante</text>
+
+  <!-- ==================== RIGHT SIDEBAR (280px) ==================== -->
+  <rect x="1160" y="116" width="280" height="784" fill="#F5F7FA"/>
+  <line x1="1160" y1="116" x2="1160" y2="900" stroke="#DCE1EB" stroke-width="1"/>
+
+  <!-- Prochaine séance card -->
+  <rect x="1176" y="136" width="248" height="120" rx="8" fill="white" filter="url(#shadow-sm)"/>
+  <text x="1192" y="162" font-size="12" font-weight="700" fill="#1A2A3A" text-transform="uppercase" letter-spacing="0.5">PROCHAINE SÉANCE</text>
+  <line x1="1192" y1="172" x2="1408" y2="172" stroke="#F0F2F5" stroke-width="1"/>
+
+  <!-- Calendar icon -->
+  <rect x="1192" y="184" width="16" height="14" rx="2" fill="none" stroke="#1E6FC0" stroke-width="1.5"/>
+  <line x1="1196" y1="181" x2="1196" y2="185" stroke="#1E6FC0" stroke-width="1.5"/>
+  <line x1="1204" y1="181" x2="1204" y2="185" stroke="#1E6FC0" stroke-width="1.5"/>
+  <text x="1216" y="196" font-size="13" font-weight="600" fill="#1A2A3A">29/04/2026 à 14h00</text>
+
+  <!-- Visio link -->
+  <rect x="1192" y="212" width="150" height="30" rx="6" fill="#E3F0FC"/>
+  <text x="1207" y="232" font-size="12" font-weight="600" fill="#1E6FC0">📹 Rejoindre la visio</text>
+
+  <!-- Documents de phase card -->
+  <rect x="1176" y="276" width="248" height="140" rx="8" fill="white" filter="url(#shadow-sm)"/>
+  <text x="1192" y="302" font-size="12" font-weight="700" fill="#1A2A3A" letter-spacing="0.5">DOCUMENTS DE PHASE</text>
+  <line x1="1192" y1="312" x2="1408" y2="312" stroke="#F0F2F5" stroke-width="1"/>
+
+  <!-- Document items -->
+  <g>
+    <rect x="1192" y="322" width="16" height="18" rx="2" fill="#E3F0FC"/>
+    <text x="1196" y="336" font-size="8" fill="#1E6FC0" font-weight="700">PDF</text>
+    <text x="1216" y="336" font-size="12" fill="#1E6FC0" text-decoration="underline">Guide d'exploration.pdf</text>
+  </g>
+  <g>
+    <rect x="1192" y="350" width="16" height="18" rx="2" fill="#E3F0FC"/>
+    <text x="1196" y="364" font-size="8" fill="#1E6FC0" font-weight="700">PDF</text>
+    <text x="1216" y="364" font-size="12" fill="#1E6FC0" text-decoration="underline">Fiche compétences.pdf</text>
+  </g>
+  <g>
+    <rect x="1192" y="378" width="16" height="18" rx="2" fill="#E3F0FC"/>
+    <text x="1196" y="392" font-size="8" fill="#1E6FC0" font-weight="700">DOC</text>
+    <text x="1216" y="392" font-size="12" fill="#1E6FC0" text-decoration="underline">Modèle auto-évaluation.docx</text>
+  </g>
+
+  <!-- Phase progress card -->
+  <rect x="1176" y="436" width="248" height="80" rx="8" fill="white" filter="url(#shadow-sm)"/>
+  <text x="1192" y="462" font-size="12" font-weight="700" fill="#1A2A3A" letter-spacing="0.5">PROGRESSION</text>
+  <text x="1192" y="484" font-size="14" font-weight="600" fill="#1E6FC0">Phase 2 sur 6</text>
+
+  <!-- Progress bar -->
+  <rect x="1192" y="494" width="216" height="6" rx="3" fill="#E8ECF0"/>
+  <rect x="1192" y="494" width="72" height="6" rx="3" fill="#1E6FC0"/>
+
+</svg>
