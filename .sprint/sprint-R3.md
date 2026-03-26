@@ -11,8 +11,8 @@
 |-------|-------|-------|----------|-------|-------|--------|
 | 1 | #215 | MAQ-04 — Dashboard consultant | 🟢 Feature | 1 | ergonomix | ✅ Fait (2026-03-26) |
 | 2 | #216 | MAQ-05 — Fiche bénéficiaire (vue consultant) | 🟢 Feature | 1 | ergonomix | ✅ Fait (2026-03-26) |
-| 3 | #217 | MAQ-06 — Comptes-rendus de séances | 🟢 Feature | 2 | ergonomix | ⬜ À faire |
-| 4 | #218 | MAQ-09 — Planification des séances | 🟢 Feature | 2 | ergonomix | ⬜ À faire |
+| 3 | #217 | MAQ-06 — Comptes-rendus de séances | 🟢 Feature | 2 | ergonomix | ✅ Fait (2026-03-26) |
+| 4 | #218 | MAQ-09 — Planification des séances | 🟢 Feature | 2 | ergonomix | ✅ Fait (2026-03-26) |
 
 ## Dependances
 
@@ -46,7 +46,7 @@ Chaîne principale (séquentielle) :
 ## Verification d'exhaustivite
 
 - [x] Toutes les issues du sprint dans le GitHub Project sont listées ci-dessus (4/4)
-- [ ] Aucune issue n'a été omise ou reportée sans justification
-- [ ] L'ordre respecte la règle : fondations > features dépendantes > features indépendantes
-- [ ] Build vert après chaque issue
-- [ ] 4/4 issues implémentées et commitées
+- [x] Aucune issue n'a été omise ou reportée sans justification
+- [x] L'ordre respecte la règle : fondations > features dépendantes > features indépendantes
+- [x] Build vert après chaque issue
+- [x] 4/4 issues implémentées et commitées
