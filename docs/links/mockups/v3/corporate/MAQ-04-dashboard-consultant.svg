@@ -1,0 +1,336 @@
+<!-- MAQ-04 | Dashboard Consultant | Link's Accompagnement | v3.0 | corporate | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="noShadow" x="0" y="0" width="100%" height="100%">
+      <feDropShadow dx="0" dy="0" stdDeviation="0" flood-opacity="0"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#F2F4F7"/>
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <rect width="220" height="900" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="3" height="900" fill="#1A1A2E"/>
+
+  <!-- Logo area -->
+  <rect x="3" y="0" width="217" height="64" fill="#FFFFFF"/>
+  <line x1="3" y1="64" x2="220" y2="64" stroke="#E2E6EC" stroke-width="1"/>
+  <text x="20" y="30" font-size="14" font-weight="700" fill="#1A1A2E">Link's</text>
+  <text x="20" y="48" font-size="11" fill="#6B7280">Accompagnement</text>
+  <polygon points="178,16 196,26 178,36" fill="#E5622E"/>
+
+  <!-- Nav: Dashboard (active) -->
+  <rect x="8" y="78" width="204" height="38" rx="4" fill="#EBF0F8"/>
+  <rect x="8" y="78" width="3" height="38" fill="#1A5BA0"/>
+  <rect x="24" y="88" width="7" height="7" rx="1" fill="#1A5BA0"/>
+  <rect x="33" y="88" width="7" height="7" rx="1" fill="#1A5BA0"/>
+  <rect x="24" y="97" width="7" height="7" rx="1" fill="#1A5BA0"/>
+  <rect x="33" y="97" width="7" height="7" rx="1" fill="#1A5BA0"/>
+  <text x="50" y="101" font-size="12.5" font-weight="600" fill="#1A5BA0">Dashboard</text>
+
+  <!-- Mes beneficiaires -->
+  <g opacity="0.65">
+    <circle cx="31" cy="133" r="7" fill="none" stroke="#6B7280" stroke-width="1.3"/>
+    <circle cx="31" cy="131" r="2.5" fill="none" stroke="#6B7280" stroke-width="1"/>
+    <text x="50" y="137" font-size="12.5" fill="#4B5563">Mes bénéficiaires</text>
+  </g>
+
+  <!-- Agenda -->
+  <g opacity="0.65">
+    <rect x="24" y="150" width="14" height="12" rx="2" fill="none" stroke="#6B7280" stroke-width="1.3"/>
+    <line x1="28" y1="148" x2="28" y2="152" stroke="#6B7280" stroke-width="1.3"/>
+    <line x1="34" y1="148" x2="34" y2="152" stroke="#6B7280" stroke-width="1.3"/>
+    <text x="50" y="162" font-size="12.5" fill="#4B5563">Agenda</text>
+  </g>
+
+  <!-- Documents -->
+  <g opacity="0.65">
+    <rect x="25" y="175" width="12" height="14" rx="2" fill="none" stroke="#6B7280" stroke-width="1.3"/>
+    <text x="50" y="187" font-size="12.5" fill="#4B5563">Documents</text>
+  </g>
+
+  <!-- Rapports -->
+  <g opacity="0.65">
+    <rect x="24" y="200" width="14" height="12" rx="1" fill="none" stroke="#6B7280" stroke-width="1.3"/>
+    <polyline points="27,209 30,205 33,208 36,202" fill="none" stroke="#6B7280" stroke-width="1.3"/>
+    <text x="50" y="212" font-size="12.5" fill="#4B5563">Rapports</text>
+  </g>
+
+  <!-- Profil -->
+  <g opacity="0.65">
+    <circle cx="31" cy="233" r="7" fill="none" stroke="#6B7280" stroke-width="1.3"/>
+    <circle cx="31" cy="231" r="2.5" fill="none" stroke="#6B7280" stroke-width="1"/>
+    <text x="50" y="237" font-size="12.5" fill="#4B5563">Profil</text>
+  </g>
+
+  <line x1="10" y1="850" x2="210" y2="850" stroke="#E2E6EC" stroke-width="1"/>
+  <text x="16" y="870" font-size="9.5" fill="#9CA3AF">v1.0 — Unanima Platform</text>
+
+  <!-- ==================== HEADER ==================== -->
+  <rect x="220" y="0" width="1220" height="56" fill="#FFFFFF"/>
+  <line x1="220" y1="56" x2="1440" y2="56" stroke="#D1D5DC" stroke-width="1"/>
+
+  <!-- Breadcrumb -->
+  <text x="244" y="33" font-size="12.5" fill="#9CA3AF">Consultant</text>
+  <text x="310" y="33" font-size="12.5" fill="#9CA3AF">&gt;</text>
+  <text x="322" y="33" font-size="12.5" font-weight="600" fill="#1A5BA0">Dashboard</text>
+
+  <!-- Avatar + user info -->
+  <circle cx="1308" cy="28" r="16" fill="#1A5BA0"/>
+  <text x="1308" y="33" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">SM</text>
+  <text x="1332" y="24" font-size="12" font-weight="600" fill="#1A1A2E">Sophie Martin</text>
+  <text x="1332" y="38" font-size="10" fill="#9CA3AF">Consultante</text>
+
+  <!-- Logout -->
+  <rect x="1398" y="14" width="26" height="26" rx="4" fill="#F2F4F7" stroke="#D1D5DC" stroke-width="1"/>
+  <path d="M1407,23 L1407,31 M1411,20 L1418,27 L1411,34" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- ==================== TITLE SECTION ==================== -->
+  <text x="244" y="94" font-size="22" font-weight="700" fill="#111827">Mon portefeuille bénéficiaires</text>
+  <rect x="528" y="78" width="148" height="26" rx="4" fill="#DBEAFE"/>
+  <text x="602" y="96" font-size="11.5" font-weight="600" fill="#1A5BA0" text-anchor="middle">4 bénéficiaires actifs</text>
+
+  <!-- ==================== FILTER BAR ==================== -->
+  <g transform="translate(244, 112)">
+    <rect x="0" y="0" width="76" height="32" rx="4" fill="#1A5BA0"/>
+    <text x="38" y="21" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Tous (4)</text>
+
+    <rect x="84" y="0" width="96" height="32" rx="4" fill="none" stroke="#D1D5DC" stroke-width="1"/>
+    <text x="132" y="21" font-size="12" font-weight="500" fill="#4B5563" text-anchor="middle">En cours (2)</text>
+
+    <rect x="188" y="0" width="110" height="32" rx="4" fill="none" stroke="#D1D5DC" stroke-width="1"/>
+    <text x="243" y="21" font-size="12" font-weight="500" fill="#4B5563" text-anchor="middle">À démarrer (1)</text>
+
+    <rect x="306" y="0" width="104" height="32" rx="4" fill="none" stroke="#D1D5DC" stroke-width="1"/>
+    <text x="358" y="21" font-size="12" font-weight="500" fill="#4B5563" text-anchor="middle">Terminés (1)</text>
+
+    <!-- Search -->
+    <rect x="760" y="0" width="416" height="32" rx="4" fill="#FFFFFF" stroke="#D1D5DC" stroke-width="1"/>
+    <circle cx="778" cy="16" r="7" fill="none" stroke="#9CA3AF" stroke-width="1.3"/>
+    <line x1="783" y1="21" x2="788" y2="26" stroke="#9CA3AF" stroke-width="1.3" stroke-linecap="round"/>
+    <text x="796" y="21" font-size="12" fill="#9CA3AF">Rechercher un bénéficiaire…</text>
+  </g>
+
+  <!-- ==================== DATA TABLE ==================== -->
+  <rect x="236" y="158" width="1188" height="396" rx="6" fill="#FFFFFF" stroke="#D1D5DC" stroke-width="1"/>
+
+  <!-- Table header -->
+  <rect x="236" y="158" width="1188" height="40" rx="6" fill="#F9FAFB"/>
+  <rect x="236" y="186" width="1188" height="12" fill="#F9FAFB"/>
+  <line x1="236" y1="198" x2="1424" y2="198" stroke="#D1D5DC" stroke-width="1"/>
+  <text x="262" y="184" font-size="10.5" font-weight="700" fill="#6B7280" letter-spacing="0.6">BÉNÉFICIAIRE</text>
+  <text x="468" y="184" font-size="10.5" font-weight="700" fill="#6B7280" letter-spacing="0.6">PROGRESSION</text>
+  <text x="652" y="184" font-size="10.5" font-weight="700" fill="#6B7280" letter-spacing="0.6">PHASES 1-6</text>
+  <text x="862" y="184" font-size="10.5" font-weight="700" fill="#6B7280" letter-spacing="0.6">PROCHAINE SÉANCE</text>
+  <text x="1074" y="184" font-size="10.5" font-weight="700" fill="#6B7280" letter-spacing="0.6">ACTION</text>
+
+  <!-- Vertical grid lines -->
+  <line x1="454" y1="158" x2="454" y2="554" stroke="#E5E7EB" stroke-width="1"/>
+  <line x1="638" y1="158" x2="638" y2="554" stroke="#E5E7EB" stroke-width="1"/>
+  <line x1="848" y1="158" x2="848" y2="554" stroke="#E5E7EB" stroke-width="1"/>
+  <line x1="1060" y1="158" x2="1060" y2="554" stroke="#E5E7EB" stroke-width="1"/>
+
+  <!-- Row 1 — Marie Dupont -->
+  <g transform="translate(0, 200)">
+    <rect x="236" y="0" width="1188" height="64" fill="#FFFFFF"/>
+    <line x1="236" y1="64" x2="1424" y2="64" stroke="#E5E7EB" stroke-width="1"/>
+
+    <circle cx="274" cy="32" r="16" fill="#1A5BA0"/>
+    <text x="274" y="37" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">MD</text>
+    <text x="298" y="27" font-size="12.5" font-weight="600" fill="#111827">Marie Dupont</text>
+    <text x="298" y="42" font-size="10.5" fill="#9CA3AF">marie.dupont@email.fr</text>
+
+    <text x="468" y="27" font-size="12" font-weight="600" fill="#111827">2/6</text>
+    <rect x="468" y="34" width="110" height="5" rx="2" fill="#E5E7EB"/>
+    <rect x="468" y="34" width="37" height="5" rx="2" fill="#1A5BA0"/>
+    <text x="584" y="40" font-size="10" fill="#9CA3AF">33%</text>
+
+    <circle cx="662" cy="32" r="10" fill="#28A745"/>
+    <text x="662" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="688" cy="32" r="10" fill="#28A745"/>
+    <text x="688" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="714" cy="32" r="10" fill="#E5622E"/>
+    <circle cx="714" cy="32" r="3.5" fill="#FFFFFF"/>
+    <circle cx="740" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <circle cx="766" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <circle cx="792" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+
+    <text x="872" y="36" font-size="12.5" font-weight="500" fill="#111827">15/04/2026</text>
+
+    <rect x="1074" y="18" width="110" height="30" rx="5" fill="#1A5BA0"/>
+    <text x="1129" y="38" font-size="11.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">Voir le dossier</text>
+  </g>
+
+  <!-- Row 2 — Jean Martin -->
+  <g transform="translate(0, 264)">
+    <rect x="236" y="0" width="1188" height="64" fill="#F9FAFB"/>
+    <line x1="236" y1="64" x2="1424" y2="64" stroke="#E5E7EB" stroke-width="1"/>
+
+    <circle cx="274" cy="32" r="16" fill="#2563EB"/>
+    <text x="274" y="37" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">JM</text>
+    <text x="298" y="27" font-size="12.5" font-weight="600" fill="#111827">Jean Martin</text>
+    <text x="298" y="42" font-size="10.5" fill="#9CA3AF">jean.martin@email.fr</text>
+
+    <text x="468" y="27" font-size="12" font-weight="600" fill="#111827">4/6</text>
+    <rect x="468" y="34" width="110" height="5" rx="2" fill="#E5E7EB"/>
+    <rect x="468" y="34" width="73" height="5" rx="2" fill="#1A5BA0"/>
+    <text x="584" y="40" font-size="10" fill="#9CA3AF">67%</text>
+
+    <circle cx="662" cy="32" r="10" fill="#28A745"/>
+    <text x="662" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="688" cy="32" r="10" fill="#28A745"/>
+    <text x="688" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="714" cy="32" r="10" fill="#28A745"/>
+    <text x="714" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="740" cy="32" r="10" fill="#28A745"/>
+    <text x="740" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="766" cy="32" r="10" fill="#E5622E"/>
+    <circle cx="766" cy="32" r="3.5" fill="#FFFFFF"/>
+    <circle cx="792" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+
+    <text x="872" y="36" font-size="12.5" font-weight="500" fill="#111827">22/04/2026</text>
+
+    <rect x="1074" y="18" width="110" height="30" rx="5" fill="#1A5BA0"/>
+    <text x="1129" y="38" font-size="11.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">Voir le dossier</text>
+  </g>
+
+  <!-- Row 3 — Claire Bernard -->
+  <g transform="translate(0, 328)">
+    <rect x="236" y="0" width="1188" height="64" fill="#FFFFFF"/>
+    <line x1="236" y1="64" x2="1424" y2="64" stroke="#E5E7EB" stroke-width="1"/>
+
+    <circle cx="274" cy="32" r="16" fill="#9CA3AF"/>
+    <text x="274" y="37" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">CB</text>
+    <text x="298" y="27" font-size="12.5" font-weight="600" fill="#111827">Claire Bernard</text>
+    <text x="298" y="42" font-size="10.5" fill="#9CA3AF">claire.bernard@email.fr</text>
+
+    <text x="468" y="27" font-size="12" font-weight="600" fill="#111827">0/6</text>
+    <rect x="468" y="34" width="110" height="5" rx="2" fill="#E5E7EB"/>
+    <text x="584" y="40" font-size="10" fill="#9CA3AF">0%</text>
+
+    <circle cx="662" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <circle cx="688" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <circle cx="714" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <circle cx="740" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <circle cx="766" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <circle cx="792" cy="32" r="10" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+
+    <rect x="862" y="22" width="88" height="22" rx="4" fill="#FFF3E0"/>
+    <text x="906" y="38" font-size="10.5" font-weight="600" fill="#C45500" text-anchor="middle">À planifier</text>
+
+    <rect x="1074" y="18" width="110" height="30" rx="5" fill="#1A5BA0"/>
+    <text x="1129" y="38" font-size="11.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">Voir le dossier</text>
+  </g>
+
+  <!-- Row 4 — Paul Rousseau -->
+  <g transform="translate(0, 392)">
+    <rect x="236" y="0" width="1188" height="64" fill="#F9FAFB"/>
+
+    <circle cx="274" cy="32" r="16" fill="#28A745"/>
+    <text x="274" y="37" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">PR</text>
+    <text x="298" y="27" font-size="12.5" font-weight="600" fill="#111827">Paul Rousseau</text>
+    <rect x="398" y="18" width="76" height="20" rx="4" fill="#E8F5E9"/>
+    <text x="436" y="32" font-size="10" font-weight="600" fill="#28A745" text-anchor="middle">Terminé &#10003;</text>
+    <text x="298" y="42" font-size="10.5" fill="#9CA3AF">paul.rousseau@email.fr</text>
+
+    <text x="468" y="27" font-size="12" font-weight="600" fill="#111827">6/6</text>
+    <rect x="468" y="34" width="110" height="5" rx="2" fill="#E5E7EB"/>
+    <rect x="468" y="34" width="110" height="5" rx="2" fill="#28A745"/>
+    <text x="584" y="40" font-size="10" fill="#9CA3AF">100%</text>
+
+    <circle cx="662" cy="32" r="10" fill="#28A745"/>
+    <text x="662" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="688" cy="32" r="10" fill="#28A745"/>
+    <text x="688" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="714" cy="32" r="10" fill="#28A745"/>
+    <text x="714" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="740" cy="32" r="10" fill="#28A745"/>
+    <text x="740" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="766" cy="32" r="10" fill="#28A745"/>
+    <text x="766" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="792" cy="32" r="10" fill="#28A745"/>
+    <text x="792" y="36" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+
+    <rect x="862" y="22" width="104" height="22" rx="4" fill="#E8F5E9"/>
+    <text x="914" y="38" font-size="10.5" font-weight="600" fill="#28A745" text-anchor="middle">Bilan terminé</text>
+
+    <rect x="1074" y="18" width="110" height="30" rx="5" fill="none" stroke="#1A5BA0" stroke-width="1.5"/>
+    <text x="1129" y="38" font-size="11.5" font-weight="600" fill="#1A5BA0" text-anchor="middle">Voir le dossier</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(248, 472)">
+    <circle cx="10" cy="10" r="7" fill="#28A745"/>
+    <text x="10" y="14" font-size="8" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <text x="24" y="14" font-size="10.5" fill="#6B7280">Phase terminée</text>
+
+    <circle cx="132" cy="10" r="7" fill="#E5622E"/>
+    <circle cx="132" cy="10" r="2.5" fill="#FFFFFF"/>
+    <text x="146" y="14" font-size="10.5" fill="#6B7280">Phase en cours</text>
+
+    <circle cx="250" cy="10" r="7" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <text x="264" y="14" font-size="10.5" fill="#6B7280">Phase non commencée</text>
+  </g>
+
+  <!-- Pagination -->
+  <g transform="translate(248, 496)">
+    <text x="0" y="12" font-size="11" fill="#9CA3AF">Affichage de 4 bénéficiaires sur 4</text>
+    <rect x="940" y="0" width="28" height="24" rx="4" fill="#1A5BA0"/>
+    <text x="954" y="17" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+  </g>
+
+  <!-- ==================== KPI CARDS ==================== -->
+  <g transform="translate(236, 540)">
+    <!-- Card 1 -->
+    <g>
+      <rect x="0" y="0" width="286" height="88" rx="5" fill="#FFFFFF" stroke="#D1D5DC" stroke-width="1"/>
+      <rect x="0" y="0" width="4" height="88" rx="2" fill="#1A5BA0"/>
+      <circle cx="34" cy="36" r="18" fill="#EBF0F8"/>
+      <rect x="26" y="30" width="6" height="12" rx="1" fill="#1A5BA0"/>
+      <rect x="34" y="33" width="6" height="9" rx="1" fill="#1A5BA0"/>
+      <rect x="42" y="27" width="6" height="15" rx="1" fill="#1A5BA0" opacity="0.5"/>
+      <text x="66" y="34" font-size="26" font-weight="700" fill="#111827">3</text>
+      <text x="66" y="50" font-size="11.5" fill="#6B7280">Bilans en cours</text>
+      <text x="66" y="70" font-size="10.5" fill="#28A745">&#8593; +1 ce mois</text>
+    </g>
+
+    <!-- Card 2 -->
+    <g transform="translate(298, 0)">
+      <rect x="0" y="0" width="286" height="88" rx="5" fill="#FFFFFF" stroke="#D1D5DC" stroke-width="1"/>
+      <rect x="0" y="0" width="4" height="88" rx="2" fill="#E5622E"/>
+      <circle cx="34" cy="36" r="18" fill="#FFF0E6"/>
+      <rect x="24" y="28" width="18" height="16" rx="2" fill="none" stroke="#E5622E" stroke-width="1.8"/>
+      <line x1="28" y1="26" x2="28" y2="30" stroke="#E5622E" stroke-width="1.8"/>
+      <line x1="40" y1="26" x2="40" y2="30" stroke="#E5622E" stroke-width="1.8"/>
+      <line x1="24" y1="36" x2="42" y2="36" stroke="#E5622E" stroke-width="1"/>
+      <text x="66" y="34" font-size="26" font-weight="700" fill="#111827">5</text>
+      <text x="66" y="50" font-size="11.5" fill="#6B7280">Séances cette semaine</text>
+      <text x="66" y="70" font-size="10.5" fill="#E5622E">2 à planifier</text>
+    </g>
+
+    <!-- Card 3 -->
+    <g transform="translate(596, 0)">
+      <rect x="0" y="0" width="286" height="88" rx="5" fill="#FFFFFF" stroke="#D1D5DC" stroke-width="1"/>
+      <rect x="0" y="0" width="4" height="88" rx="2" fill="#28A745"/>
+      <circle cx="34" cy="36" r="18" fill="#E8F5E9"/>
+      <circle cx="34" cy="36" r="9" fill="none" stroke="#28A745" stroke-width="2"/>
+      <polyline points="29,36 33,40 40,33" fill="none" stroke="#28A745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="66" y="34" font-size="26" font-weight="700" fill="#111827">1</text>
+      <text x="66" y="50" font-size="11.5" fill="#6B7280">Bilans terminés</text>
+      <text x="66" y="70" font-size="10.5" fill="#28A745">&#8593; +1 ce mois</text>
+    </g>
+
+    <!-- Card 4 -->
+    <g transform="translate(894, 0)">
+      <rect x="0" y="0" width="294" height="88" rx="5" fill="#FFFFFF" stroke="#D1D5DC" stroke-width="1"/>
+      <rect x="0" y="0" width="4" height="88" rx="2" fill="#1A1A2E"/>
+      <circle cx="34" cy="36" r="18" fill="#E8EBF0"/>
+      <circle cx="34" cy="36" r="9" fill="none" stroke="#1A1A2E" stroke-width="3" stroke-dasharray="33 57" stroke-dashoffset="-14" transform="rotate(-90 34 36)"/>
+      <text x="66" y="34" font-size="26" font-weight="700" fill="#111827">58%</text>
+      <text x="66" y="50" font-size="11.5" fill="#6B7280">Taux de complétion moyen</text>
+      <rect x="66" y="62" width="110" height="5" rx="2" fill="#E5E7EB"/>
+      <rect x="66" y="62" width="64" height="5" rx="2" fill="#1A1A2E"/>
+    </g>
+  </g>
+</svg>
