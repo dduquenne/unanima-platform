@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import type { AuthConfig, AuthContextValue, UserSession } from './types'
 
@@ -27,6 +27,27 @@ function getSupabaseClient() {
   return createBrowserClient(url, anonKey)
 }
 
+/**
+ * Builds a UserSession from a Supabase profile row.
+ */
+function profileToUser(profile: {
+  id: string
+  email: string
+  full_name: string
+  role: string
+  is_active: boolean
+  metadata: Record<string, unknown> | null
+}): UserSession {
+  return {
+    id: profile.id,
+    email: profile.email,
+    fullName: profile.full_name,
+    role: profile.role,
+    isActive: profile.is_active,
+    metadata: profile.metadata ?? {},
+  }
+}
+
 export function AuthProvider({ config, children }: AuthProviderProps) {
   const [user, setUser] = useState<UserSession | null>(null)
   const [session, setSession] = useState<unknown>(null)
@@ -35,6 +56,13 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(hasSupabaseConfig)
 
   const supabase = useMemo(() => getSupabaseClient(), [])
+
+  // Monotonic counter to discard stale onAuthStateChange callbacks.
+  // Each new auth event increments the counter; when the async profile
+  // fetch completes, it only applies its result if its own capture of
+  // the counter still matches the current value — otherwise a newer
+  // event has superseded it and this result is stale.
+  const authEventSeqRef = useRef(0)
 
   useEffect(() => {
     if (!supabase) {
@@ -45,83 +73,114 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, authSession) => {
+      // Increment sequence so any earlier pending fetch becomes stale.
+      const seq = ++authEventSeqRef.current
+
       setSession(authSession)
 
       if (authSession?.user) {
+        // Set loading true while we resolve the profile — this prevents
+        // downstream consumers from rendering with stale/null user.
+        setIsLoading(true)
+
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', authSession.user.id)
           .maybeSingle()
 
+        // Discard this result if a newer auth event has fired while we
+        // were awaiting the profile query.
+        if (authEventSeqRef.current !== seq) return
+
         if (profile) {
-          setUser({
-            id: profile.id,
-            email: profile.email,
-            fullName: profile.full_name,
-            role: profile.role,
-            isActive: profile.is_active,
-            metadata: profile.metadata ?? {},
-          })
+          setUser(profileToUser(profile))
         } else {
-          // Profil absent en BDD — fallback sur les métadonnées auth
-          // pour éviter que user reste null (boucle de redirection).
-          // Le profil sera créé automatiquement via /api/auth/ensure-profile.
+          // Profile absent — use metadata fallback ONLY if no user is
+          // already set for this auth user (prevents overwriting a valid
+          // role set by signIn's eager fetch with a 'beneficiaire' fallback).
           const authUser = authSession.user
-          setUser({
-            id: authUser.id,
-            email: authUser.email ?? '',
-            fullName:
-              (authUser.user_metadata?.full_name as string) ??
-              authUser.email?.split('@')[0] ??
-              '',
-            role: (authUser.user_metadata?.role as string) ?? 'beneficiaire',
-            isActive: true,
-            metadata: {},
+          setUser((currentUser) => {
+            if (currentUser && currentUser.id === authUser.id) {
+              // Keep the existing user — don't downgrade to fallback.
+              return currentUser
+            }
+            // Truly first time seeing this user — use metadata fallback.
+            return {
+              id: authUser.id,
+              email: authUser.email ?? '',
+              fullName:
+                (authUser.user_metadata?.full_name as string) ??
+                authUser.email?.split('@')[0] ??
+                '',
+              role: (authUser.user_metadata?.role as string) ?? config.defaultRole,
+              isActive: true,
+              metadata: {},
+            }
           })
 
-          // Tenter la création automatique du profil en arrière-plan
-          fetch('/api/auth/ensure-profile', { method: 'POST' }).catch(() => {
-            // Silencieux — le profil sera recréé à la prochaine connexion
-          })
+          // Tenter la création automatique du profil en arrière-plan,
+          // puis re-fetch pour obtenir le rôle définitif.
+          fetch('/api/auth/ensure-profile', { method: 'POST' })
+            .then(async () => {
+              // Re-fetch the profile now that ensure-profile may have created it
+              if (authEventSeqRef.current !== seq) return
+              const { data: retryProfile } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', authUser.id)
+                .maybeSingle()
+              if (authEventSeqRef.current !== seq) return
+              if (retryProfile) {
+                setUser(profileToUser(retryProfile))
+              }
+            })
+            .catch(() => {
+              // Silencieux — le profil sera recréé à la prochaine connexion
+            })
         }
       } else {
         setUser(null)
       }
 
-      setIsLoading(false)
+      // Only clear loading if this is still the latest event
+      if (authEventSeqRef.current === seq) {
+        setIsLoading(false)
+      }
     })
 
     return () => subscription.unsubscribe()
-  }, [supabase])
+  }, [supabase, config.defaultRole])
 
   const signIn = useCallback(
     async (email: string, password: string) => {
       if (!supabase) return { error: new Error('Supabase client not initialized') }
+
+      setIsLoading(true)
+
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) return { error: new Error(error.message) }
+      if (error) {
+        setIsLoading(false)
+        return { error: new Error(error.message) }
+      }
 
       // Eagerly resolve the user profile so downstream guards
       // (useRequireRole, protected layouts) see the correct role
-      // immediately when signIn returns — avoids the race condition
-      // where onAuthStateChange hasn't finished its async profile
-      // fetch yet (#238).
+      // immediately when signIn returns.  We increment the sequence
+      // counter so that the concurrent onAuthStateChange callback
+      // (triggered by signInWithPassword above) discards its result
+      // — this function is the authoritative source during sign-in.
       if (data.user) {
+        const seq = ++authEventSeqRef.current
+
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', data.user.id)
           .maybeSingle()
 
-        if (profile) {
-          setUser({
-            id: profile.id,
-            email: profile.email,
-            fullName: profile.full_name,
-            role: profile.role,
-            isActive: profile.is_active,
-            metadata: profile.metadata ?? {},
-          })
+        if (profile && authEventSeqRef.current === seq) {
+          setUser(profileToUser(profile))
           setIsLoading(false)
         }
       }

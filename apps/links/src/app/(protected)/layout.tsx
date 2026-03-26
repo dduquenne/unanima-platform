@@ -84,8 +84,8 @@ export default function ProtectedLayout({
 }) {
   const pathname = usePathname()
   const router = useRouter()
-  const { user, signOut, isLoading } = useAuth()
-  const { isAuthorized } = useRequireRole(['beneficiaire', 'consultant', 'super_admin'])
+  const { user, signOut } = useAuth()
+  const { isAuthorized, isLoading } = useRequireRole(['beneficiaire', 'consultant', 'super_admin'])
   const sessionStartRef = useRef<number>(Date.now())
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -141,7 +141,11 @@ export default function ProtectedLayout({
     )
   }
 
-  const role = user?.role ?? 'beneficiaire'
+  // After the isLoading/isAuthorized guard above, user is guaranteed
+  // to be non-null with a valid role from the database.
+  // NEVER fall back to 'beneficiaire' here — that was the root cause
+  // of the role display bug where all users saw beneficiary pages.
+  const role = user!.role
   const navItems = role === 'super_admin'
     ? adminNav
     : role === 'consultant'
