@@ -59,7 +59,7 @@ interface BeneficiaireData {
 type TabKey = 'reponses' | 'planification' | 'comptes-rendus'
 
 const TABS: { key: TabKey; label: string }[] = [
-  { key: 'reponses', label: 'Reponses' },
+  { key: 'reponses', label: 'Réponses' },
   { key: 'planification', label: 'Planification' },
   { key: 'comptes-rendus', label: 'Comptes-rendus' },
 ]
@@ -297,11 +297,11 @@ function PhaseContent({ phase }: { phase: Phase }) {
       {/* Phase header */}
       <div className="mb-6 flex items-center gap-3 flex-wrap">
         <h2 className="text-lg font-bold text-[var(--color-primary-dark)]">
-          Phase {phase.number} &mdash; {PHASE_LABELS[phase.number]}
+          Phase {phase.number} — {PHASE_LABELS[phase.number]}
         </h2>
         {phase.status === 'validated' && (
           <span className="inline-flex items-center rounded-full bg-[#D1FAE5] px-2.5 py-0.5 text-xs font-medium text-[#065F46]">
-            Validee
+            Validée
           </span>
         )}
         {phase.status === 'active' && (
@@ -358,7 +358,7 @@ function PhaseContent({ phase }: { phase: Phase }) {
                 </div>
               ) : (
                 <div className="ml-10 rounded-lg border border-dashed border-[#D1D5DB] bg-[#F9FAFB] p-4 text-sm italic text-[#9CA3AF]">
-                  Pas encore de reponse
+                  Pas encore de réponse
                 </div>
               )}
             </div>

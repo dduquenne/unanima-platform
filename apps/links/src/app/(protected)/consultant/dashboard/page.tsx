@@ -14,6 +14,7 @@ import {
   ClipboardList,
   CheckCircle,
   BarChart3,
+  AlertCircle,
 } from 'lucide-react'
 
 import type { BeneficiaireWithParcours } from '@/lib/types/database'
@@ -81,6 +82,14 @@ export default function ConsultantDashboardPage() {
   const [filter, setFilter] = useState<FilterKey>('tous')
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [errorToast, setErrorToast] = useState<string | null>(null)
+
+  // Auto-dismiss error toast after 5s
+  useEffect(() => {
+    if (!errorToast) return
+    const timer = setTimeout(() => setErrorToast(null), 5000)
+    return () => clearTimeout(timer)
+  }, [errorToast])
 
   // --- Data fetching -------------------------------------------------------
 
@@ -102,7 +111,7 @@ export default function ConsultantDashboardPage() {
         })
         setBeneficiaires(normalized)
       } catch {
-        // silently fail – empty state will show
+        setErrorToast('Impossible de charger les données. Veuillez réessayer.')
       } finally {
         setLoading(false)
       }
@@ -290,6 +299,19 @@ export default function ConsultantDashboardPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      {/* Error toast */}
+      {errorToast && (
+        <div className="fixed top-6 right-6 z-50 flex items-center gap-3 rounded-lg border border-[#F5C6CB] bg-[#F8D7DA] px-5 py-3 text-[#721C24] shadow-lg">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span className="text-sm font-medium">{errorToast}</span>
+          <button
+            onClick={() => setErrorToast(null)}
+            className="ml-2 text-sm opacity-60 hover:opacity-100 transition-opacity"
+          >
+            ×
+          </button>
+        </div>
+      )}
       {/* ------------------------------------------------------------------ */}
       {/* Header                                                             */}
       {/* ------------------------------------------------------------------ */}

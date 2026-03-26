@@ -94,10 +94,10 @@ export function LoginBrandPanel() {
           className="mt-6 font-bold text-white"
           style={{ fontSize: 28, letterSpacing: -0.5 }}
         >
-          Link&apos;s Accompagnement
+          Link{"'"}s Accompagnement
         </h1>
         <p className="mt-2 text-white/60" style={{ fontSize: 15, letterSpacing: 0.2 }}>
-          Votre espace de suivi personnalis&eacute;
+          Votre espace de suivi personnalisé
         </p>
 
         {/* Illustration (masquée sur tablette) */}
@@ -121,12 +121,12 @@ export function LoginBrandPanel() {
           />
           <div>
             <p className="text-sm italic text-white/70">
-              &laquo; Chaque parcours est unique.
+              « Chaque parcours est unique.
               <br />
-              Nous vous accompagnons &agrave; chaque &eacute;tape. &raquo;
+              Nous vous accompagnons à chaque étape. »
             </p>
             <p className="mt-2 text-xs text-white/40">
-              — L&apos;&eacute;quipe Link&apos;s
+              — L{"'"}équipe Link{"'"}s
             </p>
           </div>
         </div>
@@ -138,7 +138,7 @@ export function LoginBrandPanel() {
               <rect x="2" y="6" width="10" height="7" rx="2" stroke="currentColor" strokeWidth="1.2" />
               <path d="M4 6V4a3 3 0 0 1 6 0v2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
             </svg>
-            Connexion s&eacute;curis&eacute;e
+            Connexion sécurisée
           </span>
           <span className="flex items-center gap-2 text-xs">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">

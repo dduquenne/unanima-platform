@@ -163,7 +163,7 @@ function SessionCard({
                 : 'bg-[#F0F1F3] text-[#6B7A8D]'
             }`}
           >
-            {isWritten ? 'Redige' : 'Non redige'}
+            {isWritten ? 'Rédigé' : 'Non rédigé'}
           </span>
         )}
 
@@ -192,7 +192,7 @@ function SessionCard({
               : 'border border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white'
           }`}
         >
-          {isWritten ? 'Modifier' : 'Rediger'}
+          {isWritten ? 'Modifier' : 'Rédiger'}
         </button>
       </div>
 
@@ -209,7 +209,7 @@ function SessionCard({
                   }
                 }}
                 rows={8}
-                placeholder="Redigez le compte-rendu de la seance..."
+                placeholder="Rédigez le compte-rendu de la séance..."
                 className="w-full rounded-lg border border-[var(--color-border)] bg-[#F9FAFB] p-4 text-sm text-[var(--color-text)] placeholder-[#9CAABB] focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] resize-y"
               />
               <div className="flex items-center justify-between">
@@ -252,8 +252,8 @@ function SessionCard({
               <FileText className="h-8 w-8 text-[#D1D5DB] mb-2" />
               <p className="text-sm text-[#9CAABB]">
                 {isPlanned
-                  ? 'Aucun compte-rendu redige pour cette seance.'
-                  : 'Seance non planifiee.'}
+                  ? 'Aucun compte-rendu rédigé pour cette séance.'
+                  : 'Séance non planifiée.'}
               </p>
             </div>
           )}

@@ -117,7 +117,7 @@ function ToastNotification({
         onClick={onDismiss}
         className="ml-2 text-sm opacity-60 hover:opacity-100 transition-opacity"
       >
-        &times;
+        ×
       </button>
     </div>
   )
@@ -245,7 +245,7 @@ export function PlanificationTab({
 
       if (!isUnchanged && !isDateInFuture(entry.date, entry.time)) {
         errors[entry.session_number] =
-          'La date doit etre dans le futur'
+          'La date doit être dans le futur'
       }
     }
 
@@ -347,11 +347,11 @@ export function PlanificationTab({
           {/* Title */}
           <div className="mb-6">
             <h2 className="text-lg font-bold text-[var(--color-primary-dark)]">
-              Planification des seances &mdash; {beneficiaryName}
+              Planification des séances — {beneficiaryName}
             </h2>
             <p className="mt-1 text-sm text-[#6B7280]">
-              {TOTAL_SESSIONS} seances prevues au total &middot;{' '}
-              {plannedCount} planifiee{plannedCount > 1 ? 's' : ''}
+              {TOTAL_SESSIONS} séances prévues au total ·{' '}
+              {plannedCount} planifiée{plannedCount > 1 ? 's' : ''}
             </p>
           </div>
 
@@ -516,7 +516,7 @@ export function PlanificationTab({
           <div className="mt-4 flex items-start gap-2 rounded-lg bg-[#F0F7FF] p-3">
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-primary)]" />
             <p className="text-xs leading-relaxed text-[#6B7280]">
-              Ce lien sera visible par le beneficiaire dans son espace
+              Ce lien sera visible par le bénéficiaire dans son espace
               personnel.
             </p>
           </div>

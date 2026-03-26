@@ -169,7 +169,7 @@ export default function ProtectedLayout({
           <div className="flex items-center gap-3">
             {/* Avatar + info */}
             <button
-              onClick={() => router.push('/profile')}
+              onClick={() => router.push('/profil')}
               className="flex items-center gap-2.5 rounded-[var(--radius-md)] px-2 py-1 transition-colors hover:bg-[var(--color-text-inverse)]/10"
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)] text-xs font-bold text-[var(--color-text-inverse)]">
@@ -335,7 +335,7 @@ export default function ProtectedLayout({
       {/* ═══ FOOTER ═══ */}
       <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface-hover)] py-3">
         <p className="text-center text-xs text-[var(--color-text-muted)]">
-          Link&apos;s Accompagnement — Extranet {getRoleLabel(role).toLowerCase()} — &copy; {new Date().getFullYear()} Unanima
+          Link{"'"}s Accompagnement — Extranet {getRoleLabel(role).toLowerCase()} — © {new Date().getFullYear()} Unanima
         </p>
       </footer>
     </div>

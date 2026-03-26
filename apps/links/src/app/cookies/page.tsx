@@ -12,11 +12,11 @@ export default function CookiesPage() {
       <div className="space-y-6 text-sm leading-relaxed text-[var(--color-text-secondary)]">
         <section>
           <h2 className="mb-3 text-lg font-semibold text-[var(--color-text)]">
-            Qu&apos;est-ce qu&apos;un cookie ?
+            Qu{"'"}est-ce qu{"'"}un cookie ?
           </h2>
           <p>
             Un cookie est un petit fichier texte déposé sur votre terminal
-            (ordinateur, tablette, smartphone) lors de la visite d&apos;un site
+            (ordinateur, tablette, smartphone) lors de la visite d{"'"}un site
             web. Il permet au site de mémoriser des informations sur votre
             visite, comme vos préférences de langue ou vos identifiants de
             connexion.

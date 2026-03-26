@@ -659,7 +659,7 @@ export default function AdminUtilisateursPage() {
                             {user.role === 'beneficiaire'
                               ? 'Bénéficiaire'
                               : 'Consultante'}{' '}
-                            &middot; Inscrit le {formatDate(user.created_at)}
+                            · Inscrit le {formatDate(user.created_at)}
                           </p>
                         </div>
                       </div>
@@ -777,7 +777,7 @@ export default function AdminUtilisateursPage() {
           <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--color-border)]">
             <p className="text-xs text-[var(--color-text)]/50">
               {totalUsers} utilisateur{totalUsers > 1 ? 's' : ''} au total
-              &middot; Page {page} sur {totalPages}
+              · Page {page} sur {totalPages}
             </p>
             <div className="flex items-center gap-1">
               <button
@@ -963,7 +963,7 @@ export default function AdminUtilisateursPage() {
                 </div>
                 <p className="text-xs text-[var(--color-text)]/70">
                   Un mot de passe temporaire sera généré automatiquement.
-                  L&apos;utilisateur devra le modifier lors de sa première
+                  L{"'"}utilisateur devra le modifier lors de sa première
                   connexion.
                 </p>
               </div>
@@ -1123,7 +1123,7 @@ export default function AdminUtilisateursPage() {
                 Cette action est <strong>irréversible</strong>. Toutes les données de {deletingUser.full_name} seront effacées (RGPD).
               </p>
               <p className="text-xs text-[var(--color-text)]/40 mt-2 text-center">
-                Les logs d&apos;audit seront conservés conformément à l&apos;obligation légale.
+                Les logs d{"'"}audit seront conservés conformément à l{"'"}obligation légale.
               </p>
             </div>
 
@@ -1293,7 +1293,7 @@ export default function AdminUtilisateursPage() {
                       ))}
                   </select>
                   <p className="mt-1.5 text-xs text-[var(--color-text)]/50">
-                    La réassignation prend effet immédiatement : l&apos;ancienne consultante perd l&apos;accès au dossier.
+                    La réassignation prend effet immédiatement : l{"'"}ancienne consultante perd l{"'"}accès au dossier.
                   </p>
                 </div>
               )}
