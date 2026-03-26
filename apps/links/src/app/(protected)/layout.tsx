@@ -154,8 +154,8 @@ export default function ProtectedLayout({
   const breadcrumb = getBreadcrumb(pathname, role)
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: 'var(--color-background)' }}>
-      {/* Bandeau Mode Simulation (Sprint 12) */}
+    <div className="flex min-h-screen flex-col" style={{ backgroundColor: 'var(--color-background)' }}>
+      {/* Bandeau Mode Simulation (Sprint 12) — pleine largeur en haut */}
       <SimulationBanner />
 
       {/* Skip link (WCAG 2.4.1) */}
@@ -167,6 +167,7 @@ export default function ProtectedLayout({
         Aller au contenu principal
       </a>
 
+      <div className="flex flex-1">
       {/* ═══ SIDEBAR — all roles (MAQ-02 chaleureux) ═══ */}
       <aside
         className="hidden w-[220px] flex-shrink-0 flex-col md:flex"
@@ -378,6 +379,7 @@ export default function ProtectedLayout({
             Link{"'"}s Accompagnement — Extranet {getRoleLabel(role).toLowerCase()} — © {new Date().getFullYear()} Unanima
           </p>
         </footer>
+      </div>
       </div>
     </div>
   )
