@@ -6,6 +6,8 @@ import { useAuth } from '@unanima/auth'
 
 import { LoginBrandPanel } from './components/login-brand-panel'
 import { LoginCard, FooterLinks } from './components/login-card'
+import { SimulationProfileSelector } from './components/simulation-profile-selector'
+import { isSimulationMode } from '@/lib/simulation/config'
 
 const ROLE_HOME: Record<string, string> = {
   beneficiaire: '/dashboard',
@@ -54,12 +56,15 @@ export default function LoginPage() {
     return searchParams.get('redirect') ?? null
   }, [searchParams])
 
+  const simulationMode = isSimulationMode()
+
   useEffect(() => {
+    if (simulationMode) return // In simulation mode, login page shows the profile selector
     if (!isLoading && user) {
       const dest = redirectPath ?? ROLE_HOME[user.role] ?? '/dashboard'
       router.replace(dest)
     }
-  }, [user, isLoading, router, redirectPath])
+  }, [user, isLoading, router, redirectPath, simulationMode])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -108,7 +113,7 @@ export default function LoginPage() {
     }
   }
 
-  if (isLoading || user) {
+  if (!simulationMode && (isLoading || user)) {
     return (
       <div
         className="flex min-h-screen items-center justify-center"
@@ -188,22 +193,26 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Carte formulaire centrée */}
+        {/* Carte formulaire centrée (ou sélecteur de profils en mode simulation) */}
         <div className="relative z-10 flex flex-1 items-center justify-center p-4">
-          <LoginCard
-            email={email}
-            password={password}
-            showPassword={showPassword}
-            error={error}
-            urlError={urlError}
-            isLocked={isLocked}
-            isSubmitting={isSubmitting}
-            onEmailChange={setEmail}
-            onPasswordChange={setPassword}
-            onTogglePassword={() => setShowPassword(!showPassword)}
-            onSubmit={handleSubmit}
-            onForgotPassword={() => router.push('/reset-password')}
-          />
+          {isSimulationMode() ? (
+            <SimulationProfileSelector />
+          ) : (
+            <LoginCard
+              email={email}
+              password={password}
+              showPassword={showPassword}
+              error={error}
+              urlError={urlError}
+              isLocked={isLocked}
+              isSubmitting={isSubmitting}
+              onEmailChange={setEmail}
+              onPasswordChange={setPassword}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+              onSubmit={handleSubmit}
+              onForgotPassword={() => router.push('/reset-password')}
+            />
+          )}
         </div>
 
         {/* Footer desktop */}

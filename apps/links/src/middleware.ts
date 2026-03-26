@@ -62,8 +62,9 @@ export default async function middleware(request: NextRequest) {
     const role =
       request.cookies.get('simulation-role')?.value ?? 'beneficiaire'
 
-    // Sur /login ou /, rediriger vers la home du rôle simulé
-    if (pathname === '/login' || pathname === '/') {
+    // Sur /, rediriger vers la home du rôle simulé
+    // /login reste accessible pour afficher le sélecteur de profils
+    if (pathname === '/') {
       return NextResponse.redirect(
         new URL(ROLE_HOME[role] ?? '/dashboard', request.url),
       )
