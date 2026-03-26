@@ -13,10 +13,10 @@ Ce sprint corrige chaque ecran pour atteindre >= 90% de conformite.
 
 | Ordre | Issue | Titre | Priorite | Phase | Skill | Statut |
 |-------|-------|-------|----------|-------|-------|--------|
-| 1 | #215 | MAQ-04 Dashboard consultant | 🟢 Feature | 1 | ergonomix | ⬜ |
-| 2 | #216 | MAQ-05 Fiche beneficiaire consultant | 🟢 Feature | 1 | ergonomix | ⬜ |
-| 3 | #217 | MAQ-06 Comptes-rendus de seances | 🟢 Feature | 2 | ergonomix | ⬜ |
-| 4 | #218 | MAQ-09 Planification des seances | 🟢 Feature | 2 | ergonomix | ⬜ |
+| 1 | #215 | MAQ-04 Dashboard consultant | 🟢 Feature | 1 | ergonomix | ✅ |
+| 2 | #216 | MAQ-05 Fiche beneficiaire consultant | 🟢 Feature | 1 | ergonomix | ✅ |
+| 3 | #217 | MAQ-06 Comptes-rendus de seances | 🟢 Feature | 2 | ergonomix | ✅ |
+| 4 | #218 | MAQ-09 Planification des seances | 🟢 Feature | 2 | ergonomix | ✅ |
 
 ## Dependances
 - #215 → #216 (sequentiel : dashboard avant fiche)
