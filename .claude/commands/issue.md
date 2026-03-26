@@ -297,7 +297,18 @@ approche proposée. Enchaîne 1 → 6 sans interaction.
 
 ## ÉTAPE 2 — ANALYSE
 
-1. Cause racine (pas le symptôme)
+1. **Cause racine au point d'origine** (pas au point d'impact) :
+   - **Point d'impact** = là où le bug se manifeste visuellement (ex : mauvaise
+     page affichée, donnée incorrecte rendue). C'est un SYMPTÔME, pas la cause.
+   - **Point d'origine** = la première ligne de code dans la chaîne causale qui
+     introduit l'état incorrect (ex : une fonction qui retourne avant que l'état
+     soit complet, un contrat d'interface non respecté).
+   - **Méthode** : tracer la chaîne causale complète en remontant depuis le
+     symptôme jusqu'à la source. Formuler : « Le problème NAÎT à [point d'origine]
+     et se MANIFESTE à [point d'impact] ». Corriger au point d'origine.
+   - **Piège à éviter** : patcher le point d'impact (ajouter un guard, un flag,
+     un setTimeout) au lieu de corriger le point d'origine. Ces patchs masquent
+     le bug sans le résoudre et créent de la dette technique.
 2. Périmètre : app cible et/ou package(s) impactés
 3. Risques de régression — si package partagé modifié, vérifier impact sur
    les 3 apps

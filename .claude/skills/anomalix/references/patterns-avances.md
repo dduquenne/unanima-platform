@@ -38,6 +38,43 @@ function useLatestFetch<T>(fetcher: (id: string) => Promise<T>) {
 }
 ```
 
+### Contrat incomplet d'une fonction async
+```typescript
+// ❌ BUG : signIn retourne AVANT que le profil soit chargé.
+// Le callback onAuthStateChange lance le fetch en parallèle mais
+// signIn ne l'attend pas. L'appelant croit que l'état est prêt.
+const signIn = async (email: string, password: string) => {
+  await supabase.auth.signInWithPassword({ email, password })
+  // onAuthStateChange se déclenche ici (fire-and-forget)
+  return { error: null }
+  // ← l'appelant fait router.replace() alors que user est encore null
+}
+
+// ✅ FIX : la fonction garantit que l'état est complet avant de retourner
+const signIn = async (email: string, password: string) => {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) return { error }
+
+  // Résoudre le profil AVANT de retourner — plus de race condition
+  if (data.user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', data.user.id)
+      .maybeSingle()
+
+    if (profile) setUser(profile) // ← état prêt quand signIn retourne
+  }
+  return { error: null }
+}
+```
+
+**Règle** : quand une fonction async a des effets de bord (setState, cookies,
+cache), elle doit garantir que ces effets sont visibles quand elle résout.
+Si un callback fire-and-forget (onAuthStateChange, event listener) est
+responsable de ces effets, la fonction doit soit les dupliquer, soit les
+attendre explicitement.
+
 ---
 
 ## Fuites Mémoire

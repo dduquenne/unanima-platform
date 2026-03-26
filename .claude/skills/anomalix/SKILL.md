@@ -76,6 +76,30 @@ Demander systématiquement (si pas déjà fourni) :
 
 Lister les **3 à 5 hypothèses** les plus probables, classées par probabilité décroissante. Ne pas corriger avant d'avoir cette liste.
 
+### 1.4 Traçage de la chaîne causale (obligatoire)
+
+**Ne pas passer à la correction tant que la chaîne causale complète n'est pas tracée.**
+
+Pour chaque hypothèse retenue :
+1. Identifier le **point d'impact** : là où le bug se manifeste (ex : mauvais
+   rendu, mauvaise redirection, donnée affichée incorrecte)
+2. Remonter la chaîne causale étape par étape jusqu'au **point d'origine** :
+   la première ligne de code qui introduit l'état incorrect
+3. Formuler explicitement : « Le problème NAÎT à `[fichier:ligne]` et se
+   MANIFESTE à `[fichier:ligne]` »
+
+**Règle du point d'origine** : toujours corriger au point le plus en amont de
+la chaîne causale. Ne jamais patcher uniquement le point d'impact (ajout de
+guard, flag, retry, setTimeout) — c'est un symptôme, pas la cause.
+
+Signaux d'alerte qu'on est en train de patcher un symptôme au lieu de la cause :
+- La correction ajoute un flag/guard/state pour « empêcher » un comportement
+  plutôt que de l'éliminer à la source
+- La correction repose sur le timing ou l'ordre d'exécution de React
+  (batching, re-render) pour fonctionner
+- On se dit « ça devrait marcher si React flush les updates à temps »
+- La correction ne change pas le contrat de la fonction responsable
+
 ---
 
 ## Phase 2 — Exploration et Validation
@@ -117,8 +141,15 @@ Lister les **3 à 5 hypothèses** les plus probables, classées par probabilité
 
 **Avant d'écrire la correction :**
 1. Formuler la cause racine en une phrase claire
-2. Identifier toutes les occurrences du même pattern
-3. Évaluer l'impact sur les dépendants
+2. Vérifier que la correction agit au **point d'origine** (cf. §1.4) — si la
+   correction ajoute des guards/flags aux points d'impact sans changer le
+   comportement de la fonction responsable, c'est un patch de symptôme
+3. **Test du contrat** : la fonction au point d'origine respecte-t-elle son
+   contrat implicite ? (ex : une fonction `signIn()` devrait-elle garantir
+   que l'utilisateur est entièrement résolu quand elle retourne ?) Si non,
+   c'est le contrat qu'il faut corriger, pas les consommateurs.
+4. Identifier toutes les occurrences du même pattern
+5. Évaluer l'impact sur les dépendants
 
 ### 3.2 Patterns de correction
 
