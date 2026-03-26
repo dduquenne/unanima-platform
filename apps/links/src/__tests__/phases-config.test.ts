@@ -8,15 +8,17 @@ describe('phases.config', () => {
 
   it('PHASE_LABELS has entries for all 6 phases', () => {
     for (let i = 1; i <= TOTAL_PHASES; i++) {
-      expect(PHASE_LABELS[i]).toBeDefined()
-      expect(PHASE_LABELS[i].length).toBeGreaterThan(0)
+      const label = PHASE_LABELS[i]
+      expect(label).toBeDefined()
+      expect(label!.length).toBeGreaterThan(0)
     }
   })
 
   it('PHASE_DESCRIPTIONS has entries for all 6 phases', () => {
     for (let i = 1; i <= TOTAL_PHASES; i++) {
-      expect(PHASE_DESCRIPTIONS[i]).toBeDefined()
-      expect(PHASE_DESCRIPTIONS[i].length).toBeGreaterThan(0)
+      const desc = PHASE_DESCRIPTIONS[i]
+      expect(desc).toBeDefined()
+      expect(desc!.length).toBeGreaterThan(0)
     }
   })
 
