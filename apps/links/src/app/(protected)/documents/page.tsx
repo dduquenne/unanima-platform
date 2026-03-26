@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '@unanima/auth'
-import { Card } from '@unanima/core'
-import { FileText, Download, ExternalLink } from 'lucide-react'
-import { PHASE_DESCRIPTIONS } from '@/config/phases.config'
+import { Download, Info } from 'lucide-react'
+import { PHASE_LABELS, TOTAL_PHASES } from '@/config/phases.config'
 
 interface PhaseDocument {
   id: string
@@ -14,24 +13,51 @@ interface PhaseDocument {
   sort_order: number
 }
 
+interface PhaseValidation {
+  phase_number: number
+  status: 'libre' | 'en_cours' | 'validee'
+}
+
+const STATUS_CONFIG = {
+  validee: {
+    label: 'Phase validée',
+    badge: 'bg-[#E6F4EA] text-[var(--color-success)]',
+    accent: 'var(--color-success)',
+  },
+  en_cours: {
+    label: 'En cours',
+    badge: 'bg-[#FFF3E0] text-[var(--color-accent)]',
+    accent: 'var(--color-accent)',
+  },
+  libre: {
+    label: 'À venir',
+    badge: 'bg-[#F5F0EB] text-[var(--color-text-muted)]',
+    accent: '#CBD5E0',
+  },
+} as const
+
 export default function DocumentsPage() {
   const { user } = useAuth()
   const [documents, setDocuments] = useState<PhaseDocument[]>([])
+  const [phases, setPhases] = useState<PhaseValidation[]>([])
   const [loading, setLoading] = useState(true)
   const [downloading, setDownloading] = useState<string | null>(null)
 
   useEffect(() => {
     if (!user) return
     async function load() {
-      try {
-        const res = await fetch('/api/documents')
-        if (res.ok) {
-          const json = await res.json()
-          setDocuments(json.data ?? [])
-        }
-      } finally {
-        setLoading(false)
+      const [docsRes, phasesRes] = await Promise.allSettled([
+        fetch('/api/documents').then((r) => (r.ok ? r.json() : null)),
+        fetch('/api/phase-validations').then((r) => (r.ok ? r.json() : null)),
+      ])
+
+      if (docsRes.status === 'fulfilled' && docsRes.value?.data) {
+        setDocuments(docsRes.value.data)
       }
+      if (phasesRes.status === 'fulfilled' && phasesRes.value?.data) {
+        setPhases(phasesRes.value.data)
+      }
+      setLoading(false)
     }
     load()
   }, [user])
@@ -62,76 +88,118 @@ export default function DocumentsPage() {
     )
   }
 
-  const phases = Array.from({ length: 6 }, (_, i) => i + 1)
-
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">
-          Documents du bilan
+    <div className="mx-auto max-w-[920px] space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-xl font-bold text-[var(--color-text)]">
+          Documents de mon bilan
         </h1>
-        <p className="text-sm text-[var(--color-text-muted)] mt-1">
-          Retrouvez les documents mis à votre disposition pour chaque phase
+        <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+          Retrouvez ici les documents mis à disposition par votre consultante pour
+          chaque phase.
         </p>
       </div>
 
-      <div className="space-y-6">
-        {phases.map((phase) => {
-          const phaseDocs = documents
-            .filter((d) => d.phase_number === phase)
-            .sort((a, b) => a.sort_order - b.sort_order)
+      {/* Phase sections */}
+      {Array.from({ length: TOTAL_PHASES }, (_, i) => i + 1).map((phaseNum) => {
+        const phaseData = phases.find((p) => p.phase_number === phaseNum)
+        const status = phaseData?.status ?? 'libre'
+        const config = STATUS_CONFIG[status]
+        const phaseDocs = documents
+          .filter((d) => d.phase_number === phaseNum)
+          .sort((a, b) => a.sort_order - b.sort_order)
 
-          return (
-            <Card key={phase}>
-              <div className="px-5 py-4 border-b border-[var(--color-border)] bg-gray-50/50">
-                <h2 className="text-sm font-semibold text-[var(--color-primary-dark)]">
-                  {`Phase ${phase} — ${PHASE_DESCRIPTIONS[phase]}`}
-                </h2>
+        return (
+          <div
+            key={phaseNum}
+            className="relative overflow-hidden rounded-[18px] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-sm)]"
+          >
+            {/* Left accent bar */}
+            <div
+              className="absolute left-0 top-0 h-full w-[5px] rounded-l-[18px]"
+              style={{ backgroundColor: config.accent }}
+            />
+
+            {/* Phase header */}
+            <div className="flex items-center justify-between px-6 py-3">
+              <div className="flex items-baseline gap-2">
+                <span className="text-[15px] font-bold text-[var(--color-text)]">
+                  Phase {phaseNum}
+                </span>
+                <span className="text-[15px] text-[var(--color-text-secondary)]">
+                  — {PHASE_LABELS[phaseNum]}
+                </span>
               </div>
-              {phaseDocs.length === 0 ? (
-                <div className="px-5 py-6 text-center text-sm text-[var(--color-text-muted)]">
+              <span
+                className={`rounded-[13px] px-3 py-1 text-[11px] font-semibold ${config.badge}`}
+              >
+                {config.label}
+              </span>
+            </div>
+
+            <div className="mx-6 border-t border-[var(--color-border-light)]" />
+
+            {/* Documents or empty state */}
+            {phaseDocs.length === 0 ? (
+              <div className="px-6 py-4">
+                <p className="text-[13px] italic text-[var(--color-text-muted)]">
                   Aucun document disponible pour cette phase.
-                </div>
-              ) : (
-                <div className="divide-y divide-[var(--color-border)]">
-                  {phaseDocs.map((doc) => (
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2 px-6 py-3">
+                {phaseDocs.map((doc) => {
+                  const isPdf = doc.file_type === 'pdf'
+                  return (
                     <div
                       key={doc.id}
-                      className="flex items-center gap-4 px-5 py-3 hover:bg-gray-50/50 transition-colors"
+                      className={`flex items-center gap-3 rounded-[12px] px-3 py-2 ${
+                        isPdf ? 'bg-[#FFF5F0]' : 'bg-[#F0F5FF]'
+                      }`}
                     >
-                      <div
-                        className={`w-9 h-9 rounded-lg flex items-center justify-center text-[10px] font-bold uppercase ${
-                          doc.file_type === 'pdf'
-                            ? 'bg-red-50 text-red-600'
-                            : 'bg-blue-50 text-blue-600'
+                      {/* Type badge */}
+                      <span
+                        className={`flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[8px] text-[9px] font-bold uppercase ${
+                          isPdf
+                            ? 'bg-[#FDDDD2] text-[#DC4A28]'
+                            : 'bg-[#C7DDFB] text-[#2563EB]'
                         }`}
                       >
                         {doc.file_type}
-                      </div>
-                      <span className="flex-1 text-sm text-[var(--color-text)]">
+                      </span>
+
+                      {/* Name */}
+                      <span className="flex-1 text-[13px] font-medium text-[var(--color-text)]">
                         {doc.display_name}
                       </span>
+
+                      {/* Download button */}
                       <button
                         onClick={() => handleDownload(doc)}
                         disabled={downloading === doc.id}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-primary)]/30 text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 disabled:opacity-50 transition-colors"
+                        className="shrink-0 rounded-[16px] bg-[var(--color-primary)] px-5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[var(--color-primary-dark)] disabled:opacity-50"
                       >
-                        {downloading === doc.id ? (
-                          'Chargement...'
-                        ) : (
-                          <>
-                            <Download className="w-3.5 h-3.5" />
-                            Télécharger
-                          </>
-                        )}
+                        {downloading === doc.id ? 'Chargement...' : 'Télécharger'}
                       </button>
                     </div>
-                  ))}
-                </div>
-              )}
-            </Card>
-          )
-        })}
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )
+      })}
+
+      {/* Info banner */}
+      <div className="flex items-center gap-3 rounded-[18px] border border-[#F2D6C4] bg-[#FFF5EE] px-5 py-3">
+        <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-[var(--color-accent)] text-[13px] font-bold text-[var(--color-accent)]">
+          i
+        </span>
+        <p className="text-xs text-[#7A5E48]">
+          Les documents sont ajoutés par votre consultante au fil de votre parcours.
+          Formats acceptés : PDF, DOCX (max 10 Mo).
+        </p>
       </div>
     </div>
   )
