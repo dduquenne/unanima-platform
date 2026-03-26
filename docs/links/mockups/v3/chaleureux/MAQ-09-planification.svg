@@ -1,0 +1,266 @@
+<!-- MAQ-09 | Planification | Link's Accompagnement | v3.0 | chaleureux | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow-warm" x="-2%" y="-2%" width="104%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#F28C5A" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow-sm" x="-2%" y="-2%" width="104%" height="106%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#FFF8F5"/>
+
+  <!-- ==================== SIDEBAR (220px) ==================== -->
+  <rect width="220" height="900" rx="0" fill="#0D3B6E"/>
+
+  <!-- Logo area -->
+  <polygon points="32,28 52,18 52,42 32,42" fill="#F28C5A"/>
+  <text x="60" y="32" fill="#FFFFFF" font-size="16" font-weight="700">Link's</text>
+  <text x="60" y="46" fill="#A3C4E0" font-size="10" font-weight="400">Accompagnement</text>
+
+  <!-- Nav separator -->
+  <line x1="20" y1="65" x2="200" y2="65" stroke="#1A5A8E" stroke-width="1"/>
+
+  <!-- Nav: Dashboard -->
+  <g opacity="0.6">
+    <rect x="12" y="80" width="196" height="40" rx="16" fill="transparent"/>
+    <rect x="28" y="93" width="16" height="12" rx="3" fill="none" stroke="#A3C4E0" stroke-width="1.5"/>
+    <text x="54" y="103" fill="#A3C4E0" font-size="13">Dashboard</text>
+  </g>
+
+  <!-- Nav: Mes bénéficiaires (active) -->
+  <g>
+    <rect x="12" y="124" width="196" height="40" rx="16" fill="#1A5A8E"/>
+    <circle cx="36" cy="144" r="6" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <text x="54" y="148" fill="#FFFFFF" font-size="13" font-weight="600">Mes bénéficiaires</text>
+  </g>
+
+  <!-- Nav: Agenda -->
+  <g opacity="0.6">
+    <rect x="12" y="168" width="196" height="40" rx="16" fill="transparent"/>
+    <rect x="28" y="180" width="16" height="14" rx="3" fill="none" stroke="#A3C4E0" stroke-width="1.5"/>
+    <text x="54" y="192" fill="#A3C4E0" font-size="13">Agenda</text>
+  </g>
+
+  <!-- Nav: Documents -->
+  <g opacity="0.6">
+    <rect x="12" y="212" width="196" height="40" rx="16" fill="transparent"/>
+    <rect x="28" y="224" width="14" height="16" rx="3" fill="none" stroke="#A3C4E0" stroke-width="1.5"/>
+    <text x="54" y="236" fill="#A3C4E0" font-size="13">Documents</text>
+  </g>
+
+  <!-- Nav: Rapports -->
+  <g opacity="0.6">
+    <rect x="12" y="256" width="196" height="40" rx="16" fill="transparent"/>
+    <rect x="28" y="268" width="16" height="14" rx="3" fill="none" stroke="#A3C4E0" stroke-width="1.5"/>
+    <text x="54" y="280" fill="#A3C4E0" font-size="13">Rapports</text>
+  </g>
+
+  <!-- Nav: Profil -->
+  <g opacity="0.6">
+    <rect x="12" y="300" width="196" height="40" rx="16" fill="transparent"/>
+    <circle cx="36" cy="320" r="7" fill="none" stroke="#A3C4E0" stroke-width="1.5"/>
+    <text x="54" y="324" fill="#A3C4E0" font-size="13">Profil</text>
+  </g>
+
+  <!-- ==================== HEADER ==================== -->
+  <rect x="220" y="0" width="1220" height="56" fill="#FFFFFF" filter="url(#shadow-sm)"/>
+
+  <!-- Breadcrumb -->
+  <text x="248" y="33" fill="#A0A8B4" font-size="13">Mes bénéficiaires</text>
+  <text x="368" y="33" fill="#A0A8B4" font-size="13">›</text>
+  <text x="380" y="33" fill="#A0A8B4" font-size="13">Marie Dupont</text>
+  <text x="472" y="33" fill="#A0A8B4" font-size="13">›</text>
+  <text x="484" y="33" fill="#2A7FD4" font-size="13" font-weight="600">Planification</text>
+
+  <!-- Avatar + logout -->
+  <circle cx="1370" cy="28" r="16" fill="#FDE8D8"/>
+  <text x="1363" y="33" fill="#0D3B6E" font-size="11" font-weight="600">SM</text>
+  <text x="1400" y="33" fill="#A0A8B4" font-size="12">↗</text>
+
+  <!-- ==================== PROFILE MINI-BAR ==================== -->
+  <rect x="248" y="72" width="912" height="64" rx="18" fill="#FFFFFF" filter="url(#shadow-warm)"/>
+
+  <!-- Avatar -->
+  <circle cx="278" cy="104" r="20" fill="#2A7FD4"/>
+  <text x="269" y="109" fill="#FFFFFF" font-size="13" font-weight="600">MD</text>
+
+  <!-- Name + progress -->
+  <text x="308" y="97" fill="#2D3748" font-size="16" font-weight="700">Marie Dupont</text>
+  <rect x="308" y="106" width="64" height="7" rx="4" fill="#FDE8D8"/>
+  <rect x="308" y="106" width="22" height="7" rx="4" fill="#F28C5A"/>
+  <text x="378" y="114" fill="#A0A8B4" font-size="11">2/6</text>
+
+  <!-- Tabs -->
+  <text x="520" y="108" fill="#A0A8B4" font-size="13">Parcours</text>
+  <text x="610" y="108" fill="#A0A8B4" font-size="13">Comptes-rendus</text>
+  <rect x="730" y="88" width="100" height="32" rx="16" fill="#EBF4FF"/>
+  <text x="746" y="108" fill="#2A7FD4" font-size="13" font-weight="600">Planification</text>
+  <text x="860" y="108" fill="#A0A8B4" font-size="13">Documents</text>
+
+  <!-- ==================== TITLE ==================== -->
+  <text x="248" y="168" fill="#2D3748" font-size="22" font-weight="700">Planification des séances</text>
+  <text x="248" y="188" fill="#A0A8B4" font-size="13">6 séances au total · 2 planifiées · 4 à planifier</text>
+
+  <!-- ==================== SESSION CARDS ==================== -->
+
+  <!-- Séance 1 — Completed -->
+  <rect x="248" y="204" width="660" height="72" rx="18" fill="#FFFFFF" filter="url(#shadow-sm)"/>
+  <rect x="248" y="204" width="5" height="72" rx="3" fill="#28A745"/>
+  <circle cx="276" cy="240" r="14" fill="#E6F9EC"/>
+  <text x="270" y="245" fill="#28A745" font-size="15" font-weight="700">✓</text>
+  <text x="300" y="228" fill="#2D3748" font-size="14" font-weight="600">Séance 1 — Entretien préliminaire</text>
+  <text x="300" y="246" fill="#718096" font-size="12">15/04/2026 à 14h00 · 1h00</text>
+  <text x="300" y="264" fill="#2A7FD4" font-size="11" text-decoration="underline">https://meet.google.com/abc-defg-hij</text>
+  <rect x="816" y="224" width="80" height="28" rx="14" fill="#E6F9EC"/>
+  <text x="826" y="242" fill="#28A745" font-size="11" font-weight="600">Réalisée ✓</text>
+
+  <!-- Séance 2 — Upcoming -->
+  <rect x="248" y="286" width="660" height="72" rx="18" fill="#FFFFFF" filter="url(#shadow-sm)"/>
+  <rect x="248" y="286" width="5" height="72" rx="3" fill="#2A7FD4"/>
+  <circle cx="276" cy="322" r="14" fill="#EBF4FF"/>
+  <rect x="268" y="315" width="14" height="14" rx="3" fill="none" stroke="#2A7FD4" stroke-width="1.5"/>
+  <text x="300" y="310" fill="#2D3748" font-size="14" font-weight="600">Séance 2 — Investigation phase 1</text>
+  <text x="300" y="328" fill="#718096" font-size="12">29/04/2026 à 14h00 · 1h00</text>
+  <text x="300" y="346" fill="#2A7FD4" font-size="11" text-decoration="underline">https://meet.google.com/abc-defg-hij</text>
+  <rect x="816" y="302" width="72" height="28" rx="14" fill="#EBF4FF"/>
+  <text x="828" y="320" fill="#2A7FD4" font-size="11" font-weight="600">Planifiée</text>
+  <!-- Edit -->
+  <circle cx="870" cy="340" r="15" fill="#FFF8F5" stroke="#FDE8D8" stroke-width="1"/>
+  <text x="864" y="345" fill="#F28C5A" font-size="13">✎</text>
+
+  <!-- Séance 3 — Expanded/Editing -->
+  <rect x="248" y="368" width="660" height="316" rx="18" fill="#FFFFFF" filter="url(#shadow-warm)"/>
+  <rect x="248" y="368" width="5" height="316" rx="3" fill="#F28C5A"/>
+
+  <text x="276" y="398" fill="#2D3748" font-size="16" font-weight="700">Séance 3 — Planifier cette séance</text>
+
+  <!-- Date picker -->
+  <text x="276" y="426" fill="#4A5568" font-size="12" font-weight="500">Date</text>
+  <rect x="276" y="432" width="286" height="40" rx="16" fill="#FFFBF8" stroke="#FDE8D8" stroke-width="1.5"/>
+  <text x="292" y="456" fill="#C4B5A8" font-size="13">Sélectionner une date</text>
+  <text x="540" y="456" fill="#F28C5A" font-size="14">📅</text>
+
+  <!-- Time picker -->
+  <text x="580" y="426" fill="#4A5568" font-size="12" font-weight="500">Heure</text>
+  <rect x="580" y="432" width="140" height="40" rx="16" fill="#FFFBF8" stroke="#FDE8D8" stroke-width="1.5"/>
+  <text x="596" y="456" fill="#C4B5A8" font-size="13">14h00</text>
+  <text x="698" y="456" fill="#F28C5A" font-size="14">⏰</text>
+
+  <!-- Duration -->
+  <text x="740" y="426" fill="#4A5568" font-size="12" font-weight="500">Durée</text>
+  <rect x="740" y="432" width="140" height="40" rx="16" fill="#FFFBF8" stroke="#FDE8D8" stroke-width="1.5"/>
+  <text x="756" y="456" fill="#2D3748" font-size="13">1h00</text>
+
+  <!-- Visio URL -->
+  <text x="276" y="496" fill="#4A5568" font-size="12" font-weight="500">Lien visioconférence</text>
+  <rect x="276" y="502" width="604" height="40" rx="16" fill="#FFFBF8" stroke="#FDE8D8" stroke-width="1.5"/>
+  <text x="292" y="526" fill="#C4B5A8" font-size="13">https://meet.google.com/...</text>
+
+  <!-- Notes textarea -->
+  <text x="276" y="566" fill="#4A5568" font-size="12" font-weight="500">Notes de préparation</text>
+  <rect x="276" y="572" width="604" height="66" rx="16" fill="#FFFBF8" stroke="#FDE8D8" stroke-width="1.5"/>
+  <text x="292" y="598" fill="#C4B5A8" font-size="13">Notes de préparation (optionnel)</text>
+
+  <!-- Buttons -->
+  <rect x="700" y="648" width="84" height="38" rx="16" fill="#FFFFFF" stroke="#FDE8D8" stroke-width="1.5"/>
+  <text x="718" y="671" fill="#718096" font-size="13" font-weight="500">Annuler</text>
+  <rect x="794" y="648" width="160" height="38" rx="16" fill="#2A7FD4"/>
+  <text x="816" y="671" fill="#FFFFFF" font-size="13" font-weight="600">Planifier la séance</text>
+
+  <!-- Séance 4 — To plan -->
+  <rect x="248" y="696" width="660" height="54" rx="18" fill="#FFFFFF" filter="url(#shadow-sm)"/>
+  <rect x="248" y="696" width="5" height="54" rx="3" fill="#D1D5DB"/>
+  <text x="276" y="727" fill="#718096" font-size="14" font-weight="500">Séance 4 — À planifier</text>
+  <rect x="824" y="708" width="84" height="32" rx="16" fill="transparent" stroke="#FDE8D8" stroke-width="1.5"/>
+  <text x="840" y="728" fill="#F28C5A" font-size="12" font-weight="500">Planifier</text>
+
+  <!-- Séance 5 — To plan -->
+  <rect x="248" y="758" width="660" height="54" rx="18" fill="#FFFFFF" filter="url(#shadow-sm)"/>
+  <rect x="248" y="758" width="5" height="54" rx="3" fill="#D1D5DB"/>
+  <text x="276" y="789" fill="#718096" font-size="14" font-weight="500">Séance 5 — À planifier</text>
+  <rect x="824" y="770" width="84" height="32" rx="16" fill="transparent" stroke="#FDE8D8" stroke-width="1.5"/>
+  <text x="840" y="790" fill="#F28C5A" font-size="12" font-weight="500">Planifier</text>
+
+  <!-- Séance 6 — To plan -->
+  <rect x="248" y="820" width="660" height="54" rx="18" fill="#FFFFFF" filter="url(#shadow-sm)"/>
+  <rect x="248" y="820" width="5" height="54" rx="3" fill="#D1D5DB"/>
+  <text x="276" y="851" fill="#718096" font-size="14" font-weight="500">Séance 6 — À planifier</text>
+  <rect x="824" y="832" width="84" height="32" rx="16" fill="transparent" stroke="#FDE8D8" stroke-width="1.5"/>
+  <text x="840" y="852" fill="#F28C5A" font-size="12" font-weight="500">Planifier</text>
+
+  <!-- ==================== RIGHT PANEL ==================== -->
+
+  <!-- Récapitulatif card -->
+  <rect x="932" y="204" width="280" height="350" rx="20" fill="#FFFFFF" filter="url(#shadow-warm)"/>
+  <text x="956" y="234" fill="#2D3748" font-size="16" font-weight="700">Récapitulatif</text>
+
+  <!-- Calendar mini — April 2026 -->
+  <text x="1024" y="262" fill="#2D3748" font-size="13" font-weight="600" text-anchor="middle">Avril 2026</text>
+  <text x="965" y="282" fill="#A0A8B4" font-size="10" font-weight="500">L</text>
+  <text x="985" y="282" fill="#A0A8B4" font-size="10" font-weight="500">M</text>
+  <text x="1005" y="282" fill="#A0A8B4" font-size="10" font-weight="500">M</text>
+  <text x="1025" y="282" fill="#A0A8B4" font-size="10" font-weight="500">J</text>
+  <text x="1045" y="282" fill="#A0A8B4" font-size="10" font-weight="500">V</text>
+  <text x="1065" y="282" fill="#A0A8B4" font-size="10" font-weight="500">S</text>
+  <text x="1085" y="282" fill="#A0A8B4" font-size="10" font-weight="500">D</text>
+
+  <!-- Week 1 -->
+  <text x="1005" y="300" fill="#4A5568" font-size="11">1</text>
+  <text x="1025" y="300" fill="#4A5568" font-size="11">2</text>
+  <text x="1045" y="300" fill="#4A5568" font-size="11">3</text>
+  <text x="1065" y="300" fill="#A0A8B4" font-size="11">4</text>
+  <text x="1085" y="300" fill="#A0A8B4" font-size="11">5</text>
+  <!-- Week 2 -->
+  <text x="965" y="318" fill="#4A5568" font-size="11">6</text>
+  <text x="985" y="318" fill="#4A5568" font-size="11">7</text>
+  <text x="1005" y="318" fill="#4A5568" font-size="11">8</text>
+  <text x="1025" y="318" fill="#4A5568" font-size="11">9</text>
+  <text x="1045" y="318" fill="#4A5568" font-size="11">10</text>
+  <text x="1065" y="318" fill="#A0A8B4" font-size="11">11</text>
+  <text x="1085" y="318" fill="#A0A8B4" font-size="11">12</text>
+  <!-- Week 3 -->
+  <text x="965" y="336" fill="#4A5568" font-size="11">13</text>
+  <text x="985" y="336" fill="#4A5568" font-size="11">14</text>
+  <circle cx="1008" cy="332" r="11" fill="#E6F9EC"/>
+  <text x="1003" y="336" fill="#28A745" font-size="11" font-weight="700">15</text>
+  <text x="1025" y="336" fill="#4A5568" font-size="11">16</text>
+  <text x="1045" y="336" fill="#4A5568" font-size="11">17</text>
+  <text x="1065" y="336" fill="#A0A8B4" font-size="11">18</text>
+  <text x="1085" y="336" fill="#A0A8B4" font-size="11">19</text>
+  <!-- Week 4 -->
+  <text x="965" y="354" fill="#4A5568" font-size="11">20</text>
+  <text x="985" y="354" fill="#4A5568" font-size="11">21</text>
+  <text x="1005" y="354" fill="#4A5568" font-size="11">22</text>
+  <text x="1025" y="354" fill="#4A5568" font-size="11">23</text>
+  <text x="1045" y="354" fill="#4A5568" font-size="11">24</text>
+  <text x="1065" y="354" fill="#A0A8B4" font-size="11">25</text>
+  <text x="1085" y="354" fill="#A0A8B4" font-size="11">26</text>
+  <!-- Week 5 -->
+  <text x="965" y="372" fill="#4A5568" font-size="11">27</text>
+  <text x="985" y="372" fill="#4A5568" font-size="11">28</text>
+  <circle cx="1008" cy="368" r="11" fill="#EBF4FF"/>
+  <text x="1003" y="372" fill="#2A7FD4" font-size="11" font-weight="700">29</text>
+  <text x="1025" y="372" fill="#4A5568" font-size="11">30</text>
+
+  <!-- Stats -->
+  <line x1="956" y1="394" x2="1192" y2="394" stroke="#FDE8D8" stroke-width="1"/>
+  <text x="956" y="418" fill="#4A5568" font-size="13" font-weight="500">2/6 séances planifiées</text>
+  <rect x="956" y="426" width="226" height="8" rx="4" fill="#FDE8D8"/>
+  <rect x="956" y="426" width="76" height="8" rx="4" fill="#F28C5A"/>
+
+  <!-- Highlight -->
+  <rect x="956" y="450" width="226" height="52" rx="16" fill="#FFF1E8"/>
+  <text x="974" y="474" fill="#F28C5A" font-size="12" font-weight="600">⏱ Prochaine séance</text>
+  <text x="974" y="492" fill="#92400E" font-size="14" font-weight="700">dans 3 jours</text>
+
+  <!-- Legend -->
+  <circle cx="966" cy="524" r="5" fill="#28A745"/>
+  <text x="978" y="528" fill="#718096" font-size="10">Réalisée</text>
+  <circle cx="1030" cy="524" r="5" fill="#2A7FD4"/>
+  <text x="1042" y="528" fill="#718096" font-size="10">Planifiée</text>
+  <circle cx="1102" cy="524" r="5" fill="#D1D5DB"/>
+  <text x="1114" y="528" fill="#718096" font-size="10">À planifier</text>
+</svg>
