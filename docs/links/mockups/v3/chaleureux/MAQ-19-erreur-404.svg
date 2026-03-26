@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap');
+      .font { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
+    </style>
+    <linearGradient id="chHeaderGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2271C1"/>
+      <stop offset="100%" stop-color="#2A7FD4"/>
+    </linearGradient>
+    <linearGradient id="chAccent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F28C5A"/>
+      <stop offset="100%" stop-color="#F6A97A"/>
+    </linearGradient>
+    <linearGradient id="chBgGrad" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#FFF8F5"/>
+      <stop offset="100%" stop-color="#FFF0E8"/>
+    </linearGradient>
+    <linearGradient id="chBtnGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F28C5A"/>
+      <stop offset="100%" stop-color="#E87840"/>
+    </linearGradient>
+    <filter id="chShadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#F28C5A" flood-opacity="0.12"/>
+    </filter>
+    <filter id="chBtnShadow" x="-10%" y="-10%" width="120%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#F28C5A" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="url(#chBgGrad)"/>
+
+  <!-- Warm decorative blobs -->
+  <ellipse cx="200" cy="750" rx="250" ry="200" fill="#F28C5A" opacity="0.04"/>
+  <ellipse cx="1300" cy="200" rx="200" ry="180" fill="#2A7FD4" opacity="0.03"/>
+  <circle cx="1100" cy="700" r="120" fill="#F28C5A" opacity="0.03"/>
+  <ellipse cx="400" cy="250" rx="150" ry="120" fill="#2A7FD4" opacity="0.02"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1440" height="64" rx="0" fill="url(#chHeaderGrad)"/>
+  <rect x="0" y="64" width="1440" height="4" rx="0" fill="url(#chAccent)"/>
+
+  <!-- Logo -->
+  <text x="48" y="40" class="font" fill="#FFFFFF" font-size="22" font-weight="700" letter-spacing="0.5">Link's</text>
+  <circle cx="130" cy="32" r="6" fill="#F28C5A"/>
+
+  <!-- Main content card -->
+  <rect x="340" y="150" width="760" height="580" rx="20" fill="#FFFFFF" filter="url(#chShadow)"/>
+
+  <!-- Warm illustration: lost traveler with compass -->
+  <!-- Compass circle -->
+  <circle cx="720" cy="280" r="60" fill="none" stroke="#2A7FD4" stroke-width="2" opacity="0.15"/>
+  <circle cx="720" cy="280" r="45" fill="none" stroke="#F28C5A" stroke-width="1.5" opacity="0.2"/>
+  <circle cx="720" cy="280" r="4" fill="#F28C5A" opacity="0.5"/>
+  <!-- Compass needle -->
+  <polygon points="720,240 715,280 720,275 725,280" fill="#F28C5A" opacity="0.4"/>
+  <polygon points="720,320 715,280 720,285 725,280" fill="#2A7FD4" opacity="0.3"/>
+  <!-- N E S W markers -->
+  <text x="720" y="228" class="font" fill="#2A7FD4" font-size="10" font-weight="600" text-anchor="middle" opacity="0.3">N</text>
+  <text x="775" y="284" class="font" fill="#2A7FD4" font-size="10" font-weight="600" text-anchor="middle" opacity="0.3">E</text>
+  <text x="720" y="340" class="font" fill="#2A7FD4" font-size="10" font-weight="600" text-anchor="middle" opacity="0.3">S</text>
+  <text x="665" y="284" class="font" fill="#2A7FD4" font-size="10" font-weight="600" text-anchor="middle" opacity="0.3">O</text>
+
+  <!-- Small floating shapes around compass -->
+  <circle cx="620" cy="240" r="8" fill="#F28C5A" opacity="0.08"/>
+  <circle cx="830" cy="310" r="6" fill="#2A7FD4" opacity="0.08"/>
+  <rect x="800" y="230" width="12" height="12" rx="6" fill="#F28C5A" opacity="0.06" transform="rotate(30,806,236)"/>
+  <circle cx="640" cy="320" r="5" fill="#2A7FD4" opacity="0.06"/>
+
+  <!-- 404 Typography — warm and friendly -->
+  <text x="720" y="460" class="font" fill="#2A7FD4" font-size="120" font-weight="900" text-anchor="middle" letter-spacing="-4" opacity="0.08">404</text>
+  <text x="720" y="448" class="font" fill="#2A7FD4" font-size="96" font-weight="800" text-anchor="middle" letter-spacing="-2">4</text>
+  <!-- Heart/compass as the 0 -->
+  <circle cx="720" cy="420" r="32" fill="none" stroke="#F28C5A" stroke-width="3"/>
+  <text x="720" y="432" class="font" fill="#F28C5A" font-size="28" font-weight="700" text-anchor="middle">?</text>
+  <text x="800" y="448" class="font" fill="#2A7FD4" font-size="96" font-weight="800" text-anchor="middle" letter-spacing="-2">4</text>
+
+  <!-- Warm divider -->
+  <rect x="650" y="470" width="140" height="3" rx="2" fill="url(#chAccent)" opacity="0.6"/>
+
+  <!-- Error message — empathetic tone -->
+  <text x="720" y="515" class="font" fill="#3D2E1E" font-size="26" font-weight="700" text-anchor="middle">Oups ! Page introuvable</text>
+
+  <!-- Subtitle -->
+  <text x="720" y="550" class="font" fill="#9A8A7B" font-size="16" font-weight="400" text-anchor="middle">La page que vous recherchez n'existe pas ou a ete deplacee.</text>
+  <text x="720" y="572" class="font" fill="#9A8A7B" font-size="15" font-weight="400" text-anchor="middle">Pas de panique, nous allons vous aider a retrouver votre chemin.</text>
+
+  <!-- CTA Button — rounded and warm -->
+  <rect x="590" y="604" width="260" height="52" rx="26" fill="url(#chBtnGrad)" filter="url(#chBtnShadow)"/>
+  <text x="720" y="636" class="font" fill="#FFFFFF" font-size="16" font-weight="600" text-anchor="middle">Retour a l'accueil</text>
+
+  <!-- Small home icon in button -->
+  <path d="M 624 628 L 618 634 L 618 642 L 622 642 L 622 637 L 626 637 L 626 642 L 630 642 L 630 634 Z" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Footer -->
+  <text x="720" y="870" class="font" fill="#C4B5A8" font-size="13" font-weight="400" text-anchor="middle">Link's Accompagnement — Plateforme de suivi des bilans de competences</text>
+</svg>
