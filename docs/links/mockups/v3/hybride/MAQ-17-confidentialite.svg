@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      .font { font-family: 'Inter', Arial, sans-serif; }
+    </style>
+    <filter id="hybShadow" x="-2%" y="-2%" width="104%" height="106%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="rgba(0,0,0,0.07)"/>
+    </filter>
+    <linearGradient id="hybHeader" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1E6FC0"/>
+      <stop offset="80%" stop-color="#1A5BA0"/>
+      <stop offset="100%" stop-color="#164A88"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#F7F9FC"/>
+
+  <!-- Header -->
+  <rect width="1440" height="60" fill="url(#hybHeader)"/>
+  <rect x="0" y="58" width="1440" height="3" fill="#FF6B35"/>
+
+  <!-- Logo -->
+  <text x="40" y="38" class="font" fill="#FFFFFF" font-size="21" font-weight="700">Link's</text>
+  <text x="108" y="38" class="font" fill="#FFFFFF" font-size="11" font-weight="400" opacity="0.75">Accompagnement</text>
+
+  <!-- Header nav -->
+  <text x="1050" y="36" class="font" fill="#FFFFFF" font-size="12" opacity="0.75">Mentions legales</text>
+  <text x="1180" y="36" class="font" fill="#FFFFFF" font-size="12" opacity="0.75">Cookies</text>
+  <rect x="1300" y="20" width="100" height="30" rx="10" fill="#FF6B35"/>
+  <text x="1322" y="40" class="font" fill="#FFFFFF" font-size="12" font-weight="500">Connexion</text>
+
+  <!-- Page hero -->
+  <rect x="0" y="61" width="1440" height="100" fill="#FFFFFF"/>
+  <line x1="0" y1="161" x2="1440" y2="161" stroke="#E0E6EF" stroke-width="1"/>
+
+  <!-- Icon + title -->
+  <rect x="56" y="80" width="44" height="44" rx="12" fill="#EBF3FC"/>
+  <path transform="translate(62, 86)" d="M16 4 L28 10 V18 C28 24 23 29 16 32 C9 29 4 24 4 18 V10 Z" fill="none" stroke="#1E6FC0" stroke-width="1.8"/>
+  <path transform="translate(62, 86)" d="M11 18 L15 22 L22 14" fill="none" stroke="#FF6B35" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <text x="116" y="102" class="font" fill="#1A2B3C" font-size="24" font-weight="700">Politique de confidentialite</text>
+  <text x="116" y="122" class="font" fill="#7A8A9A" font-size="12">Protection de vos donnees personnelles — Conforme au RGPD (UE) 2016/679</text>
+  <text x="116" y="140" class="font" fill="#A0AAB8" font-size="11">Derniere mise a jour : 15 mars 2026</text>
+
+  <!-- Sticky sidebar TOC -->
+  <rect x="40" y="178" width="270" height="490" rx="12" fill="#FFFFFF" filter="url(#hybShadow)"/>
+  <text x="60" y="208" class="font" fill="#1A2B3C" font-size="14" font-weight="700">Sommaire</text>
+  <rect x="60" y="218" width="230" height="2" rx="1" fill="#E0E6EF"/>
+
+  <!-- Active item -->
+  <rect x="48" y="232" width="254" height="30" rx="8" fill="#EBF3FC"/>
+  <rect x="48" y="232" width="3" height="30" rx="1.5" fill="#FF6B35"/>
+  <text x="64" y="252" class="font" fill="#1E6FC0" font-size="12" font-weight="600">1. Responsable du traitement</text>
+
+  <text x="64" y="280" class="font" fill="#5A6A7A" font-size="12">2. Finalites du traitement</text>
+  <text x="64" y="306" class="font" fill="#5A6A7A" font-size="12">3. Bases legales</text>
+  <text x="64" y="332" class="font" fill="#5A6A7A" font-size="12">4. Donnees collectees</text>
+  <text x="64" y="358" class="font" fill="#5A6A7A" font-size="12">5. Durees de conservation</text>
+  <text x="64" y="384" class="font" fill="#5A6A7A" font-size="12">6. Destinataires</text>
+  <text x="64" y="410" class="font" fill="#5A6A7A" font-size="12">7. Vos droits</text>
+  <text x="64" y="436" class="font" fill="#5A6A7A" font-size="12">8. Cookies et traceurs</text>
+  <text x="64" y="462" class="font" fill="#5A6A7A" font-size="12">9. Securite des donnees</text>
+  <text x="64" y="488" class="font" fill="#5A6A7A" font-size="12">10. Contact DPO</text>
+
+  <!-- DPO card -->
+  <rect x="52" y="510" width="246" height="140" rx="10" fill="#F7F9FC"/>
+  <rect x="52" y="510" width="246" height="3" rx="1.5" fill="#1E6FC0"/>
+  <rect x="68" y="526" width="32" height="32" rx="16" fill="#EBF3FC"/>
+  <text x="79" y="547" class="font" fill="#1E6FC0" font-size="14" font-weight="700">DPO</text>
+  <text x="112" y="540" class="font" fill="#1A2B3C" font-size="12" font-weight="600">Delegue a la Protection</text>
+  <text x="112" y="556" class="font" fill="#1A2B3C" font-size="12" font-weight="600">des Donnees</text>
+  <text x="68" y="580" class="font" fill="#5A6A7A" font-size="11">M. Jean-Pierre Martin</text>
+  <text x="68" y="596" class="font" fill="#5A6A7A" font-size="11">dpo@links-accompagnement.fr</text>
+  <text x="68" y="612" class="font" fill="#5A6A7A" font-size="11">01 23 45 67 89</text>
+  <rect x="68" y="626" width="120" height="10" rx="5" fill="#1E6FC0" opacity="0.08"/>
+
+  <!-- Main content -->
+  <!-- Article 1 -->
+  <rect x="332" y="178" width="1068" height="140" rx="12" fill="#FFFFFF" filter="url(#hybShadow)"/>
+  <rect x="332" y="178" width="4" height="40" rx="2" fill="#1E6FC0"/>
+  <rect x="352" y="190" width="28" height="28" rx="8" fill="#EBF3FC"/>
+  <text x="361" y="210" class="font" fill="#1E6FC0" font-size="14" font-weight="700">1</text>
+  <text x="392" y="210" class="font" fill="#1A2B3C" font-size="16" font-weight="700">Responsable du traitement</text>
+  <line x1="352" y1="224" x2="1380" y2="224" stroke="#E0E6EF" stroke-width="1"/>
+  <text x="352" y="248" class="font" fill="#4A4A4A" font-size="12">La societe Link's Accompagnement, SAS au capital de 10 000 euros, immatriculee au RCS de Paris</text>
+  <text x="352" y="266" class="font" fill="#4A4A4A" font-size="12">sous le numero 912 345 678, dont le siege social est situe au 42 rue de la Formation, 75008 Paris,</text>
+  <text x="352" y="284" class="font" fill="#4A4A4A" font-size="12">est responsable du traitement de vos donnees personnelles collectees via la plateforme.</text>
+  <text x="352" y="306" class="font" fill="#7A8A9A" font-size="11">Representant legal : Mme Sophie Dupont, Presidente | contact@links-accompagnement.fr</text>
+
+  <!-- Article 2 -->
+  <rect x="332" y="332" width="1068" height="160" rx="12" fill="#FFFFFF" filter="url(#hybShadow)"/>
+  <rect x="332" y="332" width="4" height="40" rx="2" fill="#FF6B35"/>
+  <rect x="352" y="344" width="28" height="28" rx="8" fill="#FFF0E8"/>
+  <text x="361" y="364" class="font" fill="#FF6B35" font-size="14" font-weight="700">2</text>
+  <text x="392" y="364" class="font" fill="#1A2B3C" font-size="16" font-weight="700">Finalites du traitement</text>
+  <line x1="352" y1="378" x2="1380" y2="378" stroke="#E0E6EF" stroke-width="1"/>
+  <text x="352" y="400" class="font" fill="#4A4A4A" font-size="12">Vos donnees personnelles sont collectees et traitees pour les finalites suivantes :</text>
+
+  <rect x="362" y="414" width="6" height="6" rx="3" fill="#1E6FC0"/>
+  <text x="378" y="420" class="font" fill="#4A4A4A" font-size="12">Gestion et suivi des bilans de competences (creation de compte, planification des seances)</text>
+  <rect x="362" y="434" width="6" height="6" rx="3" fill="#1E6FC0"/>
+  <text x="378" y="440" class="font" fill="#4A4A4A" font-size="12">Administration des questionnaires d'auto-evaluation et collecte des reponses</text>
+  <rect x="362" y="454" width="6" height="6" rx="3" fill="#FF6B35"/>
+  <text x="378" y="460" class="font" fill="#4A4A4A" font-size="12">Generation du document de synthese du bilan de competences</text>
+  <rect x="362" y="474" width="6" height="6" rx="3" fill="#FF6B35"/>
+  <text x="378" y="480" class="font" fill="#4A4A4A" font-size="12">Communication par e-mail (notifications, relances, envoi de documents)</text>
+
+  <!-- Article 3 - Bases legales -->
+  <rect x="332" y="506" width="520" height="170" rx="12" fill="#FFFFFF" filter="url(#hybShadow)"/>
+  <rect x="332" y="506" width="4" height="40" rx="2" fill="#1E6FC0"/>
+  <rect x="352" y="518" width="28" height="28" rx="8" fill="#EBF3FC"/>
+  <text x="361" y="538" class="font" fill="#1E6FC0" font-size="14" font-weight="700">3</text>
+  <text x="392" y="538" class="font" fill="#1A2B3C" font-size="16" font-weight="700">Bases legales</text>
+  <line x1="352" y1="552" x2="832" y2="552" stroke="#E0E6EF" stroke-width="1"/>
+
+  <!-- Table -->
+  <rect x="352" y="564" width="484" height="24" rx="6" fill="#F0F4FA"/>
+  <text x="368" y="581" class="font" fill="#1A2B3C" font-size="10" font-weight="600">Traitement</text>
+  <text x="600" y="581" class="font" fill="#1A2B3C" font-size="10" font-weight="600">Base legale</text>
+  <text x="368" y="604" class="font" fill="#4A4A4A" font-size="11">Suivi du bilan de competences</text>
+  <text x="600" y="604" class="font" fill="#4A4A4A" font-size="11">Execution du contrat (Art. 6.1.b)</text>
+  <line x1="352" y1="612" x2="836" y2="612" stroke="#E8ECF0" stroke-width="0.5"/>
+  <text x="368" y="630" class="font" fill="#4A4A4A" font-size="11">Notifications par e-mail</text>
+  <text x="600" y="630" class="font" fill="#4A4A4A" font-size="11">Interet legitime (Art. 6.1.f)</text>
+  <line x1="352" y1="638" x2="836" y2="638" stroke="#E8ECF0" stroke-width="0.5"/>
+  <text x="368" y="656" class="font" fill="#4A4A4A" font-size="11">Statistiques et amelioration</text>
+  <text x="600" y="656" class="font" fill="#4A4A4A" font-size="11">Consentement (Art. 6.1.a)</text>
+
+  <!-- Article 5 - Conservation -->
+  <rect x="872" y="506" width="528" height="170" rx="12" fill="#FFFFFF" filter="url(#hybShadow)"/>
+  <rect x="872" y="506" width="4" height="40" rx="2" fill="#FF6B35"/>
+  <rect x="892" y="518" width="28" height="28" rx="8" fill="#FFF0E8"/>
+  <text x="901" y="538" class="font" fill="#FF6B35" font-size="14" font-weight="700">5</text>
+  <text x="932" y="538" class="font" fill="#1A2B3C" font-size="16" font-weight="700">Durees de conservation</text>
+  <line x1="892" y1="552" x2="1380" y2="552" stroke="#E0E6EF" stroke-width="1"/>
+
+  <rect x="892" y="564" width="488" height="24" rx="6" fill="#FFF5F0"/>
+  <text x="908" y="581" class="font" fill="#1A2B3C" font-size="10" font-weight="600">Categorie</text>
+  <text x="1100" y="581" class="font" fill="#1A2B3C" font-size="10" font-weight="600">Duree</text>
+  <text x="1260" y="581" class="font" fill="#1A2B3C" font-size="10" font-weight="600">Fondement</text>
+  <text x="908" y="604" class="font" fill="#4A4A4A" font-size="11">Donnees du bilan</text>
+  <text x="1100" y="604" class="font" fill="#4A4A4A" font-size="11">3 ans apres fin du bilan</text>
+  <text x="1260" y="604" class="font" fill="#4A4A4A" font-size="11">Obligation legale</text>
+  <line x1="892" y1="612" x2="1380" y2="612" stroke="#E8ECF0" stroke-width="0.5"/>
+  <text x="908" y="630" class="font" fill="#4A4A4A" font-size="11">Compte utilisateur</text>
+  <text x="1100" y="630" class="font" fill="#4A4A4A" font-size="11">Duree contrat + 3 ans</text>
+  <text x="1260" y="630" class="font" fill="#4A4A4A" font-size="11">Prescription civile</text>
+  <line x1="892" y1="638" x2="1380" y2="638" stroke="#E8ECF0" stroke-width="0.5"/>
+  <text x="908" y="656" class="font" fill="#4A4A4A" font-size="11">Journaux d'audit</text>
+  <text x="1100" y="656" class="font" fill="#4A4A4A" font-size="11">5 ans</text>
+  <text x="1260" y="656" class="font" fill="#4A4A4A" font-size="11">Securite SI</text>
+
+  <!-- Article 7 - Vos droits -->
+  <rect x="332" y="690" width="1068" height="105" rx="12" fill="#FFFFFF" filter="url(#hybShadow)"/>
+  <rect x="332" y="690" width="4" height="40" rx="2" fill="#1E6FC0"/>
+  <rect x="352" y="702" width="28" height="28" rx="8" fill="#EBF3FC"/>
+  <text x="361" y="722" class="font" fill="#1E6FC0" font-size="14" font-weight="700">7</text>
+  <text x="392" y="722" class="font" fill="#1A2B3C" font-size="16" font-weight="700">Vos droits</text>
+  <text x="352" y="750" class="font" fill="#4A4A4A" font-size="12">Conformement au RGPD (articles 15 a 22), vous disposez des droits suivants :</text>
+
+  <!-- Rights pills -->
+  <rect x="352" y="762" width="75" height="24" rx="12" fill="#EBF3FC"/>
+  <text x="366" y="778" class="font" fill="#1E6FC0" font-size="11" font-weight="500">Acces</text>
+  <rect x="435" y="762" width="100" height="24" rx="12" fill="#EBF3FC"/>
+  <text x="449" y="778" class="font" fill="#1E6FC0" font-size="11" font-weight="500">Rectification</text>
+  <rect x="543" y="762" width="95" height="24" rx="12" fill="#EBF3FC"/>
+  <text x="557" y="778" class="font" fill="#1E6FC0" font-size="11" font-weight="500">Effacement</text>
+  <rect x="646" y="762" width="90" height="24" rx="12" fill="#FFF0E8"/>
+  <text x="660" y="778" class="font" fill="#FF6B35" font-size="11" font-weight="500">Portabilite</text>
+  <rect x="744" y="762" width="95" height="24" rx="12" fill="#FFF0E8"/>
+  <text x="758" y="778" class="font" fill="#FF6B35" font-size="11" font-weight="500">Opposition</text>
+  <rect x="847" y="762" width="88" height="24" rx="12" fill="#FFF0E8"/>
+  <text x="861" y="778" class="font" fill="#FF6B35" font-size="11" font-weight="500">Limitation</text>
+
+  <!-- CNIL -->
+  <rect x="332" y="808" width="1068" height="36" rx="10" fill="#FFFFFF" filter="url(#hybShadow)"/>
+  <text x="352" y="831" class="font" fill="#7A8A9A" font-size="11">Reclamation : CNIL — Commission Nationale de l'Informatique et des Libertes — 3 Place de Fontenoy, 75007 Paris — www.cnil.fr</text>
+
+  <!-- Footer -->
+  <rect x="0" y="858" width="1440" height="42" fill="#1A2B3C"/>
+  <text x="40" y="884" class="font" fill="#FFFFFF" font-size="11" opacity="0.65">© 2026 Link's Accompagnement — Tous droits reserves</text>
+  <text x="1060" y="884" class="font" fill="#FFFFFF" font-size="11" opacity="0.65">Mentions legales</text>
+  <text x="1190" y="884" class="font" fill="#FFFFFF" font-size="11" opacity="0.65">Politique cookies</text>
+  <text x="1340" y="884" class="font" fill="#FFFFFF" font-size="11" opacity="0.65">Contact</text>
+</svg>

@@ -1,0 +1,179 @@
+<!-- MAQ-01 | Login | Link's Accompagnement | v3.0 | chaleureux | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <!-- Gradient for left panel -->
+    <linearGradient id="panelGrad" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#0D3B6E"/>
+      <stop offset="100%" stop-color="#1A5BA0"/>
+    </linearGradient>
+    <!-- Warm shadow for card -->
+    <filter id="cardShadow" x="-8%" y="-5%" width="116%" height="115%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#D4956A" flood-opacity="0.10"/>
+    </filter>
+    <!-- Button warm shadow -->
+    <filter id="btnShadow" x="-5%" y="-10%" width="110%" height="135%">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#2A7FD4" flood-opacity="0.3"/>
+    </filter>
+    <!-- Organic blob shapes -->
+    <clipPath id="leftClip">
+      <rect x="0" y="0" width="660" height="900"/>
+    </clipPath>
+  </defs>
+
+  <!-- ============================================ -->
+  <!-- BACKGROUND                                    -->
+  <!-- ============================================ -->
+  <rect x="0" y="0" width="1440" height="900" fill="#FFF8F5"/>
+
+  <!-- ============================================ -->
+  <!-- LEFT PANEL: Branding with warm gradient       -->
+  <!-- ============================================ -->
+  <rect x="0" y="0" width="660" height="900" fill="url(#panelGrad)"/>
+
+  <!-- Organic blob shapes -->
+  <g clip-path="url(#leftClip)">
+    <!-- Large blob top-right -->
+    <ellipse cx="600" cy="120" rx="200" ry="180" fill="#FFFFFF" opacity="0.04" transform="rotate(-15 600 120)"/>
+    <!-- Blob bottom-left -->
+    <ellipse cx="80" cy="700" rx="250" ry="200" fill="#FFFFFF" opacity="0.05" transform="rotate(10 80 700)"/>
+    <!-- Wave decoration -->
+    <path d="M0,600 Q160,540 330,580 Q500,620 660,560 L660,900 L0,900 Z" fill="#FFFFFF" opacity="0.03"/>
+    <path d="M0,650 Q200,600 400,640 Q550,670 660,620 L660,900 L0,900 Z" fill="#FFFFFF" opacity="0.03"/>
+    <!-- Small warm blobs -->
+    <circle cx="500" cy="300" r="60" fill="#FF6B35" opacity="0.08"/>
+    <circle cx="150" cy="400" r="40" fill="#F28C5A" opacity="0.06"/>
+    <circle cx="550" cy="650" r="35" fill="#FF6B35" opacity="0.06"/>
+  </g>
+
+  <!-- Logo -->
+  <g transform="translate(80, 80)">
+    <text x="0" y="0" font-size="30" font-weight="700" fill="#FFFFFF" letter-spacing="0.3">Link's</text>
+    <text x="96" y="0" font-size="30" font-weight="400" fill="#A8C8F0" letter-spacing="0.3">Accompagnement</text>
+    <!-- Orange accent polygon -->
+    <polygon points="84,-24 94,-24 90,-4 80,-4" fill="#FF6B35"/>
+  </g>
+
+  <!-- Tagline -->
+  <text x="80" y="135" font-size="19" font-weight="400" fill="#C4D8F0" line-height="1.6">Plateforme de suivi des bilans</text>
+  <text x="80" y="162" font-size="19" font-weight="400" fill="#C4D8F0">de compétences</text>
+
+  <!-- Warm illustrative elements: people + connection dots -->
+  <g transform="translate(100, 320)">
+    <!-- Large decorative circle -->
+    <circle cx="230" cy="120" r="150" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.1"/>
+    <circle cx="230" cy="120" r="100" fill="none" stroke="#FFFFFF" stroke-width="0.5" opacity="0.08"/>
+
+    <!-- Abstract person 1 - seated -->
+    <g opacity="0.35" transform="translate(80, 40)">
+      <circle cx="20" cy="0" r="16" fill="#F28C5A"/>
+      <path d="M0,20 Q0,40 10,50 L30,50 Q40,40 40,20 Z" fill="#F28C5A" rx="8"/>
+      <rect x="5" y="50" width="30" height="25" rx="6" fill="#FFFFFF" opacity="0.4"/>
+    </g>
+
+    <!-- Abstract person 2 - standing -->
+    <g opacity="0.3" transform="translate(200, 20)">
+      <circle cx="20" cy="0" r="18" fill="#A8C8F0"/>
+      <path d="M0,22 Q0,45 12,55 L28,55 Q40,45 40,22 Z" fill="#A8C8F0" rx="8"/>
+      <rect x="8" y="55" width="24" height="30" rx="5" fill="#FFFFFF" opacity="0.3"/>
+    </g>
+
+    <!-- Abstract person 3 -->
+    <g opacity="0.25" transform="translate(320, 60)">
+      <circle cx="18" cy="0" r="15" fill="#FFFFFF"/>
+      <path d="M2,18 Q2,38 10,46 L26,46 Q34,38 34,18 Z" fill="#FFFFFF" rx="7"/>
+    </g>
+
+    <!-- Connection lines between people -->
+    <line x1="120" y1="60" x2="200" y2="40" stroke="#F28C5A" stroke-width="1.5" opacity="0.25" stroke-dasharray="4,4"/>
+    <line x1="240" y1="50" x2="320" y2="75" stroke="#A8C8F0" stroke-width="1.5" opacity="0.2" stroke-dasharray="4,4"/>
+
+    <!-- Floating dots -->
+    <circle cx="160" cy="30" r="4" fill="#F28C5A" opacity="0.5"/>
+    <circle cx="280" cy="50" r="3" fill="#FFFFFF" opacity="0.3"/>
+    <circle cx="140" cy="100" r="3" fill="#A8C8F0" opacity="0.4"/>
+    <circle cx="350" cy="40" r="3" fill="#F28C5A" opacity="0.3"/>
+    <circle cx="60" cy="90" r="3.5" fill="#FFFFFF" opacity="0.25"/>
+    <circle cx="250" cy="140" r="4" fill="#F28C5A" opacity="0.3"/>
+  </g>
+
+  <!-- Encouraging quote -->
+  <g transform="translate(80, 620)">
+    <text x="0" y="0" font-size="16" font-weight="600" fill="#FFFFFF" opacity="0.7">"Chaque bilan est un nouveau départ."</text>
+    <text x="0" y="30" font-size="13" fill="#A8C8F0" opacity="0.6">— L'équipe Link's Accompagnement</text>
+  </g>
+
+  <!-- Left panel footer -->
+  <text x="80" y="850" font-size="12" fill="#A8C8F0" opacity="0.4">© 2026 Link's Accompagnement — Tous droits réservés</text>
+
+  <!-- ============================================ -->
+  <!-- RIGHT PANEL: Login form                      -->
+  <!-- ============================================ -->
+
+  <!-- Form card -->
+  <g filter="url(#cardShadow)">
+    <rect x="800" y="170" width="460" height="560" rx="20" ry="20" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Welcome illustration: small sun/warmth icon -->
+  <g transform="translate(1030, 215)">
+    <circle cx="0" cy="0" r="22" fill="#FFF3EB"/>
+    <text x="0" y="7" font-size="22" text-anchor="middle">👋</text>
+  </g>
+
+  <!-- Form heading -->
+  <text x="1030" y="272" font-size="28" font-weight="700" fill="#1A2332" text-anchor="middle" letter-spacing="-0.3">Bienvenue</text>
+  <text x="1030" y="302" font-size="15" font-weight="400" fill="#8492A6" text-anchor="middle" line-height="1.6">Bienvenue sur votre espace personnel</text>
+
+  <!-- Email field -->
+  <text x="848" y="358" font-size="14" font-weight="600" fill="#4A5568">Adresse e-mail</text>
+  <rect x="848" y="370" width="364" height="50" rx="16" ry="16" fill="#FFFFFF" stroke="#E8D5CA" stroke-width="1.5"/>
+  <!-- Email icon -->
+  <g transform="translate(868, 386)">
+    <rect x="0" y="2" width="18" height="14" rx="2" fill="none" stroke="#C4A88C" stroke-width="1.5"/>
+    <polyline points="0,3 9,11 18,3" fill="none" stroke="#C4A88C" stroke-width="1.5"/>
+  </g>
+  <text x="898" y="401" font-size="14.5" fill="#C4A88C">votre@email.com</text>
+
+  <!-- Password field -->
+  <text x="848" y="452" font-size="14" font-weight="600" fill="#4A5568">Mot de passe</text>
+  <rect x="848" y="464" width="364" height="50" rx="16" ry="16" fill="#FFFFFF" stroke="#E8D5CA" stroke-width="1.5"/>
+  <!-- Lock icon -->
+  <g transform="translate(868, 479)">
+    <rect x="2" y="8" width="14" height="11" rx="2" fill="none" stroke="#C4A88C" stroke-width="1.5"/>
+    <path d="M5,8 V5 a4,4 0 0 1 8,0 V8" fill="none" stroke="#C4A88C" stroke-width="1.5"/>
+    <circle cx="9" cy="14" r="1.5" fill="#C4A88C"/>
+  </g>
+  <text x="898" y="495" font-size="14.5" fill="#C4A88C">••••••••</text>
+  <!-- Eye toggle -->
+  <g transform="translate(1178, 480)">
+    <ellipse cx="10" cy="9" rx="10" ry="7" fill="none" stroke="#C4A88C" stroke-width="1.5"/>
+    <circle cx="10" cy="9" r="3.5" fill="none" stroke="#C4A88C" stroke-width="1.5"/>
+  </g>
+
+  <!-- Error message area -->
+  <rect x="848" y="530" width="364" height="44" rx="16" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+  <g transform="translate(866, 544)">
+    <circle cx="9" cy="9" r="9" fill="#FEE2E2"/>
+    <text x="9" y="13" font-size="12" font-weight="700" fill="#DC2626" text-anchor="middle">!</text>
+  </g>
+  <text x="892" y="557" font-size="13" fill="#DC2626">Identifiants incorrects. Veuillez réessayer.</text>
+
+  <!-- Se connecter button -->
+  <g filter="url(#btnShadow)">
+    <rect x="848" y="594" width="364" height="52" rx="16" ry="16" fill="#2A7FD4"/>
+  </g>
+  <text x="1030" y="626" font-size="16" font-weight="600" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.3">Se connecter</text>
+
+  <!-- Mot de passe oublié link -->
+  <text x="1030" y="678" font-size="14" font-weight="500" fill="#2A7FD4" text-anchor="middle">Mot de passe oublié ?</text>
+
+  <!-- ============================================ -->
+  <!-- FOOTER                                       -->
+  <!-- ============================================ -->
+  <line x1="680" y1="858" x2="1420" y2="858" stroke="#F0E4DC" stroke-width="1"/>
+  <text x="940" y="880" font-size="12" fill="#8492A6" text-anchor="middle">Mentions légales</text>
+  <text x="1020" y="880" font-size="12" fill="#D4B8A0" text-anchor="middle">|</text>
+  <text x="1100" y="880" font-size="12" fill="#8492A6" text-anchor="middle">Confidentialité</text>
+  <text x="1172" y="880" font-size="12" fill="#D4B8A0" text-anchor="middle">|</text>
+  <text x="1230" y="880" font-size="12" fill="#8492A6" text-anchor="middle">Cookies</text>
+</svg>

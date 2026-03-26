@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      .font { font-family: 'Inter', Arial, sans-serif; }
+      .shadow { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.06)); }
+      .shadow-md { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08)); }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#F2F4F7"/>
+
+  <!-- Header -->
+  <rect width="1440" height="60" fill="#1A5BA0"/>
+  <rect x="0" y="57" width="1440" height="3" fill="#E5622E"/>
+  <text x="80" y="37" class="font" fill="#FFFFFF" font-size="20" font-weight="700">Link's</text>
+  <text x="141" y="37" class="font" fill="rgba(255,255,255,0.7)" font-size="12" font-weight="400">Accompagnement</text>
+  <!-- Divider -->
+  <line x1="240" y1="18" x2="240" y2="42" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="260" y="37" class="font" fill="rgba(255,255,255,0.6)" font-size="12" font-weight="400">Gestion des cookies</text>
+
+  <text x="1060" y="37" class="font" fill="rgba(255,255,255,0.85)" font-size="12" font-weight="500">Accueil</text>
+  <text x="1140" y="37" class="font" fill="rgba(255,255,255,0.85)" font-size="12" font-weight="500">Contact</text>
+  <text x="1220" y="37" class="font" fill="#FFFFFF" font-size="12" font-weight="600">Connexion</text>
+
+  <!-- Breadcrumb -->
+  <rect x="0" y="60" width="1440" height="36" fill="#FFFFFF" class="shadow"/>
+  <text x="120" y="83" class="font" fill="#6B7280" font-size="12" font-weight="400">Accueil</text>
+  <text x="170" y="83" class="font" fill="#9CA3AF" font-size="12">/</text>
+  <text x="185" y="83" class="font" fill="#1A5BA0" font-size="12" font-weight="500">Gestion des cookies</text>
+
+  <!-- Page Title -->
+  <text x="120" y="130" class="font" fill="#111827" font-size="24" font-weight="700">Gestion des cookies</text>
+  <line x1="120" y1="140" x2="340" y2="140" stroke="#E5622E" stroke-width="2"/>
+  <text x="120" y="160" class="font" fill="#6B7280" font-size="13" font-weight="400">Configurez vos préférences en matière de cookies conformément au RGPD.</text>
+
+  <!-- Info Banner -->
+  <rect x="120" y="176" width="1200" height="44" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1" class="shadow"/>
+  <rect x="120" y="176" width="4" height="44" rx="2" fill="#1A5BA0"/>
+  <text x="144" y="203" class="font" fill="#374151" font-size="12" font-weight="400">Les cookies sont des fichiers stockés sur votre appareil. Certains sont indispensables, d'autres optionnels. Vous pouvez modifier vos choix à tout moment.</text>
+
+  <!-- Two-column layout -->
+  <!-- Left column: Categories -->
+  <text x="120" y="248" class="font" fill="#111827" font-size="15" font-weight="700">CATÉGORIES DE COOKIES</text>
+
+  <!-- Card 1: Essential -->
+  <rect x="120" y="260" width="740" height="100" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1" class="shadow"/>
+  <!-- Toggle locked ON -->
+  <rect x="780" y="280" width="44" height="24" rx="4" fill="#1A5BA0"/>
+  <rect x="800" y="283" width="18" height="18" rx="3" fill="#FFFFFF"/>
+  <rect x="728" y="310" width="80" height="20" rx="4" fill="#EFF3F8"/>
+  <text x="768" y="324" class="font" fill="#1A5BA0" font-size="10" font-weight="600" text-anchor="middle">OBLIGATOIRE</text>
+  <text x="144" y="288" class="font" fill="#111827" font-size="15" font-weight="600">Cookies essentiels</text>
+  <text x="144" y="308" class="font" fill="#6B7280" font-size="12" font-weight="400">Nécessaires au fonctionnement du site. Navigation, authentification, sécurité.</text>
+  <text x="144" y="326" class="font" fill="#6B7280" font-size="12" font-weight="400">Ces cookies ne peuvent pas être désactivés.</text>
+  <text x="144" y="348" class="font" fill="#9CA3AF" font-size="11" font-weight="400">3 cookies — Link's Accompagnement, Supabase</text>
+
+  <!-- Card 2: Analytics -->
+  <rect x="120" y="372" width="740" height="100" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1" class="shadow"/>
+  <!-- Toggle OFF corporate -->
+  <rect x="780" y="392" width="44" height="24" rx="4" fill="#D1D5DB"/>
+  <rect x="783" y="395" width="18" height="18" rx="3" fill="#FFFFFF" class="shadow"/>
+  <text x="144" y="400" class="font" fill="#111827" font-size="15" font-weight="600">Cookies analytiques</text>
+  <text x="144" y="420" class="font" fill="#6B7280" font-size="12" font-weight="400">Collecte anonyme de données d'utilisation pour améliorer le service.</text>
+  <text x="144" y="438" class="font" fill="#6B7280" font-size="12" font-weight="400">Aucune donnée personnelle identifiable n'est transmise.</text>
+  <text x="144" y="460" class="font" fill="#9CA3AF" font-size="11" font-weight="400">2 cookies — Vercel Analytics</text>
+
+  <!-- Card 3: Preferences -->
+  <rect x="120" y="484" width="740" height="100" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1" class="shadow"/>
+  <!-- Toggle ON corporate -->
+  <rect x="780" y="504" width="44" height="24" rx="4" fill="#1A5BA0"/>
+  <rect x="800" y="507" width="18" height="18" rx="3" fill="#FFFFFF"/>
+  <text x="144" y="512" class="font" fill="#111827" font-size="15" font-weight="600">Cookies de préférences</text>
+  <text x="144" y="532" class="font" fill="#6B7280" font-size="12" font-weight="400">Mémorisation de vos paramètres d'affichage, langue et préférences de navigation</text>
+  <text x="144" y="550" class="font" fill="#6B7280" font-size="12" font-weight="400">pour une expérience personnalisée.</text>
+  <text x="144" y="572" class="font" fill="#9CA3AF" font-size="11" font-weight="400">2 cookies — Link's Accompagnement</text>
+
+  <!-- Right column: Summary -->
+  <rect x="880" y="260" width="440" height="148" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1" class="shadow"/>
+  <rect x="880" y="260" width="440" height="36" rx="4" fill="#1A5BA0"/>
+  <rect x="880" y="282" width="440" height="14" fill="#1A5BA0"/>
+  <text x="1100" y="282" class="font" fill="#FFFFFF" font-size="13" font-weight="600" text-anchor="middle">Résumé de vos choix</text>
+  <text x="906" y="318" class="font" fill="#374151" font-size="12" font-weight="500">Essentiels</text>
+  <text x="1274" y="318" class="font" fill="#22C55E" font-size="12" font-weight="600" text-anchor="end">Actif</text>
+  <line x1="900" y1="328" x2="1300" y2="328" stroke="#F3F4F6" stroke-width="1"/>
+  <text x="906" y="348" class="font" fill="#374151" font-size="12" font-weight="500">Analytiques</text>
+  <text x="1274" y="348" class="font" fill="#EF4444" font-size="12" font-weight="600" text-anchor="end">Inactif</text>
+  <line x1="900" y1="358" x2="1300" y2="358" stroke="#F3F4F6" stroke-width="1"/>
+  <text x="906" y="378" class="font" fill="#374151" font-size="12" font-weight="500">Préférences</text>
+  <text x="1274" y="378" class="font" fill="#22C55E" font-size="12" font-weight="600" text-anchor="end">Actif</text>
+  <text x="906" y="400" class="font" fill="#9CA3AF" font-size="10" font-weight="400">Total : 7 cookies (5 actifs, 2 inactifs)</text>
+
+  <!-- Action buttons -->
+  <rect x="880" y="424" width="440" height="48" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1" class="shadow"/>
+  <rect x="896" y="434" width="132" height="30" rx="4" fill="#1A5BA0" class="shadow-md"/>
+  <text x="962" y="454" class="font" fill="#FFFFFF" font-size="12" font-weight="600" text-anchor="middle">Enregistrer</text>
+  <rect x="1038" y="434" width="120" height="30" rx="4" fill="#FFFFFF" stroke="#1A5BA0" stroke-width="1.5"/>
+  <text x="1098" y="454" class="font" fill="#1A5BA0" font-size="12" font-weight="600" text-anchor="middle">Tout accepter</text>
+  <rect x="1168" y="434" width="120" height="30" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="1228" y="454" class="font" fill="#6B7280" font-size="12" font-weight="500" text-anchor="middle">Tout refuser</text>
+
+  <!-- Detail Table Title -->
+  <text x="120" y="620" class="font" fill="#111827" font-size="15" font-weight="700">DÉTAIL DES COOKIES</text>
+  <line x1="120" y1="628" x2="1320" y2="628" stroke="#D1D5DB" stroke-width="1"/>
+
+  <!-- Table Header -->
+  <rect x="120" y="636" width="1200" height="32" rx="4" fill="#1A5BA0"/>
+  <text x="148" y="657" class="font" fill="#FFFFFF" font-size="11" font-weight="600">NOM DU COOKIE</text>
+  <text x="348" y="657" class="font" fill="#FFFFFF" font-size="11" font-weight="600">FINALITÉ</text>
+  <text x="728" y="657" class="font" fill="#FFFFFF" font-size="11" font-weight="600">DURÉE</text>
+  <text x="878" y="657" class="font" fill="#FFFFFF" font-size="11" font-weight="600">FOURNISSEUR</text>
+  <text x="1078" y="657" class="font" fill="#FFFFFF" font-size="11" font-weight="600">CATÉGORIE</text>
+
+  <!-- Row 1 -->
+  <rect x="120" y="668" width="1200" height="32" fill="#FFFFFF"/>
+  <line x1="120" y1="700" x2="1320" y2="700" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="148" y="689" class="font" fill="#111827" font-size="12" font-weight="500">sb-auth-token</text>
+  <text x="348" y="689" class="font" fill="#6B7280" font-size="12">Authentification et session utilisateur</text>
+  <text x="728" y="689" class="font" fill="#6B7280" font-size="12">Session</text>
+  <text x="878" y="689" class="font" fill="#6B7280" font-size="12">Supabase</text>
+  <rect x="1070" y="677" width="68" height="20" rx="4" fill="#EFF3F8"/>
+  <text x="1104" y="691" class="font" fill="#1A5BA0" font-size="10" font-weight="600" text-anchor="middle">Essentiel</text>
+
+  <!-- Row 2 -->
+  <rect x="120" y="700" width="1200" height="32" fill="#F8F9FA"/>
+  <line x1="120" y1="732" x2="1320" y2="732" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="148" y="721" class="font" fill="#111827" font-size="12" font-weight="500">sb-refresh-token</text>
+  <text x="348" y="721" class="font" fill="#6B7280" font-size="12">Renouvellement de la session</text>
+  <text x="728" y="721" class="font" fill="#6B7280" font-size="12">Session</text>
+  <text x="878" y="721" class="font" fill="#6B7280" font-size="12">Supabase</text>
+  <rect x="1070" y="709" width="68" height="20" rx="4" fill="#EFF3F8"/>
+  <text x="1104" y="723" class="font" fill="#1A5BA0" font-size="10" font-weight="600" text-anchor="middle">Essentiel</text>
+
+  <!-- Row 3 -->
+  <rect x="120" y="732" width="1200" height="32" fill="#FFFFFF"/>
+  <line x1="120" y1="764" x2="1320" y2="764" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="148" y="753" class="font" fill="#111827" font-size="12" font-weight="500">cookie_consent</text>
+  <text x="348" y="753" class="font" fill="#6B7280" font-size="12">Mémorisation des préférences cookies</text>
+  <text x="728" y="753" class="font" fill="#6B7280" font-size="12">13 mois</text>
+  <text x="878" y="753" class="font" fill="#6B7280" font-size="12">Link's</text>
+  <rect x="1070" y="741" width="68" height="20" rx="4" fill="#EFF3F8"/>
+  <text x="1104" y="755" class="font" fill="#1A5BA0" font-size="10" font-weight="600" text-anchor="middle">Essentiel</text>
+
+  <!-- Row 4 -->
+  <rect x="120" y="764" width="1200" height="32" fill="#F8F9FA"/>
+  <line x1="120" y1="796" x2="1320" y2="796" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="148" y="785" class="font" fill="#111827" font-size="12" font-weight="500">_va</text>
+  <text x="348" y="785" class="font" fill="#6B7280" font-size="12">Mesure d'audience anonyme</text>
+  <text x="728" y="785" class="font" fill="#6B7280" font-size="12">24 heures</text>
+  <text x="878" y="785" class="font" fill="#6B7280" font-size="12">Vercel</text>
+  <rect x="1070" y="773" width="68" height="20" rx="4" fill="#FEF3E8"/>
+  <text x="1104" y="787" class="font" fill="#E5622E" font-size="10" font-weight="600" text-anchor="middle">Analytique</text>
+
+  <!-- Row 5 -->
+  <rect x="120" y="796" width="1200" height="32" fill="#FFFFFF"/>
+  <line x1="120" y1="828" x2="1320" y2="828" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="148" y="817" class="font" fill="#111827" font-size="12" font-weight="500">_vaid</text>
+  <text x="348" y="817" class="font" fill="#6B7280" font-size="12">Identification visiteur anonyme</text>
+  <text x="728" y="817" class="font" fill="#6B7280" font-size="12">24 heures</text>
+  <text x="878" y="817" class="font" fill="#6B7280" font-size="12">Vercel</text>
+  <rect x="1070" y="805" width="68" height="20" rx="4" fill="#FEF3E8"/>
+  <text x="1104" y="819" class="font" fill="#E5622E" font-size="10" font-weight="600" text-anchor="middle">Analytique</text>
+
+  <!-- Row 6 -->
+  <rect x="120" y="828" width="1200" height="32" fill="#F8F9FA"/>
+  <text x="148" y="849" class="font" fill="#111827" font-size="12" font-weight="500">user_prefs</text>
+  <text x="348" y="849" class="font" fill="#6B7280" font-size="12">Préférences d'affichage utilisateur</text>
+  <text x="728" y="849" class="font" fill="#6B7280" font-size="12">6 mois</text>
+  <text x="878" y="849" class="font" fill="#6B7280" font-size="12">Link's</text>
+  <rect x="1070" y="837" width="76" height="20" rx="4" fill="#F0FDF4"/>
+  <text x="1108" y="851" class="font" fill="#16A34A" font-size="10" font-weight="600" text-anchor="middle">Préférence</text>
+
+  <!-- Footer -->
+  <rect x="0" y="872" width="1440" height="28" fill="#1A5BA0"/>
+  <text x="480" y="890" class="font" fill="rgba(255,255,255,0.7)" font-size="11">Mentions légales</text>
+  <text x="600" y="890" class="font" fill="rgba(255,255,255,0.4)" font-size="11">|</text>
+  <text x="620" y="890" class="font" fill="rgba(255,255,255,0.7)" font-size="11">Politique de confidentialité</text>
+  <text x="810" y="890" class="font" fill="rgba(255,255,255,0.4)" font-size="11">|</text>
+  <text x="830" y="890" class="font" fill="rgba(255,255,255,0.7)" font-size="11">© 2026 Link's Accompagnement — Tous droits réservés</text>
+</svg>

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow1" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow2" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="4" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#F2F4F7"/>
+
+  <!-- Sidebar -->
+  <rect width="220" height="900" fill="#0D3B6E"/>
+  <text x="110" y="38" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">Link's</text>
+  <text x="110" y="56" text-anchor="middle" fill="#B0C8E8" font-size="11">Accompagnement</text>
+  <polygon points="95,62 115,62 105,74" fill="#E5622E"/>
+  <line x1="20" y1="85" x2="200" y2="85" stroke="#1A4F8A" stroke-width="1"/>
+
+  <text x="48" y="125" fill="#7BA5D4" font-size="13" font-weight="500">Dashboard</text>
+  <text x="48" y="169" fill="#7BA5D4" font-size="13" font-weight="500">Mon bilan</text>
+  <text x="48" y="213" fill="#7BA5D4" font-size="13" font-weight="500">Documents</text>
+  <rect x="12" y="232" width="196" height="40" rx="4" fill="rgba(255,255,255,0.1)"/>
+  <rect x="12" y="232" width="3" height="40" rx="1" fill="#E5622E"/>
+  <text x="48" y="257" fill="#FFFFFF" font-size="13" font-weight="600">Profil</text>
+
+  <!-- Header -->
+  <rect x="220" y="0" width="1220" height="64" fill="#FFFFFF" filter="url(#shadow1)"/>
+  <line x1="220" y1="64" x2="1440" y2="64" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="252" y="37" fill="#9CA3AF" font-size="13">Profil</text>
+  <text x="280" y="37" fill="#9CA3AF" font-size="13">&gt;</text>
+  <text x="296" y="37" fill="#374151" font-size="13" font-weight="600">Mes données</text>
+  <circle cx="1310" cy="32" r="16" fill="#1A5BA0"/>
+  <text x="1310" y="37" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">MD</text>
+  <text x="1335" y="28" fill="#1F2937" font-size="13" font-weight="500">Marie Dupont</text>
+  <text x="1335" y="43" fill="#6B7280" font-size="11">Bénéficiaire</text>
+
+  <!-- Title -->
+  <text x="290" y="108" fill="#111827" font-size="20" font-weight="700" letter-spacing="0.3">Mes données personnelles</text>
+  <text x="290" y="130" fill="#6B7280" font-size="13">Conformément au RGPD, vous pouvez exercer vos droits sur vos données personnelles.</text>
+
+  <!-- Info card -->
+  <rect x="290" y="148" width="900" height="60" rx="4" fill="#EBF5FF" stroke="#B8D6F5" stroke-width="1"/>
+  <rect x="290" y="148" width="4" height="60" fill="#1A5BA0"/>
+  <text x="316" y="176" fill="#1A5BA0" font-size="14">&#x1F6E1;</text>
+  <text x="340" y="176" fill="#1E40AF" font-size="13">Vos données sont hébergées en France et protégées conformément au Règlement Général sur la</text>
+  <text x="340" y="194" fill="#1E40AF" font-size="13">Protection des Données (RGPD).</text>
+
+  <!-- Section 1: Exporter -->
+  <rect x="290" y="226" width="900" height="150" rx="6" fill="#FFFFFF" filter="url(#shadow2)"/>
+  <rect x="290" y="226" width="900" height="3" fill="#1A5BA0"/>
+  <text x="322" y="258" fill="#111827" font-size="15" font-weight="700" letter-spacing="0.3">EXPORTER MES DONNEES</text>
+  <line x1="322" y1="270" x2="1158" y2="270" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="322" y="296" fill="#4B5563" font-size="13">Téléchargez l'ensemble de vos données personnelles au format JSON.</text>
+
+  <rect x="322" y="310" width="200" height="38" rx="4" fill="#1A5BA0"/>
+  <text x="350" y="334" fill="#FFFFFF" font-size="12" font-weight="600">&#x2B07; Exporter mes données</text>
+  <text x="322" y="364" fill="#9CA3AF" font-size="11">Le fichier sera généré et téléchargé automatiquement.</text>
+
+  <!-- Section 2: Supprimer -->
+  <rect x="290" y="394" width="900" height="220" rx="6" fill="#FEFCFC" stroke="#E5C5C5" stroke-width="1" filter="url(#shadow2)"/>
+  <rect x="290" y="394" width="900" height="3" fill="#B91C1C"/>
+  <text x="322" y="428" fill="#991B1B" font-size="15" font-weight="700" letter-spacing="0.3">SUPPRIMER MON COMPTE</text>
+  <line x1="322" y1="440" x2="1158" y2="440" stroke="#FECACA" stroke-width="1"/>
+  <text x="322" y="466" fill="#4B5563" font-size="13">Cette action est irréversible. Toutes vos données seront définitivement supprimées.</text>
+
+  <rect x="322" y="482" width="846" height="54" rx="4" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+  <text x="344" y="505" fill="#DC2626" font-size="13">&#x26A0;</text>
+  <text x="366" y="505" fill="#991B1B" font-size="12">La suppression inclut : vos réponses aux questionnaires, vos documents, votre historique de séances.</text>
+  <text x="366" y="523" fill="#991B1B" font-size="12">Délai légal de conservation : 3 ans après la fin du bilan.</text>
+
+  <rect x="322" y="550" width="210" height="38" rx="4" fill="#B91C1C"/>
+  <text x="348" y="574" fill="#FFFFFF" font-size="12" font-weight="600">Demander la suppression</text>
+  <text x="322" y="602" fill="#9CA3AF" font-size="11">Une confirmation vous sera demandée. L'administrateur sera notifié.</text>
+
+  <!-- Section 3: Historique -->
+  <rect x="290" y="632" width="900" height="100" rx="6" fill="#FFFFFF" filter="url(#shadow2)"/>
+  <rect x="290" y="632" width="900" height="3" fill="#1A5BA0"/>
+  <text x="322" y="666" fill="#111827" font-size="15" font-weight="700" letter-spacing="0.3">HISTORIQUE DES DEMANDES</text>
+  <line x1="322" y1="678" x2="1158" y2="678" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="740" y="714" text-anchor="middle" fill="#9CA3AF" font-size="13">Aucune demande de données en cours.</text>
+
+  <!-- Links -->
+  <text x="290" y="766" fill="#1A5BA0" font-size="12" font-weight="500" text-decoration="underline">Politique de confidentialité</text>
+  <text x="475" y="766" fill="#D1D5DB" font-size="12">|</text>
+  <text x="490" y="766" fill="#1A5BA0" font-size="12" font-weight="500" text-decoration="underline">Mentions légales</text>
+</svg>

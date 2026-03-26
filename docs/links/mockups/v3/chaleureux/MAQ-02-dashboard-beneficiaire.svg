@@ -1,0 +1,247 @@
+<!-- MAQ-02 | Dashboard Bénéficiaire | Link's Accompagnement | v3.0 | chaleureux | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="sidebar-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0D3B6E"/>
+      <stop offset="100%" stop-color="#1A3A5C"/>
+    </linearGradient>
+    <filter id="shadow-warm" x="-3%" y="-3%" width="106%" height="106%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#D4956A" flood-opacity="0.10"/>
+    </filter>
+    <filter id="shadow-sm-warm" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#D4956A" flood-opacity="0.08"/>
+    </filter>
+    <clipPath id="clip-main"><rect x="220" y="0" width="1220" height="900"/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#FFF8F5"/>
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <rect x="0" y="0" width="220" height="900" fill="url(#sidebar-grad)"/>
+  <!-- Warm overlay -->
+  <rect x="0" y="0" width="220" height="900" fill="#FF6B35" opacity="0.04"/>
+
+  <!-- Logo -->
+  <text x="26" y="42" font-size="16" font-weight="700" fill="white">Link's</text>
+  <text x="26" y="60" font-size="12" font-weight="400" fill="#C4D8EC">Accompagnement</text>
+  <polygon points="98,30 104,30 102,40 96,40" fill="#F28C5A"/>
+
+  <!-- Separator -->
+  <line x1="22" y1="78" x2="198" y2="78" stroke="#1A4F80" stroke-width="1" opacity="0.5"/>
+
+  <!-- Nav: Dashboard (active) -->
+  <rect x="10" y="94" width="200" height="44" rx="16" fill="#2A7FD4" opacity="0.2"/>
+  <rect x="10" y="94" width="4" height="44" rx="2" fill="white"/>
+  <!-- Icon grid -->
+  <rect x="30" y="108" width="8" height="8" rx="2" fill="white" opacity="0.9"/>
+  <rect x="40" y="108" width="8" height="8" rx="2" fill="white" opacity="0.9"/>
+  <rect x="30" y="118" width="8" height="8" rx="2" fill="white" opacity="0.9"/>
+  <rect x="40" y="118" width="8" height="8" rx="2" fill="white" opacity="0.9"/>
+  <text x="58" y="121" font-size="14" font-weight="600" fill="white">Dashboard</text>
+
+  <!-- Mon bilan -->
+  <rect x="30" y="150" width="14" height="16" rx="2.5" fill="none" stroke="#C4D8EC" stroke-width="1.3"/>
+  <line x1="34" y1="156" x2="42" y2="156" stroke="#C4D8EC" stroke-width="1.2"/>
+  <line x1="34" y1="161" x2="40" y2="161" stroke="#C4D8EC" stroke-width="1.2"/>
+  <text x="58" y="165" font-size="14" font-weight="400" fill="#C4D8EC">Mon bilan</text>
+
+  <!-- Documents -->
+  <rect x="30" y="198" width="14" height="16" rx="2.5" fill="none" stroke="#C4D8EC" stroke-width="1.3"/>
+  <line x1="34" y1="204" x2="42" y2="204" stroke="#C4D8EC" stroke-width="1.2"/>
+  <line x1="34" y1="209" x2="42" y2="209" stroke="#C4D8EC" stroke-width="1.2"/>
+  <text x="58" y="213" font-size="14" font-weight="400" fill="#C4D8EC">Documents</text>
+
+  <!-- Profil -->
+  <circle cx="37" cy="250" r="6" fill="none" stroke="#C4D8EC" stroke-width="1.3"/>
+  <path d="M28,264 Q37,257 46,264" fill="none" stroke="#C4D8EC" stroke-width="1.3"/>
+  <text x="58" y="261" font-size="14" font-weight="400" fill="#C4D8EC">Profil</text>
+
+  <!-- Footer -->
+  <line x1="22" y1="838" x2="198" y2="838" stroke="#1A4F80" stroke-width="1" opacity="0.5"/>
+  <text x="26" y="860" font-size="12" font-weight="400" fill="#C4D8EC">Mes données</text>
+  <text x="26" y="882" font-size="10" fill="#6E8FAB">v3.0.0</text>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <g clip-path="url(#clip-main)">
+
+  <!-- Header -->
+  <rect x="220" y="0" width="1220" height="64" fill="white" filter="url(#shadow-sm-warm)"/>
+  <text x="256" y="38" font-size="14" fill="#B0A09A">Bénéficiaire</text>
+  <text x="348" y="38" font-size="14" fill="#B0A09A">›</text>
+  <text x="364" y="38" font-size="14" font-weight="600" fill="#4A4A4A">Dashboard</text>
+
+  <!-- User -->
+  <circle cx="1350" cy="32" r="20" fill="#2A7FD4"/>
+  <text x="1350" y="38" font-size="13" font-weight="600" fill="white" text-anchor="middle">MD</text>
+  <text x="1316" y="27" font-size="13" font-weight="600" fill="#4A4A4A" text-anchor="end">Marie Dupont</text>
+  <text x="1316" y="43" font-size="12" fill="#B0A09A" text-anchor="end">Bénéficiaire</text>
+  <rect x="1384" y="19" width="34" height="26" rx="13" fill="#FFF0E8" stroke="#F2D5C4" stroke-width="1"/>
+  <path d="M1395,28 h8 M1401,25 l3,3 -3,3" fill="none" stroke="#F28C5A" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- ==================== WELCOME ==================== -->
+  <rect x="256" y="84" width="1176" height="120" rx="20" fill="white" filter="url(#shadow-warm)"/>
+  <rect x="256" y="84" width="6" height="120" rx="3" fill="#F28C5A"/>
+  <text x="288" y="122" font-size="26" font-weight="700" fill="#4A4A4A">Bonjour, Marie ☀️</text>
+  <text x="288" y="150" font-size="15" fill="#8A7A72">Retrouvez ici le suivi de votre bilan de compétences. Vous avancez bien !</text>
+  <rect x="288" y="162" width="200" height="34" rx="17" fill="#2A7FD4"/>
+  <text x="322" y="184" font-size="14" font-weight="600" fill="white">Continuer le bilan →</text>
+
+  <!-- ==================== VOS SÉANCES ==================== -->
+  <text x="256" y="238" font-size="20" font-weight="700" fill="#4A4A4A">Vos séances</text>
+
+  <rect x="256" y="254" width="1176" height="272" rx="20" fill="white" filter="url(#shadow-warm)"/>
+
+  <!-- Table header -->
+  <rect x="256" y="254" width="1176" height="40" rx="20" fill="#FFF5EF"/>
+  <rect x="256" y="280" width="1176" height="14" fill="#FFF5EF"/>
+  <text x="288" y="280" font-size="12" font-weight="600" fill="#B0A09A">Séance</text>
+  <text x="750" y="280" font-size="12" font-weight="600" fill="#B0A09A">Date</text>
+  <text x="890" y="280" font-size="12" font-weight="600" fill="#B0A09A">Heure</text>
+  <text x="1020" y="280" font-size="12" font-weight="600" fill="#B0A09A">Action</text>
+
+  <!-- Row 1 -->
+  <line x1="274" y1="296" x2="1414" y2="296" stroke="#FAE8DC" stroke-width="1"/>
+  <circle cx="300" cy="316" r="14" fill="#2A7FD4"/>
+  <text x="300" y="321" font-size="12" font-weight="700" fill="white" text-anchor="middle">1</text>
+  <text x="324" y="321" font-size="14" font-weight="500" fill="#4A4A4A">Séance 1 — Entretien préliminaire</text>
+  <text x="750" y="321" font-size="14" fill="#4A4A4A">15/04/2026</text>
+  <text x="890" y="321" font-size="14" fill="#4A4A4A">14h00</text>
+  <rect x="1020" y="302" width="160" height="30" rx="15" fill="#2A7FD4"/>
+  <rect x="1034" y="312" width="14" height="10" rx="2" fill="none" stroke="white" stroke-width="1.2"/>
+  <polygon points="1050,313 1056,317 1050,321" fill="none" stroke="white" stroke-width="1.2"/>
+  <text x="1063" y="322" font-size="12" font-weight="500" fill="white">Rejoindre la visio</text>
+
+  <!-- Row 2 -->
+  <line x1="274" y1="336" x2="1414" y2="336" stroke="#FAE8DC" stroke-width="1"/>
+  <circle cx="300" cy="356" r="14" fill="#2A7FD4"/>
+  <text x="300" y="361" font-size="12" font-weight="700" fill="white" text-anchor="middle">2</text>
+  <text x="324" y="361" font-size="14" font-weight="500" fill="#4A4A4A">Séance 2 — Investigation phase 1</text>
+  <text x="750" y="361" font-size="14" fill="#4A4A4A">29/04/2026</text>
+  <text x="890" y="361" font-size="14" fill="#4A4A4A">14h00</text>
+  <rect x="1020" y="342" width="160" height="30" rx="15" fill="#2A7FD4"/>
+  <rect x="1034" y="352" width="14" height="10" rx="2" fill="none" stroke="white" stroke-width="1.2"/>
+  <polygon points="1050,353 1056,357 1050,361" fill="none" stroke="white" stroke-width="1.2"/>
+  <text x="1063" y="362" font-size="12" font-weight="500" fill="white">Rejoindre la visio</text>
+
+  <!-- Row 3 -->
+  <line x1="274" y1="376" x2="1414" y2="376" stroke="#FAE8DC" stroke-width="1"/>
+  <circle cx="300" cy="396" r="14" fill="#E8DDD6"/>
+  <text x="300" y="401" font-size="12" font-weight="700" fill="#B0A09A" text-anchor="middle">3</text>
+  <text x="324" y="401" font-size="14" font-weight="500" fill="#B0A09A">Séance 3</text>
+  <text x="750" y="401" font-size="14" fill="#B0A09A">À planifier</text>
+  <text x="890" y="401" font-size="14" fill="#B0A09A">—</text>
+  <rect x="1020" y="382" width="110" height="30" rx="15" fill="transparent" stroke="#E8DDD6" stroke-width="1.5"/>
+  <text x="1050" y="402" font-size="12" font-weight="500" fill="#B0A09A">Planifier</text>
+
+  <!-- Row 4 -->
+  <line x1="274" y1="416" x2="1414" y2="416" stroke="#FAE8DC" stroke-width="1"/>
+  <circle cx="300" cy="436" r="14" fill="#E8DDD6"/>
+  <text x="300" y="441" font-size="12" font-weight="700" fill="#B0A09A" text-anchor="middle">4</text>
+  <text x="324" y="441" font-size="14" font-weight="500" fill="#B0A09A">Séance 4</text>
+  <text x="750" y="441" font-size="14" fill="#B0A09A">À planifier</text>
+  <text x="890" y="441" font-size="14" fill="#B0A09A">—</text>
+  <rect x="1020" y="422" width="110" height="30" rx="15" fill="transparent" stroke="#E8DDD6" stroke-width="1.5"/>
+  <text x="1050" y="442" font-size="12" font-weight="500" fill="#B0A09A">Planifier</text>
+
+  <!-- Row 5 -->
+  <line x1="274" y1="456" x2="1414" y2="456" stroke="#FAE8DC" stroke-width="1"/>
+  <circle cx="300" cy="476" r="14" fill="#E8DDD6"/>
+  <text x="300" y="481" font-size="12" font-weight="700" fill="#B0A09A" text-anchor="middle">5</text>
+  <text x="324" y="481" font-size="14" font-weight="500" fill="#B0A09A">Séance 5</text>
+  <text x="750" y="481" font-size="14" fill="#B0A09A">À planifier</text>
+  <text x="890" y="481" font-size="14" fill="#B0A09A">—</text>
+  <rect x="1020" y="462" width="110" height="30" rx="15" fill="transparent" stroke="#E8DDD6" stroke-width="1.5"/>
+  <text x="1050" y="482" font-size="12" font-weight="500" fill="#B0A09A">Planifier</text>
+
+  <!-- Row 6 -->
+  <line x1="274" y1="496" x2="1414" y2="496" stroke="#FAE8DC" stroke-width="1"/>
+  <circle cx="300" cy="514" r="14" fill="#E8DDD6"/>
+  <text x="300" y="519" font-size="12" font-weight="700" fill="#B0A09A" text-anchor="middle">6</text>
+  <text x="324" y="519" font-size="14" font-weight="500" fill="#B0A09A">Séance 6</text>
+  <text x="750" y="519" font-size="14" fill="#B0A09A">À planifier</text>
+  <text x="890" y="519" font-size="14" fill="#B0A09A">—</text>
+  <rect x="1020" y="500" width="110" height="30" rx="15" fill="transparent" stroke="#E8DDD6" stroke-width="1.5"/>
+  <text x="1050" y="520" font-size="12" font-weight="500" fill="#B0A09A">Planifier</text>
+
+  <!-- ==================== VOTRE PARCOURS ==================== -->
+  <text x="256" y="560" font-size="20" font-weight="700" fill="#4A4A4A">Votre parcours</text>
+  <text x="256" y="582" font-size="14" fill="#8A7A72">1 phase validée · 1 en cours · 4 à compléter</text>
+
+  <!-- Progress bar -->
+  <rect x="256" y="596" width="1176" height="10" rx="5" fill="#F0E4DB"/>
+  <rect x="256" y="596" width="196" height="10" rx="5" fill="#28A745"/>
+
+  <!-- ==================== PHASE CARDS ==================== -->
+  <!-- Phase 1 -->
+  <rect x="256" y="622" width="380" height="118" rx="18" fill="#F6FFF8" stroke="#28A745" stroke-width="1.5" filter="url(#shadow-sm-warm)"/>
+  <rect x="256" y="622" width="6" height="118" rx="3" fill="#28A745"/>
+  <circle cx="288" cy="658" r="18" fill="#D4EDDA"/>
+  <text x="288" y="664" font-size="14" font-weight="700" fill="#28A745" text-anchor="middle">1</text>
+  <text x="318" y="652" font-size="15" font-weight="600" fill="#4A4A4A">Définir mon projet</text>
+  <rect x="318" y="662" width="80" height="24" rx="12" fill="#D4EDDA"/>
+  <text x="332" y="679" font-size="12" font-weight="600" fill="#28A745">✓ Validé</text>
+  <rect x="318" y="698" width="110" height="32" rx="16" fill="#2A7FD4"/>
+  <text x="340" y="720" font-size="13" font-weight="600" fill="white">Accéder →</text>
+
+  <!-- Phase 2 -->
+  <rect x="654" y="622" width="380" height="118" rx="18" fill="#FFFAF5" stroke="#F28C5A" stroke-width="1.5" filter="url(#shadow-sm-warm)"/>
+  <rect x="654" y="622" width="6" height="118" rx="3" fill="#F28C5A"/>
+  <circle cx="686" cy="658" r="18" fill="#FDEBD5"/>
+  <text x="686" y="664" font-size="14" font-weight="700" fill="#F28C5A" text-anchor="middle">2</text>
+  <text x="716" y="652" font-size="15" font-weight="600" fill="#4A4A4A">Explorer mes compétences</text>
+  <rect x="716" y="662" width="90" height="24" rx="12" fill="#FDEBD5"/>
+  <circle cx="730" cy="674" r="4" fill="#F28C5A"/>
+  <text x="739" y="679" font-size="12" font-weight="600" fill="#F28C5A">En cours</text>
+  <rect x="716" y="698" width="110" height="32" rx="16" fill="#2A7FD4"/>
+  <text x="738" y="720" font-size="13" font-weight="600" fill="white">Accéder →</text>
+
+  <!-- Phase 3 -->
+  <rect x="1052" y="622" width="380" height="118" rx="18" fill="white" stroke="#E8DDD6" stroke-width="1.5" filter="url(#shadow-sm-warm)"/>
+  <rect x="1052" y="622" width="6" height="118" rx="3" fill="#E8DDD6"/>
+  <circle cx="1084" cy="658" r="18" fill="#F5F0EB"/>
+  <text x="1084" y="664" font-size="14" font-weight="700" fill="#B0A09A" text-anchor="middle">3</text>
+  <text x="1114" y="652" font-size="15" font-weight="600" fill="#B0A09A">Analyser mon marché</text>
+  <rect x="1114" y="662" width="100" height="24" rx="12" fill="#F5F0EB"/>
+  <text x="1128" y="679" font-size="12" font-weight="600" fill="#B0A09A">À compléter</text>
+  <rect x="1114" y="698" width="110" height="32" rx="16" fill="#F5F0EB"/>
+  <text x="1144" y="720" font-size="13" font-weight="500" fill="#B0A09A">Accéder</text>
+
+  <!-- Phase 4 -->
+  <rect x="256" y="754" width="380" height="118" rx="18" fill="white" stroke="#E8DDD6" stroke-width="1.5" filter="url(#shadow-sm-warm)"/>
+  <rect x="256" y="754" width="6" height="118" rx="3" fill="#E8DDD6"/>
+  <circle cx="288" cy="790" r="18" fill="#F5F0EB"/>
+  <text x="288" y="796" font-size="14" font-weight="700" fill="#B0A09A" text-anchor="middle">4</text>
+  <text x="318" y="784" font-size="15" font-weight="600" fill="#B0A09A">Construire mon plan</text>
+  <rect x="318" y="794" width="100" height="24" rx="12" fill="#F5F0EB"/>
+  <text x="332" y="811" font-size="12" font-weight="600" fill="#B0A09A">À compléter</text>
+  <rect x="318" y="830" width="110" height="32" rx="16" fill="#F5F0EB"/>
+  <text x="348" y="852" font-size="13" font-weight="500" fill="#B0A09A">Accéder</text>
+
+  <!-- Phase 5 -->
+  <rect x="654" y="754" width="380" height="118" rx="18" fill="white" stroke="#E8DDD6" stroke-width="1.5" filter="url(#shadow-sm-warm)"/>
+  <rect x="654" y="754" width="6" height="118" rx="3" fill="#E8DDD6"/>
+  <circle cx="686" cy="790" r="18" fill="#F5F0EB"/>
+  <text x="686" y="796" font-size="14" font-weight="700" fill="#B0A09A" text-anchor="middle">5</text>
+  <text x="716" y="784" font-size="15" font-weight="600" fill="#B0A09A">Préparer mon entretien</text>
+  <rect x="716" y="794" width="100" height="24" rx="12" fill="#F5F0EB"/>
+  <text x="730" y="811" font-size="12" font-weight="600" fill="#B0A09A">À compléter</text>
+  <rect x="716" y="830" width="110" height="32" rx="16" fill="#F5F0EB"/>
+  <text x="746" y="852" font-size="13" font-weight="500" fill="#B0A09A">Accéder</text>
+
+  <!-- Phase 6 -->
+  <rect x="1052" y="754" width="380" height="118" rx="18" fill="white" stroke="#E8DDD6" stroke-width="1.5" filter="url(#shadow-sm-warm)"/>
+  <rect x="1052" y="754" width="6" height="118" rx="3" fill="#E8DDD6"/>
+  <circle cx="1084" cy="790" r="18" fill="#F5F0EB"/>
+  <text x="1084" y="796" font-size="14" font-weight="700" fill="#B0A09A" text-anchor="middle">6</text>
+  <text x="1114" y="784" font-size="15" font-weight="600" fill="#B0A09A">Finaliser mon bilan</text>
+  <rect x="1114" y="794" width="100" height="24" rx="12" fill="#F5F0EB"/>
+  <text x="1128" y="811" font-size="12" font-weight="600" fill="#B0A09A">À compléter</text>
+  <rect x="1114" y="830" width="110" height="32" rx="16" fill="#F5F0EB"/>
+  <text x="1144" y="852" font-size="13" font-weight="500" fill="#B0A09A">Accéder</text>
+
+  <!-- ==================== FOOTER ==================== -->
+  <line x1="220" y1="888" x2="1440" y2="888" stroke="#F0E4DB" stroke-width="1"/>
+
+  </g>
+</svg>

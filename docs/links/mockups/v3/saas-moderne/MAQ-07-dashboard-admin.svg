@@ -1,0 +1,257 @@
+<!-- MAQ-07 | Dashboard Admin | Link's Accompagnement | v3.0 | saas-moderne | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow1" x="-2%" y="-2%" width="104%" height="108%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#000" flood-opacity="0.06"/>
+    </filter>
+    <filter id="shadow2" x="-2%" y="-2%" width="104%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+    <clipPath id="clip-main"><rect x="220" y="0" width="1220" height="900"/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#FAFBFC"/>
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <rect x="0" y="0" width="220" height="900" fill="#0D3B6E"/>
+
+  <!-- Logo area -->
+  <text x="48" y="38" font-size="14" font-weight="700" fill="#FFFFFF">Link's</text>
+  <text x="48" y="54" font-size="11" fill="#93B5D9">Accompagnement</text>
+  <polygon points="28,26 40,38 28,50" fill="#FF6B35"/>
+
+  <!-- Divider -->
+  <line x1="20" y1="70" x2="200" y2="70" stroke="#1A4F82" stroke-width="1"/>
+
+  <!-- Nav items -->
+  <!-- Dashboard (active) -->
+  <rect x="0" y="82" width="220" height="42" fill="#1A4F82" rx="0"/>
+  <rect x="0" y="82" width="3" height="42" fill="#FF6B35"/>
+  <rect x="24" y="94" width="18" height="18" rx="4" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+  <rect x="28" y="98" width="4" height="4" rx="1" fill="#FFFFFF"/>
+  <rect x="34" y="98" width="4" height="4" rx="1" fill="#FFFFFF"/>
+  <rect x="28" y="104" width="4" height="4" rx="1" fill="#FFFFFF"/>
+  <rect x="34" y="104" width="4" height="4" rx="1" fill="#FFFFFF"/>
+  <text x="52" y="108" font-size="13" font-weight="600" fill="#FFFFFF">Dashboard</text>
+
+  <!-- Utilisateurs -->
+  <g opacity="0.65">
+    <circle cx="33" cy="147" r="8" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <circle cx="33" cy="143" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+    <path d="M25,155 Q33,151 41,155" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+    <text x="52" y="151" font-size="13" fill="#FFFFFF">Utilisateurs</text>
+  </g>
+
+  <!-- Documents -->
+  <g opacity="0.65">
+    <rect x="26" y="172" width="14" height="18" rx="2" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <line x1="30" y1="179" x2="36" y2="179" stroke="#FFFFFF" stroke-width="1.2"/>
+    <line x1="30" y1="183" x2="36" y2="183" stroke="#FFFFFF" stroke-width="1.2"/>
+    <text x="52" y="185" font-size="13" fill="#FFFFFF">Documents</text>
+  </g>
+
+  <!-- Sidebar footer -->
+  <text x="110" y="878" font-size="10" fill="#6B9BC7" text-anchor="middle">v1.0.0 — 2026</text>
+
+  <!-- ==================== HEADER ==================== -->
+  <rect x="220" y="0" width="1220" height="64" fill="#FFFFFF"/>
+  <line x1="220" y1="64" x2="1440" y2="64" stroke="#E5E9F0" stroke-width="1"/>
+
+  <!-- Breadcrumb -->
+  <text x="252" y="30" font-size="11" fill="#8899AA">Administration</text>
+  <text x="252" y="48" font-size="16" font-weight="700" fill="#1A2B3C">Dashboard</text>
+
+  <!-- Right header -->
+  <!-- Notification bell -->
+  <g transform="translate(1200,22)">
+    <path d="M0,16 Q0,6 8,4 L8,2 Q8,0 10,0 Q12,0 12,2 L12,4 Q20,6 20,16 L20,18 L0,18Z" fill="none" stroke="#6B7B8D" stroke-width="1.5"/>
+    <circle cx="16" cy="6" r="7" fill="#EF4444"/>
+    <text x="16" y="9" font-size="9" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  </g>
+
+  <!-- Déconnexion button -->
+  <rect x="1240" y="18" width="95" height="30" rx="8" fill="#F3F4F6" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1287" y="37" font-size="11" fill="#6B7B8D" text-anchor="middle">Déconnexion</text>
+
+  <!-- Avatar -->
+  <circle cx="1365" cy="32" r="16" fill="#2A7FD4"/>
+  <text x="1365" y="37" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">A</text>
+
+  <!-- User info -->
+  <text x="1390" y="28" font-size="11" font-weight="600" fill="#1A2B3C">Administrateur</text>
+  <text x="1390" y="42" font-size="10" fill="#8899AA">super_admin</text>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <g clip-path="url(#clip-main)">
+
+  <!-- Title section -->
+  <text x="252" y="102" font-size="20" font-weight="700" fill="#1A2B3C">Vue d'ensemble — Link's Accompagnement</text>
+  <text x="252" y="122" font-size="12" fill="#8899AA">Données au 23 mars 2026 · Actualisation automatique toutes les 5 min</text>
+
+  <!-- ==================== KPI CARDS ==================== -->
+  <!-- Card 1: Bénéficiaires actifs -->
+  <rect x="252" y="140" width="272" height="110" rx="10" fill="#FFFFFF" filter="url(#shadow1)"/>
+  <circle cx="284" cy="172" r="20" fill="#EBF5FF"/>
+  <circle cx="284" cy="168" r="5" fill="none" stroke="#2A7FD4" stroke-width="1.8"/>
+  <path d="M275,180 Q284,176 293,180" fill="none" stroke="#2A7FD4" stroke-width="1.8"/>
+  <circle cx="290" cy="170" r="3" fill="none" stroke="#2A7FD4" stroke-width="1.2"/>
+  <text x="316" y="175" font-size="28" font-weight="800" fill="#1A2B3C">12</text>
+  <text x="316" y="195" font-size="12" fill="#6B7B8D">Bénéficiaires actifs</text>
+  <rect x="316" y="206" width="90" height="22" rx="11" fill="#EBF5FF"/>
+  <text x="361" y="221" font-size="11" font-weight="600" fill="#2A7FD4" text-anchor="middle">↑ +2 ce mois</text>
+
+  <!-- Card 2: Taux d'avancement -->
+  <rect x="540" y="140" width="272" height="110" rx="10" fill="#FFFFFF" filter="url(#shadow1)"/>
+  <circle cx="572" cy="172" r="20" fill="#FFF3EB"/>
+  <rect x="563" y="164" width="18" height="16" rx="2" fill="none" stroke="#F28C5A" stroke-width="1.8"/>
+  <polyline points="566,176 572,170 576,174 580,166" fill="none" stroke="#F28C5A" stroke-width="1.8"/>
+  <text x="604" y="175" font-size="28" font-weight="800" fill="#1A2B3C">47%</text>
+  <text x="604" y="195" font-size="12" fill="#6B7B8D">Taux d'avancement moyen</text>
+  <rect x="604" y="208" width="170" height="6" rx="3" fill="#F0F0F0"/>
+  <rect x="604" y="208" width="80" height="6" rx="3" fill="#F28C5A"/>
+
+  <!-- Card 3: Bilans terminés -->
+  <rect x="828" y="140" width="272" height="110" rx="10" fill="#FFFFFF" filter="url(#shadow1)"/>
+  <circle cx="860" cy="172" r="20" fill="#ECFDF5"/>
+  <path d="M851,172 L858,179 L871,165" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="892" y="175" font-size="28" font-weight="800" fill="#1A2B3C">3</text>
+  <text x="892" y="195" font-size="12" fill="#6B7B8D">Bilans terminés</text>
+  <rect x="892" y="206" width="130" height="22" rx="11" fill="#ECFDF5"/>
+  <text x="957" y="221" font-size="11" font-weight="600" fill="#22C55E" text-anchor="middle">sur 12 actifs · 25%</text>
+
+  <!-- Card 4: Consultantes actives -->
+  <rect x="1116" y="140" width="272" height="110" rx="10" fill="#FFFFFF" filter="url(#shadow1)"/>
+  <circle cx="1148" cy="172" r="20" fill="#EBF5FF"/>
+  <polygon points="1148,156 1151,165 1161,165 1153,171 1156,180 1148,175 1140,180 1143,171 1135,165 1145,165" fill="#2A7FD4"/>
+  <text x="1180" y="175" font-size="28" font-weight="800" fill="#1A2B3C">2</text>
+  <text x="1180" y="195" font-size="12" fill="#6B7B8D">Consultantes actives</text>
+  <rect x="1180" y="206" width="110" height="22" rx="11" fill="#EBF5FF"/>
+  <text x="1235" y="221" font-size="11" font-weight="600" fill="#2A7FD4" text-anchor="middle">Charge normale</text>
+
+  <!-- ==================== SECTION TITLE ==================== -->
+  <text x="252" y="290" font-size="16" font-weight="700" fill="#1A2B3C">Activité bénéficiaires</text>
+  <text x="252" y="308" font-size="12" fill="#8899AA">Suivi en temps réel · 12 bénéficiaires actifs</text>
+
+  <!-- ==================== ACTION BAR ==================== -->
+  <!-- Search -->
+  <rect x="252" y="320" width="280" height="36" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+  <circle cx="272" cy="338" r="8" fill="none" stroke="#8899AA" stroke-width="1.5"/>
+  <line x1="278" y1="344" x2="283" y2="349" stroke="#8899AA" stroke-width="1.5"/>
+  <text x="290" y="342" font-size="12" fill="#AABBCC">Rechercher…</text>
+
+  <!-- Export button -->
+  <rect x="1278" y="320" width="110" height="36" rx="8" fill="#0D3B6E"/>
+  <path d="M1300,334 L1300,344 M1295,339 L1300,344 L1305,339" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="1315" y="342" font-size="12" font-weight="600" fill="#FFFFFF">Exporter CSV</text>
+
+  <!-- ==================== DATA TABLE ==================== -->
+  <rect x="252" y="368" width="1136" height="370" rx="10" fill="#FFFFFF" filter="url(#shadow1)"/>
+
+  <!-- Table header -->
+  <rect x="252" y="368" width="1136" height="40" rx="10" fill="#F8F9FB"/>
+  <rect x="252" y="398" width="1136" height="10" fill="#F8F9FB"/>
+  <text x="272" y="393" font-size="10" font-weight="700" fill="#6B7B8D" letter-spacing="0.5">BÉNÉFICIAIRE</text>
+  <text x="472" y="393" font-size="10" font-weight="700" fill="#6B7B8D" letter-spacing="0.5">CONSULTANTE</text>
+  <text x="672" y="393" font-size="10" font-weight="700" fill="#6B7B8D" letter-spacing="0.5">PROGRESSION</text>
+  <text x="872" y="393" font-size="10" font-weight="700" fill="#6B7B8D" letter-spacing="0.5">DERNIÈRE CONNEXION</text>
+  <text x="1092" y="393" font-size="10" font-weight="700" fill="#6B7B8D" letter-spacing="0.5">STATUT</text>
+  <text x="1182" y="393" font-size="10" font-weight="700" fill="#6B7B8D" letter-spacing="0.5">ACTION</text>
+
+  <!-- Row 1: Sophie Martin -->
+  <line x1="272" y1="408" x2="1368" y2="408" stroke="#F0F2F5" stroke-width="1"/>
+  <circle cx="288" cy="435" r="16" fill="#2A7FD4"/>
+  <text x="288" y="440" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">SM</text>
+  <text x="314" y="430" font-size="13" font-weight="600" fill="#1A2B3C">Sophie Martin</text>
+  <text x="314" y="445" font-size="10" fill="#8899AA">sophie.martin@email.fr</text>
+  <text x="472" y="430" font-size="12" fill="#1A2B3C">Claire Dupont</text>
+  <text x="472" y="445" font-size="10" fill="#8899AA">Consultante senior</text>
+  <text x="672" y="428" font-size="12" font-weight="700" fill="#1A2B3C">72%</text>
+  <rect x="700" y="422" width="120" height="6" rx="3" fill="#F0F0F0"/>
+  <rect x="700" y="422" width="86" height="6" rx="3" fill="#22C55E"/>
+  <text x="872" y="430" font-size="11" fill="#1A2B3C">Aujourd'hui, 10:24</text>
+  <text x="872" y="445" font-size="10" fill="#8899AA">il y a 2 heures</text>
+  <rect x="1092" y="422" width="50" height="22" rx="11" fill="#ECFDF5"/>
+  <text x="1117" y="437" font-size="10" font-weight="600" fill="#22C55E" text-anchor="middle">Actif</text>
+  <text x="1182" y="438" font-size="11" font-weight="600" fill="#2A7FD4">Voir le dossier →</text>
+
+  <!-- Row 2: Thomas Leroy -->
+  <line x1="272" y1="462" x2="1368" y2="462" stroke="#F0F2F5" stroke-width="1"/>
+  <circle cx="288" cy="489" r="16" fill="#6B9BC7"/>
+  <text x="288" y="494" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">TL</text>
+  <text x="314" y="484" font-size="13" font-weight="600" fill="#1A2B3C">Thomas Leroy</text>
+  <text x="314" y="499" font-size="10" fill="#8899AA">thomas.leroy@email.fr</text>
+  <text x="472" y="484" font-size="12" fill="#1A2B3C">Isabelle Morel</text>
+  <text x="472" y="499" font-size="10" fill="#8899AA">Consultante</text>
+  <text x="672" y="482" font-size="12" font-weight="700" fill="#1A2B3C">45%</text>
+  <rect x="700" y="476" width="120" height="6" rx="3" fill="#F0F0F0"/>
+  <rect x="700" y="476" width="54" height="6" rx="3" fill="#F28C5A"/>
+  <text x="872" y="484" font-size="11" fill="#1A2B3C">Hier, 15:47</text>
+  <text x="872" y="499" font-size="10" fill="#8899AA">il y a 1 jour</text>
+  <rect x="1092" y="476" width="50" height="22" rx="11" fill="#ECFDF5"/>
+  <text x="1117" y="491" font-size="10" font-weight="600" fill="#22C55E" text-anchor="middle">Actif</text>
+  <text x="1182" y="492" font-size="11" font-weight="600" fill="#2A7FD4">Voir le dossier →</text>
+
+  <!-- Row 3: Marie Blanc (ALERT) -->
+  <line x1="272" y1="516" x2="1368" y2="516" stroke="#F0F2F5" stroke-width="1"/>
+  <rect x="252" y="516" width="1136" height="56" fill="#FFF5F3" opacity="0.7"/>
+  <rect x="252" y="516" width="3" height="56" fill="#FF6B35"/>
+  <circle cx="288" cy="543" r="16" fill="#FF8C66"/>
+  <text x="288" y="548" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">MB</text>
+  <text x="314" y="538" font-size="13" font-weight="600" fill="#1A2B3C">Marie Blanc</text>
+  <text x="314" y="553" font-size="10" fill="#8899AA">marie.blanc@email.fr</text>
+  <text x="472" y="538" font-size="12" fill="#1A2B3C">Claire Dupont</text>
+  <text x="472" y="553" font-size="10" fill="#8899AA">Consultante senior</text>
+  <text x="672" y="536" font-size="12" font-weight="700" fill="#1A2B3C">28%</text>
+  <rect x="700" y="530" width="120" height="6" rx="3" fill="#F0F0F0"/>
+  <rect x="700" y="530" width="34" height="6" rx="3" fill="#EF4444"/>
+  <text x="872" y="538" font-size="11" fill="#EF4444" font-weight="600">05 mars 2026</text>
+  <text x="872" y="553" font-size="10" fill="#EF4444">il y a 18 jours ⚠</text>
+  <rect x="1092" y="530" width="55" height="22" rx="11" fill="#FEF2F2"/>
+  <text x="1119" y="545" font-size="10" font-weight="600" fill="#EF4444" text-anchor="middle">Inactif</text>
+  <circle cx="1162" cy="541" r="10" fill="#FF6B35"/>
+  <text x="1162" y="546" font-size="13" font-weight="800" fill="#FFFFFF" text-anchor="middle">!</text>
+  <text x="1182" y="546" font-size="11" font-weight="600" fill="#2A7FD4">Voir le dossier →</text>
+
+  <!-- Row 4: Julien Petit -->
+  <line x1="272" y1="572" x2="1368" y2="572" stroke="#F0F2F5" stroke-width="1"/>
+  <circle cx="288" cy="599" r="16" fill="#2A7FD4"/>
+  <text x="288" y="604" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">JP</text>
+  <text x="314" y="594" font-size="13" font-weight="600" fill="#1A2B3C">Julien Petit</text>
+  <text x="314" y="609" font-size="10" fill="#8899AA">julien.petit@email.fr</text>
+  <text x="472" y="594" font-size="12" fill="#1A2B3C">Isabelle Morel</text>
+  <text x="472" y="609" font-size="10" fill="#8899AA">Consultante</text>
+  <text x="672" y="592" font-size="12" font-weight="700" fill="#1A2B3C">61%</text>
+  <rect x="700" y="586" width="120" height="6" rx="3" fill="#F0F0F0"/>
+  <rect x="700" y="586" width="73" height="6" rx="3" fill="#2A7FD4"/>
+  <text x="872" y="594" font-size="11" fill="#1A2B3C">Aujourd'hui, 08:15</text>
+  <text x="872" y="609" font-size="10" fill="#8899AA">il y a 4 heures</text>
+  <rect x="1092" y="586" width="50" height="22" rx="11" fill="#ECFDF5"/>
+  <text x="1117" y="601" font-size="10" font-weight="600" fill="#22C55E" text-anchor="middle">Actif</text>
+  <text x="1182" y="601" font-size="11" font-weight="600" fill="#2A7FD4">Voir le dossier →</text>
+
+  <!-- Pagination -->
+  <line x1="272" y1="630" x2="1368" y2="630" stroke="#F0F2F5" stroke-width="1"/>
+  <text x="272" y="658" font-size="11" fill="#8899AA">Affichage de 1 à 4 sur 12 bénéficiaires</text>
+  <rect x="1280" y="642" width="28" height="28" rx="8" fill="#0D3B6E"/>
+  <text x="1294" y="660" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <rect x="1314" y="642" width="28" height="28" rx="8" fill="#F3F4F6" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1328" y="660" font-size="11" fill="#6B7B8D" text-anchor="middle">2</text>
+  <rect x="1348" y="642" width="28" height="28" rx="8" fill="#F3F4F6" stroke="#DCE1EB" stroke-width="1"/>
+  <text x="1362" y="660" font-size="11" fill="#6B7B8D" text-anchor="middle">3</text>
+
+  </g>
+
+  <!-- ==================== STATUS BAR ==================== -->
+  <rect x="220" y="872" width="1220" height="28" fill="#FFFFFF"/>
+  <line x1="220" y1="872" x2="1440" y2="872" stroke="#E5E9F0" stroke-width="1"/>
+  <circle cx="240" cy="886" r="4" fill="#22C55E"/>
+  <text x="250" y="890" font-size="10" fill="#6B7B8D">Supabase connecté</text>
+  <line x1="360" y1="878" x2="360" y2="894" stroke="#E5E9F0" stroke-width="1"/>
+  <text x="374" y="890" font-size="10" fill="#8899AA">Dernier refresh : 23 mars 2026, 10:24:07</text>
+  <line x1="590" y1="878" x2="590" y2="894" stroke="#E5E9F0" stroke-width="1"/>
+  <circle cx="604" cy="886" r="4" fill="#FF6B35"/>
+  <text x="614" y="890" font-size="10" fill="#FF6B35">1 alerte active (inactivité &gt; 14j)</text>
+  <text x="1420" y="890" font-size="10" fill="#8899AA" text-anchor="end">Link's Accompagnement © 2026 — Unanima Platform v1.0</text>
+
+</svg>

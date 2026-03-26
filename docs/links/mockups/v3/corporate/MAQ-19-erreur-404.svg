@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap');
+      .font { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
+    </style>
+    <linearGradient id="coHeaderGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#133D6B"/>
+      <stop offset="100%" stop-color="#1A5BA0"/>
+    </linearGradient>
+    <linearGradient id="coAccent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E5622E"/>
+      <stop offset="50%" stop-color="#E5622E"/>
+      <stop offset="100%" stop-color="#E5622E"/>
+    </linearGradient>
+    <filter id="coShadow" x="-2%" y="-2%" width="104%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#F2F4F7"/>
+
+  <!-- Subtle horizontal rules pattern -->
+  <line x1="0" y1="200" x2="1440" y2="200" stroke="#DCE1EB" stroke-width="0.5" opacity="0.3"/>
+  <line x1="0" y1="400" x2="1440" y2="400" stroke="#DCE1EB" stroke-width="0.5" opacity="0.3"/>
+  <line x1="0" y1="600" x2="1440" y2="600" stroke="#DCE1EB" stroke-width="0.5" opacity="0.3"/>
+  <line x1="0" y1="800" x2="1440" y2="800" stroke="#DCE1EB" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1440" height="60" fill="url(#coHeaderGrad)"/>
+  <rect x="0" y="60" width="1440" height="3" fill="#E5622E"/>
+
+  <!-- Logo -->
+  <text x="48" y="38" class="font" fill="#FFFFFF" font-size="20" font-weight="700" letter-spacing="1">LINK'S</text>
+  <rect x="130" y="24" width="3" height="18" fill="#E5622E"/>
+  <text x="144" y="38" class="font" fill="#FFFFFF" font-size="11" font-weight="400" letter-spacing="2" opacity="0.7">ACCOMPAGNEMENT</text>
+
+  <!-- Main content area — structured, formal -->
+  <rect x="380" y="180" width="680" height="500" rx="4" fill="#FFFFFF" filter="url(#coShadow)" stroke="#E2E6ED" stroke-width="1"/>
+
+  <!-- Top accent bar on card -->
+  <rect x="380" y="180" width="680" height="4" rx="4" fill="#1A5BA0"/>
+  <rect x="380" y="180" width="4" height="4" fill="#1A5BA0"/>
+  <rect x="1056" y="180" width="4" height="4" fill="#1A5BA0"/>
+
+  <!-- Error code — institutional style -->
+  <text x="720" y="290" class="font" fill="#1A5BA0" font-size="14" font-weight="600" text-anchor="middle" letter-spacing="4" opacity="0.5">ERREUR</text>
+
+  <!-- Large 404 — clean, authoritative -->
+  <text x="720" y="410" class="font" fill="#1A5BA0" font-size="150" font-weight="900" text-anchor="middle" letter-spacing="-4">404</text>
+
+  <!-- Precise underline -->
+  <rect x="620" y="425" width="200" height="2" fill="#E5622E"/>
+
+  <!-- Separator dots -->
+  <circle cx="700" cy="425" r="3" fill="#E5622E"/>
+  <circle cx="720" cy="425" r="3" fill="#E5622E"/>
+  <circle cx="740" cy="425" r="3" fill="#E5622E"/>
+
+  <!-- Error message — formal -->
+  <text x="720" y="480" class="font" fill="#2D3748" font-size="24" font-weight="700" text-anchor="middle">Page introuvable</text>
+
+  <!-- Subtitle — professional -->
+  <text x="720" y="515" class="font" fill="#6B7A8D" font-size="15" font-weight="400" text-anchor="middle">La page que vous recherchez n'existe pas ou a ete deplacee.</text>
+
+  <!-- Reference code -->
+  <text x="720" y="545" class="font" fill="#A0AEC0" font-size="12" font-weight="400" text-anchor="middle" letter-spacing="1">CODE REFERENCE : HTTP-404-NOT-FOUND</text>
+
+  <!-- CTA Button — institutional, sharp corners -->
+  <rect x="615" y="575" width="210" height="44" rx="4" fill="#1A5BA0"/>
+  <text x="720" y="602" class="font" fill="#FFFFFF" font-size="14" font-weight="600" text-anchor="middle" letter-spacing="0.5">Retour a l'accueil</text>
+
+  <!-- Secondary link -->
+  <text x="720" y="645" class="font" fill="#1A5BA0" font-size="13" font-weight="500" text-anchor="middle" text-decoration="underline" opacity="0.7">Contacter le support</text>
+
+  <!-- Footer bar -->
+  <rect x="0" y="856" width="1440" height="44" fill="#FFFFFF" stroke="#E2E6ED" stroke-width="1"/>
+  <text x="720" y="882" class="font" fill="#8896AB" font-size="12" font-weight="400" text-anchor="middle" letter-spacing="0.5">Link's Accompagnement — Plateforme de suivi des bilans de competences</text>
+
+  <!-- Footer accent -->
+  <rect x="0" y="856" width="1440" height="1" fill="#E2E6ED"/>
+</svg>

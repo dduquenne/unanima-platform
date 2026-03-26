@@ -1,0 +1,188 @@
+<!-- MAQ-01 | Login | Link's Accompagnement | v3.0 | hybride | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <!-- Subtle gradient for left panel -->
+    <linearGradient id="panelGrad" x1="0" y1="0" x2="0.2" y2="1">
+      <stop offset="0%" stop-color="#0D3B6E"/>
+      <stop offset="100%" stop-color="#0F4480"/>
+    </linearGradient>
+    <!-- Card shadow -->
+    <filter id="cardShadow" x="-6%" y="-4%" width="112%" height="112%">
+      <feDropShadow dx="0" dy="3" stdDeviation="10" flood-color="#1A3A5C" flood-opacity="0.08"/>
+    </filter>
+    <!-- Button shadow -->
+    <filter id="btnShadow" x="-5%" y="-10%" width="110%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#1E6FC0" flood-opacity="0.25"/>
+    </filter>
+    <!-- Clip for left panel -->
+    <clipPath id="leftClip">
+      <rect x="0" y="0" width="650" height="900"/>
+    </clipPath>
+  </defs>
+
+  <!-- ============================================ -->
+  <!-- BACKGROUND                                    -->
+  <!-- ============================================ -->
+  <rect x="0" y="0" width="1440" height="900" fill="#F7F9FC"/>
+
+  <!-- ============================================ -->
+  <!-- LEFT PANEL: Hybrid branding                   -->
+  <!-- ============================================ -->
+  <rect x="0" y="0" width="650" height="900" fill="url(#panelGrad)"/>
+
+  <!-- Decorative colored spots -->
+  <g clip-path="url(#leftClip)">
+    <!-- Large diffuse spots -->
+    <circle cx="500" cy="200" r="120" fill="#FF6B35" opacity="0.06"/>
+    <circle cx="100" cy="650" r="150" fill="#1E6FC0" opacity="0.08"/>
+    <circle cx="550" cy="700" r="100" fill="#FF6B35" opacity="0.05"/>
+    <circle cx="200" cy="300" r="80" fill="#FFFFFF" opacity="0.03"/>
+
+    <!-- Small colored circles — decorative spots -->
+    <circle cx="520" cy="140" r="6" fill="#FF6B35" opacity="0.5"/>
+    <circle cx="480" cy="170" r="3.5" fill="#A8C8F0" opacity="0.4"/>
+    <circle cx="545" cy="180" r="4" fill="#FFFFFF" opacity="0.2"/>
+
+    <circle cx="100" cy="500" r="5" fill="#FF6B35" opacity="0.4"/>
+    <circle cx="140" cy="530" r="3" fill="#FFFFFF" opacity="0.25"/>
+    <circle cx="80" cy="540" r="4" fill="#A8C8F0" opacity="0.3"/>
+
+    <circle cx="400" cy="600" r="5" fill="#FF6B35" opacity="0.35"/>
+    <circle cx="430" cy="580" r="3.5" fill="#A8C8F0" opacity="0.3"/>
+    <circle cx="380" cy="630" r="3" fill="#FFFFFF" opacity="0.2"/>
+
+    <circle cx="300" cy="200" r="4" fill="#FF6B35" opacity="0.3"/>
+    <circle cx="330" cy="230" r="3" fill="#FFFFFF" opacity="0.2"/>
+
+    <!-- Subtle connecting lines between spot clusters -->
+    <line x1="520" y1="140" x2="480" y2="170" stroke="#A8C8F0" stroke-width="0.5" opacity="0.2"/>
+    <line x1="480" y1="170" x2="545" y2="180" stroke="#A8C8F0" stroke-width="0.5" opacity="0.15"/>
+    <line x1="100" y1="500" x2="140" y2="530" stroke="#A8C8F0" stroke-width="0.5" opacity="0.2"/>
+    <line x1="400" y1="600" x2="430" y2="580" stroke="#A8C8F0" stroke-width="0.5" opacity="0.2"/>
+  </g>
+
+  <!-- Logo -->
+  <g transform="translate(72, 80)">
+    <text x="0" y="0" font-size="28" font-weight="700" fill="#FFFFFF" letter-spacing="0.3">Link's</text>
+    <text x="90" y="0" font-size="28" font-weight="400" fill="#A8C8F0" letter-spacing="0.3">Accompagnement</text>
+    <!-- Orange accent polygon -->
+    <polygon points="78,-22 88,-22 84,-4 74,-4" fill="#FF6B35"/>
+  </g>
+
+  <!-- Tagline -->
+  <text x="72" y="132" font-size="17" font-weight="400" fill="#B4CEE8">Plateforme de suivi des bilans</text>
+  <text x="72" y="156" font-size="17" font-weight="400" fill="#B4CEE8">de compétences</text>
+
+  <!-- Central illustration: balanced abstract network -->
+  <g transform="translate(160, 360)">
+    <!-- Central hub -->
+    <circle cx="160" cy="80" r="40" fill="#FFFFFF" opacity="0.06" stroke="#FFFFFF" stroke-width="0.5" opacity="0.1"/>
+    <circle cx="160" cy="80" r="20" fill="#FF6B35" opacity="0.2"/>
+
+    <!-- Satellite nodes -->
+    <circle cx="50" cy="30" r="12" fill="#A8C8F0" opacity="0.3"/>
+    <circle cx="280" cy="40" r="14" fill="#FFFFFF" opacity="0.15"/>
+    <circle cx="60" cy="160" r="10" fill="#FF6B35" opacity="0.25"/>
+    <circle cx="270" cy="150" r="11" fill="#A8C8F0" opacity="0.25"/>
+    <circle cx="160" cy="-20" r="9" fill="#FFFFFF" opacity="0.2"/>
+    <circle cx="160" cy="180" r="10" fill="#FF6B35" opacity="0.2"/>
+
+    <!-- Connection lines -->
+    <line x1="160" y1="80" x2="50" y2="30" stroke="#A8C8F0" stroke-width="1" opacity="0.2"/>
+    <line x1="160" y1="80" x2="280" y2="40" stroke="#A8C8F0" stroke-width="1" opacity="0.15"/>
+    <line x1="160" y1="80" x2="60" y2="160" stroke="#A8C8F0" stroke-width="1" opacity="0.15"/>
+    <line x1="160" y1="80" x2="270" y2="150" stroke="#A8C8F0" stroke-width="1" opacity="0.15"/>
+    <line x1="160" y1="80" x2="160" y2="-20" stroke="#A8C8F0" stroke-width="1" opacity="0.15"/>
+    <line x1="160" y1="80" x2="160" y2="180" stroke="#A8C8F0" stroke-width="1" opacity="0.15"/>
+
+    <!-- Cross connections -->
+    <line x1="50" y1="30" x2="160" y2="-20" stroke="#FFFFFF" stroke-width="0.5" opacity="0.1"/>
+    <line x1="280" y1="40" x2="270" y2="150" stroke="#FFFFFF" stroke-width="0.5" opacity="0.08"/>
+    <line x1="60" y1="160" x2="160" y2="180" stroke="#FFFFFF" stroke-width="0.5" opacity="0.1"/>
+  </g>
+
+  <!-- Micro-copy on left panel -->
+  <g transform="translate(72, 680)">
+    <rect x="0" y="-4" width="40" height="3" rx="1.5" fill="#FF6B35" opacity="0.6"/>
+    <text x="0" y="22" font-size="15" font-weight="500" fill="#FFFFFF" opacity="0.65">Un accompagnement personnalisé</text>
+    <text x="0" y="44" font-size="15" font-weight="500" fill="#FFFFFF" opacity="0.65">pour chaque parcours professionnel</text>
+  </g>
+
+  <!-- Left footer -->
+  <text x="72" y="852" font-size="11.5" fill="#8BADD4" opacity="0.5">© 2026 Link's Accompagnement</text>
+
+  <!-- ============================================ -->
+  <!-- RIGHT PANEL: Login form                      -->
+  <!-- ============================================ -->
+
+  <!-- Form card -->
+  <g filter="url(#cardShadow)">
+    <rect x="810" y="185" width="440" height="530" rx="14" ry="14" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Greeting -->
+  <text x="1030" y="252" font-size="26" font-weight="700" fill="#1A2332" text-anchor="middle" letter-spacing="-0.2">Heureux de vous retrouver</text>
+  <text x="1030" y="280" font-size="14" font-weight="400" fill="#8492A6" text-anchor="middle">Connectez-vous à votre espace Link's</text>
+
+  <!-- Subtle decorative line under heading -->
+  <rect x="1000" y="296" width="60" height="3" rx="1.5" fill="#FF6B35" opacity="0.6"/>
+
+  <!-- Email field -->
+  <text x="856" y="340" font-size="13" font-weight="600" fill="#4A5568" letter-spacing="0.2">Adresse e-mail</text>
+  <rect x="856" y="352" width="348" height="48" rx="10" ry="10" fill="#FFFFFF" stroke="#D4DBE5" stroke-width="1.5"/>
+  <!-- Email icon -->
+  <g transform="translate(874, 367)">
+    <rect x="0" y="2" width="18" height="14" rx="2" fill="none" stroke="#A0ADBF" stroke-width="1.5"/>
+    <polyline points="0,3 9,11 18,3" fill="none" stroke="#A0ADBF" stroke-width="1.5"/>
+  </g>
+  <text x="902" y="382" font-size="14" fill="#A0ADBF">votre@email.com</text>
+
+  <!-- Password field -->
+  <text x="856" y="428" font-size="13" font-weight="600" fill="#4A5568" letter-spacing="0.2">Mot de passe</text>
+  <rect x="856" y="440" width="348" height="48" rx="10" ry="10" fill="#FFFFFF" stroke="#D4DBE5" stroke-width="1.5"/>
+  <!-- Lock icon -->
+  <g transform="translate(874, 454)">
+    <rect x="2" y="8" width="14" height="11" rx="2" fill="none" stroke="#A0ADBF" stroke-width="1.5"/>
+    <path d="M5,8 V5 a4,4 0 0 1 8,0 V8" fill="none" stroke="#A0ADBF" stroke-width="1.5"/>
+    <circle cx="9" cy="14" r="1.5" fill="#A0ADBF"/>
+  </g>
+  <text x="902" y="470" font-size="14" fill="#A0ADBF">••••••••</text>
+  <!-- Eye toggle -->
+  <g transform="translate(1172, 456)">
+    <ellipse cx="10" cy="8" rx="10" ry="7" fill="none" stroke="#A0ADBF" stroke-width="1.5"/>
+    <circle cx="10" cy="8" r="3.5" fill="none" stroke="#A0ADBF" stroke-width="1.5"/>
+  </g>
+
+  <!-- Error message area -->
+  <rect x="856" y="504" width="348" height="42" rx="10" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+  <g transform="translate(872, 517)">
+    <circle cx="8" cy="8" r="8" fill="#FEE2E2"/>
+    <text x="8" y="12" font-size="11" font-weight="700" fill="#DC2626" text-anchor="middle">!</text>
+  </g>
+  <text x="896" y="530" font-size="12.5" fill="#DC2626">Identifiants incorrects. Veuillez réessayer.</text>
+
+  <!-- Se connecter button -->
+  <g filter="url(#btnShadow)">
+    <rect x="856" y="564" width="348" height="50" rx="10" ry="10" fill="#1E6FC0"/>
+  </g>
+  <text x="1030" y="595" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.3">Se connecter</text>
+
+  <!-- Mot de passe oublié link -->
+  <text x="1030" y="646" font-size="13" font-weight="500" fill="#1E6FC0" text-anchor="middle">Mot de passe oublié ?</text>
+
+  <!-- Small trust indicator -->
+  <g transform="translate(990, 670)">
+    <circle cx="6" cy="6" r="4" fill="#22C55E" opacity="0.7"/>
+    <text x="16" y="10" font-size="11" fill="#8492A6">Connexion sécurisée</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- FOOTER                                       -->
+  <!-- ============================================ -->
+  <line x1="670" y1="858" x2="1420" y2="858" stroke="#E2E6EC" stroke-width="1"/>
+  <text x="940" y="880" font-size="12" fill="#8492A6" text-anchor="middle">Mentions légales</text>
+  <text x="1022" y="880" font-size="12" fill="#C4CBD6" text-anchor="middle">|</text>
+  <text x="1104" y="880" font-size="12" fill="#8492A6" text-anchor="middle">Confidentialité</text>
+  <text x="1176" y="880" font-size="12" fill="#C4CBD6" text-anchor="middle">|</text>
+  <text x="1232" y="880" font-size="12" fill="#8492A6" text-anchor="middle">Cookies</text>
+</svg>

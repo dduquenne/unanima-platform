@@ -1,0 +1,239 @@
+<!-- MAQ-08 | Gestion Utilisateurs | Link's Accompagnement | v3.0 | corporate | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow1" x="-1%" y="-1%" width="102%" height="106%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.06"/>
+    </filter>
+    <filter id="modalShadow" x="-3%" y="-3%" width="106%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="16" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#F2F4F7"/>
+
+  <!-- Sidebar -->
+  <rect width="220" height="900" fill="#0D3B6E"/>
+  <!-- Logo -->
+  <polygon points="28,30 40,48 28,48" fill="#E5622E"/>
+  <text x="50" y="42" font-size="17" font-weight="700" fill="#FFFFFF">Link's</text>
+  <text x="50" y="58" font-size="10" fill="rgba(255,255,255,0.65)" letter-spacing="0.3">Accompagnement</text>
+  <line x1="16" y1="76" x2="204" y2="76" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+  <!-- Nav: Dashboard -->
+  <rect x="10" y="92" width="200" height="38" rx="4" fill="transparent"/>
+  <rect x="20" y="100" width="16" height="16" rx="2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+  <line x1="24" y1="108" x2="32" y2="108" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+  <text x="48" y="114" font-size="12" fill="rgba(255,255,255,0.55)">Dashboard</text>
+
+  <!-- Nav: Utilisateurs (active) -->
+  <rect x="10" y="134" width="200" height="38" rx="4" fill="rgba(255,255,255,0.1)"/>
+  <rect x="10" y="134" width="3" height="38" rx="1" fill="#E5622E"/>
+  <circle cx="30" cy="153" r="7" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+  <circle cx="30" cy="151" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+  <path d="M24,159 Q30,155 36,159" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+  <text x="48" y="158" font-size="12" font-weight="600" fill="#FFFFFF">Utilisateurs</text>
+
+  <!-- Nav: Documents -->
+  <rect x="10" y="176" width="200" height="38" rx="4" fill="transparent"/>
+  <rect x="20" y="186" width="14" height="18" rx="2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+  <text x="48" y="200" font-size="12" fill="rgba(255,255,255,0.55)">Documents</text>
+
+  <!-- Header -->
+  <rect x="220" y="0" width="1220" height="56" fill="#FFFFFF" filter="url(#shadow1)"/>
+  <text x="244" y="33" font-size="12" fill="#8B95A5">Administration</text>
+  <text x="336" y="33" font-size="12" fill="#8B95A5">›</text>
+  <text x="348" y="33" font-size="12" font-weight="500" fill="#1A2332">Utilisateurs</text>
+  <circle cx="1340" cy="28" r="15" fill="#1A5BA0"/>
+  <text x="1334" y="33" font-size="9" font-weight="600" fill="#FFFFFF">AD</text>
+  <text x="1278" y="24" font-size="11" font-weight="500" fill="#1A2332" text-anchor="end">Administrateur</text>
+  <text x="1278" y="38" font-size="10" fill="#8B95A5" text-anchor="end">super_admin</text>
+  <text x="1378" y="33" font-size="12" fill="#8B95A5">↗</text>
+
+  <!-- Title -->
+  <text x="244" y="96" font-size="20" font-weight="700" fill="#1A2332">Gestion des utilisateurs</text>
+  <text x="244" y="114" font-size="12" fill="#6B7685">8 utilisateurs · 3 rôles</text>
+
+  <!-- Action bar - compact corporate style -->
+  <rect x="244" y="130" width="86" height="32" rx="4" fill="#1A5BA0"/>
+  <text x="287" y="151" font-size="11" font-weight="500" fill="#FFFFFF" text-anchor="middle">Tous (8)</text>
+
+  <rect x="336" y="130" width="118" height="32" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="395" y="151" font-size="11" fill="#6B7685" text-anchor="middle">Bénéficiaires (5)</text>
+
+  <rect x="460" y="130" width="116" height="32" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="518" y="151" font-size="11" fill="#6B7685" text-anchor="middle">Consultantes (2)</text>
+
+  <rect x="582" y="130" width="80" height="32" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="622" y="151" font-size="11" fill="#6B7685" text-anchor="middle">Admin (1)</text>
+
+  <rect x="900" y="130" width="230" height="32" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="920" y="151" font-size="11" fill="#98A2B3">🔍 Rechercher un utilisateur…</text>
+
+  <rect x="1142" y="130" width="174" height="32" rx="4" fill="#1A5BA0"/>
+  <text x="1229" y="151" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="middle">+ Créer un utilisateur</text>
+
+  <!-- Dense table -->
+  <rect x="244" y="176" width="1172" height="440" rx="6" fill="#FFFFFF" filter="url(#shadow1)"/>
+
+  <!-- Table header - dense -->
+  <rect x="244" y="176" width="1172" height="38" rx="6" fill="#F8F9FB"/>
+  <rect x="244" y="208" width="1172" height="6" fill="#F8F9FB"/>
+  <text x="272" y="201" font-size="10" font-weight="700" fill="#6B7685" letter-spacing="0.8">UTILISATEUR</text>
+  <text x="510" y="201" font-size="10" font-weight="700" fill="#6B7685" letter-spacing="0.8">RÔLE</text>
+  <text x="660" y="201" font-size="10" font-weight="700" fill="#6B7685" letter-spacing="0.8">CONSULTANT ASSIGNÉ</text>
+  <text x="860" y="201" font-size="10" font-weight="700" fill="#6B7685" letter-spacing="0.8">STATUT</text>
+  <text x="976" y="201" font-size="10" font-weight="700" fill="#6B7685" letter-spacing="0.8">DERNIÈRE CONNEXION</text>
+  <text x="1164" y="201" font-size="10" font-weight="700" fill="#6B7685" letter-spacing="0.8">ACTIONS</text>
+
+  <!-- Row 1 -->
+  <rect x="244" y="214" width="1172" height="56" fill="#FFFFFF"/>
+  <line x1="260" y1="270" x2="1400" y2="270" stroke="#EAECF0" stroke-width="1"/>
+  <circle cx="284" cy="242" r="14" fill="#D4E5FA"/>
+  <text x="278" y="246" font-size="9" font-weight="700" fill="#1A5BA0">MD</text>
+  <text x="306" y="237" font-size="12" font-weight="500" fill="#1A2332">Marie Dupont</text>
+  <text x="306" y="252" font-size="10" fill="#98A2B3">marie.dupont@email.com</text>
+  <rect x="510" y="232" width="82" height="22" rx="4" fill="#EBF3FE"/>
+  <text x="551" y="247" font-size="10" font-weight="500" fill="#1A5BA0" text-anchor="middle">Bénéficiaire</text>
+  <text x="660" y="246" font-size="11" fill="#344054">Sophie Martin</text>
+  <rect x="860" y="233" width="46" height="20" rx="4" fill="#E6F7ED"/>
+  <text x="883" y="247" font-size="10" font-weight="500" fill="#12805C" text-anchor="middle">Actif</text>
+  <text x="976" y="246" font-size="11" fill="#6B7685">Aujourd'hui</text>
+  <rect x="1164" y="234" width="26" height="24" rx="4" fill="#F8F9FB"/>
+  <text x="1172" y="250" font-size="11" fill="#6B7685">✏</text>
+  <rect x="1196" y="234" width="26" height="24" rx="4" fill="#F8F9FB"/>
+  <text x="1203" y="250" font-size="11" fill="#6B7685">🔑</text>
+  <rect x="1228" y="234" width="26" height="24" rx="4" fill="#FEF3F2"/>
+  <text x="1235" y="250" font-size="11" fill="#B42318">🗑</text>
+
+  <!-- Row 2 -->
+  <rect x="244" y="270" width="1172" height="56" fill="#F8F9FB"/>
+  <line x1="260" y1="326" x2="1400" y2="326" stroke="#EAECF0" stroke-width="1"/>
+  <circle cx="284" cy="298" r="14" fill="#D4E5FA"/>
+  <text x="279" y="302" font-size="9" font-weight="700" fill="#1A5BA0">JM</text>
+  <text x="306" y="293" font-size="12" font-weight="500" fill="#1A2332">Jean Martin</text>
+  <text x="306" y="308" font-size="10" fill="#98A2B3">jean.martin@email.com</text>
+  <rect x="510" y="288" width="82" height="22" rx="4" fill="#EBF3FE"/>
+  <text x="551" y="303" font-size="10" font-weight="500" fill="#1A5BA0" text-anchor="middle">Bénéficiaire</text>
+  <text x="660" y="302" font-size="11" fill="#344054">Sophie Martin</text>
+  <rect x="860" y="289" width="46" height="20" rx="4" fill="#E6F7ED"/>
+  <text x="883" y="303" font-size="10" font-weight="500" fill="#12805C" text-anchor="middle">Actif</text>
+  <text x="976" y="302" font-size="11" fill="#6B7685">Hier</text>
+  <rect x="1164" y="290" width="26" height="24" rx="4" fill="#EAECF0"/>
+  <text x="1172" y="306" font-size="11" fill="#6B7685">✏</text>
+  <rect x="1196" y="290" width="26" height="24" rx="4" fill="#EAECF0"/>
+  <text x="1203" y="306" font-size="11" fill="#6B7685">🔑</text>
+  <rect x="1228" y="290" width="26" height="24" rx="4" fill="#FEF3F2"/>
+  <text x="1235" y="306" font-size="11" fill="#B42318">🗑</text>
+
+  <!-- Row 3 -->
+  <rect x="244" y="326" width="1172" height="56" fill="#FFFFFF"/>
+  <line x1="260" y1="382" x2="1400" y2="382" stroke="#EAECF0" stroke-width="1"/>
+  <circle cx="284" cy="354" r="14" fill="#DDE0E5"/>
+  <text x="278" y="358" font-size="9" font-weight="700" fill="#6B7685">CB</text>
+  <text x="306" y="349" font-size="12" font-weight="500" fill="#1A2332">Claire Bernard</text>
+  <text x="306" y="364" font-size="10" fill="#98A2B3">claire.bernard@email.com</text>
+  <rect x="510" y="344" width="82" height="22" rx="4" fill="#EBF3FE"/>
+  <text x="551" y="359" font-size="10" font-weight="500" fill="#1A5BA0" text-anchor="middle">Bénéficiaire</text>
+  <text x="660" y="358" font-size="11" fill="#344054">Isabelle Morel</text>
+  <rect x="860" y="345" width="50" height="20" rx="4" fill="#FEF3E0"/>
+  <text x="885" y="359" font-size="10" font-weight="500" fill="#B54708" text-anchor="middle">Inactif</text>
+  <text x="976" y="358" font-size="11" fill="#6B7685">il y a 12j</text>
+  <rect x="1164" y="346" width="26" height="24" rx="4" fill="#F8F9FB"/>
+  <text x="1172" y="362" font-size="11" fill="#6B7685">✏</text>
+  <rect x="1196" y="346" width="26" height="24" rx="4" fill="#F8F9FB"/>
+  <text x="1203" y="362" font-size="11" fill="#6B7685">🔑</text>
+  <rect x="1228" y="346" width="26" height="24" rx="4" fill="#FEF3F2"/>
+  <text x="1235" y="362" font-size="11" fill="#B42318">🗑</text>
+
+  <!-- Row 4 -->
+  <rect x="244" y="382" width="1172" height="56" fill="#F8F9FB"/>
+  <line x1="260" y1="438" x2="1400" y2="438" stroke="#EAECF0" stroke-width="1"/>
+  <circle cx="284" cy="410" r="14" fill="#C6F0D3"/>
+  <text x="278" y="414" font-size="9" font-weight="700" fill="#12805C">SM</text>
+  <text x="306" y="405" font-size="12" font-weight="500" fill="#1A2332">Sophie Martin</text>
+  <text x="306" y="420" font-size="10" fill="#98A2B3">sophie.martin@email.com</text>
+  <rect x="510" y="400" width="82" height="22" rx="4" fill="#E6F7ED"/>
+  <text x="551" y="415" font-size="10" font-weight="500" fill="#12805C" text-anchor="middle">Consultante</text>
+  <text x="660" y="414" font-size="11" fill="#98A2B3">—</text>
+  <rect x="860" y="401" width="46" height="20" rx="4" fill="#E6F7ED"/>
+  <text x="883" y="415" font-size="10" font-weight="500" fill="#12805C" text-anchor="middle">Actif</text>
+  <text x="976" y="414" font-size="11" fill="#6B7685">Aujourd'hui</text>
+  <rect x="1164" y="402" width="26" height="24" rx="4" fill="#EAECF0"/>
+  <text x="1172" y="418" font-size="11" fill="#6B7685">✏</text>
+  <rect x="1196" y="402" width="26" height="24" rx="4" fill="#EAECF0"/>
+  <text x="1203" y="418" font-size="11" fill="#6B7685">🔑</text>
+
+  <!-- Row 5 -->
+  <rect x="244" y="438" width="1172" height="56" fill="#FFFFFF"/>
+  <line x1="260" y1="494" x2="1400" y2="494" stroke="#EAECF0" stroke-width="1"/>
+  <circle cx="284" cy="466" r="14" fill="#C6F0D3"/>
+  <text x="279" y="470" font-size="9" font-weight="700" fill="#12805C">IM</text>
+  <text x="306" y="461" font-size="12" font-weight="500" fill="#1A2332">Isabelle Morel</text>
+  <text x="306" y="476" font-size="10" fill="#98A2B3">isabelle.morel@email.com</text>
+  <rect x="510" y="456" width="82" height="22" rx="4" fill="#E6F7ED"/>
+  <text x="551" y="471" font-size="10" font-weight="500" fill="#12805C" text-anchor="middle">Consultante</text>
+  <text x="660" y="470" font-size="11" fill="#98A2B3">—</text>
+  <rect x="860" y="457" width="46" height="20" rx="4" fill="#E6F7ED"/>
+  <text x="883" y="471" font-size="10" font-weight="500" fill="#12805C" text-anchor="middle">Actif</text>
+  <text x="976" y="470" font-size="11" fill="#6B7685">Hier</text>
+  <rect x="1164" y="458" width="26" height="24" rx="4" fill="#F8F9FB"/>
+  <text x="1172" y="474" font-size="11" fill="#6B7685">✏</text>
+  <rect x="1196" y="458" width="26" height="24" rx="4" fill="#F8F9FB"/>
+  <text x="1203" y="474" font-size="11" fill="#6B7685">🔑</text>
+
+  <!-- Pagination -->
+  <rect x="244" y="494" width="1172" height="44" fill="#FFFFFF"/>
+  <rect x="244" y="530" width="1172" height="8" rx="6" fill="#FFFFFF"/>
+  <text x="272" y="522" font-size="11" fill="#6B7685">1 à 5 sur 8</text>
+  <rect x="1310" y="506" width="28" height="26" rx="4" fill="#1A5BA0"/>
+  <text x="1324" y="523" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+  <rect x="1344" y="506" width="28" height="26" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="1358" y="523" font-size="11" fill="#6B7685" text-anchor="middle">2</text>
+
+  <!-- Modal overlay -->
+  <rect width="1440" height="900" fill="rgba(16,24,40,0.45)"/>
+
+  <!-- Modal - structured corporate -->
+  <rect x="440" y="136" width="560" height="576" rx="6" fill="#FFFFFF" filter="url(#modalShadow)"/>
+  <!-- Corporate blue header bar -->
+  <rect x="440" y="136" width="560" height="52" rx="6" fill="#1A5BA0"/>
+  <rect x="440" y="180" width="560" height="8" fill="#1A5BA0"/>
+  <text x="470" y="168" font-size="16" font-weight="700" fill="#FFFFFF">Créer un utilisateur</text>
+  <!-- Close -->
+  <circle cx="972" cy="162" r="13" fill="rgba(255,255,255,0.15)"/>
+  <text x="968" y="167" font-size="13" fill="#FFFFFF">✕</text>
+
+  <!-- Fields -->
+  <text x="470" y="216" font-size="11" font-weight="600" fill="#344054">Prénom</text>
+  <rect x="470" y="224" width="244" height="38" rx="5" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="486" y="248" font-size="12" fill="#98A2B3">ex: Marie</text>
+
+  <text x="728" y="216" font-size="11" font-weight="600" fill="#344054">Nom</text>
+  <rect x="728" y="224" width="244" height="38" rx="5" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="744" y="248" font-size="12" fill="#98A2B3">ex: Dupont</text>
+
+  <text x="470" y="290" font-size="11" font-weight="600" fill="#344054">Email</text>
+  <rect x="470" y="298" width="502" height="38" rx="5" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="486" y="322" font-size="12" fill="#98A2B3">ex: marie.dupont@email.com</text>
+
+  <text x="470" y="364" font-size="11" font-weight="600" fill="#344054">Rôle</text>
+  <rect x="470" y="372" width="502" height="38" rx="5" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="486" y="396" font-size="12" fill="#344054">Bénéficiaire</text>
+  <text x="954" y="396" font-size="13" fill="#98A2B3">▾</text>
+
+  <text x="470" y="438" font-size="11" font-weight="600" fill="#344054">Consultant assigné</text>
+  <rect x="470" y="446" width="502" height="38" rx="5" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="486" y="470" font-size="12" fill="#98A2B3">Sélectionner un consultant…</text>
+  <text x="954" y="470" font-size="13" fill="#98A2B3">▾</text>
+
+  <!-- Note -->
+  <rect x="470" y="504" width="502" height="34" rx="4" fill="#EBF3FE"/>
+  <text x="490" y="526" font-size="10" fill="#1A5BA0">ℹ Un mot de passe temporaire sera envoyé par email.</text>
+
+  <!-- Buttons -->
+  <rect x="470" y="556" width="110" height="38" rx="5" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+  <text x="525" y="580" font-size="12" font-weight="500" fill="#344054" text-anchor="middle">Annuler</text>
+  <rect x="862" y="556" width="110" height="38" rx="5" fill="#1A5BA0"/>
+  <text x="917" y="580" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Créer le compte</text>
+</svg>

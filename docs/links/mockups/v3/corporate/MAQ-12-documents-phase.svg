@@ -1,0 +1,198 @@
+<!-- MAQ-12 | Documents Phase | Link's Accompagnement | v3.0 | corporate | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <clipPath id="viewport"><rect width="1440" height="900" rx="0"/></clipPath>
+    <filter id="shadow1" x="-1%" y="-1%" width="102%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#viewport)">
+    <!-- Background -->
+    <rect width="1440" height="900" fill="#F2F4F7"/>
+
+    <!-- Sidebar -->
+    <rect width="220" height="900" fill="#0D3B6E"/>
+    <!-- Logo -->
+    <text x="28" y="42" font-size="22" font-weight="700" fill="#FFFFFF">Link's</text>
+    <text x="28" y="62" font-size="13" fill="#7FA4C8">Accompagnement</text>
+    <polygon points="180,28 200,42 180,56" fill="#E5622E"/>
+    <line x1="16" y1="78" x2="204" y2="78" stroke="#1A5A9E" stroke-width="1"/>
+
+    <!-- Nav items -->
+    <g opacity="0.6">
+      <rect x="8" y="96" width="204" height="36" rx="4" fill="transparent"/>
+      <rect x="28" y="108" width="14" height="10" rx="1" fill="none" stroke="#7FA4C8" stroke-width="1.5"/>
+      <line x1="28" y1="113" x2="42" y2="113" stroke="#7FA4C8" stroke-width="1.5"/>
+      <text x="54" y="118" font-size="13" fill="#7FA4C8">Dashboard</text>
+    </g>
+    <g opacity="0.6">
+      <rect x="8" y="136" width="204" height="36" rx="4" fill="transparent"/>
+      <circle cx="35" cy="154" r="6" fill="none" stroke="#7FA4C8" stroke-width="1.5"/>
+      <text x="54" y="158" font-size="13" fill="#7FA4C8">Mon bilan</text>
+    </g>
+    <!-- Documents (active) -->
+    <g>
+      <rect x="8" y="176" width="204" height="36" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <rect x="8" y="178" width="3" height="32" rx="1" fill="#E5622E"/>
+      <path d="M27 184 h10 l4 4 v10 a1 1 0 0 1-1 1 h-13 a1 1 0 0 1-1-1 v-13 a1 1 0 0 1 1-1z" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+      <path d="M37 184 v4 h4" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+      <text x="54" y="198" font-size="13" font-weight="600" fill="#FFFFFF">Documents</text>
+    </g>
+    <g opacity="0.6">
+      <rect x="8" y="216" width="204" height="36" rx="4" fill="transparent"/>
+      <circle cx="35" cy="234" r="6" fill="none" stroke="#7FA4C8" stroke-width="1.5"/>
+      <text x="54" y="238" font-size="13" fill="#7FA4C8">Profil</text>
+    </g>
+
+    <!-- Header bar -->
+    <rect x="220" y="0" width="1220" height="60" fill="#FFFFFF"/>
+    <line x1="220" y1="60" x2="1440" y2="60" stroke="#D8DCE3" stroke-width="1"/>
+    <!-- Breadcrumb -->
+    <text x="248" y="35" font-size="12" fill="#8892A0">Bénéficiaire</text>
+    <text x="323" y="35" font-size="12" fill="#8892A0"> &gt; </text>
+    <text x="340" y="35" font-size="12" font-weight="600" fill="#0D3B6E">Documents</text>
+
+    <!-- Avatar + user -->
+    <circle cx="1330" cy="30" r="16" fill="#1A5BA0"/>
+    <text x="1323" y="35" font-size="11" font-weight="600" fill="#FFFFFF">MD</text>
+    <text x="1245" y="26" font-size="12" font-weight="600" fill="#2D3748" text-anchor="end">Marie Dupont</text>
+    <text x="1245" y="40" font-size="10" fill="#8892A0" text-anchor="end">Bénéficiaire</text>
+    <g transform="translate(1365,20)" opacity="0.5">
+      <path d="M0 0 h7 v18 h-7 M4 9 h11 M12 5 l4 4-4 4" fill="none" stroke="#667788" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Main content area -->
+    <g transform="translate(248, 80)">
+      <!-- Title -->
+      <text x="0" y="22" font-size="20" font-weight="700" fill="#111827">Documents de mon bilan</text>
+      <text x="0" y="42" font-size="13" fill="#6B7280">Retrouvez ici les documents mis à disposition par votre consultante pour chaque phase.</text>
+
+      <!-- Phase 1: Définir mon projet - green, table-like -->
+      <g transform="translate(0, 62)">
+        <rect x="0" y="0" width="940" height="126" rx="5" fill="#FFFFFF" stroke="#D8DCE3" stroke-width="1" filter="url(#shadow1)"/>
+        <rect x="0" y="0" width="4" height="126" rx="2" fill="#28A745"/>
+        <!-- Phase header -->
+        <rect x="0" y="0" width="940" height="36" rx="5" fill="#F8FAFB"/>
+        <rect x="0" y="20" width="940" height="16" fill="#F8FAFB"/>
+        <rect x="0" y="0" width="4" height="36" rx="2" fill="#28A745"/>
+        <text x="18" y="24" font-size="13" font-weight="700" fill="#111827">Phase 1 — Définir mon projet</text>
+        <rect x="845" y="8" width="84" height="22" rx="4" fill="#DCFCE7"/>
+        <text x="887" y="24" font-size="10" font-weight="600" fill="#16A34A" text-anchor="middle">Phase validée</text>
+        <line x1="4" y1="36" x2="940" y2="36" stroke="#E5E7EB" stroke-width="1"/>
+        <!-- Table headers -->
+        <text x="18" y="52" font-size="10" font-weight="600" fill="#6B7280" text-transform="uppercase">FICHIER</text>
+        <text x="460" y="52" font-size="10" font-weight="600" fill="#6B7280">TAILLE</text>
+        <text x="560" y="52" font-size="10" font-weight="600" fill="#6B7280">DATE D'AJOUT</text>
+        <text x="830" y="52" font-size="10" font-weight="600" fill="#6B7280">ACTION</text>
+        <line x1="18" y1="58" x2="922" y2="58" stroke="#F0F1F3" stroke-width="1"/>
+        <!-- Row 1 -->
+        <rect x="18" y="62" width="10" height="14" rx="2" fill="#FEE2E2"/>
+        <text x="23" y="74" font-size="7" font-weight="700" fill="#DC2626" text-anchor="middle">PDF</text>
+        <text x="36" y="74" font-size="12" fill="#374151">Guide de définition de projet.pdf</text>
+        <text x="460" y="74" font-size="12" fill="#6B7280">245 Ko</text>
+        <text x="560" y="74" font-size="12" fill="#6B7280">20/03/2026</text>
+        <rect x="820" y="62" width="104" height="26" rx="4" fill="#1A5BA0" cursor="pointer"/>
+        <text x="872" y="80" font-size="11" font-weight="500" fill="#FFFFFF" text-anchor="middle">Télécharger</text>
+        <line x1="18" y1="92" x2="922" y2="92" stroke="#F0F1F3" stroke-width="1"/>
+        <!-- Row 2 -->
+        <rect x="18" y="96" width="10" height="14" rx="2" fill="#DBEAFE"/>
+        <text x="23" y="108" font-size="6" font-weight="700" fill="#2563EB" text-anchor="middle">DOC</text>
+        <text x="36" y="108" font-size="12" fill="#374151">Fiche d'auto-évaluation.docx</text>
+        <text x="460" y="108" font-size="12" fill="#6B7280">128 Ko</text>
+        <text x="560" y="108" font-size="12" fill="#6B7280">20/03/2026</text>
+        <rect x="820" y="96" width="104" height="26" rx="4" fill="#1A5BA0" cursor="pointer"/>
+        <text x="872" y="114" font-size="11" font-weight="500" fill="#FFFFFF" text-anchor="middle">Télécharger</text>
+      </g>
+
+      <!-- Phase 2: Explorer mes compétences - orange -->
+      <g transform="translate(0, 202)">
+        <rect x="0" y="0" width="940" height="94" rx="5" fill="#FFFFFF" stroke="#D8DCE3" stroke-width="1" filter="url(#shadow1)"/>
+        <rect x="0" y="0" width="4" height="94" rx="2" fill="#E5622E"/>
+        <rect x="0" y="0" width="940" height="36" rx="5" fill="#F8FAFB"/>
+        <rect x="0" y="20" width="940" height="16" fill="#F8FAFB"/>
+        <rect x="0" y="0" width="4" height="36" rx="2" fill="#E5622E"/>
+        <text x="18" y="24" font-size="13" font-weight="700" fill="#111827">Phase 2 — Explorer mes compétences</text>
+        <rect x="855" y="8" width="74" height="22" rx="4" fill="#FFF3E0"/>
+        <text x="892" y="24" font-size="10" font-weight="600" fill="#E5622E" text-anchor="middle">En cours</text>
+        <line x1="4" y1="36" x2="940" y2="36" stroke="#E5E7EB" stroke-width="1"/>
+        <text x="18" y="52" font-size="10" font-weight="600" fill="#6B7280">FICHIER</text>
+        <text x="460" y="52" font-size="10" font-weight="600" fill="#6B7280">TAILLE</text>
+        <text x="560" y="52" font-size="10" font-weight="600" fill="#6B7280">DATE D'AJOUT</text>
+        <text x="830" y="52" font-size="10" font-weight="600" fill="#6B7280">ACTION</text>
+        <line x1="18" y1="58" x2="922" y2="58" stroke="#F0F1F3" stroke-width="1"/>
+        <!-- Row 1 -->
+        <rect x="18" y="62" width="10" height="14" rx="2" fill="#FEE2E2"/>
+        <text x="23" y="74" font-size="7" font-weight="700" fill="#DC2626" text-anchor="middle">PDF</text>
+        <text x="36" y="74" font-size="12" fill="#374151">Référentiel de compétences.pdf</text>
+        <text x="460" y="74" font-size="12" fill="#6B7280">512 Ko</text>
+        <text x="560" y="74" font-size="12" fill="#6B7280">01/04/2026</text>
+        <rect x="820" y="62" width="104" height="26" rx="4" fill="#1A5BA0" cursor="pointer"/>
+        <text x="872" y="80" font-size="11" font-weight="500" fill="#FFFFFF" text-anchor="middle">Télécharger</text>
+      </g>
+
+      <!-- Phase 3: Analyser mon marché - gray -->
+      <g transform="translate(0, 310)">
+        <rect x="0" y="0" width="940" height="68" rx="5" fill="#FFFFFF" stroke="#D8DCE3" stroke-width="1" filter="url(#shadow1)"/>
+        <rect x="0" y="0" width="4" height="68" rx="2" fill="#C0C7D0"/>
+        <rect x="0" y="0" width="940" height="36" rx="5" fill="#F8FAFB"/>
+        <rect x="0" y="20" width="940" height="16" fill="#F8FAFB"/>
+        <rect x="0" y="0" width="4" height="36" rx="2" fill="#C0C7D0"/>
+        <text x="18" y="24" font-size="13" font-weight="700" fill="#111827">Phase 3 — Analyser mon marché</text>
+        <rect x="862" y="8" width="66" height="22" rx="4" fill="#F0F2F5"/>
+        <text x="895" y="24" font-size="10" font-weight="600" fill="#8892A0" text-anchor="middle">À venir</text>
+        <line x1="4" y1="36" x2="940" y2="36" stroke="#E5E7EB" stroke-width="1"/>
+        <text x="18" y="56" font-size="12" font-style="italic" fill="#9CA3AF">Aucun document disponible pour cette phase.</text>
+      </g>
+
+      <!-- Phase 4 -->
+      <g transform="translate(0, 392)">
+        <rect x="0" y="0" width="940" height="68" rx="5" fill="#FFFFFF" stroke="#D8DCE3" stroke-width="1" filter="url(#shadow1)"/>
+        <rect x="0" y="0" width="4" height="68" rx="2" fill="#C0C7D0"/>
+        <rect x="0" y="0" width="940" height="36" rx="5" fill="#F8FAFB"/>
+        <rect x="0" y="20" width="940" height="16" fill="#F8FAFB"/>
+        <rect x="0" y="0" width="4" height="36" rx="2" fill="#C0C7D0"/>
+        <text x="18" y="24" font-size="13" font-weight="700" fill="#111827">Phase 4 — Construire mon plan d'action</text>
+        <rect x="862" y="8" width="66" height="22" rx="4" fill="#F0F2F5"/>
+        <text x="895" y="24" font-size="10" font-weight="600" fill="#8892A0" text-anchor="middle">À venir</text>
+        <line x1="4" y1="36" x2="940" y2="36" stroke="#E5E7EB" stroke-width="1"/>
+        <text x="18" y="56" font-size="12" font-style="italic" fill="#9CA3AF">Aucun document disponible pour cette phase.</text>
+      </g>
+
+      <!-- Phase 5 -->
+      <g transform="translate(0, 474)">
+        <rect x="0" y="0" width="940" height="68" rx="5" fill="#FFFFFF" stroke="#D8DCE3" stroke-width="1" filter="url(#shadow1)"/>
+        <rect x="0" y="0" width="4" height="68" rx="2" fill="#C0C7D0"/>
+        <rect x="0" y="0" width="940" height="36" rx="5" fill="#F8FAFB"/>
+        <rect x="0" y="20" width="940" height="16" fill="#F8FAFB"/>
+        <rect x="0" y="0" width="4" height="36" rx="2" fill="#C0C7D0"/>
+        <text x="18" y="24" font-size="13" font-weight="700" fill="#111827">Phase 5 — Préparer mes démarches</text>
+        <rect x="862" y="8" width="66" height="22" rx="4" fill="#F0F2F5"/>
+        <text x="895" y="24" font-size="10" font-weight="600" fill="#8892A0" text-anchor="middle">À venir</text>
+        <line x1="4" y1="36" x2="940" y2="36" stroke="#E5E7EB" stroke-width="1"/>
+        <text x="18" y="56" font-size="12" font-style="italic" fill="#9CA3AF">Aucun document disponible pour cette phase.</text>
+      </g>
+
+      <!-- Phase 6 -->
+      <g transform="translate(0, 556)">
+        <rect x="0" y="0" width="940" height="68" rx="5" fill="#FFFFFF" stroke="#D8DCE3" stroke-width="1" filter="url(#shadow1)"/>
+        <rect x="0" y="0" width="4" height="68" rx="2" fill="#C0C7D0"/>
+        <rect x="0" y="0" width="940" height="36" rx="5" fill="#F8FAFB"/>
+        <rect x="0" y="20" width="940" height="16" fill="#F8FAFB"/>
+        <rect x="0" y="0" width="4" height="36" rx="2" fill="#C0C7D0"/>
+        <text x="18" y="24" font-size="13" font-weight="700" fill="#111827">Phase 6 — Synthèse et bilan</text>
+        <rect x="862" y="8" width="66" height="22" rx="4" fill="#F0F2F5"/>
+        <text x="895" y="24" font-size="10" font-weight="600" fill="#8892A0" text-anchor="middle">À venir</text>
+        <line x1="4" y1="36" x2="940" y2="36" stroke="#E5E7EB" stroke-width="1"/>
+        <text x="18" y="56" font-size="12" font-style="italic" fill="#9CA3AF">Aucun document disponible pour cette phase.</text>
+      </g>
+
+      <!-- Info banner -->
+      <g transform="translate(0, 642)">
+        <rect x="0" y="0" width="940" height="44" rx="5" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+        <circle cx="22" cy="22" r="9" fill="none" stroke="#1A5BA0" stroke-width="1.5"/>
+        <text x="22" y="27" font-size="12" font-weight="700" fill="#1A5BA0" text-anchor="middle">i</text>
+        <text x="42" y="26" font-size="11" fill="#1E40AF">Les documents sont ajoutés par votre consultante au fil de votre parcours. Formats acceptés : PDF, DOCX (max 10 Mo).</text>
+      </g>
+    </g>
+  </g>
+</svg>

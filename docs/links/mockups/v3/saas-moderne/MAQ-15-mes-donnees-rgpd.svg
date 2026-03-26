@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow1" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow2" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#FAFBFC"/>
+
+  <!-- Sidebar -->
+  <rect width="220" height="900" fill="#0D3B6E"/>
+  <text x="110" y="38" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">Link's</text>
+  <text x="110" y="56" text-anchor="middle" fill="#B0C8E8" font-size="11" font-weight="400">Accompagnement</text>
+  <polygon points="95,62 115,62 105,74" fill="#FF6B35"/>
+  <line x1="20" y1="85" x2="200" y2="85" stroke="#1A4F8A" stroke-width="1"/>
+
+  <!-- Nav items -->
+  <rect x="12" y="100" width="196" height="40" rx="8" fill="transparent"/>
+  <text x="48" y="125" fill="#7BA5D4" font-size="13" font-weight="500">Dashboard</text>
+  <rect x="12" y="144" width="196" height="40" rx="8" fill="transparent"/>
+  <text x="48" y="169" fill="#7BA5D4" font-size="13" font-weight="500">Mon bilan</text>
+  <rect x="12" y="188" width="196" height="40" rx="8" fill="transparent"/>
+  <text x="48" y="213" fill="#7BA5D4" font-size="13" font-weight="500">Documents</text>
+  <!-- Profil (active) -->
+  <rect x="12" y="232" width="196" height="40" rx="8" fill="rgba(255,255,255,0.12)"/>
+  <rect x="12" y="232" width="3" height="40" rx="1.5" fill="#FF6B35"/>
+  <text x="48" y="257" fill="#FFFFFF" font-size="13" font-weight="600">Profil</text>
+
+  <!-- Header -->
+  <rect x="220" y="0" width="1220" height="64" fill="#FFFFFF" filter="url(#shadow1)"/>
+  <text x="252" y="37" fill="#9CA3AF" font-size="13">Profil</text>
+  <text x="280" y="37" fill="#9CA3AF" font-size="13">&gt;</text>
+  <text x="296" y="37" fill="#374151" font-size="13" font-weight="500">Mes données</text>
+
+  <!-- Header right -->
+  <circle cx="1310" cy="32" r="16" fill="#1E6FC0"/>
+  <text x="1310" y="37" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">MD</text>
+  <text x="1335" y="28" fill="#1F2937" font-size="13" font-weight="500">Marie Dupont</text>
+  <text x="1335" y="43" fill="#6B7280" font-size="11">Bénéficiaire</text>
+
+  <!-- Main content -->
+  <!-- Title -->
+  <text x="290" y="110" fill="#111827" font-size="20" font-weight="700">Mes données personnelles</text>
+  <text x="290" y="132" fill="#6B7280" font-size="13">Conformément au RGPD, vous pouvez exercer vos droits sur vos données personnelles.</text>
+
+  <!-- Info card -->
+  <rect x="290" y="152" width="900" height="60" rx="10" fill="#EBF5FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="322" y="178" fill="#1E6FC0" font-size="16">&#x1F6E1;</text>
+  <text x="346" y="180" fill="#1E40AF" font-size="13">Vos données sont hébergées en France et protégées conformément au Règlement Général sur la</text>
+  <text x="346" y="198" fill="#1E40AF" font-size="13">Protection des Données (RGPD).</text>
+
+  <!-- Section 1: Exporter mes données -->
+  <rect x="290" y="230" width="900" height="150" rx="10" fill="#FFFFFF" filter="url(#shadow2)"/>
+  <text x="322" y="262" fill="#111827" font-size="16" font-weight="600">Exporter mes données</text>
+  <line x1="322" y1="275" x2="1158" y2="275" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="322" y="300" fill="#4B5563" font-size="13">Téléchargez l'ensemble de vos données personnelles au format JSON.</text>
+
+  <!-- Export button -->
+  <rect x="322" y="316" width="200" height="38" rx="8" fill="#1E6FC0"/>
+  <text x="350" y="340" fill="#FFFFFF" font-size="13" font-weight="500">&#x2B07; Exporter mes données</text>
+
+  <text x="322" y="370" fill="#9CA3AF" font-size="11" font-style="italic">Le fichier sera généré et téléchargé automatiquement.</text>
+
+  <!-- Section 2: Supprimer mon compte (danger zone) -->
+  <rect x="290" y="398" width="900" height="220" rx="10" fill="#FFFBFB" stroke="#FECACA" stroke-width="1" filter="url(#shadow2)"/>
+  <text x="322" y="430" fill="#991B1B" font-size="16" font-weight="600">Supprimer mon compte</text>
+  <line x1="322" y1="443" x2="1158" y2="443" stroke="#FECACA" stroke-width="1"/>
+  <text x="322" y="468" fill="#4B5563" font-size="13">Cette action est irréversible. Toutes vos données seront définitivement supprimées.</text>
+
+  <!-- Warning box -->
+  <rect x="322" y="484" width="846" height="56" rx="8" fill="#FEF2F2"/>
+  <text x="346" y="507" fill="#DC2626" font-size="14">&#x26A0;</text>
+  <text x="368" y="507" fill="#991B1B" font-size="12">La suppression inclut : vos réponses aux questionnaires, vos documents, votre historique de séances.</text>
+  <text x="368" y="527" fill="#991B1B" font-size="12">Délai légal de conservation : 3 ans après la fin du bilan.</text>
+
+  <!-- Delete button -->
+  <rect x="322" y="554" width="210" height="38" rx="8" fill="#DC2626"/>
+  <text x="348" y="578" fill="#FFFFFF" font-size="13" font-weight="500">Demander la suppression</text>
+
+  <text x="322" y="605" fill="#9CA3AF" font-size="11" font-style="italic">Une confirmation vous sera demandée. L'administrateur sera notifié.</text>
+
+  <!-- Section 3: Historique des demandes -->
+  <rect x="290" y="636" width="900" height="100" rx="10" fill="#FFFFFF" filter="url(#shadow2)"/>
+  <text x="322" y="668" fill="#111827" font-size="16" font-weight="600">Historique des demandes</text>
+  <line x1="322" y1="681" x2="1158" y2="681" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="740" y="718" text-anchor="middle" fill="#9CA3AF" font-size="13">Aucune demande de données en cours.</text>
+
+  <!-- Links -->
+  <text x="290" y="770" fill="#1E6FC0" font-size="12" font-weight="500" text-decoration="underline">Politique de confidentialité</text>
+  <text x="475" y="770" fill="#D1D5DB" font-size="12">|</text>
+  <text x="490" y="770" fill="#1E6FC0" font-size="12" font-weight="500" text-decoration="underline">Mentions légales</text>
+</svg>
