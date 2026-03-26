@@ -11,11 +11,11 @@
 |-------|-------|-------|----------|-------|-------|--------|
 | ✅ 1 | #197 | Mettre à jour SPC-0004 matrice de traçabilité avec couverture réelle [MAJ-06] | 🟠 Majeur qualité | 1 | documentalix | Fait (2026-03-26) |
 | ✅ 2 | #192 | Corriger les accents manquants dans les textes consultant [MIN-01] | 🟡 Mineur | 2 | ergonomix | Fait (2026-03-26) |
-| 3 | #193 | Remplacer les entités HTML par des caractères UTF-8 [MIN-02] | 🟡 Mineur | 2 | ergonomix | ⬜ |
-| 4 | #194 | Corriger le bouton "Planifier" trompeur sur le dashboard bénéficiaire [MIN-03] | 🟡 Mineur | 2 | ergonomix | ⬜ |
-| 5 | #195 | Ajouter toasts d'erreur sur les appels API silencieux [MIN-07] | 🟡 Mineur | 2 | ergonomix | ⬜ |
-| 6 | #196 | Fusionner les pages profil et mes-données en une seule page [MIN-05] | 🟡 Mineur | 2 | ergonomix | ⬜ |
-| 7 | #198 | Implémenter notification email planification de séances [US-CON-08] | 🟡 Mineur | 3 | integratix | ⚠️ REVIEW |
+| ✅ 3 | #193 | Remplacer les entités HTML par des caractères UTF-8 [MIN-02] | 🟡 Mineur | 2 | ergonomix | Fait (2026-03-26) |
+| ✅ 4 | #194 | Corriger le bouton "Planifier" trompeur sur le dashboard bénéficiaire [MIN-03] | 🟡 Mineur | 2 | ergonomix | Fait (2026-03-26) |
+| ✅ 5 | #195 | Ajouter toasts d'erreur sur les appels API silencieux [MIN-07] | 🟡 Mineur | 2 | ergonomix | Fait (2026-03-26) |
+| ✅ 6 | #196 | Fusionner les pages profil et mes-données en une seule page [MIN-05] | 🟡 Mineur | 2 | ergonomix | Fait (2026-03-26) |
+| ✅ 7 | #198 | Implémenter notification email planification de séances [US-CON-08] | 🟡 Mineur | 3 | integratix | Fait (2026-03-26, H1 validée) |
 
 ## Dépendances
 
