@@ -13,7 +13,7 @@
 | 2 | #206 | MAQ-01 — Écran de connexion (Login) | 🟢 Feature | 2 | ergonomix | ✅ Fait (2026-03-26) |
 | 3 | #207 | MAQ-10 — Demande de réinitialisation de mot de passe | 🟢 Feature | 2 | ergonomix | ✅ Fait (2026-03-26) |
 | 4 | #208 | MAQ-11 — Changement de mot de passe via lien de réinitialisation | 🟢 Feature | 2 | ergonomix | ✅ Fait (2026-03-26) |
-| 5 | #209 | MAQ-19 — Page d'erreur 404 | 🟢 Feature | 2 | ergonomix | ⬜ |
+| 5 | #209 | MAQ-19 — Page d'erreur 404 | 🟢 Feature | 2 | ergonomix | ✅ Fait (2026-03-26) |
 
 ## Dependances
 
