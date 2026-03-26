@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow1" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow2" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="4" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#F2F4F7"/>
+
+  <!-- Sidebar -->
+  <rect width="220" height="900" fill="#0D3B6E"/>
+  <text x="110" y="38" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">Link's</text>
+  <text x="110" y="56" text-anchor="middle" fill="#B0C8E8" font-size="11">Accompagnement</text>
+  <polygon points="95,62 115,62 105,74" fill="#E5622E"/>
+  <line x1="20" y1="85" x2="200" y2="85" stroke="#1A4F8A" stroke-width="1"/>
+
+  <!-- Nav items -->
+  <text x="48" y="125" fill="#7BA5D4" font-size="13" font-weight="500">Dashboard</text>
+  <text x="48" y="169" fill="#7BA5D4" font-size="13" font-weight="500">Mon bilan</text>
+  <text x="48" y="213" fill="#7BA5D4" font-size="13" font-weight="500">Documents</text>
+  <!-- Profil (active) -->
+  <rect x="12" y="232" width="196" height="40" rx="4" fill="rgba(255,255,255,0.1)"/>
+  <rect x="12" y="232" width="3" height="40" rx="1" fill="#E5622E"/>
+  <text x="48" y="257" fill="#FFFFFF" font-size="13" font-weight="600">Profil</text>
+
+  <!-- Header -->
+  <rect x="220" y="0" width="1220" height="64" fill="#FFFFFF" filter="url(#shadow1)"/>
+  <line x1="220" y1="64" x2="1440" y2="64" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="252" y="37" fill="#6B7280" font-size="13" font-weight="500">Profil</text>
+  <circle cx="1310" cy="32" r="16" fill="#1A5BA0"/>
+  <text x="1310" y="37" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">MD</text>
+  <text x="1335" y="28" fill="#1F2937" font-size="13" font-weight="500">Marie Dupont</text>
+  <text x="1335" y="43" fill="#6B7280" font-size="11">Bénéficiaire</text>
+
+  <!-- Profile Card -->
+  <rect x="500" y="86" width="700" height="326" rx="6" fill="#FFFFFF" filter="url(#shadow2)"/>
+  <rect x="500" y="86" width="700" height="4" rx="0" fill="#1A5BA0"/>
+
+  <!-- Avatar -->
+  <rect x="815" y="108" width="80" height="80" rx="6" fill="#1A5BA0"/>
+  <text x="855" y="158" text-anchor="middle" fill="#FFFFFF" font-size="28" font-weight="700">MD</text>
+
+  <!-- Name -->
+  <text x="855" y="214" text-anchor="middle" fill="#111827" font-size="24" font-weight="700">Marie Dupont</text>
+
+  <!-- Role badge -->
+  <rect x="810" y="224" width="90" height="24" rx="4" fill="#EBF5FF" stroke="#1A5BA0" stroke-width="1"/>
+  <text x="855" y="240" text-anchor="middle" fill="#1A5BA0" font-size="11" font-weight="600">BENEFICIAIRE</text>
+
+  <!-- Info grid - structured/formal -->
+  <line x1="540" y1="262" x2="1160" y2="262" stroke="#E5E7EB" stroke-width="1"/>
+
+  <text x="540" y="284" fill="#6B7280" font-size="11" font-weight="600" letter-spacing="0.5">EMAIL</text>
+  <text x="540" y="302" fill="#374151" font-size="13">marie.dupont@email.com</text>
+
+  <text x="780" y="284" fill="#6B7280" font-size="11" font-weight="600" letter-spacing="0.5">TELEPHONE</text>
+  <text x="780" y="302" fill="#374151" font-size="13">06 12 34 56 78</text>
+
+  <text x="540" y="330" fill="#6B7280" font-size="11" font-weight="600" letter-spacing="0.5">DATE D'INSCRIPTION</text>
+  <text x="540" y="348" fill="#374151" font-size="13">15 mars 2026</text>
+
+  <text x="780" y="330" fill="#6B7280" font-size="11" font-weight="600" letter-spacing="0.5">CONSULTANTE ASSIGNEE</text>
+  <text x="780" y="348" fill="#1A5BA0" font-size="13" font-weight="500">Sophie Martin</text>
+
+  <!-- Section: Informations personnelles -->
+  <rect x="500" y="430" width="700" height="170" rx="6" fill="#FFFFFF" filter="url(#shadow2)"/>
+  <rect x="500" y="430" width="700" height="3" fill="#1A5BA0"/>
+  <text x="530" y="460" fill="#111827" font-size="15" font-weight="700" letter-spacing="0.3">INFORMATIONS PERSONNELLES</text>
+  <line x1="530" y1="472" x2="1170" y2="472" stroke="#E5E7EB" stroke-width="1"/>
+
+  <text x="530" y="496" fill="#6B7280" font-size="11" font-weight="600" letter-spacing="0.5">NOM</text>
+  <rect x="530" y="502" width="195" height="36" rx="4" fill="#F2F4F7" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="544" y="525" fill="#374151" font-size="13">Dupont</text>
+
+  <text x="745" y="496" fill="#6B7280" font-size="11" font-weight="600" letter-spacing="0.5">PRENOM</text>
+  <rect x="745" y="502" width="195" height="36" rx="4" fill="#F2F4F7" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="759" y="525" fill="#374151" font-size="13">Marie</text>
+
+  <text x="960" y="496" fill="#6B7280" font-size="11" font-weight="600" letter-spacing="0.5">EMAIL</text>
+  <rect x="960" y="502" width="205" height="36" rx="4" fill="#F2F4F7" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="974" y="525" fill="#374151" font-size="12">marie.dupont@email.com</text>
+
+  <text x="530" y="564" fill="#9CA3AF" font-size="11">Champs en lecture seule.</text>
+
+  <!-- Section: Sécurité -->
+  <rect x="500" y="618" width="700" height="108" rx="6" fill="#FFFFFF" filter="url(#shadow2)"/>
+  <rect x="500" y="618" width="700" height="3" fill="#1A5BA0"/>
+  <text x="530" y="648" fill="#111827" font-size="15" font-weight="700" letter-spacing="0.3">SECURITE</text>
+  <line x1="530" y1="660" x2="1170" y2="660" stroke="#E5E7EB" stroke-width="1"/>
+
+  <rect x="530" y="672" width="220" height="36" rx="4" fill="#FFFFFF" stroke="#1A5BA0" stroke-width="1.5"/>
+  <text x="556" y="695" fill="#1A5BA0" font-size="12" font-weight="600">Modifier mon mot de passe</text>
+  <text x="770" y="695" fill="#9CA3AF" font-size="12">Dernière modification il y a 12 jours</text>
+
+  <!-- Section: Mes données -->
+  <rect x="500" y="744" width="700" height="64" rx="6" fill="#FFFFFF" filter="url(#shadow2)" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="530" y="771" fill="#111827" font-size="13" font-weight="700">Gérer mes données (RGPD)</text>
+  <text x="530" y="790" fill="#6B7280" font-size="12">Exercez vos droits sur vos données personnelles</text>
+  <text x="1170" y="780" fill="#6B7280" font-size="16" text-anchor="end">&#x2192;</text>
+
+  <!-- Footer -->
+  <text x="855" y="838" text-anchor="middle" fill="#9CA3AF" font-size="11">Pour toute modification de vos informations, contactez votre consultante ou l'administrateur.</text>
+</svg>

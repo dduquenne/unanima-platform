@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap');
+      .font { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
+    </style>
+    <linearGradient id="headerGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1A5BA0"/>
+      <stop offset="100%" stop-color="#1E6FC0"/>
+    </linearGradient>
+    <linearGradient id="accentLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#FF8F5E"/>
+    </linearGradient>
+    <linearGradient id="btnGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E6FC0"/>
+      <stop offset="100%" stop-color="#1A5BA0"/>
+    </linearGradient>
+    <filter id="shadow1" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#1E6FC0" flood-opacity="0.15"/>
+    </filter>
+    <filter id="shadow2" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+    <clipPath id="headerClip">
+      <rect x="0" y="0" width="1440" height="64"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#FAFBFC"/>
+
+  <!-- Subtle grid pattern -->
+  <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+    <rect width="60" height="60" fill="none"/>
+    <circle cx="30" cy="30" r="0.8" fill="#DCE1EB" opacity="0.5"/>
+  </pattern>
+  <rect width="1440" height="900" fill="url(#grid)"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1440" height="64" fill="url(#headerGrad)"/>
+  <rect x="0" y="64" width="1440" height="3" fill="url(#accentLine)"/>
+
+  <!-- Logo -->
+  <text x="48" y="40" class="font" fill="#FFFFFF" font-size="22" font-weight="700" letter-spacing="0.5">Link's</text>
+  <rect x="120" y="28" width="4" height="16" rx="2" fill="#FF6B35"/>
+
+  <!-- Main content area -->
+  <!-- Decorative geometric shapes -->
+  <!-- Top-left triangle -->
+  <polygon points="180,220 240,320 120,320" fill="#1E6FC0" opacity="0.04"/>
+  <!-- Top-right circle -->
+  <circle cx="1200" cy="250" r="80" fill="#FF6B35" opacity="0.04"/>
+  <!-- Bottom-left hexagon -->
+  <polygon points="250,650 290,620 340,650 340,700 290,730 250,700" fill="#1E6FC0" opacity="0.03"/>
+  <!-- Bottom-right square -->
+  <rect x="1100" y="620" width="80" height="80" rx="8" fill="#FF6B35" opacity="0.03" transform="rotate(15,1140,660)"/>
+  <!-- Scattered small shapes -->
+  <circle cx="350" cy="300" r="6" fill="#1E6FC0" opacity="0.08"/>
+  <circle cx="1080" cy="350" r="4" fill="#FF6B35" opacity="0.1"/>
+  <rect x="400" y="600" width="10" height="10" rx="2" fill="#1E6FC0" opacity="0.06" transform="rotate(45,405,605)"/>
+  <circle cx="1050" cy="580" r="5" fill="#1E6FC0" opacity="0.06"/>
+
+  <!-- Central card -->
+  <rect x="370" y="180" width="700" height="520" rx="12" fill="#FFFFFF" filter="url(#shadow1)"/>
+
+  <!-- 404 Typography — large geometric number -->
+  <text x="720" y="420" class="font" fill="#1E6FC0" font-size="180" font-weight="900" text-anchor="middle" letter-spacing="-8" opacity="0.1">404</text>
+  <text x="720" y="400" class="font" fill="#1E6FC0" font-size="140" font-weight="900" text-anchor="middle" letter-spacing="-6">404</text>
+
+  <!-- Decorative line under 404 -->
+  <rect x="620" y="420" width="200" height="4" rx="2" fill="url(#accentLine)"/>
+
+  <!-- Compass/search icon suggestion -->
+  <circle cx="720" cy="470" r="20" fill="none" stroke="#DCE1EB" stroke-width="2.5"/>
+  <line x1="734" y1="484" x2="748" y2="498" stroke="#DCE1EB" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="720" cy="470" r="5" fill="none" stroke="#FF6B35" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Error message -->
+  <text x="720" y="530" class="font" fill="#2D3748" font-size="28" font-weight="700" text-anchor="middle">Page introuvable</text>
+
+  <!-- Subtitle -->
+  <text x="720" y="565" class="font" fill="#8896AB" font-size="16" font-weight="400" text-anchor="middle">La page que vous recherchez n'existe pas ou a ete deplacee.</text>
+
+  <!-- CTA Button -->
+  <rect x="610" y="600" width="220" height="48" rx="10" fill="url(#btnGrad)" filter="url(#shadow2)"/>
+  <text x="720" y="630" class="font" fill="#FFFFFF" font-size="15" font-weight="600" text-anchor="middle">Retour a l'accueil</text>
+  <!-- Arrow icon in button -->
+  <path d="M 636 624 L 628 618 L 628 630 Z" fill="#FFFFFF" opacity="0.6"/>
+
+  <!-- Footer -->
+  <line x1="370" y1="840" x2="1070" y2="840" stroke="#E8ECF1" stroke-width="1"/>
+  <text x="720" y="870" class="font" fill="#A0AEC0" font-size="13" font-weight="400" text-anchor="middle">Link's Accompagnement — Plateforme de suivi des bilans de competences</text>
+</svg>
