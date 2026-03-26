@@ -169,7 +169,7 @@ export default function ProtectedLayout({
           <div className="flex items-center gap-3">
             {/* Avatar + info */}
             <button
-              onClick={() => router.push('/profile')}
+              onClick={() => router.push('/profil')}
               className="flex items-center gap-2.5 rounded-[var(--radius-md)] px-2 py-1 transition-colors hover:bg-[var(--color-text-inverse)]/10"
             >
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-primary)] text-xs font-bold text-[var(--color-text-inverse)]">
