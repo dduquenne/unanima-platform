@@ -4,11 +4,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Calendar,
   Clock,
+  Edit3,
   Save,
   Video,
   ExternalLink,
   Check,
   AlertCircle,
+  X,
 } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
@@ -28,10 +30,12 @@ export interface PlanificationTabProps {
   onSessionsUpdated?: () => void
 }
 
-interface SessionDateEntry {
-  session_number: number
+interface SessionFormState {
   date: string
   time: string
+  duration: string
+  visioUrl: string
+  notes: string
 }
 
 interface Toast {
@@ -60,9 +64,7 @@ function isoToTimeInput(iso: string | null): string {
   if (!iso) return ''
   const d = new Date(iso)
   if (isNaN(d.getTime())) return ''
-  const hours = String(d.getHours()).padStart(2, '0')
-  const minutes = String(d.getMinutes()).padStart(2, '0')
-  return `${hours}:${minutes}`
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
 }
 
 function dateTimeToIso(date: string, time: string): string | null {
@@ -72,10 +74,9 @@ function dateTimeToIso(date: string, time: string): string | null {
 }
 
 function isDateInFuture(date: string, time: string): boolean {
-  if (!date) return true // no date set, nothing to validate
+  if (!date) return true
   const timePart = time || '00:00'
-  const dt = new Date(`${date}T${timePart}:00`)
-  return dt.getTime() > Date.now()
+  return new Date(`${date}T${timePart}:00`).getTime() > Date.now()
 }
 
 function isValidHttpsUrl(url: string): boolean {
@@ -83,17 +84,28 @@ function isValidHttpsUrl(url: string): boolean {
   return url.startsWith('https://')
 }
 
+function formatDateTimeFR(iso: string): string {
+  const d = new Date(iso)
+  const date = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  const time = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+  return `${date} à ${time}`
+}
+
+function isPastSession(iso: string | null): boolean {
+  if (!iso) return false
+  return new Date(iso).getTime() < Date.now()
+}
+
+function daysUntil(iso: string): number {
+  const diff = new Date(iso).getTime() - Date.now()
+  return Math.ceil(diff / (1000 * 60 * 60 * 24))
+}
+
 // ---------------------------------------------------------------------------
-// Sub-components
+// Toast
 // ---------------------------------------------------------------------------
 
-function ToastNotification({
-  toast,
-  onDismiss,
-}: {
-  toast: Toast
-  onDismiss: () => void
-}) {
+function ToastNotification({ toast, onDismiss }: { toast: Toast; onDismiss: () => void }) {
   useEffect(() => {
     const timer = setTimeout(onDismiss, 4000)
     return () => clearTimeout(timer)
@@ -101,43 +113,338 @@ function ToastNotification({
 
   return (
     <div
-      className={`fixed top-6 right-6 z-50 flex items-center gap-3 rounded-lg px-5 py-3 shadow-lg transition-all ${
-        toast.type === 'success'
-          ? 'bg-[#D4EDDA] text-[#155724] border border-[#C3E6CB]'
-          : 'bg-[#F8D7DA] text-[#721C24] border border-[#F5C6CB]'
-      }`}
+      className="fixed top-6 right-6 z-50 flex items-center gap-3 rounded-[18px] px-5 py-3 shadow-lg"
+      style={{
+        backgroundColor: toast.type === 'success' ? '#D4EDDA' : '#F8D7DA',
+        color: toast.type === 'success' ? '#155724' : '#721C24',
+        borderColor: toast.type === 'success' ? '#C3E6CB' : '#F5C6CB',
+        borderWidth: '1px',
+      }}
     >
-      {toast.type === 'success' ? (
-        <Check className="h-4 w-4 shrink-0" />
-      ) : (
-        <AlertCircle className="h-4 w-4 shrink-0" />
-      )}
+      {toast.type === 'success' ? <Check className="h-4 w-4 shrink-0" /> : <AlertCircle className="h-4 w-4 shrink-0" />}
       <span className="text-sm font-medium">{toast.message}</span>
-      <button
-        onClick={onDismiss}
-        className="ml-2 text-sm opacity-60 hover:opacity-100 transition-opacity"
-      >
-        ×
-      </button>
+      <button onClick={onDismiss} className="ml-2 text-sm opacity-60 hover:opacity-100 transition-opacity">×</button>
     </div>
   )
 }
 
-function StatusBadgePlanification({ isPlanned }: { isPlanned: boolean }) {
-  if (isPlanned) {
-    return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#D4EDDA] px-3 py-1 text-xs font-medium text-[#28A745]">
-        <Check className="h-3 w-3" />
-        Planifiee
-      </span>
-    )
+// ---------------------------------------------------------------------------
+// Session Card — Completed
+// ---------------------------------------------------------------------------
+
+function CompletedSessionCard({ session }: { session: SessionData }) {
+  return (
+    <div
+      className="relative overflow-hidden rounded-[18px] px-5 py-4"
+      style={{ backgroundColor: '#FFFFFF', boxShadow: '0 1px 6px rgba(0, 0, 0, 0.06)' }}
+    >
+      <div className="absolute left-0 top-0 h-full w-[5px]" style={{ backgroundColor: '#28A745' }} />
+      <div className="flex items-center gap-4">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[15px] font-bold" style={{ backgroundColor: '#E6F9EC', color: '#28A745' }}>
+          ✓
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-[14px] font-semibold" style={{ color: '#2D3748' }}>
+            Séance {session.session_number}
+          </p>
+          <p className="text-[12px]" style={{ color: '#718096' }}>
+            {session.scheduled_at ? `${formatDateTimeFR(session.scheduled_at)} · 1h00` : ''}
+          </p>
+          {session.visio_url && (
+            <a href={session.visio_url} target="_blank" rel="noopener noreferrer" className="text-[11px] underline" style={{ color: '#2A7FD4' }}>
+              {session.visio_url}
+            </a>
+          )}
+        </div>
+        <span className="rounded-full px-3 py-1 text-[11px] font-semibold" style={{ backgroundColor: '#E6F9EC', color: '#28A745' }}>
+          Réalisée ✓
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Session Card — Planned/Upcoming
+// ---------------------------------------------------------------------------
+
+function PlannedSessionCard({ session, onEdit }: { session: SessionData; onEdit: () => void }) {
+  return (
+    <div
+      className="relative overflow-hidden rounded-[18px] px-5 py-4"
+      style={{ backgroundColor: '#FFFFFF', boxShadow: '0 1px 6px rgba(0, 0, 0, 0.06)' }}
+    >
+      <div className="absolute left-0 top-0 h-full w-[5px]" style={{ backgroundColor: '#2A7FD4' }} />
+      <div className="flex items-center gap-4">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: '#EBF4FF' }}>
+          <Calendar className="h-3.5 w-3.5" style={{ color: '#2A7FD4' }} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-[14px] font-semibold" style={{ color: '#2D3748' }}>
+            Séance {session.session_number}
+          </p>
+          <p className="text-[12px]" style={{ color: '#718096' }}>
+            {session.scheduled_at ? `${formatDateTimeFR(session.scheduled_at)} · 1h00` : ''}
+          </p>
+          {session.visio_url && (
+            <a href={session.visio_url} target="_blank" rel="noopener noreferrer" className="text-[11px] underline" style={{ color: '#2A7FD4' }}>
+              {session.visio_url}
+            </a>
+          )}
+        </div>
+        <span className="rounded-full px-3 py-1 text-[11px] font-semibold" style={{ backgroundColor: '#EBF4FF', color: '#2A7FD4' }}>
+          Planifiée
+        </span>
+        <button
+          onClick={onEdit}
+          className="flex h-8 w-8 items-center justify-center rounded-full border"
+          style={{ backgroundColor: '#FFF8F5', borderColor: '#FDE8D8', color: '#F28C5A' }}
+        >
+          <Edit3 className="h-3.5 w-3.5" />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Session Card — To Plan
+// ---------------------------------------------------------------------------
+
+function ToPlanSessionCard({ sessionNumber, onPlan }: { sessionNumber: number; onPlan: () => void }) {
+  return (
+    <div
+      className="relative overflow-hidden rounded-[18px] px-5 py-3"
+      style={{ backgroundColor: '#FFFFFF', boxShadow: '0 1px 6px rgba(0, 0, 0, 0.06)' }}
+    >
+      <div className="absolute left-0 top-0 h-full w-[5px]" style={{ backgroundColor: '#D1D5DB' }} />
+      <div className="flex items-center gap-4">
+        <span className="text-[14px] font-medium" style={{ color: '#718096' }}>
+          Séance {sessionNumber} — À planifier
+        </span>
+        <div className="flex-1" />
+        <button
+          onClick={onPlan}
+          className="rounded-[16px] border px-4 py-1.5 text-[12px] font-medium transition-colors hover:bg-[#FFF3EC]"
+          style={{ borderColor: '#FDE8D8', color: '#F28C5A' }}
+        >
+          Planifier
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Expanded Edit Form
+// ---------------------------------------------------------------------------
+
+function SessionEditForm({
+  sessionNumber,
+  initialForm,
+  validationError,
+  isSaving,
+  onSave,
+  onCancel,
+}: {
+  sessionNumber: number
+  initialForm: SessionFormState
+  validationError: string
+  isSaving: boolean
+  onSave: (form: SessionFormState) => void
+  onCancel: () => void
+}) {
+  const [form, setForm] = useState<SessionFormState>(initialForm)
+
+  const fieldStyle = {
+    backgroundColor: '#FFFBF8',
+    borderColor: '#FDE8D8',
+    color: '#2D3748',
   }
 
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF3EE] px-3 py-1 text-xs font-medium text-[#FF6B35]">
-      <AlertCircle className="h-3 w-3" />
-      A planifier
-    </span>
+    <div
+      className="relative overflow-hidden rounded-[18px] p-6"
+      style={{ backgroundColor: '#FFFFFF', boxShadow: '0 2px 10px rgba(242, 140, 90, 0.08)' }}
+    >
+      <div className="absolute left-0 top-0 h-full w-[5px]" style={{ backgroundColor: '#F28C5A' }} />
+
+      <h3 className="mb-5 text-[16px] font-bold" style={{ color: '#2D3748' }}>
+        Séance {sessionNumber} — Planifier cette séance
+      </h3>
+
+      {/* Date / Time / Duration row */}
+      <div className="mb-4 grid grid-cols-3 gap-4">
+        <div>
+          <label className="mb-1 block text-[12px] font-medium" style={{ color: '#4A5568' }}>Date</label>
+          <input
+            type="date"
+            value={form.date}
+            onChange={(e) => setForm((p) => ({ ...p, date: e.target.value }))}
+            className="w-full rounded-[16px] border px-3 py-2.5 text-[13px] outline-none focus:ring-2 focus:ring-[#2A7FD4]"
+            style={fieldStyle}
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-[12px] font-medium" style={{ color: '#4A5568' }}>Heure</label>
+          <input
+            type="time"
+            value={form.time}
+            onChange={(e) => setForm((p) => ({ ...p, time: e.target.value }))}
+            className="w-full rounded-[16px] border px-3 py-2.5 text-[13px] outline-none focus:ring-2 focus:ring-[#2A7FD4]"
+            style={fieldStyle}
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-[12px] font-medium" style={{ color: '#4A5568' }}>Durée</label>
+          <select
+            value={form.duration}
+            onChange={(e) => setForm((p) => ({ ...p, duration: e.target.value }))}
+            className="w-full rounded-[16px] border px-3 py-2.5 text-[13px] outline-none focus:ring-2 focus:ring-[#2A7FD4]"
+            style={fieldStyle}
+          >
+            <option value="0:30">0h30</option>
+            <option value="1:00">1h00</option>
+            <option value="1:30">1h30</option>
+            <option value="2:00">2h00</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Visio URL */}
+      <div className="mb-4">
+        <label className="mb-1 block text-[12px] font-medium" style={{ color: '#4A5568' }}>
+          Lien visioconférence
+        </label>
+        <input
+          type="url"
+          value={form.visioUrl}
+          onChange={(e) => setForm((p) => ({ ...p, visioUrl: e.target.value }))}
+          placeholder="https://meet.google.com/..."
+          className="w-full rounded-[16px] border px-3 py-2.5 text-[13px] outline-none focus:ring-2 focus:ring-[#2A7FD4]"
+          style={fieldStyle}
+        />
+      </div>
+
+      {/* Notes */}
+      <div className="mb-4">
+        <label className="mb-1 block text-[12px] font-medium" style={{ color: '#4A5568' }}>
+          Notes de préparation
+        </label>
+        <textarea
+          value={form.notes}
+          onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))}
+          placeholder="Notes de préparation (optionnel)"
+          rows={3}
+          className="w-full rounded-[16px] border p-3 text-[13px] outline-none focus:ring-2 focus:ring-[#2A7FD4] resize-y"
+          style={fieldStyle}
+        />
+      </div>
+
+      {/* Validation error */}
+      {validationError && (
+        <div className="mb-3 flex items-center gap-1.5 text-xs text-red-500">
+          <AlertCircle className="h-3 w-3" />
+          {validationError}
+        </div>
+      )}
+
+      {/* Buttons */}
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={onCancel}
+          className="rounded-[16px] border px-4 py-2 text-[13px] font-medium transition-colors"
+          style={{ borderColor: '#FDE8D8', color: '#718096' }}
+        >
+          Annuler
+        </button>
+        <button
+          onClick={() => onSave(form)}
+          disabled={isSaving || !form.date}
+          className="rounded-[16px] px-5 py-2 text-[13px] font-semibold text-white transition-colors disabled:opacity-50"
+          style={{ backgroundColor: '#2A7FD4' }}
+        >
+          {isSaving ? 'Enregistrement…' : 'Planifier la séance'}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Right Panel — Recap
+// ---------------------------------------------------------------------------
+
+function RecapPanel({
+  sessions,
+  sessionDates,
+}: {
+  sessions: SessionData[]
+  sessionDates: Array<{ session_number: number; date: string; time: string }>
+}) {
+  const plannedCount = sessionDates.filter((s) => s.date !== '').length
+  const pct = Math.round((plannedCount / TOTAL_SESSIONS) * 100)
+
+  // Find next future session
+  const nextSession = sessions
+    .filter((s) => s.scheduled_at && new Date(s.scheduled_at) > new Date())
+    .sort((a, b) => new Date(a.scheduled_at!).getTime() - new Date(b.scheduled_at!).getTime())[0]
+
+  const daysLeft = nextSession?.scheduled_at ? daysUntil(nextSession.scheduled_at) : null
+
+  return (
+    <div
+      className="rounded-[20px] p-5"
+      style={{
+        backgroundColor: '#FFFFFF',
+        boxShadow: '0 2px 10px rgba(242, 140, 90, 0.08)',
+      }}
+    >
+      <h3 className="text-[16px] font-bold" style={{ color: '#2D3748' }}>
+        Récapitulatif
+      </h3>
+
+      {/* Stats */}
+      <div className="mt-5">
+        <p className="text-[13px] font-medium" style={{ color: '#4A5568' }}>
+          {plannedCount}/{TOTAL_SESSIONS} séances planifiées
+        </p>
+        <div className="mt-2 h-2 overflow-hidden rounded-full" style={{ backgroundColor: '#FDE8D8' }}>
+          <div
+            className="h-full rounded-full transition-all"
+            style={{ width: `${pct}%`, backgroundColor: '#F28C5A' }}
+          />
+        </div>
+      </div>
+
+      {/* Next session highlight */}
+      {daysLeft !== null && daysLeft > 0 && (
+        <div className="mt-4 rounded-[16px] p-3" style={{ backgroundColor: '#FFF1E8' }}>
+          <p className="text-[12px] font-semibold" style={{ color: '#F28C5A' }}>
+            ⏱ Prochaine séance
+          </p>
+          <p className="text-[14px] font-bold" style={{ color: '#92400E' }}>
+            dans {daysLeft} jour{daysLeft > 1 ? 's' : ''}
+          </p>
+        </div>
+      )}
+
+      {/* Legend */}
+      <div className="mt-5 flex flex-wrap gap-4">
+        <div className="flex items-center gap-1.5">
+          <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: '#28A745' }} />
+          <span className="text-[10px]" style={{ color: '#718096' }}>Réalisée</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: '#2A7FD4' }} />
+          <span className="text-[10px]" style={{ color: '#718096' }}>Planifiée</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: '#D1D5DB' }} />
+          <span className="text-[10px]" style={{ color: '#718096' }}>À planifier</span>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -151,374 +458,190 @@ export function PlanificationTab({
   sessions,
   onSessionsUpdated,
 }: PlanificationTabProps) {
-  // ---- State ----
-
-  const [sessionDates, setSessionDates] = useState<SessionDateEntry[]>(() =>
-    initSessionDates(sessions),
-  )
-
-  const [visioUrl, setVisioUrl] = useState<string>(() => {
-    const first = sessions.find((s) => s.visio_url)
-    return first?.visio_url ?? ''
-  })
-
-  const [isSavingSessions, setIsSavingSessions] = useState(false)
-  const [isSavingVisio, setIsSavingVisio] = useState(false)
+  const [sessionDates, setSessionDates] = useState(() => initSessionDates(sessions))
+  const [visioUrl, setVisioUrl] = useState(() => sessions.find((s) => s.visio_url)?.visio_url ?? '')
+  const [editingSession, setEditingSession] = useState<number | null>(null)
+  const [isSaving, setIsSaving] = useState(false)
   const [toast, setToast] = useState<Toast | null>(null)
-  const [validationErrors, setValidationErrors] = useState<
-    Record<number, string>
-  >({})
-  const [visioError, setVisioError] = useState<string>('')
+  const [validationError, setValidationError] = useState('')
 
-  // ---- Derived ----
+  const plannedCount = useMemo(() => sessionDates.filter((s) => s.date !== '').length, [sessionDates])
 
-  const plannedCount = useMemo(
-    () => sessionDates.filter((s) => s.date !== '').length,
-    [sessionDates],
-  )
-
-  // ---- Initialization helper ----
-
-  function initSessionDates(data: SessionData[]): SessionDateEntry[] {
-    const entries: SessionDateEntry[] = []
-    for (let i = 1; i <= TOTAL_SESSIONS; i++) {
-      const existing = data.find((s) => s.session_number === i)
-      entries.push({
-        session_number: i,
+  function initSessionDates(data: SessionData[]) {
+    return Array.from({ length: TOTAL_SESSIONS }, (_, i) => {
+      const num = i + 1
+      const existing = data.find((s) => s.session_number === num)
+      return {
+        session_number: num,
         date: isoToDateInput(existing?.scheduled_at ?? null),
         time: isoToTimeInput(existing?.scheduled_at ?? null),
-      })
-    }
-    return entries
+      }
+    })
   }
 
-  // ---- Handlers ----
-
-  const handleDateChange = useCallback(
-    (sessionNumber: number, date: string) => {
-      setSessionDates((prev) =>
-        prev.map((s) =>
-          s.session_number === sessionNumber ? { ...s, date } : s,
-        ),
-      )
-      // Clear validation error for this session
-      setValidationErrors((prev) => {
-        const next = { ...prev }
-        delete next[sessionNumber]
-        return next
-      })
-    },
-    [],
-  )
-
-  const handleTimeChange = useCallback(
-    (sessionNumber: number, time: string) => {
-      setSessionDates((prev) =>
-        prev.map((s) =>
-          s.session_number === sessionNumber ? { ...s, time } : s,
-        ),
-      )
-      setValidationErrors((prev) => {
-        const next = { ...prev }
-        delete next[sessionNumber]
-        return next
-      })
-    },
-    [],
-  )
-
-  const validateSessions = useCallback((): boolean => {
-    const errors: Record<number, string> = {}
-    const originalMap = new Map<number, string | null>()
-    for (const s of sessions) {
-      originalMap.set(s.session_number, s.scheduled_at)
-    }
-
-    for (const entry of sessionDates) {
-      if (!entry.date) continue
-
-      const wasAlreadySet = originalMap.get(entry.session_number)
-      const isUnchanged =
-        wasAlreadySet &&
-        isoToDateInput(wasAlreadySet) === entry.date &&
-        isoToTimeInput(wasAlreadySet) === entry.time
-
-      if (!isUnchanged && !isDateInFuture(entry.date, entry.time)) {
-        errors[entry.session_number] =
-          'La date doit être dans le futur'
-      }
-    }
-
-    setValidationErrors(errors)
-    return Object.keys(errors).length === 0
-  }, [sessionDates, sessions])
-
-  const handleSaveSessions = useCallback(async () => {
-    if (!validateSessions()) return
-
-    setIsSavingSessions(true)
-    try {
-      const payload = sessionDates.map((entry) => ({
-        session_number: entry.session_number,
-        scheduled_at: dateTimeToIso(entry.date, entry.time),
-        visio_url: visioUrl || null,
-      }))
-
-      const res = await fetch(
-        `/api/consultant/beneficiaires/${beneficiaryId}/sessions`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        },
-      )
-
-      if (!res.ok) {
-        throw new Error(`Erreur ${res.status}`)
-      }
-
-      setToast({ type: 'success', message: 'Dates des seances enregistrees' })
-      onSessionsUpdated?.()
-    } catch {
-      setToast({
-        type: 'error',
-        message: 'Erreur lors de l\'enregistrement des dates',
-      })
-    } finally {
-      setIsSavingSessions(false)
-    }
-  }, [sessionDates, visioUrl, beneficiaryId, validateSessions, onSessionsUpdated])
-
-  const handleSaveVisio = useCallback(async () => {
-    if (visioUrl && !isValidHttpsUrl(visioUrl)) {
-      setVisioError('Le lien doit commencer par https://')
+  const handleSaveSession = useCallback(async (sessionNumber: number, form: SessionFormState) => {
+    if (!form.date) {
+      setValidationError('La date est obligatoire')
       return
     }
-    setVisioError('')
+    if (!isDateInFuture(form.date, form.time)) {
+      const original = sessions.find((s) => s.session_number === sessionNumber)
+      const unchanged = original?.scheduled_at
+        && isoToDateInput(original.scheduled_at) === form.date
+        && isoToTimeInput(original.scheduled_at) === form.time
+      if (!unchanged) {
+        setValidationError('La date doit être dans le futur')
+        return
+      }
+    }
+    if (form.visioUrl && !isValidHttpsUrl(form.visioUrl)) {
+      setValidationError('Le lien doit commencer par https://')
+      return
+    }
 
-    setIsSavingVisio(true)
+    setValidationError('')
+    setIsSaving(true)
+
     try {
-      const payload = sessionDates.map((entry) => ({
+      // Update local state
+      const newDates = sessionDates.map((s) =>
+        s.session_number === sessionNumber ? { ...s, date: form.date, time: form.time } : s,
+      )
+      setSessionDates(newDates)
+
+      const payload = newDates.map((entry) => ({
         session_number: entry.session_number,
         scheduled_at: dateTimeToIso(entry.date, entry.time),
-        visio_url: visioUrl || null,
+        visio_url: form.visioUrl || visioUrl || null,
       }))
 
-      const res = await fetch(
-        `/api/consultant/beneficiaires/${beneficiaryId}/sessions`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        },
-      )
-
-      if (!res.ok) {
-        throw new Error(`Erreur ${res.status}`)
-      }
-
-      setToast({
-        type: 'success',
-        message: 'Lien de visioconference enregistre',
+      const res = await fetch(`/api/consultant/beneficiaires/${beneficiaryId}/sessions`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       })
+
+      if (!res.ok) throw new Error(`Erreur ${res.status}`)
+
+      if (form.visioUrl) setVisioUrl(form.visioUrl)
+      setEditingSession(null)
+      setToast({ type: 'success', message: 'Séance planifiée avec succès' })
       onSessionsUpdated?.()
     } catch {
-      setToast({
-        type: 'error',
-        message: 'Erreur lors de l\'enregistrement du lien',
-      })
+      setToast({ type: 'error', message: 'Erreur lors de la planification' })
     } finally {
-      setIsSavingVisio(false)
+      setIsSaving(false)
     }
-  }, [sessionDates, visioUrl, beneficiaryId, onSessionsUpdated])
-
-  const dismissToast = useCallback(() => setToast(null), [])
-
-  // ---- Render ----
+  }, [sessionDates, visioUrl, beneficiaryId, sessions, onSessionsUpdated])
 
   return (
-    <div className="space-y-6">
-      {/* Toast */}
-      {toast && <ToastNotification toast={toast} onDismiss={dismissToast} />}
+    <div>
+      {toast && <ToastNotification toast={toast} onDismiss={() => setToast(null)} />}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
-        {/* ---- Sessions Card ---- */}
-        <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 shadow-sm">
-          {/* Title */}
-          <div className="mb-6">
-            <h2 className="text-lg font-bold text-[var(--color-primary-dark)]">
-              Planification des séances — {beneficiaryName}
-            </h2>
-            <p className="mt-1 text-sm text-[#6B7280]">
-              {TOTAL_SESSIONS} séances prévues au total ·{' '}
-              {plannedCount} planifiée{plannedCount > 1 ? 's' : ''}
-            </p>
-          </div>
+      {/* Title */}
+      <h2 className="text-[22px] font-bold" style={{ color: '#2D3748' }}>
+        Planification des séances
+      </h2>
+      <p className="mt-1 text-[13px]" style={{ color: '#A0A8B4' }}>
+        {TOTAL_SESSIONS} séances au total · {plannedCount} planifiée{plannedCount > 1 ? 's' : ''} · {TOTAL_SESSIONS - plannedCount} à planifier
+      </p>
 
-          {/* Section heading */}
-          <div className="mb-4 flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-[var(--color-primary)]" />
-            <h3 className="text-sm font-semibold text-[var(--color-text)]">
-              Dates des seances
-            </h3>
-          </div>
+      <div className="mt-5 flex gap-6">
+        {/* ============ LEFT COLUMN — Session Cards ============ */}
+        <div className="min-w-0 flex-1 space-y-3">
+          {Array.from({ length: TOTAL_SESSIONS }, (_, i) => {
+            const num = i + 1
+            const session = sessions.find((s) => s.session_number === num)
+            const entry = sessionDates.find((s) => s.session_number === num)
+            const isPlanned = entry ? entry.date !== '' : false
+            const isPast = session?.scheduled_at ? isPastSession(session.scheduled_at) : false
+            const isEditing = editingSession === num
 
-          {/* Column headers */}
-          <div className="mb-2 grid grid-cols-[120px_1fr_1fr_140px] items-center gap-3 px-3 text-xs font-semibold uppercase tracking-wider text-[#9CA3AF]">
-            <span>Seance</span>
-            <span>Date</span>
-            <span>Heure</span>
-            <span>Statut</span>
-          </div>
-
-          {/* Session rows */}
-          <div className="space-y-2">
-            {sessionDates.map((entry) => {
-              const isPlanned = entry.date !== ''
-              const error = validationErrors[entry.session_number]
-
+            if (isEditing) {
               return (
-                <div key={entry.session_number}>
-                  <div className="grid grid-cols-[120px_1fr_1fr_140px] items-center gap-3 rounded-lg border border-[var(--color-border)] bg-[#F9FAFB] px-3 py-3">
-                    {/* Session label */}
-                    <span className="text-sm font-medium text-[var(--color-text)]">
-                      Seance {entry.session_number}
-                    </span>
-
-                    {/* Date input */}
-                    <div className="relative">
-                      <input
-                        type="date"
-                        value={entry.date}
-                        onChange={(e) =>
-                          handleDateChange(
-                            entry.session_number,
-                            e.target.value,
-                          )
-                        }
-                        className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-[var(--color-text)] outline-none transition-colors focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] ${
-                          error
-                            ? 'border-red-400'
-                            : 'border-[var(--color-border)]'
-                        }`}
-                      />
-                    </div>
-
-                    {/* Time input */}
-                    <div className="relative">
-                      <input
-                        type="time"
-                        value={entry.time}
-                        onChange={(e) =>
-                          handleTimeChange(
-                            entry.session_number,
-                            e.target.value,
-                          )
-                        }
-                        className="w-full rounded-lg border border-[var(--color-border)] bg-white px-3 py-2 text-sm text-[var(--color-text)] outline-none transition-colors focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
-                      />
-                    </div>
-
-                    {/* Status badge */}
-                    <StatusBadgePlanification isPlanned={isPlanned} />
-                  </div>
-
-                  {/* Validation error */}
-                  {error && (
-                    <div className="mt-1 flex items-center gap-1.5 px-3 text-xs text-red-500">
-                      <AlertCircle className="h-3 w-3" />
-                      {error}
-                    </div>
-                  )}
-                </div>
+                <SessionEditForm
+                  key={num}
+                  sessionNumber={num}
+                  initialForm={{
+                    date: entry?.date ?? '',
+                    time: entry?.time ?? '',
+                    duration: '1:00',
+                    visioUrl: visioUrl,
+                    notes: '',
+                  }}
+                  validationError={validationError}
+                  isSaving={isSaving}
+                  onSave={(form) => handleSaveSession(num, form)}
+                  onCancel={() => { setEditingSession(null); setValidationError('') }}
+                />
               )
-            })}
-          </div>
+            }
 
-          {/* Save button */}
-          <div className="mt-6 flex justify-end">
-            <button
-              onClick={handleSaveSessions}
-              disabled={isSavingSessions}
-              className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-primary)] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSavingSessions ? (
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-              ) : (
-                <Save className="h-4 w-4" />
-              )}
-              Enregistrer les dates
-            </button>
-          </div>
+            if (isPlanned && isPast) {
+              return (
+                <CompletedSessionCard
+                  key={num}
+                  session={session ?? { session_number: num, scheduled_at: null, visio_url: null }}
+                />
+              )
+            }
+
+            if (isPlanned) {
+              return (
+                <PlannedSessionCard
+                  key={num}
+                  session={session ?? { session_number: num, scheduled_at: null, visio_url: null }}
+                  onEdit={() => setEditingSession(num)}
+                />
+              )
+            }
+
+            return (
+              <ToPlanSessionCard
+                key={num}
+                sessionNumber={num}
+                onPlan={() => setEditingSession(num)}
+              />
+            )
+          })}
         </div>
 
-        {/* ---- Visio Card ---- */}
-        <div className="rounded-xl border border-[var(--color-border)] bg-white p-6 shadow-sm h-fit">
-          {/* Title */}
-          <div className="mb-5 flex items-center gap-2">
-            <Video className="h-5 w-5 text-[var(--color-primary)]" />
-            <h3 className="text-base font-bold text-[var(--color-primary-dark)]">
-              Lien de visioconference
-            </h3>
-          </div>
+        {/* ============ RIGHT COLUMN — Recap ============ */}
+        <div className="hidden w-[280px] shrink-0 lg:block">
+          <RecapPanel sessions={sessions} sessionDates={sessionDates} />
 
-          {/* URL input */}
-          <div className="mb-4">
-            <label
-              htmlFor="visio-url"
-              className="mb-1.5 block text-sm font-medium text-[var(--color-text)]"
-            >
-              URL de la visioconference
-            </label>
-            <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <ExternalLink className="h-4 w-4 text-[#9CA3AF]" />
-              </div>
-              <input
-                id="visio-url"
-                type="url"
-                value={visioUrl}
-                onChange={(e) => {
-                  setVisioUrl(e.target.value)
-                  setVisioError('')
-                }}
-                placeholder="https://meet.google.com/..."
-                className={`w-full rounded-lg border bg-white py-2.5 pl-10 pr-3 text-sm text-[var(--color-text)] placeholder:text-[#9CA3AF] outline-none transition-colors focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] ${
-                  visioError
-                    ? 'border-red-400'
-                    : 'border-[var(--color-border)]'
-                }`}
-              />
-            </div>
-            {visioError && (
-              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-red-500">
-                <AlertCircle className="h-3 w-3" />
-                {visioError}
-              </div>
-            )}
-          </div>
-
-          {/* Save button */}
-          <button
-            onClick={handleSaveVisio}
-            disabled={isSavingVisio}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+          {/* Visio URL card */}
+          <div
+            className="mt-4 rounded-[20px] p-5"
+            style={{ backgroundColor: '#FFFFFF', boxShadow: '0 2px 10px rgba(242, 140, 90, 0.08)' }}
           >
-            {isSavingVisio ? (
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+            <div className="mb-3 flex items-center gap-2">
+              <Video className="h-4 w-4" style={{ color: '#2A7FD4' }} />
+              <h4 className="text-[13px] font-bold" style={{ color: '#2D3748' }}>
+                Lien visioconférence
+              </h4>
+            </div>
+            {visioUrl ? (
+              <a
+                href={visioUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block truncate text-[12px] underline"
+                style={{ color: '#2A7FD4' }}
+              >
+                {visioUrl}
+              </a>
             ) : (
-              <Save className="h-4 w-4" />
+              <p className="text-[12px] italic" style={{ color: '#A0A8B4' }}>
+                Aucun lien défini
+              </p>
             )}
-            Enregistrer le lien
-          </button>
-
-          {/* Info text */}
-          <div className="mt-4 flex items-start gap-2 rounded-lg bg-[#F0F7FF] p-3">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-primary)]" />
-            <p className="text-xs leading-relaxed text-[#6B7280]">
-              Ce lien sera visible par le bénéficiaire dans son espace
-              personnel.
-            </p>
+            <div className="mt-3 flex items-start gap-2 rounded-[12px] p-2.5" style={{ backgroundColor: '#F0F7FF' }}>
+              <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" style={{ color: '#2A7FD4' }} />
+              <p className="text-[11px] leading-relaxed" style={{ color: '#718096' }}>
+                Ce lien sera visible par le bénéficiaire.
+              </p>
+            </div>
           </div>
         </div>
       </div>
