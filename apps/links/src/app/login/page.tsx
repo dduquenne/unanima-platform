@@ -104,8 +104,11 @@ export default function LoginPage() {
           return
         }
 
-        // La navigation est gérée par le useEffect qui surveille `user`
-        // (déclenché par onAuthStateChange après setSession)
+        // Redirection directe vers la home du rôle, sans attendre
+        // que onAuthStateChange mette à jour le state user.
+        const dest = redirectPath ?? ROLE_HOME[data.role ?? ''] ?? '/dashboard'
+        router.replace(dest)
+        return
       }
     } catch {
       setError('Erreur réseau. Vérifiez votre connexion.')
