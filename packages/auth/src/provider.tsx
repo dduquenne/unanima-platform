@@ -12,6 +12,10 @@ interface AuthProviderProps {
   children: ReactNode
 }
 
+function hasSupabaseConfig(): boolean {
+  return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+}
+
 function getSupabaseClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -26,7 +30,9 @@ function getSupabaseClient() {
 export function AuthProvider({ config, children }: AuthProviderProps) {
   const [user, setUser] = useState<UserSession | null>(null)
   const [session, setSession] = useState<unknown>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  // Only show loading state if Supabase is configured — otherwise
+  // there is nothing to wait for and the login form should show immediately.
+  const [isLoading, setIsLoading] = useState(hasSupabaseConfig)
 
   const supabase = useMemo(() => getSupabaseClient(), [])
 
