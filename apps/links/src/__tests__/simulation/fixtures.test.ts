@@ -96,7 +96,7 @@ describe('Fixtures — Questionnaires et questions', () => {
   it('chaque phase a entre 12 et 15 questions', () => {
     const expectedCounts: Record<number, number> = { 1: 12, 2: 13, 3: 14, 4: 15, 5: 13, 6: 12 }
     for (let phase = 1; phase <= 6; phase++) {
-      expect(getQuestionsForPhase(phase)).toHaveLength(expectedCounts[phase])
+      expect(getQuestionsForPhase(phase)).toHaveLength(expectedCounts[phase]!)
     }
   })
 })
