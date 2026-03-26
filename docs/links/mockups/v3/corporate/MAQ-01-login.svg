@@ -1,0 +1,162 @@
+<!-- MAQ-01 | Login | Link's Accompagnement | v3.0 | corporate | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <clipPath id="leftClip">
+      <rect x="0" y="0" width="640" height="900"/>
+    </clipPath>
+  </defs>
+
+  <!-- ============================================ -->
+  <!-- BACKGROUND                                    -->
+  <!-- ============================================ -->
+  <rect x="0" y="0" width="1440" height="900" fill="#F2F4F7"/>
+
+  <!-- ============================================ -->
+  <!-- LEFT PANEL: Corporate branding                -->
+  <!-- ============================================ -->
+  <rect x="0" y="0" width="640" height="900" fill="#0D3B6E"/>
+
+  <!-- Institutional horizontal rule separators -->
+  <line x1="60" y1="130" x2="580" y2="130" stroke="#1A5BA0" stroke-width="1"/>
+  <line x1="60" y1="280" x2="580" y2="280" stroke="#1A5BA0" stroke-width="0.5"/>
+  <line x1="60" y1="600" x2="580" y2="600" stroke="#1A5BA0" stroke-width="0.5"/>
+  <line x1="60" y1="830" x2="580" y2="830" stroke="#1A5BA0" stroke-width="0.5"/>
+
+  <!-- Subtle geometric pattern (corporate grid) -->
+  <g clip-path="url(#leftClip)" opacity="0.04">
+    <g stroke="#FFFFFF" stroke-width="0.5" fill="none">
+      <rect x="60" y="300" width="80" height="80"/>
+      <rect x="160" y="300" width="80" height="80"/>
+      <rect x="260" y="300" width="80" height="80"/>
+      <rect x="360" y="300" width="80" height="80"/>
+      <rect x="460" y="300" width="80" height="80"/>
+      <rect x="60" y="400" width="80" height="80"/>
+      <rect x="160" y="400" width="80" height="80"/>
+      <rect x="260" y="400" width="80" height="80"/>
+      <rect x="360" y="400" width="80" height="80"/>
+      <rect x="460" y="400" width="80" height="80"/>
+      <rect x="60" y="500" width="80" height="80"/>
+      <rect x="160" y="500" width="80" height="80"/>
+      <rect x="260" y="500" width="80" height="80"/>
+      <rect x="360" y="500" width="80" height="80"/>
+      <rect x="460" y="500" width="80" height="80"/>
+    </g>
+    <!-- Filled accent squares -->
+    <rect x="160" y="300" width="80" height="80" fill="#E5622E" opacity="0.4"/>
+    <rect x="360" y="400" width="80" height="80" fill="#FFFFFF" opacity="0.2"/>
+    <rect x="60" y="500" width="80" height="80" fill="#1A5BA0" opacity="0.5"/>
+    <rect x="260" y="400" width="80" height="80" fill="#E5622E" opacity="0.2"/>
+  </g>
+
+  <!-- Logo -->
+  <g transform="translate(60, 80)">
+    <text x="0" y="0" font-size="26" font-weight="700" fill="#FFFFFF" letter-spacing="0.5">Link's</text>
+    <text x="84" y="0" font-size="26" font-weight="400" fill="#A8C8F0" letter-spacing="0.5">Accompagnement</text>
+    <!-- Orange accent polygon -->
+    <polygon points="74,-22 84,-22 80,-4 70,-4" fill="#E5622E"/>
+  </g>
+
+  <!-- Tagline — institutional tone -->
+  <text x="60" y="160" font-size="15" font-weight="500" fill="#8BADD4" letter-spacing="0.8" text-transform="uppercase">PLATEFORME DE SUIVI</text>
+  <text x="60" y="182" font-size="15" font-weight="500" fill="#8BADD4" letter-spacing="0.8">DES BILANS DE COMPÉTENCES</text>
+
+  <!-- Key metrics / institutional stats -->
+  <g transform="translate(60, 630)">
+    <text x="0" y="0" font-size="12" font-weight="500" fill="#6B92BF" letter-spacing="1">CHIFFRES CLÉS</text>
+
+    <text x="0" y="40" font-size="32" font-weight="700" fill="#FFFFFF">250+</text>
+    <text x="0" y="58" font-size="11" fill="#8BADD4" letter-spacing="0.5">Bilans réalisés</text>
+
+    <text x="160" y="40" font-size="32" font-weight="700" fill="#FFFFFF">98%</text>
+    <text x="160" y="58" font-size="11" fill="#8BADD4" letter-spacing="0.5">Taux de satisfaction</text>
+
+    <text x="320" y="40" font-size="32" font-weight="700" fill="#FFFFFF">15</text>
+    <text x="320" y="58" font-size="11" fill="#8BADD4" letter-spacing="0.5">Consultants certifiés</text>
+  </g>
+
+  <!-- Left panel footer -->
+  <text x="60" y="855" font-size="11" fill="#6B92BF" opacity="0.6" letter-spacing="0.3">© 2026 LINK'S ACCOMPAGNEMENT — ORGANISME DE FORMATION</text>
+
+  <!-- Hard vertical divider -->
+  <rect x="640" y="0" width="2" height="900" fill="#D4D9E2"/>
+
+  <!-- ============================================ -->
+  <!-- RIGHT PANEL: Login form                      -->
+  <!-- ============================================ -->
+
+  <!-- Form container — no shadow, structured -->
+  <rect x="820" y="210" width="400" height="480" rx="6" ry="6" fill="#FFFFFF" stroke="#D4D9E2" stroke-width="1"/>
+
+  <!-- Top accent bar -->
+  <rect x="820" y="210" width="400" height="4" rx="2" fill="#1A5BA0"/>
+
+  <!-- Form heading -->
+  <text x="1020" y="270" font-size="20" font-weight="700" fill="#1A2332" text-anchor="middle" letter-spacing="0.3">IDENTIFICATION</text>
+  <line x1="970" y1="280" x2="1070" y2="280" stroke="#E5622E" stroke-width="2"/>
+  <text x="1020" y="305" font-size="13" font-weight="400" fill="#6B7B8E" text-anchor="middle">Identifiez-vous pour accéder à la plateforme</text>
+
+  <!-- Email field -->
+  <text x="860" y="355" font-size="12" font-weight="600" fill="#4A5568" letter-spacing="0.5">ADRESSE E-MAIL</text>
+  <rect x="860" y="365" width="320" height="44" rx="4" ry="4" fill="#FFFFFF" stroke="#B0B8C4" stroke-width="1.5"/>
+  <!-- Email icon -->
+  <g transform="translate(874, 378)">
+    <rect x="0" y="2" width="17" height="13" rx="2" fill="none" stroke="#8492A6" stroke-width="1.5"/>
+    <polyline points="0,3 8.5,10 17,3" fill="none" stroke="#8492A6" stroke-width="1.5"/>
+  </g>
+  <text x="900" y="393" font-size="13" fill="#8492A6">votre@email.com</text>
+
+  <!-- Password field -->
+  <text x="860" y="440" font-size="12" font-weight="600" fill="#4A5568" letter-spacing="0.5">MOT DE PASSE</text>
+  <rect x="860" y="450" width="320" height="44" rx="4" ry="4" fill="#FFFFFF" stroke="#B0B8C4" stroke-width="1.5"/>
+  <!-- Lock icon -->
+  <g transform="translate(874, 462)">
+    <rect x="2" y="8" width="13" height="10" rx="2" fill="none" stroke="#8492A6" stroke-width="1.5"/>
+    <path d="M5,8 V5 a3.5,3.5 0 0 1 7,0 V8" fill="none" stroke="#8492A6" stroke-width="1.5"/>
+    <circle cx="8.5" cy="13.5" r="1.5" fill="#8492A6"/>
+  </g>
+  <text x="900" y="478" font-size="13" fill="#8492A6">••••••••</text>
+  <!-- Visibility toggle (eye) -->
+  <g transform="translate(1148, 464)">
+    <ellipse cx="9" cy="8" rx="9" ry="6" fill="none" stroke="#8492A6" stroke-width="1.5"/>
+    <circle cx="9" cy="8" r="3" fill="none" stroke="#8492A6" stroke-width="1.5"/>
+  </g>
+
+  <!-- Error message area -->
+  <rect x="860" y="510" width="320" height="38" rx="4" fill="#FEF2F2" stroke="#F5C6C6" stroke-width="1"/>
+  <rect x="860" y="510" width="3" height="38" rx="1" fill="#DC2626"/>
+  <g transform="translate(875, 521)">
+    <polygon points="8,0 16,14 0,14" fill="none" stroke="#DC2626" stroke-width="1.5"/>
+    <text x="8" y="12" font-size="9" font-weight="700" fill="#DC2626" text-anchor="middle">!</text>
+  </g>
+  <text x="900" y="534" font-size="12" fill="#DC2626" font-weight="500">Identifiants incorrects. Veuillez réessayer.</text>
+
+  <!-- Se connecter button — uppercase, corporate -->
+  <rect x="860" y="568" width="320" height="46" rx="4" ry="4" fill="#1A5BA0"/>
+  <text x="1020" y="596" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle" letter-spacing="1.2">SE CONNECTER</text>
+
+  <!-- Mot de passe oublié link -->
+  <text x="1020" y="644" font-size="12" font-weight="500" fill="#1A5BA0" text-anchor="middle" letter-spacing="0.3">Mot de passe oublié ?</text>
+
+  <!-- Separator -->
+  <line x1="860" y1="660" x2="1180" y2="660" stroke="#E4E8ED" stroke-width="1"/>
+
+  <!-- Security notice -->
+  <g transform="translate(860, 678)">
+    <!-- Shield icon -->
+    <g transform="translate(0, -2)">
+      <path d="M8,0 L16,4 L16,10 Q16,16 8,20 Q0,16 0,10 L0,4 Z" fill="none" stroke="#8492A6" stroke-width="1" opacity="0.6"/>
+      <polyline points="5,10 8,13 13,7" fill="none" stroke="#8492A6" stroke-width="1" opacity="0.6"/>
+    </g>
+    <text x="24" y="12" font-size="10.5" fill="#8492A6" letter-spacing="0.2">Connexion sécurisée — Données chiffrées</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- FOOTER                                       -->
+  <!-- ============================================ -->
+  <line x1="660" y1="860" x2="1420" y2="860" stroke="#D4D9E2" stroke-width="1"/>
+  <text x="920" y="882" font-size="11" fill="#6B7B8E" text-anchor="middle" letter-spacing="0.3">Mentions légales</text>
+  <text x="1008" y="882" font-size="11" fill="#B0B8C4" text-anchor="middle">|</text>
+  <text x="1095" y="882" font-size="11" fill="#6B7B8E" text-anchor="middle" letter-spacing="0.3">Confidentialité</text>
+  <text x="1172" y="882" font-size="11" fill="#B0B8C4" text-anchor="middle">|</text>
+  <text x="1230" y="882" font-size="11" fill="#6B7B8E" text-anchor="middle" letter-spacing="0.3">Cookies</text>
+</svg>

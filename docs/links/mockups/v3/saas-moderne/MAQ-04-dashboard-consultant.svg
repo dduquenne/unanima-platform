@@ -1,0 +1,362 @@
+<!-- MAQ-04 | Dashboard Consultant | Link's Accompagnement | v3.0 | saas-moderne | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow1" x="-2%" y="-2%" width="104%" height="108%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow2" x="-2%" y="-2%" width="104%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-opacity="0.10"/>
+    </filter>
+    <clipPath id="avatarClip"><circle cx="16" cy="16" r="16"/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#FAFBFC"/>
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <rect width="220" height="900" fill="#0D3B6E"/>
+
+  <!-- Logo area -->
+  <rect x="0" y="0" width="220" height="70" fill="#0A3260"/>
+  <text x="20" y="32" font-size="14" font-weight="700" fill="#FFFFFF">Link's</text>
+  <text x="20" y="50" font-size="11" fill="#A8C4E0">Accompagnement</text>
+  <!-- Orange accent polygon -->
+  <polygon points="175,15 195,25 175,35" fill="#FF6B35"/>
+
+  <!-- Nav items -->
+  <!-- Dashboard (active) -->
+  <rect x="0" y="85" width="220" height="42" fill="#1E6FC0" rx="0"/>
+  <rect x="0" y="85" width="4" height="42" fill="#FF6B35"/>
+  <!-- Dashboard icon -->
+  <rect x="24" y="97" width="7" height="7" rx="1" fill="#FFFFFF" opacity="0.9"/>
+  <rect x="33" y="97" width="7" height="7" rx="1" fill="#FFFFFF" opacity="0.9"/>
+  <rect x="24" y="106" width="7" height="7" rx="1" fill="#FFFFFF" opacity="0.9"/>
+  <rect x="33" y="106" width="7" height="7" rx="1" fill="#FFFFFF" opacity="0.9"/>
+  <text x="50" y="111" font-size="13" font-weight="600" fill="#FFFFFF">Dashboard</text>
+
+  <!-- Mes beneficiaires -->
+  <g opacity="0.7">
+    <circle cx="31" cy="148" r="8" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <circle cx="31" cy="145" r="3" fill="none" stroke="#A8C4E0" stroke-width="1.2"/>
+    <path d="M25,155 Q31,150 37,155" fill="none" stroke="#A8C4E0" stroke-width="1.2"/>
+    <text x="50" y="152" font-size="13" fill="#A8C4E0">Mes bénéficiaires</text>
+  </g>
+
+  <!-- Agenda -->
+  <g opacity="0.7">
+    <rect x="23" y="168" width="16" height="14" rx="2" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <line x1="27" y1="166" x2="27" y2="170" stroke="#A8C4E0" stroke-width="1.5"/>
+    <line x1="35" y1="166" x2="35" y2="170" stroke="#A8C4E0" stroke-width="1.5"/>
+    <line x1="23" y1="174" x2="39" y2="174" stroke="#A8C4E0" stroke-width="1"/>
+    <text x="50" y="180" font-size="13" fill="#A8C4E0">Agenda</text>
+  </g>
+
+  <!-- Documents -->
+  <g opacity="0.7">
+    <rect x="24" y="196" width="13" height="16" rx="2" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <polyline points="31,196 37,202 37,212 24,212" fill="none" stroke="#A8C4E0" stroke-width="1"/>
+    <text x="50" y="208" font-size="13" fill="#A8C4E0">Documents</text>
+  </g>
+
+  <!-- Rapports -->
+  <g opacity="0.7">
+    <polyline points="25,240 25,226 39,226 39,240" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <polyline points="28,236 31,232 34,237 37,230" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <text x="50" y="236" font-size="13" fill="#A8C4E0">Rapports</text>
+  </g>
+
+  <!-- Profil -->
+  <g opacity="0.7">
+    <circle cx="31" cy="259" r="8" fill="none" stroke="#A8C4E0" stroke-width="1.5"/>
+    <circle cx="31" cy="257" r="3" fill="none" stroke="#A8C4E0" stroke-width="1.2"/>
+    <text x="50" y="264" font-size="13" fill="#A8C4E0">Profil</text>
+  </g>
+
+  <!-- Sidebar bottom -->
+  <line x1="15" y1="840" x2="205" y2="840" stroke="#1A5591" stroke-width="1"/>
+  <text x="20" y="862" font-size="10" fill="#6B9DCF">v1.0 — Unanima Platform</text>
+
+  <!-- ==================== HEADER ==================== -->
+  <rect x="220" y="0" width="1220" height="60" fill="#FFFFFF"/>
+  <line x1="220" y1="60" x2="1440" y2="60" stroke="#E8ECF1" stroke-width="1"/>
+
+  <!-- Breadcrumb -->
+  <text x="252" y="35" font-size="13" fill="#8E99A8">Consultant</text>
+  <text x="318" y="35" font-size="13" fill="#8E99A8">&gt;</text>
+  <text x="332" y="35" font-size="13" font-weight="600" fill="#1E6FC0">Dashboard</text>
+
+  <!-- Avatar + user info (right) -->
+  <circle cx="1310" cy="30" r="18" fill="#1E6FC0"/>
+  <text x="1310" y="35" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">SM</text>
+  <text x="1335" y="26" font-size="12" font-weight="600" fill="#333">Sophie Martin</text>
+  <text x="1335" y="40" font-size="10" fill="#8E99A8">Consultante</text>
+
+  <!-- Logout button -->
+  <rect x="1395" y="18" width="24" height="24" rx="6" fill="#F5F7FA" stroke="#DCE1EB" stroke-width="1"/>
+  <path d="M1403,26 L1403,34 M1407,22 L1413,30 L1407,38" fill="none" stroke="#8E99A8" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- ==================== TITLE SECTION ==================== -->
+  <text x="252" y="102" font-size="22" font-weight="700" fill="#1A1A2E">Mon portefeuille bénéficiaires</text>
+
+  <!-- Badge -->
+  <rect x="530" y="85" width="150" height="28" rx="14" fill="#E8F2FE"/>
+  <text x="605" y="104" font-size="12" font-weight="600" fill="#1E6FC0" text-anchor="middle">4 bénéficiaires actifs</text>
+
+  <!-- ==================== FILTER BAR ==================== -->
+  <g transform="translate(252, 120)">
+    <!-- Tous (active) -->
+    <rect x="0" y="0" width="80" height="34" rx="8" fill="#1E6FC0"/>
+    <text x="40" y="22" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Tous (4)</text>
+
+    <!-- En cours -->
+    <rect x="90" y="0" width="100" height="34" rx="8" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <text x="140" y="22" font-size="12" font-weight="500" fill="#5A6577" text-anchor="middle">En cours (2)</text>
+
+    <!-- A demarrer -->
+    <rect x="200" y="0" width="115" height="34" rx="8" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <text x="257" y="22" font-size="12" font-weight="500" fill="#5A6577" text-anchor="middle">À démarrer (1)</text>
+
+    <!-- Termines -->
+    <rect x="325" y="0" width="110" height="34" rx="8" fill="none" stroke="#DCE1EB" stroke-width="1.5"/>
+    <text x="380" y="22" font-size="12" font-weight="500" fill="#5A6577" text-anchor="middle">Terminés (1)</text>
+
+    <!-- Search bar -->
+    <rect x="748" y="0" width="420" height="34" rx="8" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1.5"/>
+    <!-- Search icon -->
+    <circle cx="766" cy="17" r="7" fill="none" stroke="#8E99A8" stroke-width="1.5"/>
+    <line x1="771" y1="22" x2="776" y2="27" stroke="#8E99A8" stroke-width="1.5" stroke-linecap="round"/>
+    <text x="784" y="22" font-size="12" fill="#A0A8B6">Rechercher un bénéficiaire…</text>
+  </g>
+
+  <!-- ==================== DATA TABLE ==================== -->
+  <rect x="240" y="170" width="1180" height="400" rx="12" fill="#FFFFFF" filter="url(#shadow2)"/>
+
+  <!-- Table header -->
+  <rect x="240" y="170" width="1180" height="44" rx="12" fill="#F5F7FA"/>
+  <rect x="240" y="200" width="1180" height="14" fill="#F5F7FA"/>
+  <text x="272" y="197" font-size="11" font-weight="700" fill="#5A6577" letter-spacing="0.5">BÉNÉFICIAIRE</text>
+  <text x="475" y="197" font-size="11" font-weight="700" fill="#5A6577" letter-spacing="0.5">PROGRESSION</text>
+  <text x="660" y="197" font-size="11" font-weight="700" fill="#5A6577" letter-spacing="0.5">PHASES 1-6</text>
+  <text x="870" y="197" font-size="11" font-weight="700" fill="#5A6577" letter-spacing="0.5">PROCHAINE SÉANCE</text>
+  <text x="1080" y="197" font-size="11" font-weight="700" fill="#5A6577" letter-spacing="0.5">ACTION</text>
+
+  <!-- Row 1 — Marie Dupont (white bg) -->
+  <g transform="translate(0, 220)">
+    <rect x="240" y="0" width="1180" height="70" fill="#FFFFFF"/>
+    <line x1="252" y1="70" x2="1408" y2="70" stroke="#F0F2F5" stroke-width="1"/>
+
+    <!-- Avatar MD blue -->
+    <circle cx="280" cy="35" r="18" fill="#1E6FC0"/>
+    <text x="280" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">MD</text>
+    <text x="308" y="30" font-size="13" font-weight="600" fill="#1A1A2E">Marie Dupont</text>
+    <text x="308" y="46" font-size="11" fill="#8E99A8">marie.dupont@email.fr</text>
+
+    <!-- Progression 2/6 (33%) -->
+    <text x="475" y="30" font-size="12" font-weight="600" fill="#1A1A2E">2/6</text>
+    <rect x="475" y="38" width="120" height="6" rx="3" fill="#E8ECF1"/>
+    <rect x="475" y="38" width="40" height="6" rx="3" fill="#1E6FC0"/>
+    <text x="600" y="45" font-size="10" fill="#8E99A8">33%</text>
+
+    <!-- Phase circles: check check orange gray gray gray -->
+    <circle cx="670" cy="35" r="11" fill="#28A745"/>
+    <text x="670" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="698" cy="35" r="11" fill="#28A745"/>
+    <text x="698" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="726" cy="35" r="11" fill="#FF6B35"/>
+    <circle cx="726" cy="35" r="4" fill="#FFFFFF"/>
+    <circle cx="754" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+    <circle cx="782" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+    <circle cx="810" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+
+    <!-- Next session -->
+    <text x="880" y="39" font-size="13" font-weight="500" fill="#1A1A2E">15/04/2026</text>
+
+    <!-- Action button -->
+    <rect x="1060" y="20" width="120" height="32" rx="8" fill="#1E6FC0"/>
+    <text x="1120" y="41" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Voir le dossier</text>
+  </g>
+
+  <!-- Row 2 — Jean Martin (light gray bg) -->
+  <g transform="translate(0, 290)">
+    <rect x="240" y="0" width="1180" height="70" fill="#F9FAFB"/>
+    <line x1="252" y1="70" x2="1408" y2="70" stroke="#F0F2F5" stroke-width="1"/>
+
+    <circle cx="280" cy="35" r="18" fill="#2A7FD4"/>
+    <text x="280" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">JM</text>
+    <text x="308" y="30" font-size="13" font-weight="600" fill="#1A1A2E">Jean Martin</text>
+    <text x="308" y="46" font-size="11" fill="#8E99A8">jean.martin@email.fr</text>
+
+    <!-- Progression 4/6 (67%) -->
+    <text x="475" y="30" font-size="12" font-weight="600" fill="#1A1A2E">4/6</text>
+    <rect x="475" y="38" width="120" height="6" rx="3" fill="#E8ECF1"/>
+    <rect x="475" y="38" width="80" height="6" rx="3" fill="#1E6FC0"/>
+    <text x="600" y="45" font-size="10" fill="#8E99A8">67%</text>
+
+    <!-- Phase circles: 4 green, 1 orange, 1 gray -->
+    <circle cx="670" cy="35" r="11" fill="#28A745"/>
+    <text x="670" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="698" cy="35" r="11" fill="#28A745"/>
+    <text x="698" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="726" cy="35" r="11" fill="#28A745"/>
+    <text x="726" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="754" cy="35" r="11" fill="#28A745"/>
+    <text x="754" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="782" cy="35" r="11" fill="#FF6B35"/>
+    <circle cx="782" cy="35" r="4" fill="#FFFFFF"/>
+    <circle cx="810" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+
+    <text x="880" y="39" font-size="13" font-weight="500" fill="#1A1A2E">22/04/2026</text>
+
+    <rect x="1060" y="20" width="120" height="32" rx="8" fill="#1E6FC0"/>
+    <text x="1120" y="41" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Voir le dossier</text>
+  </g>
+
+  <!-- Row 3 — Claire Bernard (white bg) -->
+  <g transform="translate(0, 360)">
+    <rect x="240" y="0" width="1180" height="70" fill="#FFFFFF"/>
+    <line x1="252" y1="70" x2="1408" y2="70" stroke="#F0F2F5" stroke-width="1"/>
+
+    <circle cx="280" cy="35" r="18" fill="#8E99A8"/>
+    <text x="280" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">CB</text>
+    <text x="308" y="30" font-size="13" font-weight="600" fill="#1A1A2E">Claire Bernard</text>
+    <text x="308" y="46" font-size="11" fill="#8E99A8">claire.bernard@email.fr</text>
+
+    <!-- Progression 0/6 (0%) -->
+    <text x="475" y="30" font-size="12" font-weight="600" fill="#1A1A2E">0/6</text>
+    <rect x="475" y="38" width="120" height="6" rx="3" fill="#E8ECF1"/>
+    <text x="600" y="45" font-size="10" fill="#8E99A8">0%</text>
+
+    <!-- Phase circles: all gray -->
+    <circle cx="670" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+    <circle cx="698" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+    <circle cx="726" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+    <circle cx="754" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+    <circle cx="782" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+    <circle cx="810" cy="35" r="11" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+
+    <!-- A planifier badge -->
+    <rect x="870" y="24" width="95" height="24" rx="12" fill="#FFF3E0"/>
+    <text x="917" y="41" font-size="11" font-weight="600" fill="#E65100" text-anchor="middle">À planifier</text>
+
+    <rect x="1060" y="20" width="120" height="32" rx="8" fill="#1E6FC0"/>
+    <text x="1120" y="41" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Voir le dossier</text>
+  </g>
+
+  <!-- Row 4 — Paul Rousseau (light gray bg) -->
+  <g transform="translate(0, 430)">
+    <rect x="240" y="0" width="1180" height="70" fill="#F9FAFB"/>
+
+    <circle cx="280" cy="35" r="18" fill="#28A745"/>
+    <text x="280" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">PR</text>
+    <text x="308" y="30" font-size="13" font-weight="600" fill="#1A1A2E">Paul Rousseau</text>
+    <!-- Termine badge next to name -->
+    <rect x="410" y="19" width="80" height="22" rx="11" fill="#E8F5E9"/>
+    <text x="450" y="34" font-size="10" font-weight="600" fill="#28A745" text-anchor="middle">Terminé &#10003;</text>
+    <text x="308" y="46" font-size="11" fill="#8E99A8">paul.rousseau@email.fr</text>
+
+    <!-- Progression 6/6 (100%) -->
+    <text x="475" y="30" font-size="12" font-weight="600" fill="#1A1A2E">6/6</text>
+    <rect x="475" y="38" width="120" height="6" rx="3" fill="#E8ECF1"/>
+    <rect x="475" y="38" width="120" height="6" rx="3" fill="#28A745"/>
+    <text x="600" y="45" font-size="10" fill="#8E99A8">100%</text>
+
+    <!-- Phase circles: all green -->
+    <circle cx="670" cy="35" r="11" fill="#28A745"/>
+    <text x="670" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="698" cy="35" r="11" fill="#28A745"/>
+    <text x="698" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="726" cy="35" r="11" fill="#28A745"/>
+    <text x="726" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="754" cy="35" r="11" fill="#28A745"/>
+    <text x="754" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="782" cy="35" r="11" fill="#28A745"/>
+    <text x="782" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <circle cx="810" cy="35" r="11" fill="#28A745"/>
+    <text x="810" y="40" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+
+    <!-- Bilan termine badge -->
+    <rect x="870" y="24" width="110" height="24" rx="12" fill="#E8F5E9"/>
+    <text x="925" y="41" font-size="11" font-weight="600" fill="#28A745" text-anchor="middle">Bilan terminé</text>
+
+    <!-- Outline button -->
+    <rect x="1060" y="20" width="120" height="32" rx="8" fill="none" stroke="#1E6FC0" stroke-width="1.5"/>
+    <text x="1120" y="41" font-size="12" font-weight="600" fill="#1E6FC0" text-anchor="middle">Voir le dossier</text>
+  </g>
+
+  <!-- Phase circle legend -->
+  <g transform="translate(252, 520)">
+    <circle cx="10" cy="10" r="7" fill="#28A745"/>
+    <text x="10" y="14" font-size="8" font-weight="700" fill="#FFFFFF" text-anchor="middle">&#10003;</text>
+    <text x="24" y="14" font-size="11" fill="#5A6577">Phase terminée</text>
+
+    <circle cx="140" cy="10" r="7" fill="#FF6B35"/>
+    <circle cx="140" cy="10" r="3" fill="#FFFFFF"/>
+    <text x="154" y="14" font-size="11" fill="#5A6577">Phase en cours</text>
+
+    <circle cx="268" cy="10" r="7" fill="none" stroke="#DCE1EB" stroke-width="2"/>
+    <text x="282" y="14" font-size="11" fill="#5A6577">Phase non commencée</text>
+  </g>
+
+  <!-- Pagination -->
+  <g transform="translate(252, 548)">
+    <text x="0" y="14" font-size="12" fill="#8E99A8">Affichage de 4 bénéficiaires sur 4</text>
+    <rect x="960" y="0" width="30" height="28" rx="6" fill="#1E6FC0"/>
+    <text x="975" y="19" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+  </g>
+
+  <!-- ==================== KPI CARDS ==================== -->
+  <g transform="translate(240, 600)">
+    <!-- Card 1: Bilans en cours -->
+    <g>
+      <rect x="0" y="0" width="280" height="100" rx="10" fill="#FFFFFF" filter="url(#shadow1)"/>
+      <rect x="0" y="0" width="4" height="100" rx="2" fill="#1E6FC0"/>
+      <!-- Icon circle -->
+      <circle cx="36" cy="40" r="20" fill="#E8F2FE"/>
+      <rect x="28" y="33" width="6" height="14" rx="1" fill="#1E6FC0"/>
+      <rect x="36" y="37" width="6" height="10" rx="1" fill="#1E6FC0"/>
+      <rect x="44" y="30" width="6" height="17" rx="1" fill="#1E6FC0" opacity="0.5"/>
+      <text x="70" y="38" font-size="28" font-weight="700" fill="#1A1A2E">3</text>
+      <text x="70" y="56" font-size="12" fill="#5A6577">Bilans en cours</text>
+      <text x="70" y="78" font-size="11" fill="#28A745">&#8593; +1 ce mois</text>
+    </g>
+
+    <!-- Card 2: Seances cette semaine -->
+    <g transform="translate(295, 0)">
+      <rect x="0" y="0" width="280" height="100" rx="10" fill="#FFFFFF" filter="url(#shadow1)"/>
+      <rect x="0" y="0" width="4" height="100" rx="2" fill="#FF6B35"/>
+      <circle cx="36" cy="40" r="20" fill="#FFF3E0"/>
+      <rect x="26" y="30" width="20" height="18" rx="3" fill="none" stroke="#FF6B35" stroke-width="2"/>
+      <line x1="30" y1="28" x2="30" y2="33" stroke="#FF6B35" stroke-width="2"/>
+      <line x1="42" y1="28" x2="42" y2="33" stroke="#FF6B35" stroke-width="2"/>
+      <line x1="26" y1="38" x2="46" y2="38" stroke="#FF6B35" stroke-width="1.5"/>
+      <text x="70" y="38" font-size="28" font-weight="700" fill="#1A1A2E">5</text>
+      <text x="70" y="56" font-size="12" fill="#5A6577">Séances cette semaine</text>
+      <text x="70" y="78" font-size="11" fill="#FF6B35">2 à planifier</text>
+    </g>
+
+    <!-- Card 3: Bilans termines -->
+    <g transform="translate(590, 0)">
+      <rect x="0" y="0" width="280" height="100" rx="10" fill="#FFFFFF" filter="url(#shadow1)"/>
+      <rect x="0" y="0" width="4" height="100" rx="2" fill="#28A745"/>
+      <circle cx="36" cy="40" r="20" fill="#E8F5E9"/>
+      <circle cx="36" cy="40" r="10" fill="none" stroke="#28A745" stroke-width="2"/>
+      <polyline points="30,40 34,44 42,36" fill="none" stroke="#28A745" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="38" font-size="28" font-weight="700" fill="#1A1A2E">1</text>
+      <text x="70" y="56" font-size="12" fill="#5A6577">Bilans terminés</text>
+      <text x="70" y="78" font-size="11" fill="#28A745">&#8593; +1 ce mois</text>
+    </g>
+
+    <!-- Card 4: Taux de completion -->
+    <g transform="translate(885, 0)">
+      <rect x="0" y="0" width="295" height="100" rx="10" fill="#FFFFFF" filter="url(#shadow1)"/>
+      <rect x="0" y="0" width="4" height="100" rx="2" fill="#0D3B6E"/>
+      <circle cx="36" cy="40" r="20" fill="#E8EEF6"/>
+      <circle cx="36" cy="40" r="10" fill="none" stroke="#0D3B6E" stroke-width="3" stroke-dasharray="36 64" stroke-dashoffset="-16" transform="rotate(-90 36 40)"/>
+      <text x="70" y="38" font-size="28" font-weight="700" fill="#1A1A2E">58%</text>
+      <text x="70" y="56" font-size="12" fill="#5A6577">Taux de complétion moyen</text>
+      <!-- Mini progress bar -->
+      <rect x="70" y="68" width="120" height="6" rx="3" fill="#E8ECF1"/>
+      <rect x="70" y="68" width="70" height="6" rx="3" fill="#0D3B6E"/>
+    </g>
+  </g>
+</svg>

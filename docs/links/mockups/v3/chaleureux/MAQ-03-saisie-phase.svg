@@ -1,0 +1,266 @@
+<!-- MAQ-03 | Saisie de Phase | Link's Accompagnement | v3.0 | chaleureux | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow-warm" x="-2%" y="-2%" width="104%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#D4A574" flood-opacity="0.1"/>
+    </filter>
+    <filter id="shadow-card" x="-2%" y="-2%" width="104%" height="112%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#C4956A" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="sidebar-warm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1B4A7A"/>
+      <stop offset="100%" stop-color="#0F2E4E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#FFF8F5"/>
+
+  <!-- ==================== SIDEBAR (220px) ==================== -->
+  <rect x="0" y="0" width="220" height="900" fill="url(#sidebar-warm)" rx="0"/>
+
+  <!-- Logo area -->
+  <rect x="0" y="0" width="220" height="74" fill="rgba(0,0,0,0.15)" rx="0"/>
+  <polygon points="24,24 36,19 36,46 24,41" fill="#F28C5A"/>
+  <text x="44" y="35" font-size="16" font-weight="700" fill="white">Link's</text>
+  <text x="44" y="51" font-size="11" font-weight="400" fill="#B8D4EE">Accompagnement</text>
+
+  <!-- Nav items -->
+  <!-- Dashboard -->
+  <g opacity="0.65">
+    <rect x="14" y="94" width="192" height="44" rx="12" fill="transparent"/>
+    <rect x="28" y="108" width="16" height="16" rx="4" fill="none" stroke="#B8D4EE" stroke-width="1.5"/>
+    <rect x="31" y="111" width="4" height="4" rx="1" fill="#B8D4EE"/>
+    <rect x="37" y="111" width="4" height="4" rx="1" fill="#B8D4EE"/>
+    <rect x="31" y="117" width="4" height="4" rx="1" fill="#B8D4EE"/>
+    <rect x="37" y="117" width="4" height="4" rx="1" fill="#B8D4EE"/>
+    <text x="54" y="121" font-size="14" fill="#B8D4EE">Dashboard</text>
+  </g>
+
+  <!-- Mon bilan (active) -->
+  <g>
+    <rect x="14" y="144" width="192" height="44" rx="12" fill="rgba(242,140,90,0.15)"/>
+    <rect x="14" y="144" width="4" height="44" rx="2" fill="#F28C5A"/>
+    <circle cx="36" cy="166" r="9" fill="none" stroke="white" stroke-width="1.5"/>
+    <path d="M33,166 L35.5,168.5 L40,163" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    <text x="54" y="171" font-size="14" font-weight="600" fill="white">Mon bilan</text>
+  </g>
+
+  <!-- Documents -->
+  <g opacity="0.65">
+    <rect x="14" y="194" width="192" height="44" rx="12" fill="transparent"/>
+    <rect x="30" y="206" width="12" height="16" rx="2" fill="none" stroke="#B8D4EE" stroke-width="1.5"/>
+    <text x="54" y="219" font-size="14" fill="#B8D4EE">Documents</text>
+  </g>
+
+  <!-- Profil -->
+  <g opacity="0.65">
+    <rect x="14" y="244" width="192" height="44" rx="12" fill="transparent"/>
+    <circle cx="36" cy="266" r="8" fill="none" stroke="#B8D4EE" stroke-width="1.5"/>
+    <path d="M28,278 Q36,272 44,278" fill="none" stroke="#B8D4EE" stroke-width="1.5"/>
+    <text x="54" y="271" font-size="14" fill="#B8D4EE">Profil</text>
+  </g>
+
+  <!-- Sidebar footer -->
+  <line x1="20" y1="836" x2="200" y2="836" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <circle cx="34" cy="864" r="16" fill="rgba(242,140,90,0.3)"/>
+  <text x="34" y="869" font-size="13" font-weight="600" fill="white" text-anchor="middle">MR</text>
+  <text x="58" y="860" font-size="13" fill="white">Marie Renaud</text>
+  <text x="58" y="877" font-size="11" fill="#B8D4EE">Bénéficiaire</text>
+
+  <!-- ==================== HEADER ==================== -->
+  <rect x="220" y="0" width="1220" height="58" fill="white"/>
+  <line x1="220" y1="58" x2="1440" y2="58" stroke="#F0DDD0" stroke-width="1"/>
+
+  <!-- Breadcrumb -->
+  <text x="248" y="36" font-size="14" fill="#A08070">Mon bilan</text>
+  <text x="325" y="36" font-size="14" fill="#A08070">›</text>
+  <text x="340" y="36" font-size="14" font-weight="600" fill="#2A7FD4">Phase 2</text>
+
+  <!-- User info right -->
+  <text x="1286" y="32" font-size="12" fill="#A08070" text-anchor="end">Marie Renaud</text>
+  <text x="1296" y="32" font-size="12" fill="#D0C0B0">|</text>
+  <text x="1310" y="32" font-size="12" fill="#C0392B">Déconnexion</text>
+
+  <!-- ==================== PHASE SELECTOR BAR ==================== -->
+  <rect x="220" y="58" width="1220" height="68" fill="white"/>
+  <line x1="220" y1="126" x2="1440" y2="126" stroke="#F0DDD0" stroke-width="1"/>
+
+  <!-- Phase 1 - Completed -->
+  <rect x="252" y="72" width="162" height="42" rx="21" fill="#E8F5E9"/>
+  <circle cx="274" cy="93" r="10" fill="#28A745"/>
+  <path d="M270,93 L273,96 L279,89" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="290" y="97" font-size="12" fill="#2E7D32" font-weight="500">Définir mon projet</text>
+
+  <!-- Phase 2 - Active -->
+  <rect x="424" y="72" width="194" height="42" rx="21" fill="#2A7FD4"/>
+  <circle cx="446" cy="93" r="10" fill="white"/>
+  <text x="446" y="97" font-size="11" font-weight="700" fill="#2A7FD4" text-anchor="middle">2</text>
+  <text x="464" y="97" font-size="12" fill="white" font-weight="600">Explorer mes compétences</text>
+
+  <!-- Phase 3 -->
+  <g opacity="0.45">
+    <rect x="628" y="72" width="162" height="42" rx="21" fill="#F5EDE8"/>
+    <circle cx="650" cy="93" r="10" fill="#D0C0B0"/>
+    <text x="650" y="97" font-size="11" font-weight="600" fill="white" text-anchor="middle">3</text>
+    <text x="668" y="97" font-size="12" fill="#A09080">Construire mon plan</text>
+  </g>
+
+  <!-- Phase 4 -->
+  <g opacity="0.45">
+    <rect x="800" y="72" width="145" height="42" rx="21" fill="#F5EDE8"/>
+    <circle cx="822" cy="93" r="10" fill="#D0C0B0"/>
+    <text x="822" y="97" font-size="11" font-weight="600" fill="white" text-anchor="middle">4</text>
+    <text x="840" y="97" font-size="12" fill="#A09080">Valider le projet</text>
+  </g>
+
+  <!-- Phase 5 -->
+  <g opacity="0.45">
+    <rect x="955" y="72" width="138" height="42" rx="21" fill="#F5EDE8"/>
+    <circle cx="977" cy="93" r="10" fill="#D0C0B0"/>
+    <text x="977" y="97" font-size="11" font-weight="600" fill="white" text-anchor="middle">5</text>
+    <text x="995" y="97" font-size="12" fill="#A09080">Plan d'action</text>
+  </g>
+
+  <!-- Phase 6 -->
+  <g opacity="0.45">
+    <rect x="1103" y="72" width="115" height="42" rx="21" fill="#F5EDE8"/>
+    <circle cx="1125" cy="93" r="10" fill="#D0C0B0"/>
+    <text x="1125" y="97" font-size="11" font-weight="600" fill="white" text-anchor="middle">6</text>
+    <text x="1143" y="97" font-size="12" fill="#A09080">Synthèse</text>
+  </g>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+
+  <!-- Phase title -->
+  <text x="260" y="168" font-size="24" font-weight="700" fill="#2A3A4A">Phase 2 — Explorer mes compétences</text>
+
+  <!-- Autosave indicator (friendly) -->
+  <g>
+    <rect x="1010" y="148" width="130" height="28" rx="14" fill="#E8F5E9"/>
+    <circle cx="1028" cy="162" r="5" fill="#28A745"/>
+    <path d="M1026,162 L1027.5,163.5 L1030,160.5" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+    <text x="1038" y="167" font-size="11" fill="#2E7D32" font-weight="500">Tout est sauvé !</text>
+  </g>
+
+  <!-- Phase description -->
+  <text x="260" y="196" font-size="14" fill="#7A6A5A">Prenez le temps d'explorer qui vous êtes. Cette phase vous invite à identifier vos compétences, vos passions et vos envies.</text>
+
+  <!-- ===== Question 1 Card ===== -->
+  <rect x="248" y="218" width="890" height="210" rx="16" fill="white" filter="url(#shadow-warm)"/>
+
+  <!-- Question number badge -->
+  <circle cx="278" cy="250" r="16" fill="#FFF0E6"/>
+  <text x="278" y="256" font-size="15" font-weight="700" fill="#F28C5A" text-anchor="middle">1</text>
+
+  <!-- Question label -->
+  <text x="304" y="256" font-size="15" font-weight="600" fill="#2A3A4A">Quelles sont vos principales compétences professionnelles ?</text>
+
+  <!-- Textarea with generous padding and content -->
+  <rect x="278" y="274" width="840" height="116" rx="16" fill="#FFFBF8" stroke="#F0DDD0" stroke-width="1.5"/>
+
+  <text x="298" y="302" font-size="14" fill="#3A3A3A">J'ai développé une solide expérience en gestion de projet au cours de mes 8 années dans</text>
+  <text x="298" y="324" font-size="14" fill="#3A3A3A">le secteur du conseil. Mes principales compétences incluent :</text>
+  <text x="298" y="346" font-size="14" fill="#3A3A3A">- La coordination d'équipes pluridisciplinaires (jusqu'à 12 personnes)</text>
+  <text x="298" y="368" font-size="14" fill="#3A3A3A">- L'analyse de données et la rédaction de rapports stratégiques</text>
+
+  <!-- Character count -->
+  <text x="1094" y="408" font-size="11" fill="#C0A890" text-anchor="end">312 / 2000 caractères</text>
+
+  <!-- ===== Question 2 Card ===== -->
+  <rect x="248" y="442" width="890" height="195" rx="16" fill="white" filter="url(#shadow-warm)"/>
+
+  <circle cx="278" cy="474" r="16" fill="#FFF0E6"/>
+  <text x="278" y="480" font-size="15" font-weight="700" fill="#F28C5A" text-anchor="middle">2</text>
+
+  <text x="304" y="480" font-size="15" font-weight="600" fill="#2A3A4A">Quels sont vos centres d'intérêt et vos passions ?</text>
+
+  <!-- Empty textarea with encouraging placeholder -->
+  <rect x="278" y="498" width="840" height="104" rx="16" fill="#FFFBF8" stroke="#F0DDD0" stroke-width="1"/>
+  <text x="298" y="526" font-size="14" fill="#C8B8A8" font-style="italic">Prenez le temps de réfléchir... Qu'est-ce qui vous anime au quotidien ? Quels sont</text>
+  <text x="298" y="546" font-size="14" fill="#C8B8A8" font-style="italic">les sujets sur lesquels vous pourriez parler pendant des heures ?</text>
+
+  <text x="1094" y="620" font-size="11" fill="#C0A890" text-anchor="end">0 / 2000 caractères</text>
+
+  <!-- ===== Question 3 Card ===== -->
+  <rect x="248" y="650" width="890" height="195" rx="16" fill="white" filter="url(#shadow-warm)"/>
+
+  <circle cx="278" cy="682" r="16" fill="#FFF0E6"/>
+  <text x="278" y="688" font-size="15" font-weight="700" fill="#F28C5A" text-anchor="middle">3</text>
+
+  <text x="304" y="688" font-size="15" font-weight="600" fill="#2A3A4A">Quelles compétences aimeriez-vous développer ?</text>
+
+  <!-- Empty textarea -->
+  <rect x="278" y="706" width="840" height="104" rx="16" fill="#FFFBF8" stroke="#F0DDD0" stroke-width="1"/>
+  <text x="298" y="734" font-size="14" fill="#C8B8A8" font-style="italic">Rêvez grand ! Quelles nouvelles compétences vous feraient vibrer ?</text>
+
+  <text x="1094" y="828" font-size="11" fill="#C0A890" text-anchor="end">0 / 2000 caractères</text>
+
+  <!-- ===== Action Buttons ===== -->
+  <!-- Enregistrer (secondary) -->
+  <rect x="822" y="858" width="150" height="44" rx="22" fill="white" stroke="#2A7FD4" stroke-width="1.5"/>
+  <text x="897" y="885" font-size="14" font-weight="600" fill="#2A7FD4" text-anchor="middle">Enregistrer</text>
+
+  <!-- Valider la phase (primary) -->
+  <rect x="984" y="858" width="156" height="44" rx="22" fill="#2A7FD4"/>
+  <text x="1062" y="885" font-size="14" font-weight="600" fill="white" text-anchor="middle">Valider la phase</text>
+
+  <!-- Tooltip -->
+  <text x="1062" y="875" font-size="0" fill="transparent">spacer</text>
+
+  <!-- ==================== RIGHT SIDEBAR (280px) ==================== -->
+  <rect x="1160" y="126" width="280" height="774" fill="#FFF5EF"/>
+  <line x1="1160" y1="126" x2="1160" y2="900" stroke="#F0DDD0" stroke-width="1"/>
+
+  <!-- Prochaine séance card -->
+  <rect x="1178" y="148" width="244" height="130" rx="16" fill="white" filter="url(#shadow-warm)"/>
+  <rect x="1178" y="148" width="244" height="36" rx="16" fill="#FFF0E6"/>
+  <rect x="1178" y="168" width="244" height="16" fill="#FFF0E6"/>
+  <text x="1200" y="170" font-size="12" font-weight="700" fill="#C07030" letter-spacing="0.5">PROCHAINE SÉANCE</text>
+
+  <!-- Date -->
+  <text x="1200" y="206" font-size="15" font-weight="600" fill="#2A3A4A">29/04/2026 à 14h00</text>
+
+  <!-- Visio link -->
+  <rect x="1200" y="222" width="160" height="34" rx="17" fill="#2A7FD4"/>
+  <text x="1224" y="244" font-size="12" font-weight="600" fill="white">Rejoindre la visio</text>
+  <!-- Camera icon approximation -->
+  <rect x="1208" y="234" width="10" height="8" rx="2" fill="none" stroke="white" stroke-width="1.2"/>
+  <polygon points="1220,235 1224,238 1220,241" fill="white"/>
+
+  <!-- Documents de phase card -->
+  <rect x="1178" y="298" width="244" height="152" rx="16" fill="white" filter="url(#shadow-warm)"/>
+  <rect x="1178" y="298" width="244" height="36" rx="16" fill="#FFF0E6"/>
+  <rect x="1178" y="318" width="244" height="16" fill="#FFF0E6"/>
+  <text x="1200" y="320" font-size="12" font-weight="700" fill="#C07030" letter-spacing="0.5">DOCUMENTS DE PHASE</text>
+
+  <!-- Document items -->
+  <g>
+    <rect x="1200" y="346" width="22" height="18" rx="4" fill="#FFF0E6"/>
+    <text x="1206" y="359" font-size="7" fill="#F28C5A" font-weight="700">PDF</text>
+    <text x="1230" y="360" font-size="13" fill="#2A7FD4">Guide d'exploration.pdf</text>
+  </g>
+  <g>
+    <rect x="1200" y="374" width="22" height="18" rx="4" fill="#FFF0E6"/>
+    <text x="1206" y="387" font-size="7" fill="#F28C5A" font-weight="700">PDF</text>
+    <text x="1230" y="388" font-size="13" fill="#2A7FD4">Fiche compétences.pdf</text>
+  </g>
+  <g>
+    <rect x="1200" y="402" width="22" height="18" rx="4" fill="#FFF0E6"/>
+    <text x="1204" y="415" font-size="7" fill="#F28C5A" font-weight="700">DOC</text>
+    <text x="1230" y="416" font-size="13" fill="#2A7FD4">Auto-évaluation.docx</text>
+  </g>
+
+  <!-- Phase progress card -->
+  <rect x="1178" y="470" width="244" height="90" rx="16" fill="white" filter="url(#shadow-warm)"/>
+  <text x="1200" y="498" font-size="12" font-weight="700" fill="#C07030" letter-spacing="0.5">PROGRESSION</text>
+  <text x="1200" y="522" font-size="15" font-weight="600" fill="#2A7FD4">Phase 2 sur 6</text>
+
+  <!-- Progress bar -->
+  <rect x="1200" y="534" width="204" height="8" rx="4" fill="#FFF0E6"/>
+  <rect x="1200" y="534" width="68" height="8" rx="4" fill="#F28C5A"/>
+
+  <!-- Validation note at very bottom -->
+  <text x="1062" y="894" font-size="10" fill="#A09080" text-anchor="middle" font-style="italic">La validation soumet vos réponses à votre consultante</text>
+
+</svg>
