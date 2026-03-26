@@ -56,11 +56,16 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (simulationMode) return // In simulation mode, login page shows the profile selector
+    // During form submission, handleSubmit owns the redirect (it uses
+    // the role from the API response, which is always correct).
+    // Without this guard the effect can fire with a stale/fallback role
+    // from the AuthProvider and override the correct redirect (#238).
+    if (isSubmitting) return
     if (!isLoading && user) {
       const dest = redirectPath ?? ROLE_HOME[user.role] ?? '/dashboard'
       router.replace(dest)
     }
-  }, [user, isLoading, router, redirectPath, simulationMode])
+  }, [user, isLoading, router, redirectPath, simulationMode, isSubmitting])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
