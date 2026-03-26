@@ -1,17 +1,18 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useAuth, useRequireRole } from '@unanima/auth'
-import { Card } from '@unanima/core'
 import {
   Upload,
   FileText,
   Trash2,
+  GripVertical,
   ArrowUp,
   ArrowDown,
   X,
   Check,
   AlertTriangle,
+  CloudUpload,
 } from 'lucide-react'
 import { TOTAL_PHASES, PHASE_DESCRIPTIONS } from '@/config/phases.config'
 
@@ -23,6 +24,17 @@ interface PhaseDocument {
   display_name: string
   file_type: 'pdf' | 'docx'
   sort_order: number
+  file_size?: number
+  created_at?: string
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function formatFileSize(bytes?: number): string {
+  if (!bytes) return ''
+  if (bytes < 1024) return `${bytes} o`
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} Ko`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`
 }
 
 // ── Component ───────────────────────────────────────────────────────────────
@@ -37,11 +49,12 @@ export default function AdminDocumentsPage() {
   const [loading, setLoading] = useState(false)
 
   // Upload state
-  const [showUploadModal, setShowUploadModal] = useState(false)
   const [uploadFile, setUploadFile] = useState<File | null>(null)
   const [uploadDisplayName, setUploadDisplayName] = useState('')
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+  const [isDragOver, setIsDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Delete state
   const [deletingDoc, setDeletingDoc] = useState<PhaseDocument | null>(null)
@@ -109,7 +122,6 @@ export default function AdminDocumentsPage() {
       }
 
       showToast('success', 'Document ajouté avec succès.')
-      setShowUploadModal(false)
       setUploadFile(null)
       setUploadDisplayName('')
       fetchDocuments()
@@ -119,6 +131,18 @@ export default function AdminDocumentsPage() {
       setUploading(false)
     }
   }
+
+  // ── Drag & drop ────────────────────────────────────────────────────────────
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragOver(false)
+    const file = e.dataTransfer.files[0]
+    if (file && (file.type === 'application/pdf' || file.name.endsWith('.docx'))) {
+      setUploadFile(file)
+      setUploadDisplayName(file.name.replace(/\.(pdf|docx)$/i, ''))
+    }
+  }, [])
 
   // ── Delete handler ────────────────────────────────────────────────────────
 
@@ -188,17 +212,20 @@ export default function AdminDocumentsPage() {
   const phaseDocCount = (phase: number) =>
     allDocuments.filter((d) => d.phase_number === phase).length
 
+  const totalDocCount = allDocuments.length
+  const totalSize = allDocuments.reduce((sum, d) => sum + (d.file_size ?? 0), 0)
+
   // ── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <div className="mx-auto max-w-[1200px] space-y-6">
       {/* Toast */}
       {toast && (
         <div
-          className={`fixed top-6 right-6 z-[100] flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg text-sm font-medium ${
+          className={`fixed top-6 right-6 z-[100] flex items-center gap-2 px-5 py-3 rounded-[14px] shadow-lg text-sm font-medium ${
             toast.type === 'success'
-              ? 'bg-[var(--color-success)] text-white'
-              : 'bg-red-600 text-white'
+              ? 'bg-[#22C55E] text-white'
+              : 'bg-[#E8553D] text-white'
           }`}
         >
           {toast.type === 'success' ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}
@@ -207,32 +234,17 @@ export default function AdminDocumentsPage() {
       )}
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">
-            Gestion des documents
-          </h1>
-          <p className="text-sm text-[var(--color-text-muted)] mt-1">
-            Gérez les documents disponibles pour chaque phase du bilan
-          </p>
-        </div>
-        <button
-          onClick={() => {
-            setUploadFile(null)
-            setUploadDisplayName('')
-            setUploadError(null)
-            setShowUploadModal(true)
-          }}
-          disabled={phaseDocCount(activePhase) >= 3}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          <Upload className="w-4 h-4" />
-          Ajouter un document
-        </button>
+      <div>
+        <h1 className="text-xl font-bold text-[#2C2017]">
+          Gestion des documents
+        </h1>
+        <p className="text-[13px] text-[#A0927E] mt-1">
+          Gérez les documents disponibles pour chaque phase du bilan
+        </p>
       </div>
 
       {/* Phase tabs */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2">
         {Array.from({ length: TOTAL_PHASES }, (_, idx) => {
           const phase = idx + 1
           const count = phaseDocCount(phase)
@@ -240,20 +252,14 @@ export default function AdminDocumentsPage() {
             <button
               key={phase}
               onClick={() => setActivePhase(phase)}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+              className={`rounded-full px-4 py-2 text-[13px] font-semibold transition-colors ${
                 activePhase === phase
-                  ? 'bg-[var(--color-primary)] text-white'
-                  : 'bg-white border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50'
+                  ? 'bg-[#2A7FD4] text-white'
+                  : 'bg-[#FFF0E8] text-[#7B6B5A] hover:bg-[#FDEBD5]'
               }`}
             >
               Phase {phase}
-              <span
-                className={`ml-2 inline-flex items-center justify-center w-5 h-5 rounded-full text-xs ${
-                  activePhase === phase
-                    ? 'bg-white/20 text-white'
-                    : 'bg-gray-100 text-gray-500'
-                }`}
-              >
+              <span className="ml-1.5 text-[11px] opacity-80">
                 {count}
               </span>
             </button>
@@ -261,198 +267,267 @@ export default function AdminDocumentsPage() {
         })}
       </div>
 
-      {/* Phase title */}
-      <h2 className="text-lg font-semibold text-[var(--color-text)] mb-4">
-        {`Phase ${activePhase} — ${PHASE_DESCRIPTIONS[activePhase]}`}
-      </h2>
-
-      {/* Document list */}
-      <Card>
-        {documents.length === 0 ? (
-          <div className="p-8 text-center text-[var(--color-text-muted)]">
-            <FileText className="w-10 h-10 mx-auto mb-3 opacity-40" />
-            <p className="text-sm">Aucun document pour cette phase.</p>
-            <p className="text-xs mt-1">
-              Ajoutez jusqu{"'"}à 3 documents (.pdf ou .docx, max 10 Mo).
-            </p>
-          </div>
-        ) : (
-          <div className="divide-y divide-[var(--color-border)]">
-            {documents.map((doc, idx) => (
-              <div
-                key={doc.id}
-                className="flex items-center gap-4 px-5 py-4 hover:bg-gray-50/50 transition-colors"
-              >
-                {/* Icon */}
-                <div
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center text-xs font-bold uppercase ${
-                    doc.file_type === 'pdf'
-                      ? 'bg-red-50 text-red-600'
-                      : 'bg-blue-50 text-blue-600'
-                  }`}
-                >
-                  {doc.file_type}
-                </div>
-
-                {/* Name */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[var(--color-text)] truncate">
-                    {doc.display_name}
-                  </p>
-                  <p className="text-xs text-[var(--color-text-muted)]">
-                    Position {idx + 1}
-                  </p>
-                </div>
-
-                {/* Reorder buttons */}
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => handleReorder(doc.id, 'up')}
-                    disabled={idx === 0}
-                    className="p-1.5 rounded-md border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                    title="Monter"
-                  >
-                    <ArrowUp className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleReorder(doc.id, 'down')}
-                    disabled={idx === documents.length - 1}
-                    className="p-1.5 rounded-md border border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                    title="Descendre"
-                  >
-                    <ArrowDown className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {/* Delete button */}
+      {/* Two-column layout */}
+      <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+        {/* ═══ LEFT COLUMN ═══ */}
+        <div className="space-y-5">
+          {/* Upload zone */}
+          <form onSubmit={handleUpload}>
+            <div
+              onDragOver={(e) => { e.preventDefault(); setIsDragOver(true) }}
+              onDragLeave={() => setIsDragOver(false)}
+              onDrop={handleDrop}
+              className={`rounded-[18px] border-2 border-dashed p-8 text-center transition-colors ${
+                isDragOver
+                  ? 'border-[#2A7FD4] bg-[#E8F4FD]'
+                  : 'border-[#F2D5C4] bg-white hover:border-[#F28C5A]/50'
+              }`}
+              style={{ boxShadow: '0 2px 10px rgba(212,165,116,0.08)' }}
+            >
+              <CloudUpload className="mx-auto h-10 w-10 text-[#2A7FD4]" />
+              <p className="mt-3 text-[14px] font-medium text-[#2C2017]">
+                Glissez vos fichiers ici ou{' '}
                 <button
-                  onClick={() => setDeletingDoc(doc)}
-                  className="p-1.5 rounded-md border border-red-200 text-red-500 hover:bg-red-50 transition-colors"
-                  title="Supprimer"
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="text-[#2A7FD4] underline hover:text-[#1A6BBF]"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  Parcourir
                 </button>
-              </div>
-            ))}
-          </div>
-        )}
+              </p>
+              <p className="mt-1.5 text-[12px] text-[#A0927E]">
+                PDF ou DOCX · Max 10 Mo · 3 documents max par phase
+              </p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) {
+                    setUploadFile(file)
+                    setUploadDisplayName(file.name.replace(/\.(pdf|docx)$/i, ''))
+                  }
+                }}
+                className="hidden"
+              />
 
-        {/* Limit info */}
-        {documents.length > 0 && (
-          <div className="px-5 py-3 border-t border-[var(--color-border)] bg-gray-50/50">
-            <p className="text-xs text-[var(--color-text-muted)]">
-              {documents.length}/3 documents · .pdf et .docx uniquement · Max 10 Mo
-            </p>
-          </div>
-        )}
-      </Card>
-
-      {/* ================================================================== */}
-      {/* UPLOAD MODAL                                                       */}
-      {/* ================================================================== */}
-      {showUploadModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setShowUploadModal(false)} />
-          <div className="relative w-full max-w-lg mx-4 bg-white rounded-xl shadow-2xl">
-            <div className="flex items-center gap-3 px-6 py-5 border-b border-[var(--color-border)]">
-              <Upload className="w-5 h-5 text-[var(--color-primary)]" />
-              <h2 className="text-lg font-semibold text-[var(--color-text)]">
-                Ajouter un document — Phase {activePhase}
-              </h2>
-              <button
-                onClick={() => setShowUploadModal(false)}
-                className="absolute right-4 top-4 p-1 rounded-md hover:bg-gray-100 text-[var(--color-text)]/40"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleUpload} className="px-6 py-5 space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-[var(--color-text)]/70 mb-1.5">
-                  Nom d{"'"}affichage <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={uploadDisplayName}
-                  onChange={(e) => setUploadDisplayName(e.target.value)}
-                  placeholder="Ex : Guide d'entretien préliminaire"
-                  className="w-full px-3 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] placeholder:text-[var(--color-text)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-[var(--color-text)]/70 mb-1.5">
-                  Fichier <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="file"
-                  required
-                  accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                  onChange={(e) => setUploadFile(e.target.files?.[0] ?? null)}
-                  className="w-full text-sm text-[var(--color-text)] file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[var(--color-primary)]/10 file:text-[var(--color-primary)] hover:file:bg-[var(--color-primary)]/20"
-                />
-                <p className="mt-1 text-xs text-[var(--color-text)]/50">
-                  .pdf ou .docx, max 10 Mo
-                </p>
-              </div>
-
-              {uploadError && (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs">
-                  <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-                  {uploadError}
+              {/* File selected */}
+              {uploadFile && (
+                <div className="mx-auto mt-4 max-w-sm space-y-3">
+                  <div className="flex items-center gap-2 rounded-[12px] bg-[#FFF8F5] px-3 py-2">
+                    <FileText className="h-4 w-4 text-[#F28C5A]" />
+                    <span className="flex-1 truncate text-[12px] font-medium text-[#2C2017]">
+                      {uploadFile.name}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => { setUploadFile(null); setUploadDisplayName('') }}
+                      className="text-[#A0927E] hover:text-[#2C2017]"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    value={uploadDisplayName}
+                    onChange={(e) => setUploadDisplayName(e.target.value)}
+                    placeholder="Nom d'affichage du document"
+                    className="w-full rounded-[12px] border border-[#F2D5C4] bg-white px-3 py-2 text-[13px] text-[#2C2017] placeholder:text-[#C4AA90] outline-none focus:border-[#2A7FD4] focus:ring-2 focus:ring-[#2A7FD4]/20"
+                  />
+                  {uploadError && (
+                    <div className="flex items-center gap-2 rounded-[10px] bg-[#FEF2F2] px-3 py-2 text-[12px] text-[#E8553D]">
+                      <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                      {uploadError}
+                    </div>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={uploading || phaseDocCount(activePhase) >= 3}
+                    className="w-full rounded-full bg-[#2A7FD4] px-5 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#1A6BBF] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {uploading ? 'Envoi en cours...' : 'Ajouter le document'}
+                  </button>
                 </div>
               )}
 
-              <div className="flex justify-end gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowUploadModal(false)}
-                  className="px-4 py-2.5 text-sm font-medium rounded-lg border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  disabled={uploading || !uploadFile}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  {uploading ? 'Envoi...' : 'Ajouter'}
-                </button>
+              {/* Counter badge */}
+              <div className="mt-4 inline-flex items-center rounded-full bg-[#FFF0E8] px-3 py-1 text-[11px] font-semibold text-[#F28C5A]">
+                {phaseDocCount(activePhase)}/3 documents pour cette phase
               </div>
-            </form>
+            </div>
+          </form>
+
+          {/* Document list */}
+          <div
+            className="overflow-hidden rounded-[18px] bg-white"
+            style={{ boxShadow: '0 2px 10px rgba(212,165,116,0.1)' }}
+          >
+            <div className="border-b border-[#F5E6DB] bg-[#FFF8F2] px-5 py-3">
+              <h2 className="text-[14px] font-bold text-[#2C2017]">
+                Phase {activePhase} — {PHASE_DESCRIPTIONS[activePhase]}
+              </h2>
+            </div>
+
+            {documents.length === 0 ? (
+              <div className="px-5 py-10 text-center">
+                <FileText className="mx-auto h-10 w-10 text-[#E8D5CA]" />
+                <p className="mt-3 text-[13px] text-[#A0927E]">Aucun document pour cette phase.</p>
+                <p className="mt-1 text-[11px] text-[#C4AA90]">
+                  Ajoutez jusqu{"'"}à 3 documents (.pdf ou .docx, max 10 Mo).
+                </p>
+              </div>
+            ) : (
+              <div className="divide-y divide-[#F5E6DB]">
+                {documents.map((doc, idx) => (
+                  <div
+                    key={doc.id}
+                    className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-[#FFF8F5]"
+                  >
+                    {/* Drag handle */}
+                    <GripVertical className="h-4 w-4 shrink-0 text-[#E8D5CA]" />
+
+                    {/* File type badge */}
+                    <div
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] text-[10px] font-bold uppercase ${
+                        doc.file_type === 'pdf'
+                          ? 'bg-[#FEF2F2] text-[#DC2626]'
+                          : 'bg-[#E8F4FD] text-[#2A7FD4]'
+                      }`}
+                    >
+                      {doc.file_type}
+                    </div>
+
+                    {/* Name + size */}
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[13px] font-semibold text-[#2C2017]">
+                        {doc.display_name}
+                      </p>
+                      <p className="text-[11px] text-[#A0927E]">
+                        {formatFileSize(doc.file_size)} · Position {idx + 1}
+                      </p>
+                    </div>
+
+                    {/* Reorder buttons */}
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => handleReorder(doc.id, 'up')}
+                        disabled={idx === 0}
+                        className="inline-flex h-[26px] w-[26px] items-center justify-center rounded-full border border-[#F2D5C4] text-[#8B7B6B] transition-colors hover:bg-[#FFF8F5] disabled:cursor-not-allowed disabled:opacity-30"
+                        title="Monter"
+                      >
+                        <ArrowUp className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleReorder(doc.id, 'down')}
+                        disabled={idx === documents.length - 1}
+                        className="inline-flex h-[26px] w-[26px] items-center justify-center rounded-full border border-[#F2D5C4] text-[#8B7B6B] transition-colors hover:bg-[#FFF8F5] disabled:cursor-not-allowed disabled:opacity-30"
+                        title="Descendre"
+                      >
+                        <ArrowDown className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+
+                    {/* Delete */}
+                    <button
+                      onClick={() => setDeletingDoc(doc)}
+                      className="inline-flex h-[26px] w-[26px] items-center justify-center rounded-full border border-[#E8553D]/20 text-[#E8553D] transition-colors hover:bg-[#FEF2F2]"
+                      title="Supprimer"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      )}
 
-      {/* ================================================================== */}
-      {/* DELETE CONFIRMATION MODAL                                           */}
-      {/* ================================================================== */}
+        {/* ═══ RIGHT COLUMN — Phase summary ═══ */}
+        <div
+          className="h-fit rounded-[18px] bg-white p-5"
+          style={{ boxShadow: '0 2px 10px rgba(212,165,116,0.1)' }}
+        >
+          <h3 className="mb-4 text-[14px] font-bold text-[#2C2017]">
+            Résumé par phase
+          </h3>
+          <div className="space-y-3">
+            {Array.from({ length: TOTAL_PHASES }, (_, idx) => {
+              const phase = idx + 1
+              const count = phaseDocCount(phase)
+              const isActive = phase === activePhase
+              return (
+                <button
+                  key={phase}
+                  onClick={() => setActivePhase(phase)}
+                  className={`flex w-full items-center gap-3 rounded-[12px] px-3 py-2.5 text-left transition-colors ${
+                    isActive ? 'bg-[#E8F4FD]' : 'hover:bg-[#FFF8F5]'
+                  }`}
+                >
+                  <div
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[12px] font-bold ${
+                      count > 0
+                        ? isActive
+                          ? 'bg-[#2A7FD4] text-white'
+                          : 'bg-[#ECFDF5] text-[#22C55E]'
+                        : 'bg-[#FFF0E8] text-[#C4AA90]'
+                    }`}
+                  >
+                    {phase}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className={`text-[12px] font-semibold ${isActive ? 'text-[#2A7FD4]' : 'text-[#2C2017]'}`}>
+                      Phase {phase}
+                    </p>
+                    <p className="text-[11px] text-[#A0927E]">
+                      {count} document{count !== 1 ? 's' : ''}
+                    </p>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Total */}
+          <div className="mt-4 border-t border-[#F5E6DB] pt-4">
+            <p className="text-[12px] font-bold text-[#2C2017]">
+              Total : {totalDocCount} document{totalDocCount !== 1 ? 's' : ''}
+            </p>
+            {totalSize > 0 && (
+              <p className="text-[11px] text-[#A0927E]">
+                {formatFileSize(totalSize)}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ DELETE CONFIRMATION MODAL ═══ */}
       {deletingDoc && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/50" onClick={() => setDeletingDoc(null)} />
-          <div className="relative w-full max-w-sm mx-4 bg-white rounded-xl shadow-2xl p-6 text-center">
-            <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
-              <Trash2 className="w-6 h-6 text-red-500" />
+          <div className="relative w-full max-w-sm mx-4 rounded-[18px] bg-white p-6 text-center shadow-2xl">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#FEF2F2]">
+              <Trash2 className="h-6 w-6 text-[#E8553D]" />
             </div>
-            <h3 className="text-lg font-semibold text-[var(--color-text)] mb-2">
+            <h3 className="text-[16px] font-bold text-[#2C2017] mb-2">
               Supprimer ce document ?
             </h3>
-            <p className="text-sm text-[var(--color-text-muted)] mb-6">
-              « {deletingDoc.display_name} » sera supprimé définitivement du stockage et de la base de données.
+            <p className="text-[13px] text-[#7B6B5A] mb-6">
+              « {deletingDoc.display_name} » sera supprimé définitivement.
             </p>
             <div className="flex justify-center gap-3">
               <button
                 onClick={() => setDeletingDoc(null)}
-                className="px-4 py-2.5 text-sm font-medium rounded-lg border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
+                className="rounded-full border border-[#F2D5C4] bg-white px-5 py-2 text-[13px] font-semibold text-[#7B6B5A] transition-colors hover:bg-[#FFF8F5]"
               >
                 Annuler
               </button>
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className="px-4 py-2.5 text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 transition-colors"
+                className="rounded-full bg-[#E8553D] px-5 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#D4432D] disabled:opacity-50"
               >
                 {deleting ? 'Suppression...' : 'Supprimer'}
               </button>

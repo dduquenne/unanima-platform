@@ -430,14 +430,14 @@ export default function AdminUtilisateursPage() {
 
   // ---- Render ----
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="mx-auto max-w-[1200px] space-y-6">
       {/* Toast */}
       {toast && (
         <div
-          className={`fixed top-6 right-6 z-[100] flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg text-sm font-medium transition-all ${
+          className={`fixed top-6 right-6 z-[100] flex items-center gap-2 px-5 py-3 rounded-[14px] shadow-lg text-sm font-medium transition-all ${
             toast.type === 'success'
-              ? 'bg-[var(--color-success)] text-white'
-              : 'bg-red-600 text-white'
+              ? 'bg-[#22C55E] text-white'
+              : 'bg-[#E8553D] text-white'
           }`}
         >
           {toast.type === 'success' ? (
@@ -450,13 +450,13 @@ export default function AdminUtilisateursPage() {
       )}
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-text)]">
+          <h1 className="text-xl font-bold text-[#2C2017]">
             Gestion des utilisateurs
           </h1>
-          <p className="text-sm text-[var(--color-text)]/60 mt-1">
-            Gérez les comptes bénéficiaires et consultantes de la plateforme
+          <p className="text-[13px] text-[#A0927E] mt-1">
+            {beneficiaireCount + consultantCount} utilisateurs · 3 rôles
           </p>
         </div>
         <button
@@ -465,143 +465,129 @@ export default function AdminUtilisateursPage() {
             setFormError(null)
             setShowCreateModal(true)
           }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] transition-colors"
+          className="inline-flex items-center gap-2 rounded-full bg-[#2A7FD4] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#1A6BBF]"
         >
           <Plus className="w-4 h-4" />
-          Créer un compte
+          Créer un utilisateur
         </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex border-b border-[var(--color-border)] mb-6">
+      {/* Filter pills */}
+      <div className="flex items-center gap-2">
         <button
           onClick={() => setActiveTab('beneficiaire')}
-          className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
+          className={`rounded-full px-4 py-2 text-[13px] font-semibold transition-colors ${
             activeTab === 'beneficiaire'
-              ? 'border-[var(--color-primary)] text-[var(--color-primary)]'
-              : 'border-transparent text-[var(--color-text)]/60 hover:text-[var(--color-text)]'
+              ? 'bg-[#2A7FD4] text-white'
+              : 'bg-[#FFF0E8] text-[#7B6B5A] hover:bg-[#FDEBD5]'
           }`}
         >
           Bénéficiaires
-          <span
-            className={`ml-2 inline-flex items-center justify-center min-w-[1.5rem] h-6 px-2 rounded-full text-xs font-semibold ${
-              activeTab === 'beneficiaire'
-                ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
-                : 'bg-gray-100 text-gray-500'
-            }`}
-          >
+          <span className="ml-1.5 text-[11px] opacity-80">
             {beneficiaireCount}
           </span>
         </button>
         <button
           onClick={() => setActiveTab('consultant')}
-          className={`px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
+          className={`rounded-full px-4 py-2 text-[13px] font-semibold transition-colors ${
             activeTab === 'consultant'
-              ? 'border-[var(--color-primary)] text-[var(--color-primary)]'
-              : 'border-transparent text-[var(--color-text)]/60 hover:text-[var(--color-text)]'
+              ? 'bg-[#2A7FD4] text-white'
+              : 'bg-[#FFF0E8] text-[#7B6B5A] hover:bg-[#FDEBD5]'
           }`}
         >
           Consultantes
-          <span
-            className={`ml-2 inline-flex items-center justify-center min-w-[1.5rem] h-6 px-2 rounded-full text-xs font-semibold ${
-              activeTab === 'consultant'
-                ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
-                : 'bg-gray-100 text-gray-500'
-            }`}
-          >
+          <span className="ml-1.5 text-[11px] opacity-80">
             {consultantCount}
           </span>
         </button>
       </div>
 
       {/* Filters */}
-      <Card className="mb-6">
-        <div className="p-4 flex flex-col sm:flex-row gap-3">
-          {/* Search */}
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text)]/40" />
-            <input
-              type="text"
-              placeholder="Rechercher par nom ou email..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] placeholder:text-[var(--color-text)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
-            />
-          </div>
-
-          {/* Status filter */}
-          <div className="relative">
-            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text)]/40" />
-            <select
-              value={statusFilter}
-              onChange={(e) =>
-                setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')
-              }
-              className="appearance-none pl-10 pr-8 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
-            >
-              <option value="all">Tous les statuts</option>
-              <option value="active">Actif</option>
-              <option value="inactive">Inactif</option>
-            </select>
-          </div>
-
-          {/* Consultant filter (only on beneficiaire tab) */}
-          {activeTab === 'beneficiaire' && (
-            <select
-              value={consultantFilter}
-              onChange={(e) => setConsultantFilter(e.target.value)}
-              className="appearance-none px-4 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
-            >
-              <option value="all">Toutes les consultantes</option>
-              {consultants.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.full_name}
-                </option>
-              ))}
-            </select>
-          )}
+      <div className="flex flex-col gap-3 sm:flex-row">
+        {/* Search */}
+        <div className="relative flex-1">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A0927E]" />
+          <input
+            type="text"
+            placeholder="Rechercher un utilisateur..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full h-[38px] rounded-full border border-[#F2D5C4] bg-white pl-10 pr-4 text-[13px] text-[#2C2017] placeholder:text-[#C4AA90] outline-none transition-colors focus:border-[#2A7FD4] focus:ring-2 focus:ring-[#2A7FD4]/20"
+          />
         </div>
-      </Card>
+
+        {/* Status filter */}
+        <div className="relative">
+          <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A0927E]" />
+          <select
+            value={statusFilter}
+            onChange={(e) =>
+              setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')
+            }
+            className="appearance-none h-[38px] rounded-full border border-[#F2D5C4] bg-white pl-10 pr-8 text-[13px] text-[#2C2017] outline-none transition-colors focus:border-[#2A7FD4] focus:ring-2 focus:ring-[#2A7FD4]/20"
+          >
+            <option value="all">Tous les statuts</option>
+            <option value="active">Actif</option>
+            <option value="inactive">Inactif</option>
+          </select>
+        </div>
+
+        {/* Consultant filter (only on beneficiaire tab) */}
+        {activeTab === 'beneficiaire' && (
+          <select
+            value={consultantFilter}
+            onChange={(e) => setConsultantFilter(e.target.value)}
+            className="appearance-none h-[38px] rounded-full border border-[#F2D5C4] bg-white px-4 text-[13px] text-[#2C2017] outline-none transition-colors focus:border-[#2A7FD4] focus:ring-2 focus:ring-[#2A7FD4]/20"
+          >
+            <option value="all">Toutes les consultantes</option>
+            {consultants.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.full_name}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
 
       {/* Table */}
-      <Card className="overflow-hidden">
+      <div className="overflow-hidden rounded-[18px] bg-white" style={{ boxShadow: '0 2px 10px rgba(212,165,116,0.1)' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[var(--color-border)] bg-gray-50/80">
+              <tr className="bg-[#FFF8F2]">
                 <th className="w-10 px-4 py-3">
                   <input
                     type="checkbox"
                     checked={users.length > 0 && selectedIds.size === users.length}
                     onChange={toggleSelectAll}
-                    className="rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                    className="rounded border-[#F2D5C4] text-[#2A7FD4] focus:ring-[#2A7FD4]"
                   />
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-[var(--color-text)]/70 uppercase tracking-wider text-xs">
-                  Nom
+                <th className="px-4 py-3 text-left text-[10px] font-bold uppercase tracking-wider text-[#8B7B6B]">
+                  Utilisateur
                 </th>
-                <th className="px-4 py-3 text-left font-semibold text-[var(--color-text)]/70 uppercase tracking-wider text-xs">
-                  Email
+                <th className="px-4 py-3 text-left text-[10px] font-bold uppercase tracking-wider text-[#8B7B6B]">
+                  Rôle
                 </th>
                 {activeTab === 'beneficiaire' && (
-                  <th className="px-4 py-3 text-left font-semibold text-[var(--color-text)]/70 uppercase tracking-wider text-xs">
-                    Consultante assignée
+                  <th className="px-4 py-3 text-left text-[10px] font-bold uppercase tracking-wider text-[#8B7B6B]">
+                    Consultante
                   </th>
                 )}
-                <th className="px-4 py-3 text-left font-semibold text-[var(--color-text)]/70 uppercase tracking-wider text-xs">
+                <th className="px-4 py-3 text-left text-[10px] font-bold uppercase tracking-wider text-[#8B7B6B]">
                   Statut
                 </th>
-                <th className="px-4 py-3 text-right font-semibold text-[var(--color-text)]/70 uppercase tracking-wider text-xs">
+                <th className="px-4 py-3 text-right text-[10px] font-bold uppercase tracking-wider text-[#8B7B6B]">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--color-border)]">
+            <tbody className="divide-y divide-[#F5E6DB]">
               {loading ? (
                 <tr>
                   <td
                     colSpan={activeTab === 'beneficiaire' ? 6 : 5}
-                    className="px-4 py-12 text-center text-[var(--color-text)]/50"
+                    className="px-4 py-12 text-center text-[#A0927E]"
                   >
                     Chargement...
                   </td>
@@ -610,18 +596,18 @@ export default function AdminUtilisateursPage() {
                 <tr>
                   <td
                     colSpan={activeTab === 'beneficiaire' ? 6 : 5}
-                    className="px-4 py-12 text-center text-[var(--color-text)]/50"
+                    className="px-4 py-12 text-center text-[#A0927E]"
                   >
                     Aucun utilisateur trouvé.
                   </td>
                 </tr>
               ) : (
-                users.map((user) => (
+                users.map((user, idx) => (
                   <tr
                     key={user.id}
-                    className={`hover:bg-gray-50/50 transition-colors ${
+                    className={`transition-colors hover:bg-[#FFF8F5] ${
                       !user.is_active ? 'opacity-60' : ''
-                    }`}
+                    } ${idx % 2 === 1 ? 'bg-[#FFFBF8]' : ''}`}
                   >
                     {/* Checkbox */}
                     <td className="px-4 py-3">
@@ -633,69 +619,52 @@ export default function AdminUtilisateursPage() {
                       />
                     </td>
 
-                    {/* Name + avatar + role + date */}
+                    {/* Avatar + Name + Email */}
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <div
-                          className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold text-white ${
-                            user.is_active
-                              ? 'bg-[var(--color-primary)]'
-                              : 'bg-gray-400'
-                          }`}
+                          className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                          style={{
+                            backgroundColor: user.is_active
+                              ? '#2A7FD4'
+                              : '#B0A09A',
+                          }}
                         >
                           {getInitials(user.full_name)}
                         </div>
                         <div>
-                          <p
-                            className={`font-medium ${
-                              user.is_active
-                                ? 'text-[var(--color-text)]'
-                                : 'text-gray-400'
-                            }`}
-                          >
+                          <p className="text-[14px] font-semibold text-[#2C2017]">
                             {user.full_name}
                           </p>
-                          <p className="text-xs text-[var(--color-text)]/50">
-                            {user.role === 'beneficiaire'
-                              ? 'Bénéficiaire'
-                              : 'Consultante'}{' '}
-                            · Inscrit le {formatDate(user.created_at)}
+                          <p className="text-[11px] text-[#A0927E]">
+                            {user.email}
                           </p>
                         </div>
                       </div>
                     </td>
 
-                    {/* Email */}
-                    <td
-                      className={`px-4 py-3 ${
-                        user.is_active
-                          ? 'text-[var(--color-text)]'
-                          : 'text-gray-400'
-                      }`}
-                    >
-                      {user.email}
+                    {/* Role badge */}
+                    <td className="px-4 py-3">
+                      <span
+                        className="inline-block rounded-full px-2.5 py-0.5 text-[11px] font-semibold"
+                        style={{
+                          backgroundColor: user.role === 'beneficiaire' ? '#E8F4FD' : '#FFF3EB',
+                          color: user.role === 'beneficiaire' ? '#2A7FD4' : '#F28C5A',
+                        }}
+                      >
+                        {user.role === 'beneficiaire' ? 'Bénéficiaire' : 'Consultante'}
+                      </span>
                     </td>
 
                     {/* Assigned consultant */}
                     {activeTab === 'beneficiaire' && (
                       <td className="px-4 py-3">
                         {user.assigned_consultant ? (
-                          <div className="flex items-center gap-2">
-                            <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] flex items-center justify-center text-[10px] font-semibold">
-                              {getInitials(user.assigned_consultant.full_name)}
-                            </div>
-                            <span
-                              className={
-                                user.is_active
-                                  ? 'text-[var(--color-text)]'
-                                  : 'text-gray-400'
-                              }
-                            >
-                              {user.assigned_consultant.full_name}
-                            </span>
-                          </div>
+                          <span className="text-[13px] text-[#2C2017]">
+                            {user.assigned_consultant.full_name}
+                          </span>
                         ) : (
-                          <span className="text-[var(--color-text)]/40">
+                          <span className="text-[12px] text-[#C4AA90]">
                             Non assignée
                           </span>
                         )}
@@ -705,13 +674,11 @@ export default function AdminUtilisateursPage() {
                     {/* Status */}
                     <td className="px-4 py-3">
                       {user.is_active ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[var(--color-success)]/10 text-[var(--color-success)]">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)]" />
+                        <span className="inline-flex items-center rounded-full bg-[#ECFDF5] px-3 py-0.5 text-[11px] font-semibold text-[#22C55E]">
                           Actif
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-600">
-                          <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                        <span className="inline-flex items-center rounded-full bg-[#FEF2F2] px-3 py-0.5 text-[11px] font-semibold text-[#E8553D]">
                           Inactif
                         </span>
                       )}
@@ -719,37 +686,37 @@ export default function AdminUtilisateursPage() {
 
                     {/* Actions */}
                     <td className="px-4 py-3">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleOpenEdit(user)}
                           title="Modifier"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-[#F2D5C4] bg-white px-3 py-1.5 text-[11px] font-semibold text-[#2C2017] transition-colors hover:bg-[#FFF8F5]"
                         >
-                          <Pencil className="w-3.5 h-3.5" />
+                          <Pencil className="w-3 h-3" />
                           Modifier
                         </button>
                         <button
                           onClick={() => handleResetPassword(user)}
                           title="Réinitialiser le mot de passe"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-border)] text-[var(--color-text)] hover:bg-gray-50 transition-colors"
+                          className="inline-flex h-[28px] w-[28px] items-center justify-center rounded-full border border-[#F2D5C4] bg-white text-[#8B7B6B] transition-colors hover:bg-[#FFF8F5]"
                         >
-                          <Key className="w-3.5 h-3.5" />
+                          <Key className="w-3 h-3" />
                         </button>
                         {user.is_active ? (
                           <button
                             onClick={() => handleToggleActive(user)}
                             title="Désactiver"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-warning)]/30 text-[var(--color-warning)] hover:bg-[var(--color-warning)]/5 transition-colors"
+                            className="inline-flex h-[28px] w-[28px] items-center justify-center rounded-full border border-[#F28C5A]/30 text-[#F28C5A] transition-colors hover:bg-[#FFF3EB]"
                           >
-                            <Ban className="w-3.5 h-3.5" />
+                            <Ban className="w-3 h-3" />
                           </button>
                         ) : (
                           <button
                             onClick={() => handleToggleActive(user)}
                             title="Réactiver"
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-[var(--color-success)]/30 text-[var(--color-success)] hover:bg-[var(--color-success)]/5 transition-colors"
+                            className="inline-flex h-[28px] w-[28px] items-center justify-center rounded-full border border-[#22C55E]/30 text-[#22C55E] transition-colors hover:bg-[#ECFDF5]"
                           >
-                            <RefreshCw className="w-3.5 h-3.5" />
+                            <RefreshCw className="w-3 h-3" />
                           </button>
                         )}
                         <button
@@ -759,9 +726,9 @@ export default function AdminUtilisateursPage() {
                             setDeleteError(null)
                           }}
                           title="Supprimer définitivement (RGPD)"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-red-200 text-red-500 hover:bg-red-50 transition-colors"
+                          className="inline-flex h-[28px] w-[28px] items-center justify-center rounded-full border border-[#E8553D]/20 text-[#E8553D] transition-colors hover:bg-[#FEF2F2]"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-3 h-3" />
                         </button>
                       </div>
                     </td>
@@ -774,16 +741,16 @@ export default function AdminUtilisateursPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--color-border)]">
-            <p className="text-xs text-[var(--color-text)]/50">
+          <div className="flex items-center justify-between border-t border-[#F5E6DB] px-5 py-3">
+            <p className="text-[12px] text-[#A0927E]">
               {totalUsers} utilisateur{totalUsers > 1 ? 's' : ''} au total
               · Page {page} sur {totalPages}
             </p>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-1.5 rounded-md border border-[var(--color-border)] text-[var(--color-text)]/60 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="inline-flex h-[30px] w-[30px] items-center justify-center rounded-full border border-[#F2D5C4] bg-[#FFF0E8] text-[#8B7B6B] transition-colors hover:bg-[#FDEBD5] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -805,7 +772,7 @@ export default function AdminUtilisateursPage() {
                   item === 'ellipsis' ? (
                     <span
                       key={`ellipsis-${idx}`}
-                      className="px-2 text-[var(--color-text)]/30 text-sm"
+                      className="px-1 text-[#C4AA90] text-sm"
                     >
                       ...
                     </span>
@@ -813,10 +780,10 @@ export default function AdminUtilisateursPage() {
                     <button
                       key={item}
                       onClick={() => setPage(item as number)}
-                      className={`min-w-[2rem] h-8 rounded-md text-xs font-medium transition-colors ${
+                      className={`inline-flex h-[30px] w-[30px] items-center justify-center rounded-full text-[12px] font-bold transition-colors ${
                         page === item
-                          ? 'bg-[var(--color-primary)] text-white'
-                          : 'border border-[var(--color-border)] text-[var(--color-text)]/60 hover:bg-gray-50'
+                          ? 'bg-[#F28C5A] text-white'
+                          : 'border border-[#F2D5C4] bg-[#FFF0E8] text-[#8B7B6B] hover:bg-[#FDEBD5]'
                       }`}
                     >
                       {item}
@@ -826,14 +793,14 @@ export default function AdminUtilisateursPage() {
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-1.5 rounded-md border border-[var(--color-border)] text-[var(--color-text)]/60 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="inline-flex h-[30px] w-[30px] items-center justify-center rounded-full border border-[#F2D5C4] bg-[#FFF0E8] text-[#8B7B6B] transition-colors hover:bg-[#FDEBD5] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
         )}
-      </Card>
+      </div>
 
       {/* ================================================================== */}
       {/* CREATE MODAL                                                       */}
@@ -847,26 +814,27 @@ export default function AdminUtilisateursPage() {
           />
 
           {/* Modal */}
-          <div className="relative w-full max-w-lg mx-4 bg-white rounded-xl shadow-2xl overflow-hidden">
-            {/* Header with blue accent */}
-            <div className="flex items-center gap-3 px-6 py-5 border-b border-[var(--color-border)] relative">
-              <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-primary)]" />
-              <div className="w-10 h-10 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center">
-                <UserPlus className="w-5 h-5 text-[var(--color-primary)]" />
+          <div className="relative w-full max-w-lg mx-4 bg-white rounded-[18px] shadow-2xl overflow-hidden">
+            {/* Orange accent top bar */}
+            <div className="h-1 bg-[#F28C5A]" />
+            {/* Header */}
+            <div className="flex items-center gap-3 px-6 py-5 border-b border-[#F5E6DB]">
+              <div className="w-10 h-10 rounded-full bg-[#FFF3EB] flex items-center justify-center">
+                <UserPlus className="w-5 h-5 text-[#F28C5A]" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-[var(--color-text)]">
+                <h2 className="text-[16px] font-bold text-[#2C2017]">
+                  Créer un utilisateur
+                </h2>
+                <p className="text-[12px] text-[#A0927E]">
                   {activeTab === 'beneficiaire'
                     ? 'Nouveau bénéficiaire'
                     : 'Nouvelle consultante'}
-                </h2>
-                <p className="text-xs text-[var(--color-text)]/50">
-                  Remplissez les informations pour créer le compte
                 </p>
               </div>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="absolute right-4 top-4 p-1 rounded-md hover:bg-gray-100 text-[var(--color-text)]/40 hover:text-[var(--color-text)] transition-colors"
+                className="absolute right-4 top-5 p-1 rounded-full hover:bg-[#FFF8F5] text-[#A0927E] hover:text-[#2C2017] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -888,7 +856,7 @@ export default function AdminUtilisateursPage() {
                       setFormData((fd) => ({ ...fd, first_name: e.target.value }))
                     }
                     placeholder="Prénom"
-                    className="w-full px-3 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] placeholder:text-[var(--color-text)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+                    className="w-full px-4 py-2.5 text-[13px] rounded-[12px] border border-[#F2D5C4] bg-white text-[#2C2017] placeholder:text-[#C4AA90] outline-none transition-colors focus:border-[#2A7FD4] focus:ring-2 focus:ring-[#2A7FD4]/20"
                   />
                 </div>
                 <div>
@@ -903,7 +871,7 @@ export default function AdminUtilisateursPage() {
                       setFormData((fd) => ({ ...fd, last_name: e.target.value }))
                     }
                     placeholder="Nom"
-                    className="w-full px-3 py-2.5 text-sm rounded-lg border border-[var(--color-border)] bg-white text-[var(--color-text)] placeholder:text-[var(--color-text)]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+                    className="w-full px-4 py-2.5 text-[13px] rounded-[12px] border border-[#F2D5C4] bg-white text-[#2C2017] placeholder:text-[#C4AA90] outline-none transition-colors focus:border-[#2A7FD4] focus:ring-2 focus:ring-[#2A7FD4]/20"
                   />
                 </div>
               </div>
