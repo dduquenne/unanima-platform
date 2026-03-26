@@ -59,7 +59,7 @@ interface BeneficiaireData {
 type TabKey = 'reponses' | 'planification' | 'comptes-rendus'
 
 const TABS: { key: TabKey; label: string }[] = [
-  { key: 'reponses', label: 'Reponses' },
+  { key: 'reponses', label: 'Réponses' },
   { key: 'planification', label: 'Planification' },
   { key: 'comptes-rendus', label: 'Comptes-rendus' },
 ]
@@ -358,7 +358,7 @@ function PhaseContent({ phase }: { phase: Phase }) {
                 </div>
               ) : (
                 <div className="ml-10 rounded-lg border border-dashed border-[#D1D5DB] bg-[#F9FAFB] p-4 text-sm italic text-[#9CA3AF]">
-                  Pas encore de reponse
+                  Pas encore de réponse
                 </div>
               )}
             </div>
