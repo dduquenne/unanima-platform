@@ -4,4 +4,5 @@
 export { isSimulationMode } from './config'
 export { getSimulationSession, SIMULATION_ROLE_COOKIE, DEFAULT_SIMULATION_ROLE } from './auth'
 export type { SimulationRole } from './auth'
+export { SimulationAuthProvider } from './simulation-auth-provider'
 export * from './fixtures'
