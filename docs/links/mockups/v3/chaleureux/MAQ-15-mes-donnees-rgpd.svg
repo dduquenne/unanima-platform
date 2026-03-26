@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow1" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.06"/>
+    </filter>
+    <filter id="shadow2" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-opacity="0.07"/>
+    </filter>
+    <linearGradient id="warmGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2A7FD4"/>
+      <stop offset="100%" stop-color="#F28C5A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#FFF8F5"/>
+
+  <!-- Sidebar -->
+  <rect width="220" height="900" fill="#0D3B6E"/>
+  <text x="110" y="38" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">Link's</text>
+  <text x="110" y="56" text-anchor="middle" fill="#B0C8E8" font-size="11">Accompagnement</text>
+  <polygon points="95,62 115,62 105,74" fill="#F28C5A"/>
+  <line x1="20" y1="85" x2="200" y2="85" stroke="#1A4F8A" stroke-width="1"/>
+
+  <text x="48" y="125" fill="#7BA5D4" font-size="13" font-weight="500">Dashboard</text>
+  <text x="48" y="169" fill="#7BA5D4" font-size="13" font-weight="500">Mon bilan</text>
+  <text x="48" y="213" fill="#7BA5D4" font-size="13" font-weight="500">Documents</text>
+  <rect x="12" y="232" width="196" height="40" rx="16" fill="rgba(255,255,255,0.12)"/>
+  <rect x="12" y="232" width="4" height="40" rx="2" fill="#F28C5A"/>
+  <text x="48" y="257" fill="#FFFFFF" font-size="13" font-weight="600">Profil</text>
+
+  <!-- Header -->
+  <rect x="220" y="0" width="1220" height="64" fill="#FFFFFF" filter="url(#shadow1)"/>
+  <text x="252" y="37" fill="#9CA3AF" font-size="13">Profil</text>
+  <text x="280" y="37" fill="#9CA3AF" font-size="13">&gt;</text>
+  <text x="296" y="37" fill="#374151" font-size="13" font-weight="500">Mes données</text>
+  <circle cx="1310" cy="32" r="16" fill="#2A7FD4"/>
+  <text x="1310" y="37" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="600">MD</text>
+  <text x="1335" y="28" fill="#1F2937" font-size="13" font-weight="500">Marie Dupont</text>
+  <text x="1335" y="43" fill="#6B7280" font-size="11">Bénéficiaire</text>
+
+  <!-- Title -->
+  <text x="290" y="110" fill="#1F2937" font-size="20" font-weight="700">Mes données personnelles</text>
+  <text x="290" y="132" fill="#6B7280" font-size="13">Conformément au RGPD, vous pouvez exercer vos droits sur vos données personnelles.</text>
+
+  <!-- Info card with warm tones -->
+  <rect x="290" y="152" width="900" height="64" rx="18" fill="#EBF4FF" stroke="#B8D6F5" stroke-width="1"/>
+  <rect x="290" y="152" width="900" height="4" rx="2" fill="url(#warmGrad)"/>
+  <circle cx="322" cy="188" r="16" fill="#DBEAFE"/>
+  <text x="322" y="193" text-anchor="middle" fill="#2A7FD4" font-size="14">&#x1F6E1;</text>
+  <text x="350" y="184" fill="#1E40AF" font-size="13">Vos données sont hébergées en France et protégées conformément au Règlement Général sur la</text>
+  <text x="350" y="202" fill="#1E40AF" font-size="13">Protection des Données (RGPD).</text>
+
+  <!-- Section 1: Exporter -->
+  <rect x="290" y="234" width="900" height="155" rx="18" fill="#FFFFFF" filter="url(#shadow2)"/>
+  <text x="326" y="268" fill="#1F2937" font-size="16" font-weight="600">Exporter mes données</text>
+  <line x1="326" y1="282" x2="1158" y2="282" stroke="#F5E6DC" stroke-width="1"/>
+  <text x="326" y="308" fill="#4B5563" font-size="13">Téléchargez l'ensemble de vos données personnelles au format JSON.</text>
+
+  <rect x="326" y="322" width="210" height="40" rx="18" fill="#2A7FD4"/>
+  <text x="356" y="347" fill="#FFFFFF" font-size="13" font-weight="500">&#x2B07; Exporter mes données</text>
+  <text x="326" y="378" fill="#9CA3AF" font-size="11" font-style="italic">Le fichier sera généré et téléchargé automatiquement.</text>
+
+  <!-- Section 2: Supprimer (danger, warm/reassuring) -->
+  <rect x="290" y="406" width="900" height="225" rx="18" fill="#FFFAF8" stroke="#FECACA" stroke-width="1" filter="url(#shadow2)"/>
+  <text x="326" y="440" fill="#991B1B" font-size="16" font-weight="600">Supprimer mon compte</text>
+  <line x1="326" y1="453" x2="1158" y2="453" stroke="#FECACA" stroke-width="1"/>
+  <text x="326" y="478" fill="#4B5563" font-size="13">Cette action est irréversible. Toutes vos données seront définitivement supprimées.</text>
+
+  <!-- Warning box with warm styling -->
+  <rect x="326" y="494" width="840" height="60" rx="16" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+  <circle cx="354" cy="518" r="12" fill="#FEE2E2"/>
+  <text x="354" y="523" text-anchor="middle" fill="#DC2626" font-size="13">&#x26A0;</text>
+  <text x="378" y="515" fill="#991B1B" font-size="12">La suppression inclut : vos réponses aux questionnaires, vos documents, votre historique de séances.</text>
+  <text x="378" y="535" fill="#991B1B" font-size="12">Délai légal de conservation : 3 ans après la fin du bilan.</text>
+
+  <rect x="326" y="568" width="220" height="40" rx="18" fill="#DC2626"/>
+  <text x="356" y="593" fill="#FFFFFF" font-size="13" font-weight="500">Demander la suppression</text>
+  <text x="326" y="620" fill="#9CA3AF" font-size="11" font-style="italic">Une confirmation vous sera demandée. L'administrateur sera notifié.</text>
+
+  <!-- Section 3: Historique -->
+  <rect x="290" y="648" width="900" height="105" rx="18" fill="#FFFFFF" filter="url(#shadow2)"/>
+  <text x="326" y="682" fill="#1F2937" font-size="16" font-weight="600">Historique des demandes</text>
+  <line x1="326" y1="695" x2="1158" y2="695" stroke="#F5E6DC" stroke-width="1"/>
+  <text x="740" y="732" text-anchor="middle" fill="#9CA3AF" font-size="13">Aucune demande de données en cours.</text>
+
+  <!-- Links -->
+  <text x="290" y="786" fill="#2A7FD4" font-size="12" font-weight="500" text-decoration="underline">Politique de confidentialité</text>
+  <text x="475" y="786" fill="#D1D5DB" font-size="12">|</text>
+  <text x="490" y="786" fill="#2A7FD4" font-size="12" font-weight="500" text-decoration="underline">Mentions légales</text>
+</svg>
