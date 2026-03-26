@@ -29,14 +29,10 @@ interface LoginResponse {
   locked?: boolean
   disabled?: boolean
   attemptsRemaining?: number
-  session?: {
-    access_token: string
-    refresh_token: string
-  }
 }
 
 export default function LoginPage() {
-  const { user, isLoading } = useAuth()
+  const { user, isLoading, signIn } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -87,29 +83,25 @@ export default function LoginPage() {
         return
       }
 
-      if (data.success && data.session) {
-        const { createBrowserClient } = await import('@supabase/ssr')
-        const supabase = createBrowserClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        )
-        const { error: sessionError } = await supabase.auth.setSession({
-          access_token: data.session.access_token,
-          refresh_token: data.session.refresh_token,
-        })
+      if (data.success) {
+        // Établir la session côté client via l'AuthProvider (même instance
+        // Supabase) pour que onAuthStateChange se déclenche correctement.
+        const { error: signInError } = await signIn(email, password)
 
-        if (sessionError) {
+        if (signInError) {
           setError("Erreur lors de l'établissement de la session.")
           setIsSubmitting(false)
           return
         }
 
-        // Redirection directe vers la home du rôle, sans attendre
-        // que onAuthStateChange mette à jour le state user.
         const dest = redirectPath ?? ROLE_HOME[data.role ?? ''] ?? '/dashboard'
         router.replace(dest)
         return
       }
+
+      // Fall-through : réponse 200 inattendue sans succès
+      setError('Réponse inattendue du serveur.')
+      setIsSubmitting(false)
     } catch {
       setError('Erreur réseau. Vérifiez votre connexion.')
       setIsSubmitting(false)
