@@ -63,7 +63,7 @@ export function LoginCard({
           className="mt-1 text-center"
           style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}
         >
-          Acc&eacute;dez &agrave; votre espace s&eacute;curis&eacute;
+          Accédez à votre espace sécurisé
         </p>
 
         {/* Séparateur */}
@@ -232,7 +232,7 @@ export function LoginCard({
                   fontWeight: 500,
                 }}
               >
-                Mot de passe oubli&eacute; ?
+                Mot de passe oublié ?
               </button>
             </div>
 
@@ -289,7 +289,7 @@ export function LoginCard({
         {/* Section support */}
         <div className="text-center">
           <p style={{ fontSize: 12.5, color: 'var(--color-text-secondary)' }}>
-            Besoin d&apos;aide ?
+            Besoin d{"'"}aide ?
           </p>
           <a
             href="mailto:support@links-accompagnement.fr"
@@ -351,15 +351,15 @@ export function FooterLinks() {
   return (
     <>
       <p style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-        &copy; {new Date().getFullYear()} Link&apos;s Accompagnement — Unanima Platform
+        © {new Date().getFullYear()} Link{"'"}s Accompagnement — Unanima Platform
       </p>
       <p style={{ fontSize: 11, color: 'var(--color-text-muted)', opacity: 0.7, marginTop: 4 }}>
         <Link href="/mentions-legales" className="hover:underline">
-          Mentions l&eacute;gales
+          Mentions légales
         </Link>
         {' · '}
         <Link href="/confidentialite" className="hover:underline">
-          Confidentialit&eacute;
+          Confidentialité
         </Link>
         {' · '}
         <Link href="/cookies" className="hover:underline">

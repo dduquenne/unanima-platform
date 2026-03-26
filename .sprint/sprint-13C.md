@@ -9,8 +9,8 @@
 
 | Ordre | Issue | Titre | Priorité | Phase | Skill | Statut |
 |-------|-------|-------|----------|-------|-------|--------|
-| 1 | #197 | Mettre à jour SPC-0004 matrice de traçabilité avec couverture réelle [MAJ-06] | 🟠 Majeur qualité | 1 | documentalix | ⬜ |
-| 2 | #192 | Corriger les accents manquants dans les textes consultant [MIN-01] | 🟡 Mineur | 2 | ergonomix | ⬜ |
+| ✅ 1 | #197 | Mettre à jour SPC-0004 matrice de traçabilité avec couverture réelle [MAJ-06] | 🟠 Majeur qualité | 1 | documentalix | Fait (2026-03-26) |
+| ✅ 2 | #192 | Corriger les accents manquants dans les textes consultant [MIN-01] | 🟡 Mineur | 2 | ergonomix | Fait (2026-03-26) |
 | 3 | #193 | Remplacer les entités HTML par des caractères UTF-8 [MIN-02] | 🟡 Mineur | 2 | ergonomix | ⬜ |
 | 4 | #194 | Corriger le bouton "Planifier" trompeur sur le dashboard bénéficiaire [MIN-03] | 🟡 Mineur | 2 | ergonomix | ⬜ |
 | 5 | #195 | Ajouter toasts d'erreur sur les appels API silencieux [MIN-07] | 🟡 Mineur | 2 | ergonomix | ⬜ |

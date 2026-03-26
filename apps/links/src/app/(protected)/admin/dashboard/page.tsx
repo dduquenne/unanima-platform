@@ -230,7 +230,7 @@ export default function AdminDashboardPage() {
       {/* ═══ HEADER ═══ */}
       <div>
         <h1 className="text-2xl font-bold text-[var(--color-primary-dark)]">
-          Vue d&apos;ensemble — Link&apos;s Accompagnement
+          Vue d{"'"}ensemble — Link{"'"}s Accompagnement
         </h1>
         <p className="mt-1 text-sm text-[var(--color-text-muted)]">
           {formatCurrentDate()}
@@ -450,7 +450,7 @@ export default function AdminDashboardPage() {
             <div className="flex items-center justify-between border-t border-[var(--color-border-light,var(--color-border))] px-4 py-3">
               <p className="text-xs text-[var(--color-text-muted)]">
                 {filteredBeneficiaires.length} bénéficiaire
-                {filteredBeneficiaires.length > 1 ? 's' : ''} &middot; Page{' '}
+                {filteredBeneficiaires.length > 1 ? 's' : ''} · Page{' '}
                 {currentPage} sur {totalPages}
               </p>
               <div className="flex items-center gap-1">

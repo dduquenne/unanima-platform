@@ -297,11 +297,11 @@ function PhaseContent({ phase }: { phase: Phase }) {
       {/* Phase header */}
       <div className="mb-6 flex items-center gap-3 flex-wrap">
         <h2 className="text-lg font-bold text-[var(--color-primary-dark)]">
-          Phase {phase.number} &mdash; {PHASE_LABELS[phase.number]}
+          Phase {phase.number} — {PHASE_LABELS[phase.number]}
         </h2>
         {phase.status === 'validated' && (
           <span className="inline-flex items-center rounded-full bg-[#D1FAE5] px-2.5 py-0.5 text-xs font-medium text-[#065F46]">
-            Validee
+            Validée
           </span>
         )}
         {phase.status === 'active' && (

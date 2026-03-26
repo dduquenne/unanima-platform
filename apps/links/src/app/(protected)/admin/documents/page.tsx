@@ -273,7 +273,7 @@ export default function AdminDocumentsPage() {
             <FileText className="w-10 h-10 mx-auto mb-3 opacity-40" />
             <p className="text-sm">Aucun document pour cette phase.</p>
             <p className="text-xs mt-1">
-              Ajoutez jusqu&apos;à 3 documents (.pdf ou .docx, max 10 Mo).
+              Ajoutez jusqu{"'"}à 3 documents (.pdf ou .docx, max 10 Mo).
             </p>
           </div>
         ) : (
@@ -341,7 +341,7 @@ export default function AdminDocumentsPage() {
         {documents.length > 0 && (
           <div className="px-5 py-3 border-t border-[var(--color-border)] bg-gray-50/50">
             <p className="text-xs text-[var(--color-text-muted)]">
-              {documents.length}/3 documents &middot; .pdf et .docx uniquement &middot; Max 10 Mo
+              {documents.length}/3 documents · .pdf et .docx uniquement · Max 10 Mo
             </p>
           </div>
         )}
@@ -370,7 +370,7 @@ export default function AdminDocumentsPage() {
             <form onSubmit={handleUpload} className="px-6 py-5 space-y-4">
               <div>
                 <label className="block text-xs font-medium text-[var(--color-text)]/70 mb-1.5">
-                  Nom d&apos;affichage <span className="text-red-500">*</span>
+                  Nom d{"'"}affichage <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -440,7 +440,7 @@ export default function AdminDocumentsPage() {
               Supprimer ce document ?
             </h3>
             <p className="text-sm text-[var(--color-text-muted)] mb-6">
-              &laquo; {deletingDoc.display_name} &raquo; sera supprimé définitivement du stockage et de la base de données.
+              « {deletingDoc.display_name} » sera supprimé définitivement du stockage et de la base de données.
             </p>
             <div className="flex justify-center gap-3">
               <button

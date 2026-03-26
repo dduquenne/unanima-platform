@@ -335,7 +335,7 @@ export default function ProtectedLayout({
       {/* ═══ FOOTER ═══ */}
       <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface-hover)] py-3">
         <p className="text-center text-xs text-[var(--color-text-muted)]">
-          Link&apos;s Accompagnement — Extranet {getRoleLabel(role).toLowerCase()} — &copy; {new Date().getFullYear()} Unanima
+          Link{"'"}s Accompagnement — Extranet {getRoleLabel(role).toLowerCase()} — © {new Date().getFullYear()} Unanima
         </p>
       </footer>
     </div>

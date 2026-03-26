@@ -117,7 +117,7 @@ function ToastNotification({
         onClick={onDismiss}
         className="ml-2 text-sm opacity-60 hover:opacity-100 transition-opacity"
       >
-        &times;
+        ×
       </button>
     </div>
   )
@@ -347,10 +347,10 @@ export function PlanificationTab({
           {/* Title */}
           <div className="mb-6">
             <h2 className="text-lg font-bold text-[var(--color-primary-dark)]">
-              Planification des seances &mdash; {beneficiaryName}
+              Planification des séances — {beneficiaryName}
             </h2>
             <p className="mt-1 text-sm text-[#6B7280]">
-              {TOTAL_SESSIONS} séances prévues au total &middot;{' '}
+              {TOTAL_SESSIONS} séances prévues au total ·{' '}
               {plannedCount} planifiée{plannedCount > 1 ? 's' : ''}
             </p>
           </div>

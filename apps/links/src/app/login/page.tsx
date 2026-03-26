@@ -178,13 +178,13 @@ export default function LoginPage() {
             className="mt-4 font-bold"
             style={{ fontSize: 22, color: 'var(--color-primary-dark)', letterSpacing: -0.5 }}
           >
-            Link&apos;s Accompagnement
+            Link{"'"}s Accompagnement
           </h1>
           <p
             className="mt-1"
             style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}
           >
-            Votre espace de suivi personnalis&eacute;
+            Votre espace de suivi personnalisé
           </p>
         </div>
 

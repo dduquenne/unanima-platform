@@ -101,7 +101,7 @@ export default function MesDonneesPage() {
         </h3>
         <p className="mb-4 text-sm text-[var(--color-text-secondary)]">
           Conformément au RGPD (droit à la portabilité), vous pouvez
-          télécharger l&apos;ensemble de vos données personnelles au format
+          télécharger l{"'"}ensemble de vos données personnelles au format
           JSON.
         </p>
         <Button
@@ -120,7 +120,7 @@ export default function MesDonneesPage() {
           Supprimer mon compte
         </h3>
         <p className="mb-4 text-sm text-[var(--color-text-secondary)]">
-          Conformément au RGPD (droit à l&apos;effacement), vous pouvez
+          Conformément au RGPD (droit à l{"'"}effacement), vous pouvez
           demander la suppression définitive de votre compte et de toutes vos
           données. Cette action est irréversible.
         </p>

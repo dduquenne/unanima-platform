@@ -185,7 +185,7 @@ export default function DashboardPage() {
       {/* ═══ SESSIONS TABLE (MAQ-02) ═══ */}
       <section>
         <h2 className="mb-3 text-lg font-bold text-[var(--color-primary-dark)]">
-          Vos s&eacute;ances
+          Vos séances
         </h2>
         <Card padding="none">
           <div className="overflow-x-auto">
@@ -193,7 +193,7 @@ export default function DashboardPage() {
               <thead>
                 <tr className="bg-[var(--color-surface-hover)]">
                   <th className="px-4 py-3 text-left text-xs font-bold text-[var(--color-primary-dark)]">
-                    S&eacute;ance
+                    Séance
                   </th>
                   <th className="px-4 py-3 text-center text-xs font-bold text-[var(--color-primary-dark)]">
                     Date
@@ -285,7 +285,7 @@ export default function DashboardPage() {
           Votre parcours
         </h2>
         <p className="mt-1 text-xs text-[var(--color-text-muted)]">
-          {validated} phase{validated > 1 ? 's' : ''} valid&eacute;e{validated > 1 ? 's' : ''} &middot; {inProgress} en cours &middot; {remaining} &agrave; compl&eacute;ter
+          {validated} phase{validated > 1 ? 's' : ''} validée{validated > 1 ? 's' : ''} · {inProgress} en cours · {remaining} à compléter
         </p>
         <div className="mt-3">
           <ProgressBar

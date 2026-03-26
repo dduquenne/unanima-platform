@@ -22,7 +22,7 @@ export default function ProfilePage() {
             <dd className="text-sm text-[var(--color-text)]">{user?.email}</dd>
           </div>
           <div className="flex justify-between py-3">
-            <dt className="text-sm font-medium text-[var(--color-text-secondary)]">R&ocirc;le</dt>
+            <dt className="text-sm font-medium text-[var(--color-text-secondary)]">Rôle</dt>
             <dd className="text-sm text-[var(--color-text)] capitalize">{user?.role}</dd>
           </div>
           <div className="flex justify-between py-3">

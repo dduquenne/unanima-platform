@@ -585,8 +585,8 @@ export default function PhaseDetailPage() {
         <button onClick={() => router.push('/dashboard')} className="hover:underline">
           Mon bilan
         </button>
-        <span className="mx-2">&gt;</span>
-        <span className="font-medium text-[var(--color-text)]">Phase {phaseNumber} &mdash; {phaseTitle}</span>
+        <span className="mx-2">{'>'}</span>
+        <span className="font-medium text-[var(--color-text)]">Phase {phaseNumber} — {phaseTitle}</span>
       </nav>
 
       {/* Mobile phase bar (visible < md) */}
@@ -614,7 +614,7 @@ export default function PhaseDetailPage() {
         <div className="min-w-0 flex-1 space-y-6">
           {/* Phase header */}
           <div className="rounded-lg bg-[var(--color-primary)] p-4 text-[var(--color-text-inverse)]">
-            <h1 className="text-xl font-bold">Phase {phaseNumber} &mdash; {phaseTitle}</h1>
+            <h1 className="text-xl font-bold">Phase {phaseNumber} — {phaseTitle}</h1>
             <p className="mt-1 text-sm text-[var(--color-primary-light)]">
               {questions.length > 0
                 ? `${questions.length} question${questions.length > 1 ? 's' : ''}`
@@ -630,12 +630,12 @@ export default function PhaseDetailPage() {
               )}
               {saveStatus === 'saved' && lastSavedAt && (
                 <span className="text-[var(--color-text-muted)]">
-                  Sauvegard&eacute; &agrave; {new Date(lastSavedAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                  Sauvegardé à {new Date(lastSavedAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                 </span>
               )}
               {persistentError && (
                 <span className="text-[var(--color-warning)] font-medium">
-                  Erreur de sauvegarde. V&eacute;rifiez votre connexion.
+                  Erreur de sauvegarde. Vérifiez votre connexion.
                 </span>
               )}
             </div>
@@ -645,7 +645,7 @@ export default function PhaseDetailPage() {
           {questions.length === 0 ? (
             <Card padding="lg">
               <p className="text-[var(--color-text-secondary)]">
-                Aucune question n&apos;a encore &eacute;t&eacute; ajout&eacute;e pour cette phase.
+                Aucune question n{"'"}a encore été ajoutée pour cette phase.
               </p>
             </Card>
           ) : (
@@ -741,7 +741,7 @@ export default function PhaseDetailPage() {
                 variant="danger"
                 onClick={() => setShowDevalidateModal(true)}
               >
-                D&eacute;-valider
+                Dé-valider
               </Button>
             )}
           </div>
@@ -784,8 +784,8 @@ export default function PhaseDetailPage() {
         }
       >
         <p className="text-sm">
-          &Ecirc;tes-vous s&ucirc;r de vouloir valider cette phase ?
-          Vous pourrez toujours modifier vos r&eacute;ponses apr&egrave;s validation.
+          Êtes-vous sûr de vouloir valider cette phase ?
+          Vous pourrez toujours modifier vos réponses après validation.
         </p>
       </Modal>
 
@@ -805,13 +805,13 @@ export default function PhaseDetailPage() {
               onClick={handleDevalidatePhase}
               loading={isValidating}
             >
-              D&eacute;-valider
+              Dé-valider
             </Button>
           </>
         }
       >
         <p className="text-sm">
-          Le statut de la phase repassera &agrave; &laquo; En cours &raquo;.
+          Le statut de la phase repassera à « En cours ».
           Voulez-vous continuer ?
         </p>
       </Modal>

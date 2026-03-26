@@ -75,12 +75,12 @@ function PageShell({ children }: { children: React.ReactNode }) {
       {/* Footer */}
       <footer className="py-4 text-center">
         <p className="text-xs text-[var(--color-text-muted)]">
-          &copy; {new Date().getFullYear()} Link&apos;s Accompagnement — Unanima Platform
+          © {new Date().getFullYear()} Link{"'"}s Accompagnement — Unanima Platform
         </p>
         <p className="mt-1 text-xs text-[var(--color-text-muted)]/70">
-          <Link href="/mentions-legales" className="hover:underline">Mentions l&eacute;gales</Link>
+          <Link href="/mentions-legales" className="hover:underline">Mentions légales</Link>
           {' · '}
-          <Link href="/confidentialite" className="hover:underline">Politique de confidentialit&eacute;</Link>
+          <Link href="/confidentialite" className="hover:underline">Politique de confidentialité</Link>
         </p>
       </footer>
     </main>
@@ -135,20 +135,20 @@ function RequestResetForm() {
                 <CheckCircle className="h-12 w-12 text-[var(--color-success)]" />
               </div>
               <h2 className="text-center text-xl font-bold text-[var(--color-primary-dark)]">
-                E-mail envoy&eacute;
+                E-mail envoyé
               </h2>
               <div className="mx-auto mt-2 mb-6 h-px w-20 bg-[var(--color-border)]" />
               <div
                 className="rounded-[var(--radius-md)] border border-[var(--color-success)]/30 bg-[var(--color-success-light)] p-3 text-sm text-[var(--color-success)]"
                 role="status"
               >
-                Si un compte existe avec l&apos;adresse <strong>{email}</strong>,
-                un e-mail de r&eacute;initialisation a &eacute;t&eacute; envoy&eacute;.
-                V&eacute;rifiez votre bo&icirc;te de r&eacute;ception.
+                Si un compte existe avec l{"'"}adresse <strong>{email}</strong>,
+                un e-mail de réinitialisation a été envoyé.
+                Vérifiez votre boîte de réception.
               </div>
               <div className="mt-6">
                 <Button variant="ghost" size="sm" className="w-full" onClick={() => router.push('/login')}>
-                  Retour &agrave; la connexion
+                  Retour à la connexion
                 </Button>
               </div>
             </div>
@@ -165,11 +165,11 @@ function RequestResetForm() {
           <div className="h-[5px] bg-[var(--color-primary)]" />
           <div className="p-8">
             <h2 className="text-center text-xl font-bold text-[var(--color-primary-dark)]">
-              R&eacute;initialiser le mot de passe
+              Réinitialiser le mot de passe
             </h2>
             <div className="mx-auto mt-2 mb-2 h-px w-20 bg-[var(--color-border)]" />
             <p className="mb-6 text-center text-sm text-[var(--color-text-secondary)]">
-              Saisissez votre adresse e-mail pour recevoir un lien de r&eacute;initialisation.
+              Saisissez votre adresse e-mail pour recevoir un lien de réinitialisation.
             </p>
 
             <form onSubmit={handleSubmit}>
@@ -199,7 +199,7 @@ function RequestResetForm() {
                   type="button"
                   onClick={() => router.push('/login')}
                 >
-                  Retour &agrave; la connexion
+                  Retour à la connexion
                 </Button>
               </div>
             </form>
@@ -271,14 +271,14 @@ function ChangePasswordForm() {
                 <CheckCircle className="h-12 w-12 text-[var(--color-success)]" />
               </div>
               <h2 className="text-center text-xl font-bold text-[var(--color-primary-dark)]">
-                Mot de passe mis &agrave; jour
+                Mot de passe mis à jour
               </h2>
               <div className="mx-auto mt-2 mb-6 h-px w-20 bg-[var(--color-border)]" />
               <div
                 className="rounded-[var(--radius-md)] border border-[var(--color-success)]/30 bg-[var(--color-success-light)] p-3 text-sm text-[var(--color-success)]"
                 role="status"
               >
-                Votre mot de passe a &eacute;t&eacute; modifi&eacute; avec succ&egrave;s.
+                Votre mot de passe a été modifié avec succès.
                 Vous pouvez maintenant vous connecter.
               </div>
               <div className="mt-6">
@@ -309,7 +309,7 @@ function ChangePasswordForm() {
             </h2>
             <div className="mx-auto mt-2 mb-2 h-px w-20 bg-[var(--color-border)]" />
             <p className="mb-6 text-center text-sm text-[var(--color-text-secondary)]">
-              Choisissez un nouveau mot de passe s&eacute;curis&eacute;.
+              Choisissez un nouveau mot de passe sécurisé.
             </p>
 
             <form onSubmit={handleSubmit}>
@@ -349,7 +349,7 @@ function ChangePasswordForm() {
                       </div>
                       <ul className="mt-2 space-y-0.5 text-xs text-[var(--color-text-secondary)]">
                         <li className={newPassword.length >= 8 ? 'text-[var(--color-success)]' : ''}>
-                          {newPassword.length >= 8 ? '\u2713' : '\u2022'} Au moins 8 caract&egrave;res
+                          {newPassword.length >= 8 ? '\u2713' : '\u2022'} Au moins 8 caractères
                         </li>
                         <li className={/[A-Z]/.test(newPassword) ? 'text-[var(--color-success)]' : ''}>
                           {/[A-Z]/.test(newPassword) ? '\u2713' : '\u2022'} Au moins 1 majuscule
@@ -383,7 +383,7 @@ function ChangePasswordForm() {
                   className="w-full"
                   disabled={!valid || newPassword !== confirmPassword}
                 >
-                  Mettre &agrave; jour le mot de passe
+                  Mettre à jour le mot de passe
                 </Button>
 
                 <Button

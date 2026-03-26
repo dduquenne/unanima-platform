@@ -120,7 +120,7 @@ export function SessionNotesPDF({
             Consultante : {consultantName}
           </Text>
           <Text style={styles.subtitle}>
-            Date d&apos;export : {exportDate}
+            Date d{"'"}export : {exportDate}
           </Text>
         </View>
 
@@ -157,7 +157,7 @@ export function SessionNotesPDF({
             CONFIDENTIEL — Usage strictement réservé au consultant
           </Text>
           <Text style={styles.footerText}>
-            Link&apos;s Accompagnement — {exportDate}
+            Link{"'"}s Accompagnement — {exportDate}
           </Text>
         </View>
       </Page>
