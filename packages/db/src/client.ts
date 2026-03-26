@@ -48,5 +48,10 @@ export function createAdminClient() {
     )
   }
 
-  return createSupabaseClient(url, serviceRoleKey)
+  return createSupabaseClient(url, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  })
 }
