@@ -9,12 +9,12 @@
 
 | Ordre | Issue | Titre | Priorite | Phase | Skill | Statut |
 |-------|-------|-------|----------|-------|-------|--------|
-| 1 | #219 | MAQ-07 — Dashboard admin (KPIs et supervision) | 🟢 Feature | 1 | ergonomix | ⬜ En attente |
-| 2 | #222 | MAQ-16 — Mentions légales | 🟢 Feature | 2 | ergonomix | ⬜ En attente |
-| 3 | #223 | MAQ-17 — Politique de confidentialité | 🟢 Feature | 2 | ergonomix | ⬜ En attente |
-| 4 | #224 | MAQ-18 — Gestion des cookies | 🟢 Feature | 2 | ergonomix | ⬜ En attente |
-| 5 | #220 | MAQ-08 — Gestion des utilisateurs (admin) | 🟢 Feature | 2 | ergonomix | ⬜ En attente |
-| 6 | #221 | MAQ-13 — Gestion des documents par phase (admin) | 🟢 Feature | 2 | ergonomix | ⬜ En attente |
+| 1 | #219 | MAQ-07 — Dashboard admin (KPIs et supervision) | 🟢 Feature | 1 | ergonomix | ✅ Fait |
+| 2 | #222 | MAQ-16 — Mentions légales | 🟢 Feature | 2 | ergonomix | ✅ Fait |
+| 3 | #223 | MAQ-17 — Politique de confidentialité | 🟢 Feature | 2 | ergonomix | ✅ Fait |
+| 4 | #224 | MAQ-18 — Gestion des cookies | 🟢 Feature | 2 | ergonomix | ✅ Fait |
+| 5 | #220 | MAQ-08 — Gestion des utilisateurs (admin) | 🟢 Feature | 2 | ergonomix | ✅ Fait |
+| 6 | #221 | MAQ-13 — Gestion des documents par phase (admin) | 🟢 Feature | 2 | ergonomix | ✅ Fait |
 
 ## Dependances
 
@@ -58,5 +58,5 @@ Les deux chaînes sont indépendantes et parallélisables.
 - [x] Toutes les issues du sprint dans le GitHub Project sont listées ci-dessus (6/6)
 - [x] Aucune issue n'a été omise ou reportée sans justification
 - [x] L'ordre respecte la règle : fondations > features dépendantes > features indépendantes
-- [ ] Build vert après chaque issue
-- [ ] 6/6 issues implémentées et commitées
+- [x] Build vert après chaque issue
+- [x] 6/6 issues implémentées et commitées
