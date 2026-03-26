@@ -1,0 +1,263 @@
+<!-- MAQ-06 | Comptes-rendus | Link's Accompagnement | v3.0 | hybride | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <clipPath id="screen"><rect width="1440" height="900" rx="0"/></clipPath>
+    <filter id="shadow1" x="-2%" y="-2%" width="104%" height="108%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-opacity="0.06"/>
+    </filter>
+    <filter id="shadow2" x="-2%" y="-2%" width="104%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="5" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#screen)">
+    <!-- Background -->
+    <rect width="1440" height="900" fill="#F7F9FC"/>
+
+    <!-- ==================== SIDEBAR (220px) ==================== -->
+    <rect width="220" height="900" fill="#0D3B6E"/>
+    <!-- Logo -->
+    <polygon points="28,27 50,19 50,45 28,37" fill="#FF6B35"/>
+    <text x="58" y="33" fill="#FFFFFF" font-size="16" font-weight="700">Link's</text>
+    <text x="58" y="48" fill="#9BBDE0" font-size="11">Accompagnement</text>
+    <!-- Divider -->
+    <line x1="18" y1="63" x2="202" y2="63" stroke="#1A4F7A" stroke-width="1"/>
+    <!-- Nav items -->
+    <!-- Dashboard -->
+    <g opacity="0.6">
+      <rect x="12" y="76" width="196" height="40" rx="10" fill="transparent"/>
+      <rect x="28" y="88" width="16" height="16" rx="3" fill="none" stroke="#9BBDE0" stroke-width="1.5"/>
+      <rect x="31" y="91" width="4" height="4" rx="1" fill="#9BBDE0"/>
+      <rect x="37" y="91" width="4" height="4" rx="1" fill="#9BBDE0"/>
+      <rect x="31" y="97" width="4" height="4" rx="1" fill="#9BBDE0"/>
+      <rect x="37" y="97" width="4" height="4" rx="1" fill="#9BBDE0"/>
+      <text x="54" y="100" fill="#9BBDE0" font-size="13">Dashboard</text>
+    </g>
+    <!-- Mes bénéficiaires (active) -->
+    <g>
+      <rect x="12" y="120" width="196" height="40" rx="10" fill="rgba(255,255,255,0.1)"/>
+      <rect x="4" y="130" width="3" height="20" rx="1.5" fill="#FF6B35"/>
+      <circle cx="36" cy="140" r="8" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+      <circle cx="36" cy="137" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+      <path d="M30,145 Q36,149 42,145" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+      <text x="54" y="144" fill="#FFFFFF" font-size="13" font-weight="600">Mes bénéficiaires</text>
+    </g>
+    <!-- Agenda -->
+    <g opacity="0.6">
+      <rect x="12" y="164" width="196" height="40" rx="10" fill="transparent"/>
+      <rect x="28" y="176" width="16" height="16" rx="3" fill="none" stroke="#9BBDE0" stroke-width="1.5"/>
+      <line x1="32" y1="174" x2="32" y2="178" stroke="#9BBDE0" stroke-width="1.5"/>
+      <line x1="40" y1="174" x2="40" y2="178" stroke="#9BBDE0" stroke-width="1.5"/>
+      <line x1="28" y1="182" x2="44" y2="182" stroke="#9BBDE0" stroke-width="1"/>
+      <text x="54" y="188" fill="#9BBDE0" font-size="13">Agenda</text>
+    </g>
+    <!-- Documents -->
+    <g opacity="0.6">
+      <rect x="12" y="208" width="196" height="40" rx="10" fill="transparent"/>
+      <rect x="30" y="220" width="12" height="16" rx="2" fill="none" stroke="#9BBDE0" stroke-width="1.5"/>
+      <text x="54" y="232" fill="#9BBDE0" font-size="13">Documents</text>
+    </g>
+    <!-- Rapports -->
+    <g opacity="0.6">
+      <rect x="12" y="252" width="196" height="40" rx="10" fill="transparent"/>
+      <rect x="28" y="264" width="16" height="16" rx="3" fill="none" stroke="#9BBDE0" stroke-width="1.5"/>
+      <line x1="32" y1="270" x2="40" y2="270" stroke="#9BBDE0" stroke-width="1.2"/>
+      <line x1="32" y1="274" x2="38" y2="274" stroke="#9BBDE0" stroke-width="1.2"/>
+      <text x="54" y="276" fill="#9BBDE0" font-size="13">Rapports</text>
+    </g>
+    <!-- Profil -->
+    <g opacity="0.6">
+      <rect x="12" y="296" width="196" height="40" rx="10" fill="transparent"/>
+      <circle cx="36" cy="316" r="8" fill="none" stroke="#9BBDE0" stroke-width="1.5"/>
+      <circle cx="36" cy="313" r="3" fill="none" stroke="#9BBDE0" stroke-width="1.2"/>
+      <text x="54" y="320" fill="#9BBDE0" font-size="13">Profil</text>
+    </g>
+
+    <!-- ==================== HEADER ==================== -->
+    <rect x="220" y="0" width="1220" height="58" fill="#FFFFFF" filter="url(#shadow1)"/>
+    <!-- Breadcrumb -->
+    <text x="248" y="34" fill="#64748B" font-size="13">Mes bénéficiaires</text>
+    <text x="368" y="34" fill="#A0AEBE" font-size="13">›</text>
+    <text x="382" y="34" fill="#64748B" font-size="13">Marie Dupont</text>
+    <text x="478" y="34" fill="#A0AEBE" font-size="13">›</text>
+    <text x="492" y="34" fill="#1E6FC0" font-size="13" font-weight="600">Comptes-rendus</text>
+    <!-- User info -->
+    <circle cx="1352" cy="29" r="17" fill="#EBF3FC"/>
+    <text x="1344" y="34" fill="#1E6FC0" font-size="11" font-weight="600">CL</text>
+    <text x="1258" y="26" fill="#334155" font-size="12" font-weight="500" text-anchor="end">Claire Laurent</text>
+    <text x="1258" y="40" fill="#94A3B8" font-size="11" text-anchor="end">Consultante</text>
+    <text x="1402" y="34" fill="#94A3B8" font-size="12" cursor="pointer">↗</text>
+
+    <!-- ==================== PROFILE MINI-BAR ==================== -->
+    <rect x="248" y="74" width="1168" height="56" rx="12" fill="#FFFFFF" filter="url(#shadow1)"/>
+    <!-- Avatar -->
+    <circle cx="282" cy="102" r="20" fill="#1E6FC0"/>
+    <text x="274" y="107" fill="#FFFFFF" font-size="13" font-weight="600">MD</text>
+    <!-- Name -->
+    <text x="312" y="97" fill="#1E293B" font-size="15" font-weight="700">Marie Dupont</text>
+    <text x="312" y="114" fill="#64748B" font-size="12">2/6 phases complétées</text>
+    <!-- Progress -->
+    <rect x="454" y="98" width="100" height="7" rx="3.5" fill="#E2E8F0"/>
+    <rect x="454" y="98" width="33" height="7" rx="3.5" fill="#1E6FC0"/>
+    <!-- Tab nav -->
+    <text x="778" y="106" fill="#64748B" font-size="13" cursor="pointer">Parcours</text>
+    <text x="866" y="106" fill="#1E6FC0" font-size="13" font-weight="700" cursor="pointer">Comptes-rendus</text>
+    <rect x="864" y="119" width="112" height="2.5" rx="1.25" fill="#1E6FC0"/>
+    <text x="998" y="106" fill="#64748B" font-size="13" cursor="pointer">Planification</text>
+    <text x="1100" y="106" fill="#64748B" font-size="13" cursor="pointer">Documents</text>
+
+    <!-- ==================== LEFT COLUMN (60%) — Session Notes Form ==================== -->
+    <rect x="248" y="146" width="690" height="740" rx="12" fill="#FFFFFF" filter="url(#shadow2)"/>
+
+    <!-- Session selector tabs -->
+    <g>
+      <rect x="270" y="164" width="92" height="33" rx="12" fill="#F1F5F9"/>
+      <text x="298" y="185" fill="#64748B" font-size="12" text-anchor="middle">Séance 1</text>
+
+      <rect x="370" y="164" width="92" height="33" rx="12" fill="#1E6FC0"/>
+      <text x="398" y="185" fill="#FFFFFF" font-size="12" font-weight="600" text-anchor="middle">Séance 2</text>
+
+      <rect x="470" y="164" width="92" height="33" rx="12" fill="#F1F5F9" opacity="0.5"/>
+      <text x="498" y="185" fill="#C0CBDA" font-size="12" text-anchor="middle">Séance 3</text>
+
+      <rect x="570" y="164" width="92" height="33" rx="12" fill="#F1F5F9" opacity="0.5"/>
+      <text x="598" y="185" fill="#C0CBDA" font-size="12" text-anchor="middle">Séance 4</text>
+
+      <rect x="670" y="164" width="92" height="33" rx="12" fill="#F1F5F9" opacity="0.5"/>
+      <text x="698" y="185" fill="#C0CBDA" font-size="12" text-anchor="middle">Séance 5</text>
+
+      <rect x="770" y="164" width="92" height="33" rx="12" fill="#F1F5F9" opacity="0.5"/>
+      <text x="798" y="185" fill="#C0CBDA" font-size="12" text-anchor="middle">Séance 6</text>
+    </g>
+
+    <!-- Session info -->
+    <text x="270" y="226" fill="#1E293B" font-size="16" font-weight="700">Séance 2 — Investigation phase 1</text>
+    <text x="270" y="244" fill="#64748B" font-size="12">29/04/2026</text>
+
+    <!-- Field 1: Objectifs de la séance -->
+    <text x="270" y="274" fill="#334155" font-size="12" font-weight="600">Objectifs de la séance</text>
+    <rect x="270" y="282" width="648" height="66" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
+    <text x="284" y="302" fill="#334155" font-size="12">Explorer les compétences clés identifiées lors de la phase 1</text>
+    <text x="284" y="318" fill="#334155" font-size="12">et commencer à évaluer les pistes de reconversion</text>
+    <text x="284" y="334" fill="#334155" font-size="12">professionnelle envisageables.</text>
+
+    <!-- Field 2: Contenu de la séance -->
+    <text x="270" y="370" fill="#334155" font-size="12" font-weight="600">Contenu de la séance</text>
+    <rect x="270" y="378" width="648" height="106" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
+    <text x="284" y="398" fill="#334155" font-size="12">Travail sur les compétences transférables à partir du parcours</text>
+    <text x="284" y="414" fill="#334155" font-size="12">professionnel de la bénéficiaire. Identification de 3 domaines</text>
+    <text x="284" y="430" fill="#334155" font-size="12">d'intérêt majeurs : gestion de projet, communication digitale,</text>
+    <text x="284" y="446" fill="#334155" font-size="12">et formation professionnelle. Exercice de priorisation des</text>
+    <text x="284" y="462" fill="#334155" font-size="12">compétences clés réalisé avec succès.</text>
+
+    <!-- Field 3: Observations -->
+    <text x="270" y="504" fill="#334155" font-size="12" font-weight="600">Observations</text>
+    <rect x="270" y="512" width="648" height="66" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
+    <text x="284" y="532" fill="#334155" font-size="12">La bénéficiaire montre un fort intérêt pour les métiers</text>
+    <text x="284" y="548" fill="#334155" font-size="12">de la communication. Motivation élevée, bonne implication.</text>
+    <text x="284" y="564" fill="#C0CBDA" font-size="12" font-style="italic">|</text>
+
+    <!-- Field 4: Actions à mener -->
+    <text x="270" y="600" fill="#334155" font-size="12" font-weight="600">Actions à mener</text>
+    <rect x="270" y="608" width="648" height="48" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
+    <text x="284" y="628" fill="#334155" font-size="12">Compléter le questionnaire de phase 2 avant le 15/05.</text>
+    <text x="284" y="644" fill="#334155" font-size="12">Préparer une liste de 5 métiers cibles pour la prochaine séance.</text>
+
+    <!-- Autosave indicator -->
+    <text x="270" y="684" fill="#16A34A" font-size="11">✓ Sauvegardé il y a 1 min</text>
+
+    <!-- Buttons -->
+    <rect x="270" y="700" width="124" height="36" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+    <text x="310" y="722" fill="#334155" font-size="13" text-anchor="middle">Enregistrer</text>
+
+    <rect x="406" y="700" width="144" height="36" rx="10" fill="#1E6FC0"/>
+    <text x="456" y="722" fill="#FFFFFF" font-size="13" text-anchor="middle">↓ Exporter PDF</text>
+
+    <!-- Confidentiality notice -->
+    <rect x="270" y="750" width="648" height="40" rx="10" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1"/>
+    <text x="294" y="774" fill="#64748B" font-size="11">🔒 Ces comptes-rendus sont confidentiels et ne sont pas visibles par le bénéficiaire.</text>
+
+    <!-- ==================== RIGHT COLUMN (40%) — Previous Sessions ==================== -->
+    <rect x="958" y="146" width="458" height="740" rx="12" fill="#FFFFFF" filter="url(#shadow2)"/>
+    <text x="980" y="178" fill="#1E293B" font-size="14" font-weight="700">Historique des séances</text>
+
+    <!-- Séance 1 card (collapsed) -->
+    <rect x="980" y="196" width="416" height="76" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
+    <g>
+      <circle cx="1006" cy="222" r="13" fill="#ECFDF5"/>
+      <text x="999" y="227" fill="#16A34A" font-size="13">✓</text>
+    </g>
+    <text x="1028" y="216" fill="#1E293B" font-size="13" font-weight="600">Séance 1 — Entretien préliminaire</text>
+    <text x="1028" y="234" fill="#64748B" font-size="11">15/04/2026</text>
+    <text x="1028" y="252" fill="#94A3B8" font-size="11">Rédigé le 16/04/2026</text>
+    <rect x="1314" y="210" width="64" height="22" rx="11" fill="#ECFDF5"/>
+    <text x="1330" y="225" fill="#16A34A" font-size="10" font-weight="600">Rédigé</text>
+    <text x="1384" y="226" fill="#C0CBDA" font-size="14">▸</text>
+
+    <!-- Séance 2 card (current) -->
+    <rect x="980" y="284" width="416" height="76" rx="10" fill="#EFF6FF" stroke="#1E6FC0" stroke-width="1.5"/>
+    <g>
+      <circle cx="1006" cy="310" r="13" fill="#DBEAFE"/>
+      <text x="999" y="314" fill="#1E6FC0" font-size="12" font-weight="700">✎</text>
+    </g>
+    <text x="1028" y="304" fill="#1E293B" font-size="13" font-weight="600">Séance 2 — Investigation phase 1</text>
+    <text x="1028" y="322" fill="#64748B" font-size="11">29/04/2026</text>
+    <text x="1028" y="340" fill="#1E6FC0" font-size="11" font-weight="500">En cours de rédaction</text>
+    <rect x="1314" y="298" width="72" height="22" rx="11" fill="#FFF7ED"/>
+    <text x="1328" y="313" fill="#FF6B35" font-size="10" font-weight="600">En cours</text>
+
+    <!-- Séance 3 (to do) -->
+    <rect x="980" y="372" width="416" height="66" rx="10" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2"/>
+    <g>
+      <circle cx="1006" cy="405" r="13" fill="#FFF7ED"/>
+      <text x="1001" y="409" fill="#FF6B35" font-size="11">!</text>
+    </g>
+    <text x="1028" y="399" fill="#334155" font-size="13" font-weight="500">Séance 3 — Investigation phase 2</text>
+    <text x="1028" y="419" fill="#94A3B8" font-size="11">Prévue le 13/05/2026</text>
+    <rect x="1314" y="391" width="78" height="22" rx="11" fill="#FFF7ED"/>
+    <text x="1326" y="406" fill="#FF6B35" font-size="10" font-weight="500">À rédiger</text>
+
+    <!-- Séance 4 (not planned) -->
+    <rect x="980" y="450" width="416" height="58" rx="10" fill="#F8FAFC" stroke="#F1F5F9" stroke-width="1"/>
+    <g>
+      <circle cx="1006" cy="479" r="13" fill="#F1F5F9"/>
+      <text x="1001" y="483" fill="#C0CBDA" font-size="11">—</text>
+    </g>
+    <text x="1028" y="475" fill="#94A3B8" font-size="13">Séance 4 — Conclusion phase 1</text>
+    <text x="1028" y="493" fill="#C0CBDA" font-size="11">Non planifiée</text>
+    <rect x="1314" y="467" width="82" height="22" rx="11" fill="#F1F5F9"/>
+    <text x="1326" y="482" fill="#94A3B8" font-size="10">Non planifié</text>
+
+    <!-- Séance 5 (not planned) -->
+    <rect x="980" y="520" width="416" height="58" rx="10" fill="#F8FAFC" stroke="#F1F5F9" stroke-width="1"/>
+    <g>
+      <circle cx="1006" cy="549" r="13" fill="#F1F5F9"/>
+      <text x="1001" y="553" fill="#C0CBDA" font-size="11">—</text>
+    </g>
+    <text x="1028" y="545" fill="#94A3B8" font-size="13">Séance 5 — Conclusion phase 2</text>
+    <text x="1028" y="563" fill="#C0CBDA" font-size="11">Non planifiée</text>
+    <rect x="1314" y="537" width="82" height="22" rx="11" fill="#F1F5F9"/>
+    <text x="1326" y="552" fill="#94A3B8" font-size="10">Non planifié</text>
+
+    <!-- Séance 6 (not planned) -->
+    <rect x="980" y="590" width="416" height="58" rx="10" fill="#F8FAFC" stroke="#F1F5F9" stroke-width="1"/>
+    <g>
+      <circle cx="1006" cy="619" r="13" fill="#F1F5F9"/>
+      <text x="1001" y="623" fill="#C0CBDA" font-size="11">—</text>
+    </g>
+    <text x="1028" y="615" fill="#94A3B8" font-size="13">Séance 6 — Synthèse finale</text>
+    <text x="1028" y="633" fill="#C0CBDA" font-size="11">Non planifiée</text>
+    <rect x="1314" y="607" width="82" height="22" rx="11" fill="#F1F5F9"/>
+    <text x="1326" y="622" fill="#94A3B8" font-size="10">Non planifié</text>
+
+    <!-- Legend -->
+    <g transform="translate(980, 666)">
+      <text x="0" y="14" fill="#64748B" font-size="11" font-weight="600">Légende :</text>
+      <circle cx="8" cy="36" r="5.5" fill="#ECFDF5" stroke="#16A34A" stroke-width="1"/>
+      <text x="20" y="40" fill="#64748B" font-size="10.5">Rédigé</text>
+      <circle cx="84" cy="36" r="5.5" fill="#FFF7ED" stroke="#FF6B35" stroke-width="1"/>
+      <text x="96" y="40" fill="#64748B" font-size="10.5">À rédiger</text>
+      <circle cx="168" cy="36" r="5.5" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+      <text x="180" y="40" fill="#64748B" font-size="10.5">Non planifié</text>
+    </g>
+  </g>
+</svg>
