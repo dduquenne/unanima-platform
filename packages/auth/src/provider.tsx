@@ -44,10 +44,16 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, authSession) => {
+    } = supabase.auth.onAuthStateChange(async (event, authSession) => {
       setSession(authSession)
 
       if (authSession?.user) {
+        // On SIGNED_IN, signal loading so downstream guards (useRequireRole)
+        // wait for the profile fetch instead of redirecting prematurely.
+        if (event === 'SIGNED_IN') {
+          setIsLoading(true)
+        }
+
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
