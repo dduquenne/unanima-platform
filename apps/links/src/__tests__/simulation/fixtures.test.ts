@@ -89,13 +89,14 @@ describe('Fixtures — Questionnaires et questions', () => {
     expect(simulationQuestionnaires).toHaveLength(6)
   })
 
-  it('contient 24 questions (4 par phase × 6 phases)', () => {
-    expect(simulationQuestions).toHaveLength(24)
+  it('contient 79 questions (12-15 par phase × 6 phases)', () => {
+    expect(simulationQuestions).toHaveLength(79)
   })
 
-  it('chaque phase a exactement 4 questions', () => {
+  it('chaque phase a entre 12 et 15 questions', () => {
+    const expectedCounts: Record<number, number> = { 1: 12, 2: 13, 3: 14, 4: 15, 5: 13, 6: 12 }
     for (let phase = 1; phase <= 6; phase++) {
-      expect(getQuestionsForPhase(phase)).toHaveLength(4)
+      expect(getQuestionsForPhase(phase)).toHaveLength(expectedCounts[phase])
     }
   })
 })
