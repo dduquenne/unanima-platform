@@ -37,64 +37,61 @@ export function LoginCard({
     <div
       className="w-full overflow-hidden"
       style={{
-        maxWidth: 420,
+        maxWidth: 460,
         borderRadius: 20,
         backgroundColor: 'var(--color-surface)',
-        boxShadow: '0 16px 40px rgba(13,59,110,0.15)',
+        boxShadow: '0 16px 40px rgba(212, 149, 106, 0.10)',
       }}
     >
-      {/* Barre accent gradient tricolore */}
-      <div
-        style={{
-          height: 4,
-          background: 'linear-gradient(to right, var(--color-primary), var(--color-secondary), var(--color-accent))',
-        }}
-      />
+      <div style={{ padding: '40px 36px 32px' }}>
+        {/* Welcome icon */}
+        <div className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-full" style={{ backgroundColor: '#FFF3EB' }}>
+          <span className="text-xl" role="img" aria-hidden="true">👋</span>
+        </div>
 
-      <div style={{ padding: '40px 32px 32px' }}>
-        {/* Titre */}
+        {/* Heading */}
         <h2
           className="text-center font-bold"
-          style={{ fontSize: 24, color: 'var(--color-primary-dark)', letterSpacing: -0.5 }}
+          style={{ fontSize: 28, color: '#1A2332', letterSpacing: -0.3 }}
         >
-          Connexion
+          Bienvenue
         </h2>
         <p
-          className="mt-1 text-center"
-          style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}
+          className="mt-1.5 text-center"
+          style={{ fontSize: 15, color: '#8492A6' }}
         >
-          Accédez à votre espace sécurisé
+          Bienvenue sur votre espace personnel
         </p>
 
-        {/* Séparateur */}
+        {/* Separator */}
         <div
           className="mx-auto"
           style={{
             width: 60,
             height: 1.5,
-            marginTop: 12,
-            marginBottom: 24,
+            marginTop: 16,
+            marginBottom: 28,
             backgroundColor: 'var(--color-border)',
             borderRadius: 1,
           }}
         />
 
-        {/* Erreur URL */}
+        {/* URL error */}
         {urlError && <ErrorBanner message={urlError} />}
 
         <form onSubmit={onSubmit}>
           <div className="flex flex-col" style={{ gap: 20 }}>
-            {/* Erreur formulaire */}
+            {/* Form error */}
             {error && <ErrorBanner message={error} isWarning={isLocked} />}
 
-            {/* Champ email */}
+            {/* Email field */}
             <div>
               <label
                 htmlFor="login-email"
                 className="block font-semibold"
-                style={{ fontSize: 13, color: 'var(--color-text)', marginBottom: 6 }}
+                style={{ fontSize: 14, color: '#4A5568', marginBottom: 8 }}
               >
-                Adresse email
+                Adresse e-mail
               </label>
               <div className="relative">
                 <Mail
@@ -102,10 +99,10 @@ export function LoginCard({
                   style={{
                     width: 18,
                     height: 18,
-                    left: 14,
+                    left: 16,
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    color: 'var(--color-text-muted)',
+                    color: '#C4A88C',
                   }}
                 />
                 <input
@@ -116,39 +113,39 @@ export function LoginCard({
                   required
                   autoComplete="email"
                   disabled={isLocked}
-                  placeholder="votre@email.fr"
+                  placeholder="votre@email.com"
                   className="login-input"
                   style={{
                     width: '100%',
-                    height: 48,
-                    paddingLeft: 42,
-                    paddingRight: 14,
-                    borderRadius: 12,
-                    border: '1.5px solid var(--color-border)',
+                    height: 50,
+                    paddingLeft: 44,
+                    paddingRight: 16,
+                    borderRadius: 16,
+                    border: '1.5px solid #E8D5CA',
                     backgroundColor: 'var(--color-surface)',
-                    fontSize: 13.5,
+                    fontSize: 14.5,
                     color: 'var(--color-text)',
                     outline: 'none',
                     transition: 'border-color 0.15s, box-shadow 0.15s',
                   }}
                   onFocus={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--color-primary)'
-                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(30,111,192,0.06)'
+                    e.currentTarget.style.borderColor = '#2A7FD4'
+                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(42,127,212,0.08)'
                   }}
                   onBlur={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--color-border)'
+                    e.currentTarget.style.borderColor = '#E8D5CA'
                     e.currentTarget.style.boxShadow = 'none'
                   }}
                 />
               </div>
             </div>
 
-            {/* Champ mot de passe */}
+            {/* Password field */}
             <div>
               <label
                 htmlFor="login-password"
                 className="block font-semibold"
-                style={{ fontSize: 13, color: 'var(--color-text)', marginBottom: 6 }}
+                style={{ fontSize: 14, color: '#4A5568', marginBottom: 8 }}
               >
                 Mot de passe
               </label>
@@ -158,10 +155,10 @@ export function LoginCard({
                   style={{
                     width: 18,
                     height: 18,
-                    left: 14,
+                    left: 16,
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    color: 'var(--color-text-muted)',
+                    color: '#C4A88C',
                   }}
                 />
                 <input
@@ -175,23 +172,23 @@ export function LoginCard({
                   className="login-input"
                   style={{
                     width: '100%',
-                    height: 48,
-                    paddingLeft: 42,
-                    paddingRight: 42,
-                    borderRadius: 12,
-                    border: '1.5px solid var(--color-border)',
+                    height: 50,
+                    paddingLeft: 44,
+                    paddingRight: 44,
+                    borderRadius: 16,
+                    border: '1.5px solid #E8D5CA',
                     backgroundColor: 'var(--color-surface)',
-                    fontSize: 13.5,
+                    fontSize: 14.5,
                     color: 'var(--color-text)',
                     outline: 'none',
                     transition: 'border-color 0.15s, box-shadow 0.15s',
                   }}
                   onFocus={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--color-primary)'
-                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(30,111,192,0.06)'
+                    e.currentTarget.style.borderColor = '#2A7FD4'
+                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(42,127,212,0.08)'
                   }}
                   onBlur={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--color-border)'
+                    e.currentTarget.style.borderColor = '#E8D5CA'
                     e.currentTarget.style.boxShadow = 'none'
                   }}
                 />
@@ -200,10 +197,10 @@ export function LoginCard({
                   onClick={onTogglePassword}
                   className="absolute"
                   style={{
-                    right: 12,
+                    right: 14,
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    color: 'var(--color-text-muted)',
+                    color: '#C4A88C',
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
@@ -218,14 +215,14 @@ export function LoginCard({
               </div>
             </div>
 
-            {/* Lien mot de passe oublié */}
+            {/* Forgot password link */}
             <div style={{ textAlign: 'right', marginTop: -8 }}>
               <button
                 type="button"
                 onClick={onForgotPassword}
                 style={{
-                  fontSize: 12.5,
-                  color: 'var(--color-primary)',
+                  fontSize: 14,
+                  color: '#2A7FD4',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
@@ -236,24 +233,24 @@ export function LoginCard({
               </button>
             </div>
 
-            {/* Bouton Se connecter */}
+            {/* Submit button */}
             <button
               type="submit"
               disabled={isSubmitting || isLocked}
-              className="relative flex items-center justify-center font-bold"
+              className="relative flex items-center justify-center font-semibold"
               style={{
                 width: '100%',
-                height: 50,
-                borderRadius: 12,
+                height: 52,
+                borderRadius: 16,
                 background: isLocked
                   ? 'var(--color-text-muted)'
-                  : 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
-                color: 'var(--color-text-inverse)',
-                fontSize: 15,
+                  : '#2A7FD4',
+                color: '#FFFFFF',
+                fontSize: 16,
                 letterSpacing: 0.3,
                 border: 'none',
                 cursor: isLocked ? 'not-allowed' : 'pointer',
-                boxShadow: isLocked ? 'none' : '0 4px 12px rgba(30,111,192,0.25)',
+                boxShadow: isLocked ? 'none' : '0 4px 12px rgba(42,127,212,0.3)',
                 transition: 'opacity 0.15s, box-shadow 0.15s',
                 opacity: isSubmitting ? 0.7 : 1,
               }}
@@ -266,11 +263,11 @@ export function LoginCard({
                 />
               ) : (
                 <>
-                  {isLocked ? 'Compte verrouill\u00e9' : 'Se connecter'}
+                  {isLocked ? 'Compte verrouillé' : 'Se connecter'}
                   {!isLocked && (
                     <ArrowRight
                       className="absolute"
-                      style={{ right: 18, width: 16, height: 16, opacity: 0.85 }}
+                      style={{ right: 20, width: 16, height: 16, opacity: 0.85 }}
                     />
                   )}
                 </>
@@ -279,35 +276,21 @@ export function LoginCard({
           </div>
         </form>
 
-        {/* Séparateur "ou" */}
-        <div className="flex items-center" style={{ gap: 12, marginTop: 24, marginBottom: 24 }}>
-          <div className="flex-1" style={{ height: 1, backgroundColor: 'var(--color-border)' }} />
-          <span style={{ fontSize: 11.5, color: 'var(--color-text-muted)' }}>ou</span>
-          <div className="flex-1" style={{ height: 1, backgroundColor: 'var(--color-border)' }} />
-        </div>
-
-        {/* Section support */}
-        <div className="text-center">
-          <p style={{ fontSize: 12.5, color: 'var(--color-text-secondary)' }}>
-            Besoin d{"'"}aide ?
+        {/* Support section */}
+        <div className="mt-6 text-center">
+          <p style={{ fontSize: 12.5, color: '#8492A6' }}>
+            Besoin d{"'"}aide ?{' '}
+            <a
+              href="mailto:support@links-accompagnement.fr"
+              style={{ color: '#2A7FD4', textDecoration: 'underline', textUnderlineOffset: 2 }}
+            >
+              Contacter le support
+            </a>
           </p>
-          <a
-            href="mailto:support@links-accompagnement.fr"
-            style={{
-              display: 'inline-block',
-              marginTop: 4,
-              fontSize: 12.5,
-              color: 'var(--color-primary)',
-              textDecoration: 'underline',
-              textUnderlineOffset: 2,
-            }}
-          >
-            Contacter le support
-          </a>
         </div>
       </div>
 
-      {/* Footer dans la carte sur mobile */}
+      {/* Footer in card on mobile */}
       <div className="px-8 pb-6 text-center lg:hidden">
         <FooterLinks />
       </div>
@@ -321,11 +304,11 @@ function ErrorBanner({ message, isWarning = false }: { message: string; isWarnin
       className="mb-2 flex items-center gap-2"
       style={{
         padding: 12,
-        borderRadius: 10,
-        backgroundColor: isWarning ? 'var(--color-warning-light)' : 'var(--color-danger-light)',
-        border: `1px solid ${isWarning ? 'var(--color-warning)' : 'var(--color-danger)'}`,
-        fontSize: 12.5,
-        color: isWarning ? 'var(--color-warning)' : '#C62828',
+        borderRadius: 16,
+        backgroundColor: isWarning ? '#FFF0EA' : '#FEF2F2',
+        border: `1px solid ${isWarning ? '#FECACA' : '#FECACA'}`,
+        fontSize: 13,
+        color: isWarning ? '#FF6B35' : '#DC2626',
         fontWeight: 500,
       }}
       role="alert"
@@ -336,8 +319,8 @@ function ErrorBanner({ message, isWarning = false }: { message: string; isWarnin
           width: 18,
           height: 18,
           fontSize: 11,
-          backgroundColor: 'var(--color-danger)',
-          color: 'var(--color-text-inverse)',
+          backgroundColor: isWarning ? '#FEE2E2' : '#FEE2E2',
+          color: '#DC2626',
         }}
       >
         !
@@ -350,20 +333,18 @@ function ErrorBanner({ message, isWarning = false }: { message: string; isWarnin
 export function FooterLinks() {
   return (
     <>
-      <p style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-        © {new Date().getFullYear()} Link{"'"}s Accompagnement — Unanima Platform
-      </p>
-      <p style={{ fontSize: 11, color: 'var(--color-text-muted)', opacity: 0.7, marginTop: 4 }}>
+      <div className="mb-3" style={{ height: 1, backgroundColor: '#F0E4DC' }} />
+      <p style={{ fontSize: 12, color: '#8492A6' }}>
         <Link href="/mentions-legales" className="hover:underline">
           Mentions légales
         </Link>
-        {' · '}
+        {' | '}
         <Link href="/confidentialite" className="hover:underline">
           Confidentialité
         </Link>
-        {' · '}
+        {' | '}
         <Link href="/cookies" className="hover:underline">
-          RGPD
+          Cookies
         </Link>
       </p>
     </>
