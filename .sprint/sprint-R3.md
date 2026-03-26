@@ -10,7 +10,7 @@
 | Ordre | Issue | Titre | Priorite | Phase | Skill | Statut |
 |-------|-------|-------|----------|-------|-------|--------|
 | 1 | #215 | MAQ-04 — Dashboard consultant | 🟢 Feature | 1 | ergonomix | ✅ Fait (2026-03-26) |
-| 2 | #216 | MAQ-05 — Fiche bénéficiaire (vue consultant) | 🟢 Feature | 1 | ergonomix | ⬜ À faire |
+| 2 | #216 | MAQ-05 — Fiche bénéficiaire (vue consultant) | 🟢 Feature | 1 | ergonomix | ✅ Fait (2026-03-26) |
 | 3 | #217 | MAQ-06 — Comptes-rendus de séances | 🟢 Feature | 2 | ergonomix | ⬜ À faire |
 | 4 | #218 | MAQ-09 — Planification des séances | 🟢 Feature | 2 | ergonomix | ⬜ À faire |
 

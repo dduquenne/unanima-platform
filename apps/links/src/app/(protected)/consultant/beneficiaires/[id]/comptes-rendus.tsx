@@ -1,21 +1,26 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import {
-  ChevronUp,
-  ChevronDown,
   Download,
   Save,
-  X,
-  FileText,
   Check,
+  Lock,
+  ChevronRight,
 } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-interface SessionNote {
+interface SessionNoteFields {
+  objectifs: string
+  contenu: string
+  observations: string
+  actions: string
+}
+
+interface SessionNoteData {
   content: string
   updated_at: string
 }
@@ -34,23 +39,65 @@ interface ComptesRendusTabProps {
 // ---------------------------------------------------------------------------
 
 const TOTAL_SESSIONS = 6
-const MAX_CHARACTERS = 10_000
+
+const FIELD_LABELS: { key: keyof SessionNoteFields; label: string }[] = [
+  { key: 'objectifs', label: 'Objectifs de la séance' },
+  { key: 'contenu', label: 'Contenu de la séance' },
+  { key: 'observations', label: 'Observations' },
+  { key: 'actions', label: 'Actions à mener' },
+]
+
+const EMPTY_FIELDS: SessionNoteFields = {
+  objectifs: '',
+  contenu: '',
+  observations: '',
+  actions: '',
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 function formatDateFR(iso: string): string {
-  const d = new Date(iso)
-  const day = String(d.getDate()).padStart(2, '0')
-  const month = String(d.getMonth() + 1).padStart(2, '0')
-  const year = d.getFullYear()
-  return `${day}/${month}/${year}`
+  return new Date(iso).toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
 }
 
-function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text
-  return text.slice(0, maxLength) + '...'
+/** Serialize 4 fields into a single content string for API compat. */
+function serializeFields(fields: SessionNoteFields): string {
+  const parts: string[] = []
+  for (const { key, label } of FIELD_LABELS) {
+    if (fields[key].trim()) {
+      parts.push(`## ${label}\n${fields[key].trim()}`)
+    }
+  }
+  return parts.join('\n\n')
+}
+
+/** Deserialize a single content string back to 4 fields. */
+function deserializeFields(content: string): SessionNoteFields {
+  const fields = { ...EMPTY_FIELDS }
+  if (!content) return fields
+
+  // Try to parse structured format
+  for (const { key, label } of FIELD_LABELS) {
+    const regex = new RegExp(`## ${label}\\n([\\s\\S]*?)(?=\\n## |$)`)
+    const match = content.match(regex)
+    if (match?.[1]) {
+      fields[key] = match[1].trim()
+    }
+  }
+
+  // If no structured format found, put everything in "contenu"
+  const hasStructured = Object.values(fields).some((v) => v.length > 0)
+  if (!hasStructured && content.trim()) {
+    fields.contenu = content.trim()
+  }
+
+  return fields
 }
 
 // ---------------------------------------------------------------------------
@@ -59,9 +106,11 @@ function truncateText(text: string, maxLength: number): string {
 
 function Toast({
   message,
+  type = 'success',
   onClose,
 }: {
   message: string
+  type?: 'success' | 'error'
   onClose: () => void
 }) {
   useEffect(() => {
@@ -70,7 +119,13 @@ function Toast({
   }, [onClose])
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg bg-[#28A745] px-4 py-3 text-sm font-medium text-white shadow-lg">
+    <div
+      className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-medium shadow-lg ${
+        type === 'success'
+          ? 'bg-[#28A745] text-white'
+          : 'bg-[#F8D7DA] text-[#721C24] border border-[#F5C6CB]'
+      }`}
+    >
       <Check className="h-4 w-4" />
       {message}
     </div>
@@ -78,188 +133,88 @@ function Toast({
 }
 
 // ---------------------------------------------------------------------------
-// Session Card
+// Session History Item (right column)
 // ---------------------------------------------------------------------------
 
-function SessionCard({
+function SessionHistoryItem({
   sessionNumber,
   scheduledAt,
-  note,
-  isExpanded,
-  isEditing,
-  editContent,
-  onToggleExpand,
-  onStartEdit,
-  onCancelEdit,
-  onSave,
-  onEditContentChange,
-  isSaving,
+  isWritten,
+  isCurrent,
+  onClick,
 }: {
   sessionNumber: number
   scheduledAt: string | null
-  note: SessionNote | undefined
-  isExpanded: boolean
-  isEditing: boolean
-  editContent: string
-  onToggleExpand: () => void
-  onStartEdit: () => void
-  onCancelEdit: () => void
-  onSave: () => void
-  onEditContentChange: (value: string) => void
-  isSaving: boolean
+  isWritten: boolean
+  isCurrent: boolean
+  onClick: () => void
 }) {
   const isPlanned = scheduledAt !== null
-  const isWritten = note !== undefined && note.content.length > 0
-  const canEdit = isPlanned
+
+  let iconBg: string
+  let iconContent: React.ReactNode
+  let badgeBg: string
+  let badgeColor: string
+  let badgeText: string
+
+  if (isWritten) {
+    iconBg = '#ECFDF5'
+    iconContent = <Check className="h-3.5 w-3.5" style={{ color: '#4CAF82' }} />
+    badgeBg = '#ECFDF5'
+    badgeColor = '#4CAF82'
+    badgeText = 'Rédigé'
+  } else if (isPlanned) {
+    iconBg = '#FFF7ED'
+    iconContent = <span className="text-[11px] font-bold" style={{ color: '#F28C5A' }}>!</span>
+    badgeBg = '#FFF7ED'
+    badgeColor = '#F28C5A'
+    badgeText = 'À rédiger'
+  } else {
+    iconBg = '#F5EDE8'
+    iconContent = <span className="text-[11px]" style={{ color: '#C4B8AE' }}>—</span>
+    badgeBg = '#F5EDE8'
+    badgeColor = '#B0A098'
+    badgeText = 'Non planifié'
+  }
 
   return (
-    <div className="rounded-xl border border-[var(--color-border)] bg-white shadow-sm overflow-hidden">
-      {/* Header */}
+    <button
+      onClick={onClick}
+      className="flex w-full items-center gap-3 rounded-2xl border p-4 text-left transition-colors"
+      style={{
+        borderColor: isCurrent ? '#F28C5A' : '#F0E0D4',
+        backgroundColor: isCurrent ? '#FFF8F5' : isPlanned ? '#FFFFFF' : '#FFFBF8',
+      }}
+    >
+      {/* Icon */}
       <div
-        className="flex items-center gap-4 px-5 py-4 cursor-pointer"
-        onClick={onToggleExpand}
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+        style={{ backgroundColor: iconBg }}
       >
-        {/* Session number circle */}
-        <div
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
-            isPlanned
-              ? 'bg-[#1E6FC0] text-white'
-              : 'bg-[#DCE1EB] text-[#9CAABB]'
-          }`}
-        >
-          {sessionNumber}
-        </div>
-
-        {/* Title + date */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="font-semibold text-[var(--color-text)]">
-              Seance {sessionNumber}
-            </span>
-            {isPlanned ? (
-              <span className="text-sm text-[#6B7A8D]">
-                {formatDateFR(scheduledAt)}
-              </span>
-            ) : (
-              <span className="text-sm italic text-[#9CAABB]">
-                A planifier
-              </span>
-            )}
-          </div>
-          {/* Excerpt when collapsed and written */}
-          {!isExpanded && isWritten && (
-            <p className="mt-1 text-sm text-[#6B7A8D] truncate">
-              {truncateText(note.content, 120)}
-            </p>
-          )}
-        </div>
-
-        {/* Status badge */}
-        {isPlanned && (
-          <span
-            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${
-              isWritten
-                ? 'bg-[#D4EDDA] text-[#28A745]'
-                : 'bg-[#F0F1F3] text-[#6B7A8D]'
-            }`}
-          >
-            {isWritten ? 'Rédigé' : 'Non rédigé'}
-          </span>
-        )}
-
-        {/* Chevron */}
-        <button
-          className="shrink-0 text-[#9CAABB] hover:text-[var(--color-text)] transition-colors"
-          aria-label={isExpanded ? 'Replier' : 'Deplier'}
-        >
-          {isExpanded ? (
-            <ChevronUp className="h-5 w-5" />
-          ) : (
-            <ChevronDown className="h-5 w-5" />
-          )}
-        </button>
-
-        {/* Edit / Write button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            if (canEdit && !isEditing) onStartEdit()
-          }}
-          disabled={!canEdit || isEditing}
-          className={`shrink-0 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-            !canEdit || isEditing
-              ? 'bg-[#E8ECF0] text-[#B0BAC8] cursor-not-allowed'
-              : 'border border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white'
-          }`}
-        >
-          {isWritten ? 'Modifier' : 'Rédiger'}
-        </button>
+        {iconContent}
       </div>
 
-      {/* Expanded content */}
-      {isExpanded && (
-        <div className="border-t border-[var(--color-border)] px-5 py-4">
-          {isEditing ? (
-            <div className="space-y-3">
-              <textarea
-                value={editContent}
-                onChange={(e) => {
-                  if (e.target.value.length <= MAX_CHARACTERS) {
-                    onEditContentChange(e.target.value)
-                  }
-                }}
-                rows={8}
-                placeholder="Rédigez le compte-rendu de la séance..."
-                className="w-full rounded-lg border border-[var(--color-border)] bg-[#F9FAFB] p-4 text-sm text-[var(--color-text)] placeholder-[#9CAABB] focus:border-[var(--color-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] resize-y"
-              />
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-[#9CAABB]">
-                  {editContent.length.toLocaleString('fr-FR')} / {MAX_CHARACTERS.toLocaleString('fr-FR')} caracteres
-                </span>
-                <div className="flex gap-2">
-                  <button
-                    onClick={onCancelEdit}
-                    disabled={isSaving}
-                    className="flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] px-4 py-2 text-sm font-medium text-[#6B7A8D] hover:bg-[#F0F1F3] transition-colors disabled:opacity-50"
-                  >
-                    <X className="h-4 w-4" />
-                    Annuler
-                  </button>
-                  <button
-                    onClick={onSave}
-                    disabled={isSaving || editContent.trim().length === 0}
-                    className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <Save className="h-4 w-4" />
-                    {isSaving ? 'Enregistrement...' : 'Enregistrer'}
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : isWritten ? (
-            <div className="rounded-lg bg-[#F9FAFB] border border-[var(--color-border)] p-4">
-              <p className="text-sm text-[var(--color-text)] whitespace-pre-wrap">
-                {note.content}
-              </p>
-              {note.updated_at && (
-                <p className="mt-3 text-xs text-[#9CAABB]">
-                  Derniere modification : {formatDateFR(note.updated_at)}
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-[#D1D5DB] bg-[#F9FAFB] p-8 text-center">
-              <FileText className="h-8 w-8 text-[#D1D5DB] mb-2" />
-              <p className="text-sm text-[#9CAABB]">
-                {isPlanned
-                  ? 'Aucun compte-rendu rédigé pour cette séance.'
-                  : 'Séance non planifiée.'}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+      {/* Info */}
+      <div className="flex-1 min-w-0">
+        <p className="text-[13px] font-semibold" style={{ color: isPlanned ? '#2D2D2D' : '#A0A0A0' }}>
+          Séance {sessionNumber}
+        </p>
+        <p className="text-[11.5px]" style={{ color: isPlanned ? '#7A7A7A' : '#C4B8AE' }}>
+          {isPlanned ? formatDateFR(scheduledAt!) : 'Non planifiée'}
+        </p>
+        {isWritten && isCurrent && (
+          <p className="text-[11px]" style={{ color: '#F28C5A' }}>En cours de rédaction</p>
+        )}
+      </div>
+
+      {/* Badge */}
+      <span
+        className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[10.5px] font-semibold"
+        style={{ backgroundColor: badgeBg, color: badgeColor }}
+      >
+        {badgeText}
+      </span>
+    </button>
   )
 }
 
@@ -272,15 +227,17 @@ export function ComptesRendusTab({
   beneficiaryName,
   sessions,
 }: ComptesRendusTabProps) {
-  const [notes, setNotes] = useState<Record<number, SessionNote>>({})
+  const [notes, setNotes] = useState<Record<number, SessionNoteData>>({})
   const [loading, setLoading] = useState(true)
-  const [expandedSession, setExpandedSession] = useState<number | null>(null)
-  const [editingSession, setEditingSession] = useState<number | null>(null)
-  const [editContent, setEditContent] = useState('')
+  const [activeSession, setActiveSession] = useState(1)
+  const [fields, setFields] = useState<SessionNoteFields>({ ...EMPTY_FIELDS })
   const [isSaving, setIsSaving] = useState(false)
+  const [isExporting, setIsExporting] = useState(false)
   const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [toastType, setToastType] = useState<'success' | 'error'>('success')
+  const [lastSavedAt, setLastSavedAt] = useState<string | null>(null)
 
-  // Build a full list of 6 sessions, merging with provided data
+  // Build a full list of 6 sessions
   const allSessions = Array.from({ length: TOTAL_SESSIONS }, (_, i) => {
     const num = i + 1
     const match = sessions.find((s) => s.session_number === num)
@@ -289,6 +246,17 @@ export function ComptesRendusTab({
       scheduled_at: match?.scheduled_at ?? null,
     }
   })
+
+  // Auto-select first planned session with no note, or first session
+  useEffect(() => {
+    if (loading) return
+    const firstUnwritten = allSessions.find(
+      (s) => s.scheduled_at !== null && !notes[s.session_number]
+    )
+    if (firstUnwritten) {
+      setActiveSession(firstUnwritten.session_number)
+    }
+  }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch notes
   useEffect(() => {
@@ -311,7 +279,7 @@ export function ComptesRendusTab({
           updated_at: string
         }> = json.data ?? json
 
-        const map: Record<number, SessionNote> = {}
+        const map: Record<number, SessionNoteData> = {}
         for (const item of data) {
           if (item.content && item.content.length > 0) {
             map[item.session_number] = {
@@ -323,7 +291,6 @@ export function ComptesRendusTab({
         setNotes(map)
       } catch (err: unknown) {
         if (err instanceof DOMException && err.name === 'AbortError') return
-        // Silently fail — notes will appear empty
       } finally {
         setLoading(false)
       }
@@ -333,69 +300,59 @@ export function ComptesRendusTab({
     return () => controller.abort()
   }, [beneficiaryId])
 
+  // Load fields when active session changes
+  useEffect(() => {
+    const note = notes[activeSession]
+    if (note) {
+      setFields(deserializeFields(note.content))
+      setLastSavedAt(note.updated_at)
+    } else {
+      setFields({ ...EMPTY_FIELDS })
+      setLastSavedAt(null)
+    }
+  }, [activeSession, notes])
+
   // Handlers
-  const handleToggleExpand = useCallback(
-    (sessionNumber: number) => {
-      setExpandedSession((prev) =>
-        prev === sessionNumber ? null : sessionNumber
-      )
+  const handleFieldChange = useCallback(
+    (key: keyof SessionNoteFields, value: string) => {
+      setFields((prev) => ({ ...prev, [key]: value }))
     },
     []
   )
 
-  const handleStartEdit = useCallback(
-    (sessionNumber: number) => {
-      setEditingSession(sessionNumber)
-      setExpandedSession(sessionNumber)
-      setEditContent(notes[sessionNumber]?.content ?? '')
-    },
-    [notes]
-  )
+  const handleSave = useCallback(async () => {
+    const content = serializeFields(fields)
+    if (!content.trim()) return
 
-  const handleCancelEdit = useCallback(() => {
-    setEditingSession(null)
-    setEditContent('')
-  }, [])
+    try {
+      setIsSaving(true)
+      const res = await fetch('/api/consultant/session-notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          beneficiary_id: beneficiaryId,
+          session_number: activeSession,
+          content,
+        }),
+      })
 
-  const handleSave = useCallback(
-    async (sessionNumber: number) => {
-      if (editContent.trim().length === 0) return
+      if (!res.ok) throw new Error(`Erreur ${res.status}`)
 
-      try {
-        setIsSaving(true)
-        const res = await fetch('/api/consultant/session-notes', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            beneficiary_id: beneficiaryId,
-            session_number: sessionNumber,
-            content: editContent.trim(),
-          }),
-        })
-
-        if (!res.ok) throw new Error(`Erreur ${res.status}`)
-
-        setNotes((prev) => ({
-          ...prev,
-          [sessionNumber]: {
-            content: editContent.trim(),
-            updated_at: new Date().toISOString(),
-          },
-        }))
-
-        setEditingSession(null)
-        setEditContent('')
-        setToastMessage('Compte-rendu enregistre avec succes')
-      } catch {
-        setToastMessage('Erreur lors de l\'enregistrement')
-      } finally {
-        setIsSaving(false)
-      }
-    },
-    [beneficiaryId, editContent]
-  )
-
-  const [isExporting, setIsExporting] = useState(false)
+      const now = new Date().toISOString()
+      setNotes((prev) => ({
+        ...prev,
+        [activeSession]: { content, updated_at: now },
+      }))
+      setLastSavedAt(now)
+      setToastType('success')
+      setToastMessage('Compte-rendu enregistré avec succès')
+    } catch {
+      setToastType('error')
+      setToastMessage("Erreur lors de l'enregistrement")
+    } finally {
+      setIsSaving(false)
+    }
+  }, [beneficiaryId, activeSession, fields])
 
   const handleExportPDF = useCallback(async () => {
     try {
@@ -420,16 +377,19 @@ export function ComptesRendusTab({
       document.body.removeChild(a)
       window.URL.revokeObjectURL(url)
 
+      setToastType('success')
       setToastMessage('PDF téléchargé avec succès')
     } catch {
-      setToastMessage('Erreur lors de l\'export PDF')
+      setToastType('error')
+      setToastMessage("Erreur lors de l'export PDF")
     } finally {
       setIsExporting(false)
     }
   }, [beneficiaryId])
 
-  // Count written sessions
   const writtenCount = Object.keys(notes).length
+  const activeSessionData = allSessions.find((s) => s.session_number === activeSession)
+  const isPlanned = activeSessionData?.scheduled_at !== null
 
   // Loading state
   if (loading) {
@@ -441,72 +401,158 @@ export function ComptesRendusTab({
   }
 
   return (
-    <div>
-      {/* Header with export button */}
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-lg font-bold text-[var(--color-primary-dark)]">
-          Comptes-rendus de seances
-        </h2>
-        <button
-          onClick={handleExportPDF}
-          disabled={isExporting}
-          className="flex items-center gap-2 rounded-lg border border-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isExporting ? (
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-          ) : (
-            <Download className="h-4 w-4" />
-          )}
-          {isExporting ? 'Export en cours...' : 'Exporter en PDF'}
-        </button>
-      </div>
+    <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+      {/* ==================== LEFT COLUMN — Session Notes Form ==================== */}
+      <div
+        className="rounded-[18px] bg-white p-6"
+        style={{ boxShadow: 'var(--shadow-lg)' }}
+      >
+        {/* Session selector tabs — pill-shaped */}
+        <div className="mb-6 flex flex-wrap gap-2">
+          {allSessions.map((session) => {
+            const isActive = session.session_number === activeSession
+            const isSessionPlanned = session.scheduled_at !== null
+            const isDisabled = !isSessionPlanned && session.session_number > 2
 
-      {/* Session cards */}
-      <div className="space-y-3">
-        {allSessions.map((session) => (
-          <SessionCard
-            key={session.session_number}
-            sessionNumber={session.session_number}
-            scheduledAt={session.scheduled_at}
-            note={notes[session.session_number]}
-            isExpanded={expandedSession === session.session_number}
-            isEditing={editingSession === session.session_number}
-            editContent={
-              editingSession === session.session_number ? editContent : ''
-            }
-            onToggleExpand={() => handleToggleExpand(session.session_number)}
-            onStartEdit={() => handleStartEdit(session.session_number)}
-            onCancelEdit={handleCancelEdit}
-            onSave={() => handleSave(session.session_number)}
-            onEditContentChange={setEditContent}
-            isSaving={isSaving}
-          />
-        ))}
-      </div>
-
-      {/* Progress bar */}
-      <div className="mt-6 rounded-xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-medium text-[var(--color-text)]">
-            {writtenCount} / {TOTAL_SESSIONS} seances redigees
-          </span>
-          <span
-            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${
-              writtenCount === TOTAL_SESSIONS
-                ? 'bg-[#D4EDDA] text-[#28A745]'
-                : 'bg-[#F0F1F3] text-[#6B7A8D]'
-            }`}
-          >
-            {writtenCount === TOTAL_SESSIONS ? 'Complet' : 'En cours'}
-          </span>
+            return (
+              <button
+                key={session.session_number}
+                onClick={() => !isDisabled && setActiveSession(session.session_number)}
+                disabled={isDisabled}
+                className="rounded-full px-4 py-2 text-[12.5px] font-medium transition-all"
+                style={
+                  isActive
+                    ? { backgroundColor: 'var(--color-primary)', color: '#FFFFFF' }
+                    : isDisabled
+                      ? { backgroundColor: '#F5EDE8', color: '#C4B8AE', opacity: 0.5, cursor: 'not-allowed' }
+                      : { backgroundColor: '#F5EDE8', color: '#7A7A7A' }
+                }
+              >
+                Séance {session.session_number}
+              </button>
+            )
+          })}
         </div>
-        <div className="h-2.5 rounded-full bg-[var(--color-border)]">
-          <div
-            className="h-full rounded-full bg-[var(--color-success)] transition-all duration-300"
-            style={{
-              width: `${Math.round((writtenCount / TOTAL_SESSIONS) * 100)}%`,
-            }}
-          />
+
+        {/* Session title */}
+        <h3 className="text-[17px] font-bold" style={{ color: '#2D2D2D' }}>
+          Séance {activeSession}
+        </h3>
+        {activeSessionData?.scheduled_at && (
+          <p className="mt-1 text-[13px]" style={{ color: '#7A7A7A' }}>
+            {formatDateFR(activeSessionData.scheduled_at)}
+          </p>
+        )}
+
+        {/* 4 text fields */}
+        <div className="mt-6 space-y-5">
+          {FIELD_LABELS.map(({ key, label }) => (
+            <div key={key}>
+              <label className="mb-1.5 block text-[13px] font-semibold" style={{ color: '#4A4A4A' }}>
+                {label}
+              </label>
+              <textarea
+                value={fields[key]}
+                onChange={(e) => handleFieldChange(key, e.target.value)}
+                rows={key === 'contenu' ? 5 : 3}
+                placeholder={`Saisissez ${label.toLowerCase()}...`}
+                className="w-full resize-y rounded-2xl border-[1.5px] p-4 text-[13px] outline-none transition-colors focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+                style={{
+                  backgroundColor: '#FFFBF8',
+                  borderColor: '#F0E0D4',
+                  color: '#4A4A4A',
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Autosave indicator */}
+        {lastSavedAt && (
+          <p className="mt-4 text-[12px]" style={{ color: '#4CAF82' }}>
+            ✓ Sauvegardé le {formatDateFR(lastSavedAt)}
+          </p>
+        )}
+
+        {/* Buttons */}
+        <div className="mt-4 flex flex-wrap gap-3">
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="inline-flex items-center gap-2 rounded-full border-[1.5px] px-5 py-2.5 text-[13.5px] font-medium transition-colors hover:bg-[#F9F5F2] disabled:opacity-50"
+            style={{ borderColor: '#D4C4B8', color: '#4A4A4A' }}
+          >
+            <Save className="h-4 w-4" />
+            {isSaving ? 'Enregistrement...' : 'Enregistrer'}
+          </button>
+          <button
+            onClick={handleExportPDF}
+            disabled={isExporting}
+            className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            style={{ backgroundColor: 'var(--color-primary)' }}
+          >
+            {isExporting ? (
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            {isExporting ? 'Export en cours...' : 'Exporter PDF'}
+          </button>
+        </div>
+
+        {/* Confidentiality notice */}
+        <div
+          className="mt-5 flex items-center gap-3 rounded-2xl border p-3"
+          style={{ backgroundColor: '#FFF5EE', borderColor: '#F5DFD0' }}
+        >
+          <Lock className="h-4 w-4 shrink-0" style={{ color: '#A09088' }} />
+          <p className="text-[11.5px]" style={{ color: '#7A7A7A' }}>
+            Ces comptes-rendus sont confidentiels et ne sont pas visibles par le bénéficiaire.
+          </p>
+        </div>
+      </div>
+
+      {/* ==================== RIGHT COLUMN — Previous Sessions ==================== */}
+      <div
+        className="rounded-[18px] bg-white p-5"
+        style={{ boxShadow: 'var(--shadow-lg)' }}
+      >
+        <h3 className="mb-4 text-[15px] font-bold" style={{ color: '#2D2D2D' }}>
+          Historique des séances
+        </h3>
+
+        <div className="space-y-2">
+          {allSessions.map((session) => (
+            <SessionHistoryItem
+              key={session.session_number}
+              sessionNumber={session.session_number}
+              scheduledAt={session.scheduled_at}
+              isWritten={!!notes[session.session_number]}
+              isCurrent={session.session_number === activeSession}
+              onClick={() => setActiveSession(session.session_number)}
+            />
+          ))}
+        </div>
+
+        {/* Legend */}
+        <div className="mt-5">
+          <p className="mb-2 text-[11.5px] font-semibold" style={{ color: '#7A7A7A' }}>
+            Légende :
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <div className="flex items-center gap-1.5">
+              <div className="h-3 w-3 rounded-full border" style={{ backgroundColor: '#ECFDF5', borderColor: '#4CAF82' }} />
+              <span className="text-[10.5px]" style={{ color: '#7A7A7A' }}>Rédigé</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="h-3 w-3 rounded-full border" style={{ backgroundColor: '#FFF7ED', borderColor: '#F28C5A' }} />
+              <span className="text-[10.5px]" style={{ color: '#7A7A7A' }}>À rédiger</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="h-3 w-3 rounded-full border" style={{ backgroundColor: '#F5EDE8', borderColor: '#D4C4B8' }} />
+              <span className="text-[10.5px]" style={{ color: '#7A7A7A' }}>Non planifié</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -514,6 +560,7 @@ export function ComptesRendusTab({
       {toastMessage && (
         <Toast
           message={toastMessage}
+          type={toastType}
           onClose={() => setToastMessage(null)}
         />
       )}
