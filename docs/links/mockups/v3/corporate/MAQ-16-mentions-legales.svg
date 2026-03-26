@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      .font { font-family: 'Inter', Arial, Helvetica, sans-serif; }
+    </style>
+    <filter id="corpShadow" x="-1%" y="-1%" width="102%" height="103%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.05"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#F2F4F7"/>
+
+  <!-- Header Bar -->
+  <rect width="1440" height="52" fill="#1A5BA0"/>
+
+  <!-- Logo -->
+  <text x="80" y="34" class="font" font-size="20" font-weight="700" fill="#FFFFFF">LINK'S</text>
+  <rect x="148" y="18" width="2" height="20" fill="#E5622E"/>
+  <text x="160" y="34" class="font" font-size="12" font-weight="500" fill="rgba(255,255,255,0.8)" letter-spacing="1">ACCOMPAGNEMENT</text>
+
+  <!-- Nav items -->
+  <text x="1160" y="33" class="font" font-size="12" font-weight="500" fill="rgba(255,255,255,0.75)" letter-spacing="0.5">ACCUEIL</text>
+  <text x="1240" y="33" class="font" font-size="12" font-weight="500" fill="rgba(255,255,255,0.75)" letter-spacing="0.5">CONTACT</text>
+  <rect x="1320" y="15" width="90" height="26" rx="4" fill="#E5622E"/>
+  <text x="1338" y="33" class="font" font-size="11" font-weight="600" fill="#FFFFFF" letter-spacing="0.5">CONNEXION</text>
+
+  <!-- Breadcrumb bar -->
+  <rect x="0" y="52" width="1440" height="36" fill="#E8ECF1"/>
+  <text x="120" y="74" class="font" font-size="11" font-weight="400" fill="#6B7280">Accueil</text>
+  <text x="165" y="74" class="font" font-size="11" font-weight="400" fill="#9CA3AF">/</text>
+  <text x="178" y="74" class="font" font-size="11" font-weight="500" fill="#1A5BA0">Mentions legales</text>
+
+  <!-- Page Title -->
+  <rect x="0" y="88" width="1440" height="60" fill="#FFFFFF" filter="url(#corpShadow)"/>
+  <rect x="120" y="88" width="4" height="60" fill="#1A5BA0"/>
+  <text x="140" y="124" class="font" font-size="22" font-weight="700" fill="#111827">Mentions legales</text>
+  <text x="380" y="124" class="font" font-size="12" font-weight="400" fill="#9CA3AF">Loi n 2004-575 du 21 juin 2004 pour la confiance dans l'economie numerique</text>
+
+  <!-- Section 1: Editeur du site -->
+  <rect x="120" y="168" width="1200" height="6" rx="3" fill="#1A5BA0"/>
+  <rect x="120" y="174" width="1200" height="160" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="148" y="206" class="font" font-size="14" font-weight="700" fill="#111827" letter-spacing="0.3">1. EDITEUR DU SITE</text>
+  <line x1="148" y1="216" x2="1292" y2="216" stroke="#E5E7EB" stroke-width="1"/>
+
+  <text x="148" y="240" class="font" font-size="12" font-weight="600" fill="#374151">Raison sociale :</text>
+  <text x="290" y="240" class="font" font-size="12" font-weight="400" fill="#6B7280">Link's Accompagnement</text>
+  <text x="580" y="240" class="font" font-size="12" font-weight="600" fill="#374151">Forme juridique :</text>
+  <text x="720" y="240" class="font" font-size="12" font-weight="400" fill="#6B7280">SAS au capital de 10 000 EUR</text>
+
+  <text x="148" y="264" class="font" font-size="12" font-weight="600" fill="#374151">SIRET :</text>
+  <text x="290" y="264" class="font" font-size="12" font-weight="400" fill="#6B7280">123 456 789 00012</text>
+  <text x="580" y="264" class="font" font-size="12" font-weight="600" fill="#374151">RCS :</text>
+  <text x="720" y="264" class="font" font-size="12" font-weight="400" fill="#6B7280">Paris B 123 456 789</text>
+
+  <text x="148" y="288" class="font" font-size="12" font-weight="600" fill="#374151">Siege social :</text>
+  <text x="290" y="288" class="font" font-size="12" font-weight="400" fill="#6B7280">12 rue de la Paix, 75002 Paris, France</text>
+  <text x="580" y="288" class="font" font-size="12" font-weight="600" fill="#374151">N TVA :</text>
+  <text x="720" y="288" class="font" font-size="12" font-weight="400" fill="#6B7280">FR 12 123456789</text>
+
+  <text x="148" y="312" class="font" font-size="12" font-weight="600" fill="#374151">Telephone :</text>
+  <text x="290" y="312" class="font" font-size="12" font-weight="400" fill="#6B7280">+33 (0)1 23 45 67 89</text>
+  <text x="580" y="312" class="font" font-size="12" font-weight="600" fill="#374151">E-mail :</text>
+  <text x="720" y="312" class="font" font-size="12" font-weight="400" fill="#1A5BA0">contact@links-accompagnement.fr</text>
+
+  <!-- Section 2: Directeur de la publication -->
+  <rect x="120" y="354" width="1200" height="6" rx="3" fill="#E5622E"/>
+  <rect x="120" y="360" width="1200" height="110" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="148" y="392" class="font" font-size="14" font-weight="700" fill="#111827" letter-spacing="0.3">2. DIRECTEUR DE LA PUBLICATION</text>
+  <line x1="148" y1="402" x2="1292" y2="402" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="148" y="426" class="font" font-size="12" font-weight="600" fill="#374151">Nom :</text>
+  <text x="290" y="426" class="font" font-size="12" font-weight="400" fill="#6B7280">Mme Sophie Martin</text>
+  <text x="580" y="426" class="font" font-size="12" font-weight="600" fill="#374151">Qualite :</text>
+  <text x="720" y="426" class="font" font-size="12" font-weight="400" fill="#6B7280">Presidente de Link's Accompagnement</text>
+  <text x="148" y="450" class="font" font-size="12" font-weight="600" fill="#374151">E-mail :</text>
+  <text x="290" y="450" class="font" font-size="12" font-weight="400" fill="#1A5BA0">contact@links-accompagnement.fr</text>
+
+  <!-- Section 3: Hebergement -->
+  <rect x="120" y="490" width="1200" height="6" rx="3" fill="#1A5BA0"/>
+  <rect x="120" y="496" width="1200" height="110" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <text x="148" y="528" class="font" font-size="14" font-weight="700" fill="#111827" letter-spacing="0.3">3. HEBERGEMENT</text>
+  <line x1="148" y1="538" x2="1292" y2="538" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="148" y="562" class="font" font-size="12" font-weight="600" fill="#374151">Hebergeur :</text>
+  <text x="290" y="562" class="font" font-size="12" font-weight="400" fill="#6B7280">Vercel Inc.</text>
+  <text x="580" y="562" class="font" font-size="12" font-weight="600" fill="#374151">Adresse :</text>
+  <text x="720" y="562" class="font" font-size="12" font-weight="400" fill="#6B7280">340 S Lemon Ave #4133, Walnut, CA 91789, USA</text>
+  <text x="148" y="586" class="font" font-size="12" font-weight="600" fill="#374151">Site web :</text>
+  <text x="290" y="586" class="font" font-size="12" font-weight="400" fill="#1A5BA0">https://vercel.com</text>
+  <text x="580" y="586" class="font" font-size="12" font-weight="600" fill="#374151">Contact :</text>
+  <text x="720" y="586" class="font" font-size="12" font-weight="400" fill="#1A5BA0">privacy@vercel.com</text>
+
+  <!-- Section 4: Propriete intellectuelle -->
+  <rect x="120" y="626" width="580" height="120" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <rect x="120" y="626" width="580" height="6" rx="3" fill="#E5622E"/>
+  <text x="148" y="658" class="font" font-size="14" font-weight="700" fill="#111827" letter-spacing="0.3">4. PROPRIETE INTELLECTUELLE</text>
+  <line x1="148" y1="668" x2="672" y2="668" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="148" y="688" class="font" font-size="12" font-weight="400" fill="#6B7280">L'ensemble du contenu de ce site est la propriete</text>
+  <text x="148" y="706" class="font" font-size="12" font-weight="400" fill="#6B7280">exclusive de Link's Accompagnement et est protege par</text>
+  <text x="148" y="724" class="font" font-size="12" font-weight="400" fill="#6B7280">les lois relatives a la propriete intellectuelle.</text>
+
+  <!-- Section 5: RGPD -->
+  <rect x="720" y="626" width="600" height="120" rx="4" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="1"/>
+  <rect x="720" y="626" width="600" height="6" rx="3" fill="#1A5BA0"/>
+  <text x="748" y="658" class="font" font-size="14" font-weight="700" fill="#111827" letter-spacing="0.3">5. DONNEES PERSONNELLES (RGPD)</text>
+  <line x1="748" y1="668" x2="1292" y2="668" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="748" y="688" class="font" font-size="12" font-weight="400" fill="#6B7280">Conformement au RGPD, vous disposez de droits sur vos</text>
+  <text x="748" y="706" class="font" font-size="12" font-weight="400" fill="#6B7280">donnees personnelles. Contact DPO :</text>
+  <text x="748" y="724" class="font" font-size="12" font-weight="500" fill="#1A5BA0">dpo@links-accompagnement.fr</text>
+
+  <!-- Footer -->
+  <rect x="0" y="770" width="1440" height="130" fill="#111827"/>
+  <rect x="0" y="770" width="1440" height="2" fill="#1A5BA0"/>
+
+  <text x="120" y="802" class="font" font-size="13" font-weight="700" fill="#FFFFFF" letter-spacing="0.5">LINK'S ACCOMPAGNEMENT</text>
+  <text x="120" y="822" class="font" font-size="11" font-weight="400" fill="rgba(255,255,255,0.45)">Plateforme de suivi des bilans de competences</text>
+
+  <text x="600" y="802" class="font" font-size="11" font-weight="600" fill="rgba(255,255,255,0.6)" letter-spacing="0.5">PAGES LEGALES</text>
+  <text x="600" y="822" class="font" font-size="11" font-weight="400" fill="#E5622E">Mentions legales</text>
+  <text x="600" y="840" class="font" font-size="11" font-weight="400" fill="rgba(255,255,255,0.45)">Politique de confidentialite</text>
+  <text x="600" y="858" class="font" font-size="11" font-weight="400" fill="rgba(255,255,255,0.45)">Gestion des cookies</text>
+
+  <text x="900" y="802" class="font" font-size="11" font-weight="600" fill="rgba(255,255,255,0.6)" letter-spacing="0.5">CONTACT</text>
+  <text x="900" y="822" class="font" font-size="11" font-weight="400" fill="rgba(255,255,255,0.45)">contact@links-accompagnement.fr</text>
+  <text x="900" y="840" class="font" font-size="11" font-weight="400" fill="rgba(255,255,255,0.45)">+33 (0)1 23 45 67 89</text>
+
+  <line x1="120" y1="872" x2="1320" y2="872" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="120" y="892" class="font" font-size="10" font-weight="400" fill="rgba(255,255,255,0.3)">2026 Link's Accompagnement. Tous droits reserves.</text>
+</svg>
