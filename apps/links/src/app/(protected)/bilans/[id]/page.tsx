@@ -3,13 +3,14 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAuth } from '@unanima/auth'
-import { Card, Textarea, Button, Modal } from '@unanima/core'
-import { FileText, Download, Calendar, Mail, Check } from 'lucide-react'
+import { Modal } from '@unanima/core'
+import { Check, Download, Video, ChevronRight } from 'lucide-react'
 import { PHASE_LABELS, PHASE_DESCRIPTIONS, TOTAL_PHASES } from '@/config/phases.config'
 
-const AUTOSAVE_INTERVAL_MS = 30_000 // 30 seconds
+const AUTOSAVE_DEBOUNCE_MS = 2000
+const MAX_CHARS = 2000
 const MAX_RETRIES = 2
-const RETRY_DELAY_MS = 5_000
+const RETRY_DELAY_MS = 5000
 
 interface QuestionData {
   id: string
@@ -73,203 +74,169 @@ async function saveWithRetry(
 }
 
 // ---------------------------------------------------------------------------
-// Phase Sidebar Component (MAQ-03)
+// Phase Selector Bar (horizontal)
 // ---------------------------------------------------------------------------
 
-function PhaseSidebar({
+function PhaseSelector({
   phaseNumber,
   allPhases,
-  answeredCount,
-  totalQuestions,
-  consultantName,
-  nextSession,
   onNavigatePhase,
 }: {
   phaseNumber: number
   allPhases: PhaseValidation[]
-  answeredCount: number
-  totalQuestions: number
-  consultantName: string | null
-  nextSession: SessionData | null
   onNavigatePhase: (phase: number) => void
 }) {
   return (
-    <aside className="hidden w-52 flex-shrink-0 space-y-4 md:block">
-      {/* Phase progression indicators */}
-      <div className="rounded-xl border border-[var(--color-border)] bg-white p-4">
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
-          Progression
-        </h3>
-        <div className="space-y-2">
-          {Array.from({ length: TOTAL_PHASES }, (_, i) => {
-            const num = i + 1
-            const phase = allPhases.find((p) => p.phase_number === num)
-            const status = phase?.status ?? 'libre'
-            const isActive = num === phaseNumber
-            const label = PHASE_LABELS[num] ?? `Phase ${num}`
+    <div className="flex flex-wrap gap-2">
+      {Array.from({ length: TOTAL_PHASES }, (_, i) => {
+        const num = i + 1
+        const phase = allPhases.find((p) => p.phase_number === num)
+        const status = phase?.status ?? 'libre'
+        const isActive = num === phaseNumber
+        const label = PHASE_LABELS[num] ?? `Phase ${num}`
 
-            return (
-              <button
-                key={num}
-                onClick={() => onNavigatePhase(num)}
-                className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-xs transition-colors ${
+        let pillClass: string
+        if (isActive) {
+          pillClass = 'bg-[var(--color-primary)] text-white'
+        } else if (status === 'validee') {
+          pillClass = 'bg-[#E8F5E9] text-[#2E7D32]'
+        } else {
+          pillClass = 'bg-[#F5EDE8] text-[var(--color-text-muted)] opacity-60'
+        }
+
+        return (
+          <button
+            key={num}
+            onClick={() => onNavigatePhase(num)}
+            className={`inline-flex items-center gap-2 rounded-[21px] px-4 py-2 text-xs font-medium transition-all hover:opacity-100 ${pillClass}`}
+          >
+            {status === 'validee' && !isActive ? (
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-success)] text-white">
+                <Check className="h-3 w-3" />
+              </span>
+            ) : (
+              <span
+                className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
                   isActive
-                    ? 'bg-[var(--color-primary)]/10 font-semibold'
-                    : 'hover:bg-[var(--color-background)]'
+                    ? 'bg-white text-[var(--color-primary)]'
+                    : 'bg-[var(--color-text-muted)] text-white'
                 }`}
               >
-                {/* Status circle */}
-                <span
-                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
-                    status === 'validee'
-                      ? 'bg-[var(--color-success)] text-white'
-                      : isActive
-                        ? 'bg-[var(--color-primary)] text-white'
-                        : status === 'en_cours'
-                          ? 'border-2 border-[var(--color-primary)] text-[var(--color-primary)]'
-                          : 'border-2 border-[var(--color-border)] text-[var(--color-text-muted)]'
-                  }`}
-                >
-                  {status === 'validee' ? (
-                    <Check className="h-3 w-3" />
-                  ) : (
-                    num
-                  )}
-                </span>
-                <span
-                  className={`truncate ${
-                    isActive
-                      ? 'text-[var(--color-primary)]'
-                      : status === 'validee'
-                        ? 'text-[var(--color-success)]'
-                        : 'text-[var(--color-text-secondary)]'
-                  }`}
-                >
-                  {label}
-                </span>
-              </button>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Question progress */}
-      {totalQuestions > 0 && (
-        <div className="rounded-xl border border-[var(--color-border)] bg-white p-4">
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
-            Phase courante
-          </h3>
-          <p className="text-sm font-medium text-[var(--color-text)]">
-            {answeredCount} / {totalQuestions} questions
-          </p>
-          <div
-            className="mt-2 h-2 overflow-hidden rounded-full"
-            style={{ backgroundColor: 'var(--color-border)' }}
-          >
-            <div
-              className="h-full rounded-full transition-all"
-              style={{
-                width: `${Math.round((answeredCount / totalQuestions) * 100)}%`,
-                backgroundColor: 'var(--color-primary)',
-              }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Consultant card */}
-      {consultantName && (
-        <div className="rounded-xl border border-[var(--color-border)] bg-white p-4">
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
-            Ma consultante
-          </h3>
-          <p className="text-sm font-medium text-[var(--color-text)]">{consultantName}</p>
-          <button
-            className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-primary)] px-3 py-1.5 text-xs font-medium text-[var(--color-primary)] transition-colors hover:bg-[var(--color-primary)] hover:text-white"
-          >
-            <Mail className="h-3.5 w-3.5" />
-            Envoyer un message
+                {num}
+              </span>
+            )}
+            <span className="hidden sm:inline">{label}</span>
           </button>
-        </div>
-      )}
-
-      {/* Next appointment */}
-      {nextSession && nextSession.scheduled_at && (
-        <div className="rounded-xl p-4" style={{ backgroundColor: 'var(--color-warning)', color: 'white' }}>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wider opacity-80">
-            Prochain rendez-vous
-          </h3>
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            <p className="text-sm font-medium">
-              {new Date(nextSession.scheduled_at).toLocaleDateString('fr-FR', {
-                day: 'numeric',
-                month: 'long',
-              })}
-            </p>
-          </div>
-          <p className="mt-0.5 text-xs opacity-80">
-            {new Date(nextSession.scheduled_at).toLocaleTimeString('fr-FR', {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </p>
-        </div>
-      )}
-    </aside>
+        )
+      })}
+    </div>
   )
 }
 
 // ---------------------------------------------------------------------------
-// Mobile Phase Bar (stacked above content on mobile)
+// Right Sidebar
 // ---------------------------------------------------------------------------
 
-function MobilePhaseBar({
+function RightSidebar({
   phaseNumber,
+  nextSession,
+  documents,
   allPhases,
-  answeredCount,
-  totalQuestions,
+  onDownload,
+  downloadingDocId,
 }: {
   phaseNumber: number
+  nextSession: SessionData | null
+  documents: PhaseDocumentData[]
   allPhases: PhaseValidation[]
-  answeredCount: number
-  totalQuestions: number
+  onDownload: (docId: string) => void
+  downloadingDocId: string | null
 }) {
-  return (
-    <div className="mb-4 space-y-3 md:hidden">
-      {/* Phase indicators row */}
-      <div className="flex items-center justify-center gap-1.5">
-        {Array.from({ length: TOTAL_PHASES }, (_, i) => {
-          const num = i + 1
-          const phase = allPhases.find((p) => p.phase_number === num)
-          const status = phase?.status ?? 'libre'
-          const isActive = num === phaseNumber
+  const validatedCount = allPhases.filter((p) => p.status === 'validee').length
+  const progressPct = Math.round((validatedCount / TOTAL_PHASES) * 100)
 
-          return (
-            <span
-              key={num}
-              className={`flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-bold ${
-                status === 'validee'
-                  ? 'bg-[var(--color-success)] text-white'
-                  : isActive
-                    ? 'bg-[var(--color-primary)] text-white'
-                    : status === 'en_cours'
-                      ? 'border-2 border-[var(--color-primary)] text-[var(--color-primary)]'
-                      : 'border-2 border-[var(--color-border)] text-[var(--color-text-muted)]'
-              }`}
-            >
-              {status === 'validee' ? <Check className="h-3 w-3" /> : num}
-            </span>
-          )
-        })}
-      </div>
-      {/* Question progress */}
-      {totalQuestions > 0 && (
-        <div className="text-center text-xs text-[var(--color-text-muted)]">
-          Question {answeredCount} / {totalQuestions}
+  return (
+    <aside className="hidden w-[280px] shrink-0 space-y-4 xl:block">
+      {/* Prochaine séance */}
+      {nextSession && nextSession.scheduled_at && (
+        <div className="overflow-hidden rounded-[16px] bg-[var(--color-surface)] shadow-[var(--shadow-md)]">
+          <div className="bg-[var(--color-warning-light)] px-5 py-2.5">
+            <p className="text-xs font-bold uppercase tracking-wider text-[#C07030]">
+              Prochaine séance
+            </p>
+          </div>
+          <div className="p-5 pt-3">
+            <p className="text-[15px] font-semibold text-[var(--color-text)]">
+              {new Date(nextSession.scheduled_at).toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })}{' '}
+              à{' '}
+              {new Date(nextSession.scheduled_at).toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </p>
+            {nextSession.visio_url && (
+              <a
+                href={nextSession.visio_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-2 rounded-[17px] bg-[var(--color-primary)] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[var(--color-primary-dark)]"
+              >
+                <Video className="h-3.5 w-3.5" />
+                Rejoindre la visio
+              </a>
+            )}
+          </div>
         </div>
       )}
-    </div>
+
+      {/* Documents de phase */}
+      {documents.length > 0 && (
+        <div className="overflow-hidden rounded-[16px] bg-[var(--color-surface)] shadow-[var(--shadow-md)]">
+          <div className="bg-[var(--color-warning-light)] px-5 py-2.5">
+            <p className="text-xs font-bold uppercase tracking-wider text-[#C07030]">
+              Documents de phase
+            </p>
+          </div>
+          <div className="space-y-2 p-5 pt-3">
+            {documents.map((doc) => (
+              <button
+                key={doc.id}
+                onClick={() => onDownload(doc.id)}
+                disabled={downloadingDocId === doc.id}
+                className="flex w-full items-center gap-2 text-left transition-opacity hover:opacity-80 disabled:opacity-50"
+              >
+                <span className="flex h-[18px] shrink-0 items-center rounded bg-[var(--color-warning-light)] px-1.5 text-[7px] font-bold uppercase text-[var(--color-accent)]">
+                  {doc.file_type === 'pdf' ? 'PDF' : 'DOC'}
+                </span>
+                <span className="truncate text-[13px] text-[var(--color-primary)]">
+                  {doc.display_name}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Progression */}
+      <div className="overflow-hidden rounded-[16px] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-md)]">
+        <p className="text-xs font-bold uppercase tracking-wider text-[#C07030]">
+          Progression
+        </p>
+        <p className="mt-2 text-[15px] font-semibold text-[var(--color-primary)]">
+          Phase {phaseNumber} sur {TOTAL_PHASES}
+        </p>
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-[var(--color-warning-light)]">
+          <div
+            className="h-full rounded-full bg-[var(--color-accent)] transition-all duration-300"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+      </div>
+    </aside>
   )
 }
 
@@ -283,13 +250,13 @@ export default function PhaseDetailPage() {
   const { user } = useAuth()
 
   const phaseNumber = Number(params.id)
-  const phaseTitle = PHASE_DESCRIPTIONS[phaseNumber] ?? `Phase ${phaseNumber}`
+  const phaseLabel = PHASE_LABELS[phaseNumber] ?? `Phase ${phaseNumber}`
+  const phaseDescription = PHASE_DESCRIPTIONS[phaseNumber] ?? ''
 
   const [questions, setQuestions] = useState<QuestionData[]>([])
   const [responses, setResponses] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(true)
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
-  const [lastSavedAt, setLastSavedAt] = useState<string | null>(null)
   const [persistentError, setPersistentError] = useState(false)
   const [phaseStatus, setPhaseStatus] = useState<'libre' | 'en_cours' | 'validee'>('libre')
   const [showValidateModal, setShowValidateModal] = useState(false)
@@ -298,22 +265,18 @@ export default function PhaseDetailPage() {
   const [validationToast, setValidationToast] = useState<string | null>(null)
   const [documents, setDocuments] = useState<PhaseDocumentData[]>([])
   const [downloadingDocId, setDownloadingDocId] = useState<string | null>(null)
-
-  // Sidebar data
   const [allPhases, setAllPhases] = useState<PhaseValidation[]>([])
   const [sessions, setSessions] = useState<SessionData[]>([])
-  const [consultantName, setConsultantName] = useState<string | null>(null)
 
-  // Dirty state tracking per question
   const dirtyRef = useRef<Set<string>>(new Set())
   const responsesRef = useRef<Record<string, string>>({})
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Keep ref in sync
   useEffect(() => {
     responsesRef.current = responses
   }, [responses])
 
-  // Load questions and existing responses
+  // Load data
   useEffect(() => {
     async function loadData() {
       if (isNaN(phaseNumber) || phaseNumber < 1 || phaseNumber > 6) {
@@ -331,7 +294,8 @@ export default function PhaseDetailPage() {
 
       if (questRes.status === 'fulfilled' && questRes.value?.data) {
         const quests = questRes.value.data as Array<{ id: string; questions: QuestionData[] }>
-        const allQuestions = quests.flatMap((q) => q.questions ?? [])
+        const allQuestions = quests
+          .flatMap((q) => q.questions ?? [])
           .sort((a, b) => a.sort_order - b.sort_order)
         setQuestions(allQuestions)
       }
@@ -349,9 +313,7 @@ export default function PhaseDetailPage() {
         const validations = validRes.value.data as PhaseValidation[]
         setAllPhases(validations)
         const thisPhase = validations.find((v) => v.phase_number === phaseNumber)
-        if (thisPhase) {
-          setPhaseStatus(thisPhase.status)
-        }
+        if (thisPhase) setPhaseStatus(thisPhase.status)
       }
 
       if (docsRes.status === 'fulfilled' && docsRes.value?.data) {
@@ -365,27 +327,8 @@ export default function PhaseDetailPage() {
       setIsLoading(false)
     }
 
-    if (user) {
-      loadData()
-    }
+    if (user) loadData()
   }, [user, phaseNumber])
-
-  // Load consultant name from user metadata
-  useEffect(() => {
-    if (user?.metadata?.consultant_name) {
-      setConsultantName(user.metadata.consultant_name as string)
-    }
-  }, [user])
-
-  // Autosave on 30s timer
-  useEffect(() => {
-    const interval = setInterval(() => {
-      saveDirtyResponses()
-    }, AUTOSAVE_INTERVAL_MS)
-
-    return () => clearInterval(interval)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phaseNumber])
 
   const saveDirtyResponses = useCallback(async () => {
     const dirty = Array.from(dirtyRef.current)
@@ -400,9 +343,6 @@ export default function PhaseDetailPage() {
       const result = await saveWithRetry(questionId, text, phaseNumber)
       if (result.success) {
         dirtyRef.current.delete(questionId)
-        if (result.saved_at) {
-          setLastSavedAt(result.saved_at)
-        }
       } else {
         allSucceeded = false
       }
@@ -410,29 +350,38 @@ export default function PhaseDetailPage() {
 
     if (allSucceeded) {
       setSaveStatus('saved')
-      setTimeout(() => setSaveStatus('idle'), 3000)
+      setTimeout(() => setSaveStatus('idle'), 4000)
     } else {
       setSaveStatus('error')
       setPersistentError(true)
     }
   }, [phaseNumber])
 
+  const handleChange = useCallback(
+    (questionId: string, value: string) => {
+      setResponses((prev) => ({ ...prev, [questionId]: value }))
+      dirtyRef.current.add(questionId)
+
+      // Debounced autosave
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current)
+      debounceTimerRef.current = setTimeout(() => {
+        saveDirtyResponses()
+      }, AUTOSAVE_DEBOUNCE_MS)
+    },
+    [saveDirtyResponses],
+  )
+
   const handleBlur = useCallback(
     (questionId: string) => {
       if (dirtyRef.current.has(questionId)) {
+        if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current)
         saveDirtyResponses()
       }
     },
     [saveDirtyResponses],
   )
 
-  const handleChange = useCallback((questionId: string, value: string) => {
-    setResponses((prev) => ({ ...prev, [questionId]: value }))
-    dirtyRef.current.add(questionId)
-  }, [])
-
   const handleManualSave = useCallback(() => {
-    // Mark all questions as dirty to force save
     questions.forEach((q) => dirtyRef.current.add(q.id))
     saveDirtyResponses()
   }, [questions, saveDirtyResponses])
@@ -440,11 +389,10 @@ export default function PhaseDetailPage() {
   const handleValidatePhase = useCallback(async () => {
     setIsValidating(true)
 
-    // RG-BEN-20: Step 1 — Force save all responses
+    // Force save all
     questions.forEach((q) => dirtyRef.current.add(q.id))
     await saveDirtyResponses()
 
-    // RG-BEN-21: If save failed, abort validation
     if (dirtyRef.current.size > 0) {
       setIsValidating(false)
       setShowValidateModal(false)
@@ -453,7 +401,6 @@ export default function PhaseDetailPage() {
       return
     }
 
-    // Step 2 — Change status to 'validee'
     try {
       const res = await fetch('/api/phase-validations', {
         method: 'PATCH',
@@ -471,16 +418,15 @@ export default function PhaseDetailPage() {
 
       setPhaseStatus('validee')
       setAllPhases((prev) =>
-        prev.map((p) => p.phase_number === phaseNumber ? { ...p, status: 'validee' as const } : p),
+        prev.map((p) =>
+          p.phase_number === phaseNumber ? { ...p, status: 'validee' as const } : p,
+        ),
       )
       setShowValidateModal(false)
       setIsValidating(false)
 
-      // Step 3 — Toast + redirect
       setValidationToast(`Phase ${phaseNumber} validée !`)
-      setTimeout(() => {
-        router.push('/dashboard')
-      }, 1500)
+      setTimeout(() => router.push('/dashboard'), 1500)
     } catch {
       setIsValidating(false)
       setShowValidateModal(false)
@@ -502,7 +448,9 @@ export default function PhaseDetailPage() {
       if (res.ok) {
         setPhaseStatus('en_cours')
         setAllPhases((prev) =>
-          prev.map((p) => p.phase_number === phaseNumber ? { ...p, status: 'en_cours' as const } : p),
+          prev.map((p) =>
+            p.phase_number === phaseNumber ? { ...p, status: 'en_cours' as const } : p,
+          ),
         )
         setValidationToast('Phase dé-validée.')
         setTimeout(() => setValidationToast(null), 3000)
@@ -542,21 +490,21 @@ export default function PhaseDetailPage() {
   }, [])
 
   const handleNavigatePhase = useCallback(
-    (phase: number) => {
-      router.push(`/bilans/${phase}`)
-    },
+    (phase: number) => router.push(`/bilans/${phase}`),
     [router],
   )
 
-  // Compute answered questions count
   const answeredCount = questions.filter(
     (q) => (responses[q.id] ?? '').trim().length > 0,
   ).length
 
-  // Find next upcoming session
-  const nextSession = sessions
-    .filter((s) => s.scheduled_at && new Date(s.scheduled_at) > new Date())
-    .sort((a, b) => new Date(a.scheduled_at!).getTime() - new Date(b.scheduled_at!).getTime())[0] ?? null
+  const nextSession =
+    sessions
+      .filter((s) => s.scheduled_at && new Date(s.scheduled_at) > new Date())
+      .sort(
+        (a, b) =>
+          new Date(a.scheduled_at!).getTime() - new Date(b.scheduled_at!).getTime(),
+      )[0] ?? null
 
   if (isNaN(phaseNumber) || phaseNumber < 1 || phaseNumber > 6) {
     return (
@@ -580,62 +528,48 @@ export default function PhaseDetailPage() {
 
   return (
     <div>
-      {/* Breadcrumb */}
-      <nav className="mb-4 text-sm text-[var(--color-text-secondary)]" aria-label="Fil d'Ariane">
-        <button onClick={() => router.push('/dashboard')} className="hover:underline">
-          Mon bilan
-        </button>
-        <span className="mx-2">{'>'}</span>
-        <span className="font-medium text-[var(--color-text)]">Phase {phaseNumber} — {phaseTitle}</span>
-      </nav>
-
-      {/* Mobile phase bar (visible < md) */}
-      <MobilePhaseBar
-        phaseNumber={phaseNumber}
-        allPhases={allPhases}
-        answeredCount={answeredCount}
-        totalQuestions={questions.length}
-      />
-
-      {/* 2-column layout: sidebar + main */}
-      <div className="flex gap-6">
-        {/* Sidebar (desktop only) */}
-        <PhaseSidebar
+      {/* Phase selector bar */}
+      <div className="mb-6 border-b border-[var(--color-border-light)] pb-4">
+        <PhaseSelector
           phaseNumber={phaseNumber}
           allPhases={allPhases}
-          answeredCount={answeredCount}
-          totalQuestions={questions.length}
-          consultantName={consultantName}
-          nextSession={nextSession}
           onNavigatePhase={handleNavigatePhase}
         />
+      </div>
 
+      {/* 2-column layout: main + right sidebar */}
+      <div className="flex gap-8">
         {/* Main content */}
         <div className="min-w-0 flex-1 space-y-6">
-          {/* Phase header */}
-          <div className="rounded-lg bg-[var(--color-primary)] p-4 text-[var(--color-text-inverse)]">
-            <h1 className="text-xl font-bold">Phase {phaseNumber} — {phaseTitle}</h1>
-            <p className="mt-1 text-sm text-[var(--color-primary-light)]">
-              {questions.length > 0
-                ? `${questions.length} question${questions.length > 1 ? 's' : ''}`
-                : 'Aucune question pour cette phase'}
-            </p>
-          </div>
-
-          {/* Save status indicator */}
-          <div className="flex items-center justify-between">
-            <div className="text-xs">
+          {/* Phase title + autosave indicator */}
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h1 className="text-2xl font-bold text-[var(--color-text)]">
+                Phase {phaseNumber} — {phaseLabel}
+              </h1>
+              <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+                {phaseDescription}
+              </p>
+            </div>
+            {/* Autosave status pill */}
+            <div className="shrink-0">
               {saveStatus === 'saving' && (
-                <span className="text-[var(--color-text-muted)]">Sauvegarde en cours...</span>
+                <span className="inline-flex items-center gap-1.5 rounded-[14px] bg-[var(--color-info-light)] px-3 py-1.5 text-[11px] font-medium text-[var(--color-primary)]">
+                  <span className="h-2 w-2 animate-spin rounded-full border-2 border-[var(--color-primary)] border-t-transparent" />
+                  Sauvegarde...
+                </span>
               )}
-              {saveStatus === 'saved' && lastSavedAt && (
-                <span className="text-[var(--color-text-muted)]">
-                  Sauvegardé à {new Date(lastSavedAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+              {saveStatus === 'saved' && (
+                <span className="inline-flex items-center gap-1.5 rounded-[14px] bg-[#E8F5E9] px-3 py-1.5 text-[11px] font-medium text-[#2E7D32]">
+                  <span className="flex h-2.5 w-2.5 items-center justify-center rounded-full bg-[var(--color-success)]">
+                    <Check className="h-1.5 w-1.5 text-white" />
+                  </span>
+                  Tout est sauvé !
                 </span>
               )}
               {persistentError && (
-                <span className="text-[var(--color-warning)] font-medium">
-                  Erreur de sauvegarde. Vérifiez votre connexion.
+                <span className="inline-flex items-center gap-1.5 rounded-[14px] bg-[var(--color-danger-light)] px-3 py-1.5 text-[11px] font-medium text-[var(--color-danger)]">
+                  Erreur de sauvegarde
                 </span>
               )}
             </div>
@@ -643,115 +577,103 @@ export default function PhaseDetailPage() {
 
           {/* Questions */}
           {questions.length === 0 ? (
-            <Card padding="lg">
-              <p className="text-[var(--color-text-secondary)]">
-                Aucune question n{"'"}a encore été ajoutée pour cette phase.
+            <div className="rounded-[16px] bg-[var(--color-surface)] p-8 text-center shadow-[var(--shadow-sm)]">
+              <p className="text-[var(--color-text-muted)]">
+                Aucune question n&apos;a encore été ajoutée pour cette phase.
               </p>
-            </Card>
+            </div>
           ) : (
-            <div className="space-y-4">
-              {questions.map((question, index) => (
-                <Card key={question.id} padding="md">
-                  <label className="block">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-primary)] text-xs font-bold text-[var(--color-text-inverse)]">
+            <div className="space-y-5">
+              {questions.map((question, index) => {
+                const charCount = (responses[question.id] ?? '').length
+
+                return (
+                  <div
+                    key={question.id}
+                    className="rounded-[16px] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-md)]"
+                  >
+                    {/* Question header */}
+                    <div className="mb-3 flex items-center gap-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-warning-light)] text-[15px] font-bold text-[var(--color-accent)]">
                         {index + 1}
                       </span>
-                      <span className="text-sm font-medium text-[var(--color-text)]">
-                        Question {index + 1} / {questions.length}
-                      </span>
+                      <p className="text-[15px] font-semibold text-[var(--color-text)]">
+                        {question.text}
+                      </p>
                     </div>
-                    <p className="mt-2 text-sm text-[var(--color-text)]">{question.text}</p>
-                    <Textarea
+
+                    {/* Textarea */}
+                    <textarea
                       value={responses[question.id] ?? ''}
                       onChange={(e) => handleChange(question.id, e.target.value)}
                       onBlur={() => handleBlur(question.id)}
-                      className="mt-2"
-                      style={{ minHeight: '120px', resize: 'vertical' }}
+                      maxLength={MAX_CHARS}
+                      placeholder="Prenez le temps de réfléchir... Exprimez-vous librement."
+                      className="w-full resize-y rounded-[16px] border border-[var(--color-border-light)] bg-[#FFFBF8] p-4 text-sm text-[var(--color-text)] placeholder:italic placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
+                      style={{ minHeight: '120px' }}
                       aria-label={`Réponse à la question ${index + 1}`}
                     />
-                  </label>
-                </Card>
-              ))}
-            </div>
-          )}
 
-          {/* Documents section — RG-BEN-27: hidden if no documents */}
-          {documents.length > 0 && (
-            <div className="rounded-xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
-              <div className="mb-4 flex items-center gap-2">
-                <FileText className="h-5 w-5 text-[var(--color-primary)]" />
-                <h2 className="text-base font-bold text-[var(--color-primary-dark)]">
-                  Documents disponibles
-                </h2>
-              </div>
-              <div className="space-y-2">
-                {documents.map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-[#F9FAFB] px-4 py-3"
-                  >
-                    <div className="flex items-center gap-3">
-                      <FileText className="h-5 w-5 text-[#6B7280]" />
-                      <div>
-                        <p className="text-sm font-medium text-[var(--color-text)]">
-                          {doc.display_name}
-                        </p>
-                        <p className="text-xs uppercase text-[#9CA3AF]">
-                          {doc.file_type}
-                        </p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => handleDownloadDocument(doc.id)}
-                      disabled={downloadingDocId === doc.id}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-primary)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary)] transition-colors hover:bg-[var(--color-primary)] hover:text-white disabled:opacity-50"
-                    >
-                      {downloadingDocId === doc.id ? (
-                        <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                      ) : (
-                        <Download className="h-3.5 w-3.5" />
-                      )}
-                      Télécharger
-                    </button>
+                    {/* Character count */}
+                    <p className="mt-1.5 text-right text-[11px] text-[var(--color-text-muted)]">
+                      {charCount} / {MAX_CHARS} caractères
+                    </p>
                   </div>
-                ))}
-              </div>
+                )
+              })}
             </div>
           )}
 
           {/* Action buttons */}
-          <div className="flex items-center gap-3">
-            <Button
-              variant="secondary"
-              onClick={handleManualSave}
-              loading={saveStatus === 'saving'}
-            >
-              Enregistrer
-            </Button>
-            {phaseStatus !== 'validee' ? (
-              <Button
-                variant="success"
-                onClick={() => setShowValidateModal(true)}
+          {questions.length > 0 && (
+            <div className="flex items-center justify-end gap-3 pb-6">
+              <button
+                onClick={handleManualSave}
+                disabled={saveStatus === 'saving'}
+                className="rounded-[22px] border-[1.5px] border-[var(--color-primary)] bg-white px-6 py-2.5 text-sm font-semibold text-[var(--color-primary)] transition-colors hover:bg-[var(--color-info-light)] disabled:opacity-50"
               >
-                Valider la phase
-              </Button>
-            ) : (
-              <Button
-                variant="danger"
-                onClick={() => setShowDevalidateModal(true)}
-              >
-                Dé-valider
-              </Button>
-            )}
-          </div>
+                Enregistrer
+              </button>
+              {phaseStatus !== 'validee' ? (
+                <button
+                  onClick={() => setShowValidateModal(true)}
+                  className="rounded-[22px] bg-[var(--color-primary)] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-primary-dark)]"
+                >
+                  Valider la phase
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowDevalidateModal(true)}
+                  className="rounded-[22px] bg-[var(--color-danger)] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-danger)]/90"
+                >
+                  Dé-valider
+                </button>
+              )}
+            </div>
+          )}
+
+          {questions.length > 0 && (
+            <p className="text-center text-[10px] italic text-[var(--color-text-muted)]">
+              La validation soumet vos réponses à votre consultante
+            </p>
+          )}
         </div>
+
+        {/* Right sidebar (desktop) */}
+        <RightSidebar
+          phaseNumber={phaseNumber}
+          nextSession={nextSession}
+          documents={documents}
+          allPhases={allPhases}
+          onDownload={handleDownloadDocument}
+          downloadingDocId={downloadingDocId}
+        />
       </div>
 
       {/* Validation toast */}
       {validationToast && (
         <div
-          className={`fixed bottom-6 right-6 z-50 rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg ${
+          className={`fixed bottom-6 right-6 z-50 rounded-[var(--radius-md)] px-4 py-3 text-sm font-medium text-white shadow-lg ${
             validationToast.includes('Erreur') || validationToast.includes('Échec')
               ? 'bg-[var(--color-warning)]'
               : 'bg-[var(--color-success)]'
@@ -770,22 +692,25 @@ export default function PhaseDetailPage() {
         size="sm"
         actions={
           <>
-            <Button variant="ghost" onClick={() => setShowValidateModal(false)}>
-              Annuler
-            </Button>
-            <Button
-              variant="success"
-              onClick={handleValidatePhase}
-              loading={isValidating}
+            <button
+              onClick={() => setShowValidateModal(false)}
+              className="rounded-[var(--radius-md)] px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-hover)]"
             >
-              Confirmer
-            </Button>
+              Annuler
+            </button>
+            <button
+              onClick={handleValidatePhase}
+              disabled={isValidating}
+              className="rounded-[var(--radius-md)] bg-[var(--color-success)] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-success)]/90 disabled:opacity-50"
+            >
+              {isValidating ? 'Validation...' : 'Confirmer'}
+            </button>
           </>
         }
       >
         <p className="text-sm">
-          Êtes-vous sûr de vouloir valider cette phase ?
-          Vous pourrez toujours modifier vos réponses après validation.
+          Êtes-vous sûr de vouloir valider cette phase ? Vous pourrez toujours
+          modifier vos réponses après validation.
         </p>
       </Modal>
 
@@ -797,22 +722,24 @@ export default function PhaseDetailPage() {
         size="sm"
         actions={
           <>
-            <Button variant="ghost" onClick={() => setShowDevalidateModal(false)}>
-              Annuler
-            </Button>
-            <Button
-              variant="danger"
-              onClick={handleDevalidatePhase}
-              loading={isValidating}
+            <button
+              onClick={() => setShowDevalidateModal(false)}
+              className="rounded-[var(--radius-md)] px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-hover)]"
             >
-              Dé-valider
-            </Button>
+              Annuler
+            </button>
+            <button
+              onClick={handleDevalidatePhase}
+              disabled={isValidating}
+              className="rounded-[var(--radius-md)] bg-[var(--color-danger)] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-danger)]/90 disabled:opacity-50"
+            >
+              {isValidating ? 'En cours...' : 'Dé-valider'}
+            </button>
           </>
         }
       >
         <p className="text-sm">
-          Le statut de la phase repassera à « En cours ».
-          Voulez-vous continuer ?
+          Le statut de la phase repassera à « En cours ». Voulez-vous continuer ?
         </p>
       </Modal>
     </div>
