@@ -1,0 +1,220 @@
+<!-- MAQ-13 | Gestion Documents Admin | Link's Accompagnement | v3.0 | hybride | 2026-03-26 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="hShadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.07"/>
+    </filter>
+    <filter id="hShadowLg" x="-2%" y="-2%" width="104%" height="106%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="900" fill="#F7F9FC"/>
+
+  <!-- Sidebar -->
+  <rect width="220" height="900" fill="#0D3B6E"/>
+
+  <!-- Logo -->
+  <polygon points="32,26 50,16 50,42 32,52" fill="#FF6B35" opacity="0.95"/>
+  <text x="58" y="33" font-size="16" font-weight="700" fill="#FFFFFF">Link's</text>
+  <text x="58" y="49" font-size="11" fill="#94B8DB">Accompagnement</text>
+
+  <line x1="20" y1="68" x2="200" y2="68" stroke="#1A4F80" stroke-width="1" opacity="0.6"/>
+
+  <!-- Nav: Dashboard -->
+  <rect x="10" y="82" width="200" height="42" rx="10" fill="transparent"/>
+  <rect x="28" y="94" width="14" height="14" rx="3" fill="none" stroke="#7BA3C9" stroke-width="1.5"/>
+  <rect x="32" y="98" width="3" height="6" rx="1" fill="#7BA3C9"/>
+  <rect x="37" y="101" width="3" height="3" rx="1" fill="#7BA3C9"/>
+  <text x="52" y="106" font-size="13" fill="#7BA3C9">Dashboard</text>
+
+  <!-- Nav: Utilisateurs -->
+  <rect x="10" y="128" width="200" height="42" rx="10" fill="transparent"/>
+  <circle cx="36" cy="145" r="5" fill="none" stroke="#7BA3C9" stroke-width="1.5"/>
+  <path d="M28,154 Q32,148 36,148 Q40,148 44,154" fill="none" stroke="#7BA3C9" stroke-width="1.5"/>
+  <text x="52" y="150" font-size="13" fill="#7BA3C9">Utilisateurs</text>
+
+  <!-- Nav: Documents (active) -->
+  <rect x="10" y="174" width="200" height="42" rx="10" fill="#1A4F80"/>
+  <rect x="6" y="182" width="4" height="26" rx="2" fill="#FF6B35"/>
+  <rect x="28" y="186" width="13" height="17" rx="3" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+  <path d="M32,193 L38,193 M32,197 L36,197" stroke="#FFFFFF" stroke-width="1.1"/>
+  <text x="52" y="199" font-size="13" font-weight="600" fill="#FFFFFF">Documents</text>
+
+  <!-- Header -->
+  <rect x="220" y="0" width="1220" height="60" fill="#FFFFFF" filter="url(#hShadow)"/>
+
+  <!-- Breadcrumb -->
+  <text x="252" y="35" font-size="13" fill="#8C99A8">Administration</text>
+  <text x="348" y="35" font-size="13" fill="#C0C8D4">›</text>
+  <text x="362" y="35" font-size="13" font-weight="600" fill="#1E6FC0">Documents</text>
+
+  <!-- User info -->
+  <circle cx="1332" cy="30" r="16" fill="#EBF2FA"/>
+  <text x="1326" y="35" font-size="12" font-weight="700" fill="#1E6FC0">A</text>
+  <text x="1284" y="25" font-size="12" font-weight="500" fill="#1E293B" text-anchor="end">Administrateur</text>
+  <text x="1284" y="40" font-size="11" fill="#8C99A8" text-anchor="end">super_admin</text>
+  <!-- Logout -->
+  <g transform="translate(1368,22)">
+    <path d="M0,0 L9,0 L9,16 L0,16" fill="none" stroke="#8C99A8" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M4,8 L14,8 M11,5 L14,8 L11,11" fill="none" stroke="#8C99A8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Title -->
+  <text x="252" y="104" font-size="20" font-weight="700" fill="#1E293B">Gestion des documents par phase</text>
+  <text x="252" y="124" font-size="13" fill="#64748B">Ajoutez, organisez et supprimez les documents mis à disposition des bénéficiaires.</text>
+
+  <!-- Phase tabs (hybride: balanced rounded) -->
+  <g transform="translate(252,142)">
+    <!-- Active: Phase 1 -->
+    <rect x="0" y="0" width="104" height="38" rx="12" fill="#1E6FC0"/>
+    <text x="52" y="24" font-size="13" font-weight="600" fill="#FFFFFF" text-anchor="middle">Phase 1</text>
+
+    <rect x="112" y="0" width="104" height="38" rx="12" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+    <text x="164" y="24" font-size="13" fill="#64748B" text-anchor="middle">Phase 2</text>
+
+    <rect x="224" y="0" width="104" height="38" rx="12" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+    <text x="276" y="24" font-size="13" fill="#64748B" text-anchor="middle">Phase 3</text>
+
+    <rect x="336" y="0" width="104" height="38" rx="12" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+    <text x="388" y="24" font-size="13" fill="#64748B" text-anchor="middle">Phase 4</text>
+
+    <rect x="448" y="0" width="104" height="38" rx="12" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+    <text x="500" y="24" font-size="13" fill="#64748B" text-anchor="middle">Phase 5</text>
+
+    <rect x="560" y="0" width="104" height="38" rx="12" fill="#FFFFFF" stroke="#DCE1EB" stroke-width="1"/>
+    <text x="612" y="24" font-size="13" fill="#64748B" text-anchor="middle">Phase 6</text>
+  </g>
+
+  <!-- Upload zone -->
+  <rect x="252" y="198" width="700" height="130" rx="14" fill="#FFFFFF" stroke="#B8CAD9" stroke-width="1.5" stroke-dasharray="8,4" filter="url(#hShadow)"/>
+
+  <!-- Cloud icon -->
+  <g transform="translate(564,212)">
+    <path d="M14,28 L14,14" stroke="#1E6FC0" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8,20 L14,14 L20,20" fill="none" stroke="#1E6FC0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M4,24 Q0,24 0,20 Q0,14 6,14 Q7,8 14,8 Q20,8 22,12 Q28,12 28,18 Q28,24 22,24" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+  <text x="604" y="262" font-size="13" fill="#4B5563" text-anchor="middle">Glissez vos fichiers ici ou </text>
+  <text x="710" y="262" font-size="13" fill="#1E6FC0" font-weight="600" text-decoration="underline">Parcourir</text>
+  <text x="604" y="282" font-size="11" fill="#94A3B8" text-anchor="middle">PDF ou DOCX · Max 10 Mo · 3 documents max par phase</text>
+  <!-- Counter -->
+  <rect x="540" y="292" width="200" height="24" rx="12" fill="#EFF6FF"/>
+  <text x="640" y="308" font-size="12" font-weight="600" fill="#1E6FC0" text-anchor="middle">2/3 documents pour cette phase</text>
+
+  <!-- Document table -->
+  <rect x="252" y="346" width="700" height="162" rx="12" fill="#FFFFFF" filter="url(#hShadowLg)"/>
+
+  <!-- Header row -->
+  <rect x="252" y="346" width="700" height="40" rx="12" fill="#F7F9FC"/>
+  <rect x="252" y="374" width="700" height="12" fill="#F7F9FC"/>
+  <text x="296" y="372" font-size="11" font-weight="600" fill="#64748B" letter-spacing="0.5">DOCUMENT</text>
+  <text x="556" y="372" font-size="11" font-weight="600" fill="#64748B" letter-spacing="0.5">TYPE</text>
+  <text x="636" y="372" font-size="11" font-weight="600" fill="#64748B" letter-spacing="0.5">TAILLE</text>
+  <text x="726" y="372" font-size="11" font-weight="600" fill="#64748B" letter-spacing="0.5">AJOUTÉ LE</text>
+  <text x="836" y="372" font-size="11" font-weight="600" fill="#64748B" letter-spacing="0.5">ORDRE</text>
+  <text x="904" y="372" font-size="11" font-weight="600" fill="#64748B" letter-spacing="0.5">ACTIONS</text>
+
+  <!-- Row 1 -->
+  <g transform="translate(264,396)">
+    <!-- Drag handle -->
+    <line x1="0" y1="10" x2="12" y2="10" stroke="#CBD5E1" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="0" y1="15" x2="12" y2="15" stroke="#CBD5E1" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="0" y1="20" x2="12" y2="20" stroke="#CBD5E1" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+  <text x="296" y="416" font-size="13" fill="#1E293B">Guide de définition de projet.pdf</text>
+  <!-- PDF -->
+  <rect x="550" y="402" width="42" height="22" rx="11" fill="#FEE2E2"/>
+  <text x="571" y="417" font-size="10" font-weight="700" fill="#DC2626" text-anchor="middle">PDF</text>
+  <text x="636" y="417" font-size="12" fill="#64748B">245 Ko</text>
+  <text x="726" y="417" font-size="12" fill="#64748B">20/03/2026</text>
+  <!-- Order -->
+  <rect x="840" y="402" width="26" height="22" rx="10" fill="#EFF6FF"/>
+  <text x="853" y="417" font-size="11" font-weight="700" fill="#1E6FC0" text-anchor="middle">1</text>
+  <!-- Actions -->
+  <g transform="translate(904,400)">
+    <rect x="0" y="0" width="28" height="24" rx="8" fill="#F7F9FC" stroke="#DCE1EB" stroke-width="1"/>
+    <path d="M10,6 L16,12 M16,6 L10,12" fill="none" stroke="#64748B" stroke-width="1.2" stroke-linecap="round" transform="translate(1,2) scale(0.8)"/>
+    <rect x="34" y="0" width="28" height="24" rx="8" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+    <path d="M44,6 L44,16 M41,6 L47,6 M42,6 L42,4 L46,4 L46,6 M40,6 L48,6" fill="none" stroke="#DC2626" stroke-width="1.1" stroke-linecap="round"/>
+  </g>
+
+  <line x1="268" y1="434" x2="940" y2="434" stroke="#F1F5F9" stroke-width="1"/>
+
+  <!-- Row 2 -->
+  <g transform="translate(264,444)">
+    <line x1="0" y1="10" x2="12" y2="10" stroke="#CBD5E1" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="0" y1="15" x2="12" y2="15" stroke="#CBD5E1" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="0" y1="20" x2="12" y2="20" stroke="#CBD5E1" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+  <text x="296" y="465" font-size="13" fill="#1E293B">Fiche d'auto-évaluation.docx</text>
+  <!-- DOCX -->
+  <rect x="546" y="451" width="50" height="22" rx="11" fill="#DBEAFE"/>
+  <text x="571" y="466" font-size="10" font-weight="700" fill="#2563EB" text-anchor="middle">DOCX</text>
+  <text x="636" y="466" font-size="12" fill="#64748B">128 Ko</text>
+  <text x="726" y="466" font-size="12" fill="#64748B">20/03/2026</text>
+  <rect x="840" y="451" width="26" height="22" rx="10" fill="#EFF6FF"/>
+  <text x="853" y="466" font-size="11" font-weight="700" fill="#1E6FC0" text-anchor="middle">2</text>
+  <g transform="translate(904,449)">
+    <rect x="0" y="0" width="28" height="24" rx="8" fill="#F7F9FC" stroke="#DCE1EB" stroke-width="1"/>
+    <path d="M10,6 L16,12 M16,6 L10,12" fill="none" stroke="#64748B" stroke-width="1.2" stroke-linecap="round" transform="translate(1,2) scale(0.8)"/>
+    <rect x="34" y="0" width="28" height="24" rx="8" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+    <path d="M44,6 L44,16 M41,6 L47,6 M42,6 L42,4 L46,4 L46,6 M40,6 L48,6" fill="none" stroke="#DC2626" stroke-width="1.1" stroke-linecap="round"/>
+  </g>
+
+  <!-- Phase summary panel -->
+  <rect x="976" y="198" width="432" height="318" rx="14" fill="#FFFFFF" filter="url(#hShadowLg)"/>
+  <!-- Accent top line -->
+  <rect x="976" y="198" width="432" height="4" rx="2" fill="#FF6B35" opacity="0.6"/>
+
+  <text x="1004" y="234" font-size="14" font-weight="700" fill="#1E293B">Résumé par phase</text>
+  <line x1="1004" y1="248" x2="1388" y2="248" stroke="#F1F5F9" stroke-width="1"/>
+
+  <g transform="translate(1004,260)">
+    <!-- Phase 1 (highlighted) -->
+    <rect x="0" y="0" width="384" height="34" rx="10" fill="#EFF6FF"/>
+    <text x="14" y="22" font-size="12" font-weight="600" fill="#1E6FC0">Phase 1</text>
+    <rect x="320" y="7" width="50" height="22" rx="10" fill="#1E6FC0"/>
+    <text x="345" y="22" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="middle">2 docs</text>
+
+    <!-- Phase 2 -->
+    <rect x="0" y="40" width="384" height="34" rx="10" fill="#F7F9FC"/>
+    <text x="14" y="62" font-size="12" fill="#4B5563">Phase 2</text>
+    <rect x="324" y="47" width="42" height="22" rx="10" fill="#E2E8F0"/>
+    <text x="345" y="62" font-size="11" fill="#64748B" text-anchor="middle">1 doc</text>
+
+    <!-- Phase 3 -->
+    <rect x="0" y="80" width="384" height="34" rx="10" fill="#F7F9FC"/>
+    <text x="14" y="102" font-size="12" fill="#94A3B8">Phase 3</text>
+    <rect x="320" y="87" width="50" height="22" rx="10" fill="#E2E8F0"/>
+    <text x="345" y="102" font-size="11" fill="#94A3B8" text-anchor="middle">0 docs</text>
+
+    <!-- Phase 4 -->
+    <rect x="0" y="120" width="384" height="34" rx="10" fill="#F7F9FC"/>
+    <text x="14" y="142" font-size="12" fill="#94A3B8">Phase 4</text>
+    <rect x="320" y="127" width="50" height="22" rx="10" fill="#E2E8F0"/>
+    <text x="345" y="142" font-size="11" fill="#94A3B8" text-anchor="middle">0 docs</text>
+
+    <!-- Phase 5 -->
+    <rect x="0" y="160" width="384" height="34" rx="10" fill="#F7F9FC"/>
+    <text x="14" y="182" font-size="12" fill="#94A3B8">Phase 5</text>
+    <rect x="320" y="167" width="50" height="22" rx="10" fill="#E2E8F0"/>
+    <text x="345" y="182" font-size="11" fill="#94A3B8" text-anchor="middle">0 docs</text>
+
+    <!-- Phase 6 -->
+    <rect x="0" y="200" width="384" height="34" rx="10" fill="#F7F9FC"/>
+    <text x="14" y="222" font-size="12" fill="#94A3B8">Phase 6</text>
+    <rect x="320" y="207" width="50" height="22" rx="10" fill="#E2E8F0"/>
+    <text x="345" y="222" font-size="11" fill="#94A3B8" text-anchor="middle">0 docs</text>
+  </g>
+
+  <!-- Total -->
+  <line x1="1004" y1="504" x2="1388" y2="504" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="1004" y="526" font-size="13" font-weight="700" fill="#1E293B">Total</text>
+  <text x="1388" y="526" font-size="13" font-weight="600" fill="#FF6B35" text-anchor="end">3 documents · 885 Ko</text>
+
+  <!-- Sidebar footer -->
+  <line x1="20" y1="860" x2="200" y2="860" stroke="#1A4F80" stroke-width="1" opacity="0.5"/>
+  <text x="110" y="880" font-size="10" fill="#5A8BB8" text-anchor="middle">v3.0 · Unanima Platform</text>
+</svg>
