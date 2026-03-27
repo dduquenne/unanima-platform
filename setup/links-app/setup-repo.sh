@@ -13,6 +13,7 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OWNER="dduquenne"
 REPO="links-app"
 FULL_REPO="$OWNER/$REPO"
@@ -50,7 +51,6 @@ git init
 git remote add origin "https://github.com/$FULL_REPO.git"
 
 # Copier les fichiers depuis le répertoire setup
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cp "$SCRIPT_DIR/README.md" .
 cp "$SCRIPT_DIR/.gitignore" .
 cp "$SCRIPT_DIR/.nvmrc" .
