@@ -1,0 +1,26 @@
+import type { Metadata } from 'next'
+import { CookieBanner } from '@/lib/rgpd'
+import { Providers } from './providers'
+import './globals.css'
+
+export const metadata: Metadata = {
+  title: "Link's Accompagnement",
+  description: 'Plateforme de suivi des bilans de compétences',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="fr">
+      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
+        <Providers>
+          {children}
+          <CookieBanner />
+        </Providers>
+      </body>
+    </html>
+  )
+}

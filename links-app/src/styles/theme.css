@@ -1,0 +1,155 @@
+/*
+ * Link's Accompagnement — Charte graphique v3 "chaleureux"
+ * Identité : Accompagnement bienveillant, chaleureux, professionnel
+ * Palette : Conforme maquettes v3 chaleureux — NE PAS MODIFIER sans validation client
+ */
+:root {
+  /* --- Couleurs principales (v3 chaleureux) --- */
+  --color-primary: #2A7FD4;
+  --color-primary-light: #5A9FE4;
+  --color-primary-dark: #0D3B6E;
+  --color-secondary: #1A5BA0;
+  --color-secondary-light: #A8C8F0;
+  --color-secondary-dark: #0A2E58;
+  --color-accent: #F28C5A;
+  --color-accent-light: #FDEBD5;
+
+  /* --- Couleurs sémantiques --- */
+  --color-success: #28A745;
+  --color-success-light: #F6FFF8;
+  --color-warning: #FF6B35;
+  --color-warning-light: #FFF0EA;
+  --color-danger: #DC2626;
+  --color-danger-light: #FEF2F2;
+  --color-info: #2A7FD4;
+  --color-info-light: #EFF6FF;
+
+  /* --- Surfaces et fonds (v3 chaleureux — crème chaud) --- */
+  --color-background: #FFF8F5;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #FFF5EF;
+  --color-surface-active: #FDEBD5;
+  --color-muted: #FFF5EF;
+
+  /* --- Texte --- */
+  --color-text: #4A4A4A;
+  --color-text-secondary: #8492A6;
+  --color-text-muted: #B0A09A;
+  --color-text-inverse: #FFFFFF;
+
+  /* --- Bordures (teintes chaudes) --- */
+  --color-border: #E8D5CA;
+  --color-border-light: #F0E4DB;
+  --color-border-focus: #2A7FD4;
+
+  /* --- Typographie --- */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-heading: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* --- Rayons (v3 chaleureux — arrondis prononcés) --- */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* --- Ombres (teintes chaudes) --- */
+  --shadow-sm: 0 1px 3px 0 rgb(212 160 138 / 0.08);
+  --shadow-md: 0 4px 6px -1px rgb(212 160 138 / 0.10), 0 2px 4px -2px rgb(212 160 138 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(212 160 138 / 0.12), 0 4px 6px -4px rgb(212 160 138 / 0.06);
+  --shadow-xl: 0 20px 25px -5px rgb(212 160 138 / 0.12), 0 8px 10px -6px rgb(212 160 138 / 0.06);
+  --shadow-glow: 0 0 20px rgb(42 127 212 / 0.15);
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Gradients (v3 chaleureux) --- */
+  --gradient-primary: linear-gradient(135deg, #2A7FD4 0%, #1A5BA0 100%);
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #FFF8F5 100%);
+  --gradient-accent: linear-gradient(135deg, #F28C5A 0%, #FF6B35 100%);
+  --gradient-sidebar: linear-gradient(180deg, #0D3B6E 0%, #1A3A5C 100%);
+}
+
+/* --- Dark mode (système) --- */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-background: #0F1729;
+    --color-surface: #1A2540;
+    --color-surface-hover: #1E2D4A;
+    --color-surface-active: #1C2B47;
+    --color-muted: #162032;
+
+    --color-text: #E2E8F0;
+    --color-text-secondary: #94A3B8;
+    --color-text-muted: #64748B;
+    --color-text-inverse: #0F1729;
+
+    --color-border: #2A3A55;
+    --color-border-light: #1E2D4A;
+    --color-border-focus: #5A9FE4;
+
+    --color-success-light: #0A3D1F;
+    --color-warning-light: #5C2810;
+    --color-danger-light: #5C1616;
+    --color-info-light: #1E3A5F;
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    --shadow-glow: 0 0 20px rgb(42 127 212 / 0.25);
+
+    --gradient-primary: linear-gradient(135deg, #2A7FD4 0%, #1A5BA0 100%);
+    --gradient-surface: linear-gradient(180deg, #1A2540 0%, #0F1729 100%);
+    --gradient-accent: linear-gradient(135deg, #F28C5A 0%, #FF6B35 100%);
+    --gradient-sidebar: linear-gradient(180deg, #0D3B6E 0%, #0A2E58 100%);
+  }
+}
+
+/* --- Dark mode (toggle manuel) --- */
+.dark {
+  --color-background: #0F1729;
+  --color-surface: #1A2540;
+  --color-surface-hover: #1E2D4A;
+  --color-surface-active: #1C2B47;
+  --color-muted: #162032;
+
+  --color-text: #E2E8F0;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  --color-text-inverse: #0F1729;
+
+  --color-border: #2A3A55;
+  --color-border-light: #1E2D4A;
+  --color-border-focus: #5A9FE4;
+
+  --color-success-light: #0A3D1F;
+  --color-warning-light: #5C2810;
+  --color-danger-light: #5C1616;
+  --color-info-light: #1E3A5F;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+  --shadow-glow: 0 0 20px rgb(42 127 212 / 0.25);
+
+  --gradient-primary: linear-gradient(135deg, #2A7FD4 0%, #1A5BA0 100%);
+  --gradient-surface: linear-gradient(180deg, #1A2540 0%, #0F1729 100%);
+  --gradient-accent: linear-gradient(135deg, #F28C5A 0%, #FF6B35 100%);
+  --gradient-sidebar: linear-gradient(180deg, #0D3B6E 0%, #0A2E58 100%);
+}
