@@ -9,12 +9,6 @@ import { LoginCard, FooterLinks } from './components/login-card'
 import { SimulationProfileSelector } from './components/simulation-profile-selector'
 import { isSimulationMode } from '@/lib/simulation/config'
 
-const ROLE_HOME: Record<string, string> = {
-  beneficiaire: '/dashboard',
-  consultant: '/consultant/dashboard',
-  super_admin: '/admin',
-}
-
 const ERROR_MESSAGES: Record<string, string> = {
   compte_desactive: 'Votre compte a été désactivé. Contactez votre administrateur.',
   auth: "Erreur d'authentification. Veuillez réessayer.",
@@ -56,16 +50,14 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (simulationMode) return // In simulation mode, login page shows the profile selector
-    // During form submission, handleSubmit owns the redirect (it uses
-    // the role from the API response, which is always correct).
-    // Without this guard the effect can fire with a stale/fallback role
-    // from the AuthProvider and override the correct redirect (#238).
-    if (isSubmitting) return
     if (!isLoading && user) {
-      const dest = redirectPath ?? ROLE_HOME[user.role] ?? '/dashboard'
-      router.replace(dest)
+      // Redirect to / — the server-side middleware determines the
+      // correct role-based home page from the profiles table.
+      // This eliminates client-side role routing which was the source
+      // of the bug where stale/fallback roles caused wrong redirects.
+      router.replace(redirectPath ?? '/')
     }
-  }, [user, isLoading, router, redirectPath, simulationMode, isSubmitting])
+  }, [user, isLoading, router, redirectPath, simulationMode])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -99,8 +91,9 @@ export default function LoginPage() {
           return
         }
 
-        const dest = redirectPath ?? ROLE_HOME[data.role ?? ''] ?? '/dashboard'
-        router.replace(dest)
+        // Redirect to / — middleware handles role-based routing
+        // server-side using the profiles table (no client-side race).
+        router.replace(redirectPath ?? '/')
         return
       }
 

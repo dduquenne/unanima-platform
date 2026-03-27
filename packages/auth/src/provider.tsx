@@ -158,33 +158,17 @@ export function AuthProvider({ config, children }: AuthProviderProps) {
 
       setIsLoading(true)
 
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) {
         setIsLoading(false)
         return { error: new Error(error.message) }
       }
 
-      // Eagerly resolve the user profile so downstream guards
-      // (useRequireRole, protected layouts) see the correct role
-      // immediately when signIn returns.  We increment the sequence
-      // counter so that the concurrent onAuthStateChange callback
-      // (triggered by signInWithPassword above) discards its result
-      // — this function is the authoritative source during sign-in.
-      if (data.user) {
-        const seq = ++authEventSeqRef.current
-
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', data.user.id)
-          .maybeSingle()
-
-        if (profile && authEventSeqRef.current === seq) {
-          setUser(profileToUser(profile))
-          setIsLoading(false)
-        }
-      }
-
+      // Profile resolution is handled exclusively by onAuthStateChange
+      // (triggered by signInWithPassword above). This avoids the race
+      // condition where both signIn and onAuthStateChange competed to
+      // increment the sequence counter, causing both to discard their
+      // results and leaving the user with a stale/fallback role.
       return { error: null }
     },
     [supabase],
