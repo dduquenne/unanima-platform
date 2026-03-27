@@ -307,8 +307,8 @@ export default function DashboardPage() {
                             Rejoindre la visio
                           </a>
                         ) : status === 'a_planifier' ? (
-                          <span className="inline-flex items-center rounded-[15px] border border-[var(--color-border)] px-4 py-1.5 text-xs font-medium text-[var(--color-text-muted)]">
-                            Planifier
+                          <span className="text-xs text-[var(--color-text-muted)]">
+                            À planifier par votre consultante
                           </span>
                         ) : null}
                       </td>
